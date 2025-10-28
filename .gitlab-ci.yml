@@ -1,6 +1,11 @@
 # Image qui inclut les versions de Java et Maven dont on a besoin
 image: maven:3.9-eclipse-temurin-21
 
+# Le cache va garder les fichiers compilés pour les autres tests
+cache:
+  paths:
+    - .m2/repository
+
 # Paramètres proxy pour les requetes
 before_script:
   - echo "Configuration du proxy Maven..."

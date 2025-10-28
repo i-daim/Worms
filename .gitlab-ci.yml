@@ -1,4 +1,11 @@
+# Image qui inclut les versions de Java et Maven dont on a besoin
 image: maven:3.9-eclipse-temurin-21
+
+# Paramètres proxy pour les requetes
+variables:
+  HTTPS_PROXY: "http://194.254.199.96:3128"
+  HTTP_PROXY: "http://194.254.199.96:3128"
+
 
 stages:
   - build

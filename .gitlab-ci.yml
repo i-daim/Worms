@@ -2,8 +2,29 @@
 image: maven:3.9-eclipse-temurin-21
 
 # Paramètres proxy pour les requetes
-variables:
-  MAVEN_OPTS: "-Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128 -Dhttp.proxyHost=194.254.199.96 -Dhttp.proxyPort=3128"
+before_script:
+  - echo "Configuration du proxy Maven..."
+  - mkdir -p ~/.m2
+  - |
+    echo '<settings>
+      <proxies>
+        <proxy>
+          <id>gitlab-proxy-http</id>
+          <active>true</active>
+          <protocol>http</protocol>
+          <host>194.254.199.96</host>
+          <port>3128</port>
+        </proxy>
+        <proxy>
+          <id>gitlab-proxy-https</id>
+          <active>true</active>
+          <protocol>https</protocol>
+          <host>194.254.199.96</host>
+          <port>3128</port>
+        </proxy>
+      </proxies>
+    </settings>' > ~/.m2/settings.xml
+  - echo "Fichier settings.xml créé."
 
 
 stages:

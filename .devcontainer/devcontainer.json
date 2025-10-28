@@ -6,6 +6,9 @@
       "version": "17",
       "installMaven": "true",
       "installGradle": "false"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
     }
   },
   "postCreateCommand": "git config --global core.autocrlf input",

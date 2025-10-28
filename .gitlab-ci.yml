@@ -3,8 +3,7 @@ image: maven:3.9-eclipse-temurin-21
 
 # Paramètres proxy pour les requetes
 variables:
-  HTTPS_PROXY: "http://194.254.199.96:3128"
-  HTTP_PROXY: "http://194.254.199.96:3128"
+  MAVEN_OPTS: "-Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128 -Dhttp.proxyHost=194.254.199.96 -Dhttp.proxyPort=3128"
 
 
 stages:

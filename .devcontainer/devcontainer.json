@@ -1,0 +1,22 @@
+{
+  "name": "Java 17 Gradle Dev",
+  "image": "eclipse-temurin:17-jdk",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "installMaven": "true",
+      "installGradle": "false"
+    }
+  },
+  "postCreateCommand": "git config --global core.autocrlf input",
+  "forwardPorts": [8080, 5005],
+  "remoteUser": "root",
+  "customizations": {
+    "jetbrains": {
+      "plugins": [
+        "org.jetbrains.plugins.gradle",
+        "com.intellij.java"
+      ]
+    }
+  }
+}

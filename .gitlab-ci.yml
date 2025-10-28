@@ -31,6 +31,8 @@ before_script:
     </settings>' > ~/.m2/settings.xml
   - echo "Fichier settings.xml créé."
 
+  - alias mvn="mvn -Dmaven.repo.local=.m2/repository"
+
 
 stages:
   - build
@@ -60,4 +62,4 @@ package-job:
   artifacts:
     paths:
       # Sauvegarde du fichier .jar créé
-      - target/*.jar
+      - target/worms-1.0-SNAPSHOT.jar

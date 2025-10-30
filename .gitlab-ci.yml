@@ -31,35 +31,42 @@ before_script:
     </settings>' > ~/.m2/settings.xml
   - echo "Fichier settings.xml créé."
 
-  - alias mvn="mvn -Dmaven.repo.local=.m2/repository"
 
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 stages:
+  - prepare   # "Prépare" les fichiers pour éviter de les retélecharger à chaque job
   - build
   - test
   - package
 
-# Compilation du code source Java
+
+# Remplit le cache pour les autres jobs
+download-dependencies-job:
+  stage: prepare
+  script:
+    - echo "Téléchargement de TOUTES les dépendances..."
+    - mvn dependency:go-offline
+
+
 build-job:
   stage: build
   script:
-    - echo "Compilation du code..."
+    - echo "Compilation du code (cache utilisé)..."
     - mvn compile
 
-# Test unitaires avec JUnit
 unit-test-job:
   stage: test
   script:
-    - echo "Lancement des tests unitaires (JUnit)..."
+    - echo "Lancement des tests unitaires (cache utilisé)..."
     - mvn test
 
-# Création du fichier .jar exécutable
 package-job:
   stage: package
   script:
-    - echo "Création du fichier .jar exécutable..."
+    - echo "Création du fichier .jar (cache utilisé)..."
     - mvn package
   artifacts:
     paths:
-      # Sauvegarde du fichier .jar créé
-      - target/worms-1.0-SNAPSHOT.jar
+      - target/Worms-1.0-SNAPSHOT.jar

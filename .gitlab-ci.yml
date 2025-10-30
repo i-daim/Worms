@@ -1,10 +1,12 @@
+# Image qui inclut les versions de Java et Maven dont on a besoin
 image: maven:3.9-eclipse-temurin-21
 
+# Le cache va garder les fichiers compilés pour les autres tests
 cache:
   paths:
     - .m2/repository
 
-# 1. On garde le before_script pour le PROXY (on sait que ça marche)
+# Paramètres proxy pour les requetes
 before_script:
   - echo "Configuration du proxy Maven..."
   - mkdir -p ~/.m2
@@ -29,26 +31,25 @@ before_script:
     </settings>' > ~/.m2/settings.xml
   - echo "Fichier settings.xml créé."
 
-# 2. On garde MAVEN_OPTS pour le CACHE (on sait que c'est nécessaire)
+
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
-# 3. ON AJOUTE UN NOUVEAU "STAGE" AU DÉBUT
 stages:
-  - prepare   # <--- NOUVEAU
+  - prepare   # "Prépare" les fichiers pour éviter de les retélecharger à chaque job
   - build
   - test
   - package
 
-# 4. ON AJOUTE UN JOB QUI REMPLIT LE CACHE
+
+# Remplit le cache pour les autres jobs
 download-dependencies-job:
   stage: prepare
   script:
     - echo "Téléchargement de TOUTES les dépendances..."
-    # Cette commande télécharge tout (compile, test, etc.)
     - mvn dependency:go-offline
 
-# 5. LES AUTRES JOBS (qui maintenant utiliseront le cache complet)
+
 build-job:
   stage: build
   script:

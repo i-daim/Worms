@@ -1,12 +1,14 @@
 package org.example.model.entites;
 
-public class Worm {
+public class Worm extends Entite {
     private int pointsDeVie;
-    private int positionX, positionY;
 
     public Worm(int pointsDeVie, int positionX, int positionY) {
+        super(positionX, positionY);
         this.pointsDeVie = pointsDeVie;
-        this.positionX = positionX;
-        this.positionY = positionY;
+    }
+
+    public int getPointsDeVie() {
+        return pointsDeVie;
     }
 }

@@ -8,4 +8,13 @@ public abstract class Entite {
         this.positionX = positionX;
         this.positionY = positionY;
     }
+
+    public int getPositionX() {
+        return positionX;
+    }
+    public int getPositionY() {
+        return positionY;
+    }
+
+
 }

@@ -1,9 +1,9 @@
 {
-  "name": "Java 17 Gradle Dev",
-  "image": "eclipse-temurin:17-jdk",
+  "name": "Java 21 Maven Dev",
+  "image": "eclipse-temurin:21-jdk",
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "17",
+      "version": "21",
       "installMaven": "true",
       "installGradle": "false"
     },

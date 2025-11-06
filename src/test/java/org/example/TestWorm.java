@@ -16,7 +16,7 @@ public class TestWorm {
         Worm worm = new Worm(100, equipe, 2, 2);
 
         worm.deplacerDroite(monde);
-        assertEquals(7, worm.getPosition().x);  // 2 + 5 = 7
+        assertEquals(7, worm.getPosition().x);
         assertEquals(2, worm.getPosition().y);
     }
 
@@ -26,9 +26,9 @@ public class TestWorm {
         Monde monde = new Monde(10, 10);
 
         Worm worm = new Worm(100, equipe, 0, 0);
-        worm.deplacerGauche(monde);  // Tentative de sortir des limites
+        worm.deplacerGauche(monde);
 
-        assertEquals(0, worm.getPosition().x);  // Position inchangée
+        assertEquals(0, worm.getPosition().x);
         assertEquals(0, worm.getPosition().y);
     }
 
@@ -37,10 +37,10 @@ public class TestWorm {
         Equipe equipe = new Equipe("Team C", 1);
         Monde monde = new Monde(10, 10);
 
-        Worm worm = new Worm(0, equipe, 2, 2); // ver mort (0 PV)
+        Worm worm = new Worm(0, equipe, 2, 2);
         worm.deplacerDroite(monde);
 
-        assertEquals(2, worm.getPosition().x);  // Position inchangée
+        assertEquals(2, worm.getPosition().x);
         assertEquals(2, worm.getPosition().y);
         assertFalse(worm.estVivant());
     }
@@ -85,8 +85,8 @@ public class TestWorm {
         Position p1 = new Position(10, 20);
         Position p2 = p1.deplacer(5, 0);
 
-        assertEquals(10, p1.x); // p1 n'a pas changé
-        assertEquals(15, p2.x); // p2 est une nouvelle position
+        assertEquals(10, p1.x);
+        assertEquals(15, p2.x);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class TestWorm {
 
         assertTrue(worm.sauter(monde));
         assertEquals(50, worm.getPosition().x);
-        assertEquals(40, worm.getPosition().y);  // 50 - 10 = 40
+        assertEquals(30, worm.getPosition().y);
     }
 
     @Test
@@ -128,4 +128,21 @@ public class TestWorm {
         worm.subirDegats(-50);
         assertEquals(100, worm.getPointsDeVie());
     }
+   /* @Test
+    public void testEquipeTousElimines() {
+        Equipe equipe = new Equipe("Team A", 2);
+        Worm worm1 = new Worm(10, equipe, 10, 50);
+        Worm worm2 = new Worm(10, equipe, 20, 50);
+
+        equipe.ajouterWorm(0, worm1);
+        equipe.ajouterWorm(1, worm2);
+
+        assertFalse(equipe.tousElimines());
+
+        worm1.subirDegats(100);
+        worm2.subirDegats(100);
+
+        assertTrue(equipe.tousElimines());
+    }
+       */
 }

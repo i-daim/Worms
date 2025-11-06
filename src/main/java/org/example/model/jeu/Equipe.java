@@ -19,17 +19,19 @@ public class Equipe {
         return worms;
     }
 
-    public void ajouterWorm(int index, Worm worm) {
-        if (index >= 0 && index < worms.length) {
-            worms[index] = worm;
-        }
-    }
-
     public int getTailleEquipe() {
         return worms.length;
     }
 
     public Equipe getEquipe() {
         return this;
+    }
+    public boolean tousElimines() {
+        for (Worm worm : worms) {
+            if (worm != null && worm.estVivant()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -108,8 +108,9 @@ public class TestWorm {
 
         assertTrue(worm.sauter(monde));
         assertEquals(50, worm.getPosition().x);
-        assertEquals(30, worm.getPosition().y);  // 50 - 20 = 30
+        assertEquals(40, worm.getPosition().y);  // 50 - 10 = 40
     }
+
     @Test
     public void testDeplacementVerMortNeBougePas() {
         Equipe equipe = new Equipe("Team G", 1);

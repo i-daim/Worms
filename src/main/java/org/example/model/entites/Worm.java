@@ -6,7 +6,6 @@ import org.example.model.jeu.Monde;
 public class Worm extends Entite {
     private int pointsDeVie;
     private final Equipe equipe;
-    private Position position;
     private boolean vivant;
 
     public Worm(int pointsDeVie, Equipe equipe, int positionX, int positionY) {
@@ -23,10 +22,6 @@ public class Worm extends Entite {
 
     public boolean estVivant() {
         return vivant;
-    }
-
-    public Position getPosition() {
-        return position;
     }
 
     public Equipe getEquipe() {

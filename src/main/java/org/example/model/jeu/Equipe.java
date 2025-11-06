@@ -32,4 +32,12 @@ public class Equipe {
     public Equipe getEquipe() {
         return this;
     }
+    public boolean tousElimines() {
+        for (Worm worm : worms) {
+            if (worm != null && worm.estVivant()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

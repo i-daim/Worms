@@ -15,9 +15,10 @@ public class Monde {
      * Vérifie si une position est valide dans le monde
      */
     public boolean positionValide(Position pos) {
-        return pos.x >= 0 && pos.x < largeur &&
-                pos.y >= 0 && pos.y < hauteur;
+        // Accepte aussi Y négatif (ciel)
+        return pos.x >= 0 && pos.x < largeur && pos.y < hauteur;
     }
+
 
     public int getLargeur() {
         return largeur;

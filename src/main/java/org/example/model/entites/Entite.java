@@ -1,29 +1,15 @@
 package org.example.model.entites;
 
 public abstract class Entite {
-    private int positionX;
-    private int positionY;
+    protected Position position;
 
-    public Entite(int positionX, int positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public Entite(int x, int y) {
+        this.position = new Position(x, y);
     }
 
-    public int getPositionX() {
-        return positionX;
+    public Position getPosition() {
+        return position;
     }
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
-
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
-
 
 
 }

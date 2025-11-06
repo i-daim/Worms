@@ -11,11 +11,8 @@ public class Monde {
         this.hauteur = hauteur;
     }
 
-    /**
-     * Vérifie si une position est valide dans le monde
-     */
+
     public boolean positionValide(Position pos) {
-        // Accepte aussi Y négatif (ciel)
         return pos.x >= 0 && pos.x < largeur && pos.y < hauteur;
     }
 

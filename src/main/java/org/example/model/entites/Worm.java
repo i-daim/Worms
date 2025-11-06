@@ -24,10 +24,6 @@ public class Worm extends Entite {
         return vivant;
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
     public Equipe getEquipe() {
         return equipe;
     }

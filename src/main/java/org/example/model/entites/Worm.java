@@ -65,7 +65,8 @@ public class Worm extends Entite {
     }
 
     public boolean sauter(Monde monde) {
-        Position nouvellePos = position.deplacer(0, -20);
+        Position nouvellePos = position.deplacer(0, -10);  // Saut plus réaliste
         return deplacer(nouvellePos, monde);
     }
+
 }

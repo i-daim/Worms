@@ -19,12 +19,6 @@ public class Equipe {
         return worms;
     }
 
-    public void ajouterWorm(int index, Worm worm) {
-        if (index >= 0 && index < worms.length) {
-            worms[index] = worm;
-        }
-    }
-
     public int getTailleEquipe() {
         return worms.length;
     }

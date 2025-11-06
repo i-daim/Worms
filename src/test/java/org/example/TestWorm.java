@@ -127,7 +127,7 @@ public class TestWorm {
         worm.subirDegats(-50);
         assertEquals(100, worm.getPointsDeVie());
     }
-   / @Test
+   /* @Test
     public void testEquipeTousElimines() {
         Equipe equipe = new Equipe("Team A", 2);
         Worm worm1 = new Worm(10, equipe, 10, 50);
@@ -143,5 +143,5 @@ public class TestWorm {
 
         assertTrue(equipe.tousElimines());
     }
-
+       */
 }

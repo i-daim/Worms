@@ -145,13 +145,6 @@ public class Partie {private final Monde monde;
         }
     }
 
-    public boolean estEliminee() {
-        for (Worm w : getWorms()) {
-            if (w != null && w.estVivant()) {
-                return false;
-            }
-        }
-        return true;}
 
     public void decompterTemps() {
         if (tempsRestant > 0) {
@@ -181,9 +174,7 @@ public class Partie {private final Monde monde;
     public Monde getMonde() {
         return monde;
     }
-    public Worm[] getWorms() {
-        return getWorms();
-    }
+
 
     public Equipe getEquipe1() {
         return equipe1;

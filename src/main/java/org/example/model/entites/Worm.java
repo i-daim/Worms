@@ -4,18 +4,24 @@ import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
 
 public class Worm extends Entite {
-    private int pointsDeVie;
+    // Attributs
     private final Equipe equipe;
+    private int pointsDeVie;
     private boolean vivant;
     private boolean actif;
 
+    // Champs statiques
+    private static final int DEPLACEMENT_DROITE = 5;
+    private static final int DEPLACEMENT_GAUCHE = -5;
+    private static final int SAUT = -20;
+
+
+    // Constructeur
     public Worm(int pointsDeVie, Equipe equipe, int positionX, int positionY) {
         super(positionX, positionY);
         this.pointsDeVie = pointsDeVie;
         this.equipe = equipe;
-        this.position = new Position(positionX, positionY);
-        this.vivant = pointsDeVie > 0;
-        this.actif = false;
+        this.vivant = true;
     }
 
     public int getPointsDeVie() {
@@ -31,7 +37,9 @@ public class Worm extends Entite {
     }
 
     public void subirDegats(int degats) {
-        if (!vivant) return;
+        if (!vivant) {
+            return;
+        }
 
         if (degats < 0) {
             degats = 0;
@@ -44,19 +52,23 @@ public class Worm extends Entite {
             vivant = false;
         }
     }
+
     public void setActif(boolean actif) {
         this.actif = actif;
     }
 
     public boolean estActif() {
-        return actif;}
+        return actif;
+    }
 
 
     public boolean deplacer(Position nouvellePosition, Monde monde) {
-        if (!vivant) return false;
+        if (!vivant) {
+            return false;
+        }
 
         if (monde.positionValide(nouvellePosition)) {
-            this.position = nouvellePosition;
+            setPosition(nouvellePosition);
             return true;
         }
 
@@ -64,17 +76,17 @@ public class Worm extends Entite {
     }
 
     public boolean deplacerDroite(Monde monde) {
-        Position nouvellePos = position.deplacer(5, 0);
+        Position nouvellePos = getPosition().deplacer(DEPLACEMENT_DROITE, 0);
         return deplacer(nouvellePos, monde);
     }
 
     public boolean deplacerGauche(Monde monde) {
-        Position nouvellePos = position.deplacer(-5, 0);
+        Position nouvellePos = getPosition().deplacer(DEPLACEMENT_GAUCHE, 0);
         return deplacer(nouvellePos, monde);
     }
 
     public boolean sauter(Monde monde) {
-        Position nouvellePos = position.deplacer(0, -20);
+        Position nouvellePos = getPosition().deplacer(0, SAUT);
         return deplacer(nouvellePos, monde);
     }
 }

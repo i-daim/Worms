@@ -1,7 +1,7 @@
 package org.example.model.entites;
 
 public abstract class Entite {
-    protected Position position;
+    private Position position;
 
     public Entite(int x, int y) {
         this.position = new Position(x, y);

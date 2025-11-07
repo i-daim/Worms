@@ -22,6 +22,7 @@ public class Equipe {
     public int getTailleEquipe() {
         return worms.length;
     }
+
     public boolean estEliminee() {
         for (Worm w : worms) {
             if (w != null && w.estVivant()) {
@@ -34,6 +35,7 @@ public class Equipe {
     public Equipe getEquipe() {
         return this;
     }
+
     public boolean tousElimines() {
         for (Worm worm : worms) {
             if (worm != null && worm.estVivant()) {

@@ -1,7 +1,7 @@
 package org.example.view;
 
-import org.example.model.entites.Worm;
 import org.example.model.entites.Position;
+import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
 
@@ -17,7 +17,8 @@ public class VueConsole {
         String commande = "";
 
         System.out.println("Bienvenue dans la vue console de Worms !");
-        System.out.println("Commandes : gauche | droite | sauter | degats [n] | exit");
+        System.out.println(
+                "Commandes : gauche | droite | sauter | degats [n] | exit");
 
         while (!commande.equals("exit")) {
             afficherEtat(worm);
@@ -28,17 +29,21 @@ public class VueConsole {
             switch (commande) {
                 case "gauche":
                     if (worm.deplacerGauche(monde)) {
-                        System.out.println("Déplacement vers la gauche réussi.");
+                        System.out.println(
+                                "Déplacement vers la gauche réussi.");
                     } else {
-                        System.out.println("Impossible de se déplacer vers la gauche.");
+                        System.out.println(
+                                "Impossible de se déplacer vers la gauche.");
                     }
                     break;
 
                 case "droite":
                     if (worm.deplacerDroite(monde)) {
-                        System.out.println("Déplacement vers la droite réussi.");
+                        System.out.println(
+                                "Déplacement vers la droite réussi.");
                     } else {
-                        System.out.println("Impossible de se déplacer vers la droite.");
+                        System.out.println(
+                                "Impossible de se déplacer vers la droite.");
                     }
                     break;
 
@@ -53,7 +58,8 @@ public class VueConsole {
                 case "degats":
                     int pts = scanner.nextInt();
                     worm.subirDegats(pts);
-                    System.out.println("Le ver a subi " + pts + " points de dégâts.");
+                    System.out.println(
+                            "Le ver a subi " + pts + " points de dégâts.");
                     break;
 
                 case "exit":
@@ -75,6 +81,6 @@ public class VueConsole {
     public static void afficherEtat(Worm worm) {
         Position pos = worm.getPosition();
         System.out.printf("Worm : Position=(%d,%d) | PV=%d | Vivant=%s\n",
-                pos.x, pos.y, worm.getPointsDeVie(), worm.estVivant());
+            pos.getX(), pos.getY(), worm.getPointsDeVie(), worm.estVivant());
     }
 }

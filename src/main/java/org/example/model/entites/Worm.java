@@ -21,7 +21,7 @@ public class Worm extends Entite {
         super(positionX, positionY);
         this.pointsDeVie = pointsDeVie;
         this.equipe = equipe;
-        this.vivant = true;
+        this.vivant = pointsDeVie > 0;
     }
 
     public int getPointsDeVie() {

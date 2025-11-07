@@ -1,9 +1,10 @@
 package org.example.model.entites;
+
 import org.example.model.jeu.Equipe;
 
 public class Worm extends Entite {
-    private int pointsDeVie;
     private final Equipe equipe;
+    private int pointsDeVie;
 
     public Worm(int pointsDeVie, Equipe equipe, int positionX, int positionY) {
         super(positionX, positionY);
@@ -14,6 +15,7 @@ public class Worm extends Entite {
     public int getPointsDeVie() {
         return pointsDeVie;
     }
+
     public Equipe getEquipe() {
         return equipe;
     }

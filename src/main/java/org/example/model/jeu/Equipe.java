@@ -1,4 +1,5 @@
 package org.example.model.jeu;
+
 import org.example.model.entites.Worm;
 
 public class Equipe {

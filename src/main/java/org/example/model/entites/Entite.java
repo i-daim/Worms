@@ -12,6 +12,7 @@ public abstract class Entite {
     public int getPositionX() {
         return positionX;
     }
+
     public int getPositionY() {
         return positionY;
     }

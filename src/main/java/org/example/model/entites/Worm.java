@@ -7,6 +7,7 @@ public class Worm extends Entite {
     private int pointsDeVie;
     private final Equipe equipe;
     private boolean vivant;
+    private boolean actif;
 
     public Worm(int pointsDeVie, Equipe equipe, int positionX, int positionY) {
         super(positionX, positionY);
@@ -14,6 +15,7 @@ public class Worm extends Entite {
         this.equipe = equipe;
         this.position = new Position(positionX, positionY);
         this.vivant = pointsDeVie > 0;
+        this.actif = false;
     }
 
     public int getPointsDeVie() {
@@ -42,6 +44,13 @@ public class Worm extends Entite {
             vivant = false;
         }
     }
+    public void setActif(boolean actif) {
+        this.actif = actif;
+    }
+
+    public boolean estActif() {
+        return actif;}
+
 
     public boolean deplacer(Position nouvellePosition, Monde monde) {
         if (!vivant) return false;

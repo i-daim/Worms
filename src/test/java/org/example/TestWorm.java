@@ -1,11 +1,14 @@
 package org.example;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import org.example.model.entites.Worm;
 import org.example.model.entites.Position;
+import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestWorm {
 
@@ -110,6 +113,7 @@ public class TestWorm {
         assertEquals(50, worm.getPosition().x);
         assertEquals(30, worm.getPosition().y);
     }
+
     @Test
     public void testDeplacementVerMortNeBougePas() {
         Equipe equipe = new Equipe("Team G", 1);

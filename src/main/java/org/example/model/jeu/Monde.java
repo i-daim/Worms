@@ -13,7 +13,7 @@ public class Monde {
 
 
     public boolean positionValide(Position pos) {
-        return pos.x >= 0 && pos.x < largeur && pos.y < hauteur;
+        return pos.getX() >= 0 && pos.getY() < largeur && pos.getY() < hauteur;
     }
 
 

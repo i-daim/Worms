@@ -11,5 +11,8 @@ public abstract class Entite {
         return position;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 
 }

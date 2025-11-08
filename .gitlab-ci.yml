@@ -1,11 +1,6 @@
 # Image qui inclut les versions de Java et Maven dont on a besoin
 image: maven:3.9-eclipse-temurin-21
 
-# Le cache va garder les fichiers compilés pour les autres tests
-cache:
-  paths:
-    - .m2/repository
-
 # Paramètres proxy pour les requetes
 before_script:
   - echo "Configuration du proxy Maven..."
@@ -29,44 +24,16 @@ before_script:
         </proxy>
       </proxies>
     </settings>' > ~/.m2/settings.xml
-  - echo "Fichier settings.xml créé."
 
-
-variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 stages:
-  - prepare   # "Prépare" les fichiers pour éviter de les retélecharger à chaque job
-  - build
-  - test
-  - package
+  - build-and-test
 
-
-# Remplit le cache pour les autres jobs
-download-dependencies-job:
-  stage: prepare
+build-and-test-job:
+  stage: build-and-test
   script:
-    - echo "Téléchargement de TOUTES les dépendances..."
-    - mvn dependency:go-offline
-
-
-build-job:
-  stage: build
-  script:
-    - echo "Compilation du code (cache utilisé)..."
-    - mvn compile
-
-unit-test-job:
-  stage: test
-  script:
-    - echo "Lancement des tests unitaires (cache utilisé)..."
-    - mvn test
-
-package-job:
-  stage: package
-  script:
-    - echo "Création du fichier .jar (cache utilisé)..."
-    - mvn package
+    - echo "Exécution du build (compile, checkstyle, test, package)..."
+    - mvn verify
   artifacts:
     paths:
       - target/Worms-1.0-SNAPSHOT.jar

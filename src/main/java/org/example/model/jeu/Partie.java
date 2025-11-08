@@ -1,27 +1,31 @@
 package org.example.model.jeu;
+
 import org.example.model.entites.Worm;
 
-public class Partie {private final Monde monde;
-    private final Equipe equipe1;
-    private final Equipe equipe2;
-
+public class Partie {
     // Constantes
     private static final int TEMPS_DE_JEU = 60; // secondes par tour
     private static final int NOMBRE_WORMS_PAR_EQUIPE = 4;
-    private boolean actif;
+
+    private static int tourActuel = 0;
+
+    // Attributs
+    private final Monde monde;
+    private final Equipe equipe1;
+    private final Equipe equipe2;
 
     // Attributs variables
     private int tempsRestant;
-    private static int tourActuel = 0;
     private Worm wormActuel;
     private Equipe equipeActive;
     private boolean partieTerminee;
+    private boolean actif;
 
     // Constructeur
     public Partie(int largeurMonde, int hauteurMonde) {
         this.monde = new Monde(largeurMonde, hauteurMonde);
-        this.equipe1 = new Equipe("equipe1",NOMBRE_WORMS_PAR_EQUIPE);
-        this.equipe2 = new Equipe("equipe2",NOMBRE_WORMS_PAR_EQUIPE);
+        this.equipe1 = new Equipe("equipe1", NOMBRE_WORMS_PAR_EQUIPE);
+        this.equipe2 = new Equipe("equipe2", NOMBRE_WORMS_PAR_EQUIPE);
         this.tempsRestant = TEMPS_DE_JEU;
         this.partieTerminee = false;
 
@@ -46,7 +50,8 @@ public class Partie {private final Monde monde;
     /**
      * Initialise une équipe avec ses worms
      */
-    private void initialiserEquipe(Equipe equipe, int positionX, String nomEquipe) {
+    private void initialiserEquipe(Equipe equipe, int positionX,
+                                   String nomEquipe) {
         Worm[] worms = equipe.getWorms();
 
         for (int i = 0; i < worms.length; i++) {
@@ -54,7 +59,7 @@ public class Partie {private final Monde monde;
             int x = positionX + (i * 30);
             int y = monde.getHauteur() / 2 + (i * 50);
 
-            worms[i] = new Worm(100,equipe,x, y); // 100 points de vie
+            worms[i] = new Worm(100, equipe, x, y); // 100 points de vie
 
             // Faut ajouter une méthode ajouter au monde
         }
@@ -80,7 +85,6 @@ public class Partie {private final Monde monde;
         tempsRestant = TEMPS_DE_JEU;
     }
 
-
     private void changerWormActif() {
         Worm[] worms = equipeActive.getWorms();
 
@@ -96,7 +100,6 @@ public class Partie {private final Monde monde;
         // Si aucun worm vivant, l'équipe a perdu
         wormActuel = null;
     }
-
 
     public void mettreAJour(double deltaTime) {
         if (partieTerminee) {
@@ -123,7 +126,6 @@ public class Partie {private final Monde monde;
         tourSuivant();
     }
 
-
     private void verifierFinPartie() {
         boolean equipe1Eliminee = equipe1.estEliminee();
         boolean equipe2Eliminee = equipe2.estEliminee();
@@ -145,7 +147,6 @@ public class Partie {private final Monde monde;
         }
     }
 
-
     public void decompterTemps() {
         if (tempsRestant > 0) {
             tempsRestant--;
@@ -166,6 +167,7 @@ public class Partie {private final Monde monde;
 
     public void pauserPartie() {
     }
+
     public void reprendrePartie() {
     }
 
@@ -174,7 +176,6 @@ public class Partie {private final Monde monde;
     public Monde getMonde() {
         return monde;
     }
-
 
     public Equipe getEquipe1() {
         return equipe1;
@@ -214,7 +215,6 @@ public class Partie {private final Monde monde;
         this.tempsRestant = temps;
     }
 
-
     public void setWormActuel(Worm worm) {
         if (wormActuel != null) {
             wormActuel.setActif(false);
@@ -227,26 +227,30 @@ public class Partie {private final Monde monde;
 
     // ========== MÉTHODES UTILES ==========
 
-
     public int getNombreWormsVivants() {
         int count = 0;
 
         for (Worm w : equipe1.getWorms()) {
-            if (w != null && w.estVivant()) count++;
+            if (w != null && w.estVivant()) {
+                count++;
+            }
         }
 
         for (Worm w : equipe2.getWorms()) {
-            if (w != null && w.estVivant()) count++;
+            if (w != null && w.estVivant()) {
+                count++;
+            }
         }
 
         return count;
     }
 
     public String toString() {
-        return "Partie [Tour: " + tourActuel +
-                ", Temps: " + tempsRestant +
-                "s, Worm actif: " + (wormActuel != null ? wormActuel : "Aucun") +
-                ", Équipe active: " + (equipeActive == equipe1 ? "1" : "2") +
-                ", Terminée: " + partieTerminee + "]";
+        return "Partie [Tour: " + tourActuel
+                + ", Temps: " + tempsRestant
+                + "s, Worm actif: "
+                + (wormActuel != null ? wormActuel : "Aucun")
+                + ", Équipe active: " + (equipeActive == equipe1 ? "1" : "2")
+                + ", Terminée: " + partieTerminee + "]";
     }
 }

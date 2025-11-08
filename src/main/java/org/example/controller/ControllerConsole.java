@@ -4,10 +4,7 @@ import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 import org.example.view.console.VueConsole;
 
-/**
- * The Controller for the console application.
- * It contains the main game loop and handles user input to manipulate the model.
- */
+
 public class ControllerConsole {
     private final Monde monde;
     private final Worm worm;

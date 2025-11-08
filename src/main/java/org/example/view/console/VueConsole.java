@@ -2,15 +2,9 @@ package org.example.view.console;
 
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
-import org.example.model.jeu.Equipe;
-import org.example.model.jeu.Monde;
 
 import java.util.Scanner;
 
-/**
- * The View component for the console application.
- * It is responsible for all user-facing output and input.
- */
 public class VueConsole {
 
     private final Scanner scanner;

@@ -18,9 +18,5 @@ public class Monde {
     }
 
 
-    public int getLargeur() {
-        return largeur;
-    }
-
 
 }

@@ -100,7 +100,9 @@ public class Worm extends Entite {
             return false;
         }
 
-        // Vérifier qu'il n'y a pas de collision à cette position
+        // Le worm peut se déplacer sur une case SANS collision (terrain vide/air)
+        // Il ne peut PAS se déplacer sur une case AVEC collision (terrain solide)
         return !terrain.isCollision(x, y);
     }
+
 }

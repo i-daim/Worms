@@ -1,9 +1,8 @@
 package org.example;
 
-import org.example.controller.ControllerConsole;
+
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
-import org.example.model.jeu.Monde;
 import org.example.view.console.VueConsole;
 
 public final class MainConsole {

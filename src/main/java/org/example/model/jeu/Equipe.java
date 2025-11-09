@@ -19,10 +19,6 @@ public class Equipe {
         return worms;
     }
 
-    public int getTailleEquipe() {
-        return worms.length;
-    }
-
     public boolean estEliminee() {
         for (Worm w : worms) {
             if (w != null && w.estVivant()) {
@@ -32,16 +28,5 @@ public class Equipe {
         return true; // tous les vers sont morts
     }
 
-    public Equipe getEquipe() {
-        return this;
-    }
 
-    public boolean tousElimines() {
-        for (Worm worm : worms) {
-            if (worm != null && worm.estVivant()) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

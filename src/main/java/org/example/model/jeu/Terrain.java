@@ -1,10 +1,6 @@
 package org.example.model.jeu;
 
-import org.example.model.entites.Position;
-
 public class Terrain {
-
-    private final static int WATER_LEVEL = 50;  // A changer plus tard en fonction de la map
 
     private final int largeur;
     private final int hauteur;
@@ -29,5 +25,9 @@ public class Terrain {
 
     public int[][] getTerrainType() {
         return terrainType;
+    }
+
+    public boolean isCollision(int x, int y) {
+        return collisions[x][y];
     }
 }

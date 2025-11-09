@@ -19,8 +19,11 @@ public class Equipe {
         return worms;
     }
 
-    public int getTailleEquipe() {
-        return worms.length;
+    public void initialiserEquipe(int pointsDeVie, int positionX, int positionY) {
+        for (int i = 0; i < worms.length; i++) {
+            // TODO : Trouver un moyen de "spawn" les Worms dans une position aléatoire (et valide)
+            worms[i] = new Worm(pointsDeVie, this,  positionX, positionY);
+        }
     }
 
     public boolean estEliminee() {
@@ -32,16 +35,5 @@ public class Equipe {
         return true; // tous les vers sont morts
     }
 
-    public Equipe getEquipe() {
-        return this;
-    }
 
-    public boolean tousElimines() {
-        for (Worm worm : worms) {
-            if (worm != null && worm.estVivant()) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

@@ -22,7 +22,5 @@ public class Monde {
         return largeur;
     }
 
-    public int getHauteur() {
-        return hauteur;
-    }
+
 }

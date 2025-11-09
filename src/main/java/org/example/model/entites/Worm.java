@@ -62,12 +62,12 @@ public class Worm extends Entite {
     }
 
 
-    public boolean deplacer(Position nouvellePosition, Monde monde) {
+    public boolean deplacer(Position nouvellePosition, Terrain terrain) {
         if (!vivant) {
             return false;
         }
 
-        if (monde.positionValide(nouvellePosition)) {
+        if (positionValide(nouvellePosition, terrain)) {
             setPosition(nouvellePosition);
             return true;
         }
@@ -88,5 +88,18 @@ public class Worm extends Entite {
     public boolean sauter(Monde monde) {
         Position nouvellePos = getPosition().deplacer(0, SAUT);
         return deplacer(nouvellePos, monde);
+    }
+
+    private boolean positionValide(Position position, Terrain terrain) {
+        int x = position.getX();
+        int y = position.getY();
+
+        // Vérifier que la position est dans les limites du terrain
+        if (x < 0 || x >= terrain.getLargeur() || y < 0 || y >= terrain.getHauteur()) {
+            return false;
+        }
+
+        // Vérifier qu'il n'y a pas de collision à cette position
+        return !terrain.isCollision(x, y);
     }
 }

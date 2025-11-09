@@ -83,11 +83,12 @@ public class Worm extends Entite {
     public boolean deplacerGauche(Terrain terrain) {
         Position nouvellePos = getPosition().deplacer(DEPLACEMENT_GAUCHE, 0);
         return deplacer(nouvellePos, terrain);
+    }
 
 
-        public boolean sauter(Monde monde) {
+    public boolean sauter(Terrain terrain) {
         Position nouvellePos = getPosition().deplacer(0, SAUT);
-        return deplacer(nouvellePos, monde);
+        return deplacer(nouvellePos, terrain);
     }
 
     private boolean positionValide(Position position, Terrain terrain) {

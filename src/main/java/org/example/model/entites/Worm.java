@@ -1,7 +1,7 @@
 package org.example.model.entites;
 
 import org.example.model.jeu.Equipe;
-import org.example.model.jeu.Monde;
+import org.example.model.jeu.Terrain;
 
 public class Worm extends Entite {
     // Attributs

@@ -1,11 +1,14 @@
 package org.example;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import org.example.model.entites.Worm;
 import org.example.model.entites.Position;
+import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestWorm {
 
@@ -16,8 +19,8 @@ public class TestWorm {
         Worm worm = new Worm(100, equipe, 2, 2);
 
         worm.deplacerDroite(monde);
-        assertEquals(7, worm.getPosition().x);
-        assertEquals(2, worm.getPosition().y);
+        assertEquals(7, worm.getPosition().getX());
+        assertEquals(2, worm.getPosition().getY());
     }
 
     @Test
@@ -28,8 +31,8 @@ public class TestWorm {
         Worm worm = new Worm(100, equipe, 0, 0);
         worm.deplacerGauche(monde);
 
-        assertEquals(0, worm.getPosition().x);
-        assertEquals(0, worm.getPosition().y);
+        assertEquals(0, worm.getPosition().getX());
+        assertEquals(0, worm.getPosition().getY());
     }
 
     @Test
@@ -40,8 +43,8 @@ public class TestWorm {
         Worm worm = new Worm(0, equipe, 2, 2);
         worm.deplacerDroite(monde);
 
-        assertEquals(2, worm.getPosition().x);
-        assertEquals(2, worm.getPosition().y);
+        assertEquals(2, worm.getPosition().getX());
+        assertEquals(2, worm.getPosition().getY());
         assertFalse(worm.estVivant());
     }
 
@@ -76,8 +79,8 @@ public class TestWorm {
         Monde monde = new Monde(200, 200);
 
         assertTrue(worm.deplacerDroite(monde));
-        assertEquals(55, worm.getPosition().x);
-        assertEquals(50, worm.getPosition().y);
+        assertEquals(55, worm.getPosition().getX());
+        assertEquals(50, worm.getPosition().getY());
     }
 
     @Test
@@ -85,8 +88,8 @@ public class TestWorm {
         Position p1 = new Position(10, 20);
         Position p2 = p1.deplacer(5, 0);
 
-        assertEquals(10, p1.x);
-        assertEquals(15, p2.x);
+        assertEquals(10, p1.getX());
+        assertEquals(15, p2.getX());
     }
 
     @Test
@@ -96,8 +99,8 @@ public class TestWorm {
         Worm worm = new Worm(100, equipe, 10, 50);
 
         assertTrue(worm.deplacerGauche(monde));
-        assertEquals(5, worm.getPosition().x);
-        assertEquals(50, worm.getPosition().y);
+        assertEquals(5, worm.getPosition().getX());
+        assertEquals(50, worm.getPosition().getY());
     }
 
     @Test
@@ -107,9 +110,10 @@ public class TestWorm {
         Worm worm = new Worm(100, equipe, 50, 50);
 
         assertTrue(worm.sauter(monde));
-        assertEquals(50, worm.getPosition().x);
-        assertEquals(30, worm.getPosition().y);
+        assertEquals(50, worm.getPosition().getX());
+        assertEquals(30, worm.getPosition().getY());
     }
+
     @Test
     public void testDeplacementVerMortNeBougePas() {
         Equipe equipe = new Equipe("Team G", 1);

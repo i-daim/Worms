@@ -10,11 +10,11 @@ public final class MainConsole {
 
     public static void main(String[] args) {
         Equipe equipe = new Equipe("Team A", 1);
-        Monde monde = new Monde(10, 10);
+        //Monde monde = new Monde(10, 10);
         Worm worm = new Worm(100, equipe, 5, 5);
 
         VueConsole vue = new VueConsole();
-        ControllerConsole controller = new ControllerConsole(monde, worm, vue);
-        controller.demarrer();
+        //ControllerConsole controller = new ControllerConsole(monde, worm, vue);
+        //controller.demarrer();
     }
 }

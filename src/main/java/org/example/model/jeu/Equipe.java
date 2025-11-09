@@ -19,6 +19,13 @@ public class Equipe {
         return worms;
     }
 
+    public void initialiserEquipe(int pointsDeVie, int positionX, int positionY) {
+        for (int i = 0; i < worms.length; i++) {
+            // TODO : Trouver un moyen de "spawn" les Worms dans une position aléatoire (et valide)
+            worms[i] = new Worm(pointsDeVie, this,  positionX, positionY);
+        }
+    }
+
     public boolean estEliminee() {
         for (Worm w : worms) {
             if (w != null && w.estVivant()) {

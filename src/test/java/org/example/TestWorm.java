@@ -77,9 +77,9 @@ public class TestWorm {
     public void testDeplacementAvecPosition() {
         Equipe equipe = new Equipe("Team A", 1);
         Worm worm = new Worm(100, equipe, 50, 50);
-        Monde monde = new Monde(200, 200);
+        Terrain terrain = Terrain.creerTerrainVide(200, 200);
 
-        assertTrue(worm.deplacerDroite(monde));
+        assertTrue(worm.deplacerDroite(terrain));
         assertEquals(55, worm.getPosition().getX());
         assertEquals(50, worm.getPosition().getY());
     }

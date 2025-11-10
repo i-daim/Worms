@@ -57,7 +57,7 @@ public class Partie {
         for (int i = 0; i < worms.length; i++) {
             // Créer le worm à une position
             int x = positionX + (i * 30);
-            int y = monde.getHauteur() / 2 + (i * 50);
+            int y = terrain.getHauteur() / 2 + (i * 50);
 
             worms[i] = new Worm(100, equipe, x, y); // 100 points de vie
 
@@ -173,9 +173,7 @@ public class Partie {
 
     // ========== GETTERS ==========
 
-    public Monde getMonde() {
-        return monde;
-    }
+    public Terrain getTerrain() {return terrain;}
 
     public Equipe getEquipe1() {
         return equipe1;

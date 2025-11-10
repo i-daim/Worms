@@ -118,9 +118,9 @@ public class TestWorm {
     @Test
     public void testDeplacementVerMortNeBougePas() {
         Equipe equipe = new Equipe("Team G", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(0, equipe, 5, 5);
-        assertFalse(worm.deplacerDroite(monde));
+        assertFalse(worm.deplacerDroite(terrain));
     }
 
     @Test

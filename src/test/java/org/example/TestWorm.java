@@ -4,6 +4,7 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
+import org.example.model.jeu.Terrain;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

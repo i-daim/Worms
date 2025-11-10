@@ -27,10 +27,10 @@ public class TestWorm {
     @Test
     public void testDeplacementHorsLimite() {
         Equipe equipe = new Equipe("Team B", 1);
-        Monde monde = new Monde(10, 10);
+        Terrain terrain = Terrain.creerTerrainVide(10, 10);
 
         Worm worm = new Worm(100, equipe, 0, 0);
-        worm.deplacerGauche(monde);
+        assertFalse(worm.deplacerGauche(terrain));
 
         assertEquals(0, worm.getPosition().getX());
         assertEquals(0, worm.getPosition().getY());

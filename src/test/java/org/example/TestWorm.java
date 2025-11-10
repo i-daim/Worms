@@ -15,7 +15,7 @@ public class TestWorm {
     @Test
     public void testDeplacementDansLimites() {
         Equipe equipe = new Equipe("Team A", 1);
-        Monde monde = new Monde(10, 10);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(100, equipe, 2, 2);
 
         worm.deplacerDroite(monde);

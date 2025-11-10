@@ -10,7 +10,7 @@ public class Partie {
     private static int tourActuel = 0;
 
     // Attributs
-    private final Terrain monde;
+    private final Terrain terrain;
     private final Equipe equipe1;
     private final Equipe equipe2;
 
@@ -23,7 +23,7 @@ public class Partie {
 
     // Constructeur
     public Partie(int largeurMonde, int hauteurMonde) {
-        this.monde = Terrain.creerTerrainVide(largeurMonde, hauteurMonde);
+        this.terrain = Terrain.creerTerrainVide(largeurMonde, hauteurMonde);
         this.equipe1 = new Equipe("equipe1", NOMBRE_WORMS_PAR_EQUIPE);
         this.equipe2 = new Equipe("equipe2", NOMBRE_WORMS_PAR_EQUIPE);
         this.tempsRestant = TEMPS_DE_JEU;
@@ -40,7 +40,7 @@ public class Partie {
         initialiserEquipe(equipe1, 100, "Equipe 1");
 
         // Initialiser équipe 2 (droite)
-        initialiserEquipe(equipe2, monde.getLargeur() - 100, "Equipe 2");
+        initialiserEquipe(equipe2, terrain.getLargeur() - 100, "Equipe 2");
 
         // Première équipe commence
         equipeActive = equipe1;

@@ -126,7 +126,7 @@ public class TestWorm {
     @Test
     public void testDegatsNegatifsSontIgnores() {
         Equipe equipe = new Equipe("Team H", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
 
         Worm worm = new Worm(100, equipe, 5, 5);
         worm.subirDegats(-50);

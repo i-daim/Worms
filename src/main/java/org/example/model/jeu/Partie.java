@@ -10,7 +10,7 @@ public class Partie {
     private static int tourActuel = 0;
 
     // Attributs
-    private final Monde monde;
+    private final Terrain terrain;
     private final Equipe equipe1;
     private final Equipe equipe2;
 
@@ -23,7 +23,7 @@ public class Partie {
 
     // Constructeur
     public Partie(int largeurMonde, int hauteurMonde) {
-        this.monde = new Monde(largeurMonde, hauteurMonde);
+        this.terrain = Terrain.creerTerrainVide(largeurMonde, hauteurMonde);
         this.equipe1 = new Equipe("equipe1", NOMBRE_WORMS_PAR_EQUIPE);
         this.equipe2 = new Equipe("equipe2", NOMBRE_WORMS_PAR_EQUIPE);
         this.tempsRestant = TEMPS_DE_JEU;
@@ -40,7 +40,7 @@ public class Partie {
         initialiserEquipe(equipe1, 100, "Equipe 1");
 
         // Initialiser équipe 2 (droite)
-        initialiserEquipe(equipe2, monde.getLargeur() - 100, "Equipe 2");
+        initialiserEquipe(equipe2, terrain.getLargeur() - 100, "Equipe 2");
 
         // Première équipe commence
         equipeActive = equipe1;
@@ -57,7 +57,7 @@ public class Partie {
         for (int i = 0; i < worms.length; i++) {
             // Créer le worm à une position
             int x = positionX + (i * 30);
-            int y = monde.getHauteur() / 2 + (i * 50);
+            int y = terrain.getHauteur() / 2 + (i * 50);
 
             worms[i] = new Worm(100, equipe, x, y); // 100 points de vie
 
@@ -173,9 +173,8 @@ public class Partie {
 
     // ========== GETTERS ==========
 
-    public Monde getMonde() {
-        return monde;
-    }
+    public Terrain getTerrain() {
+        return terrain; }
 
     public Equipe getEquipe1() {
         return equipe1;

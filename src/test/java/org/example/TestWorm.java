@@ -96,10 +96,10 @@ public class TestWorm {
     @Test
     public void testDeplacerGauche() {
         Equipe equipe = new Equipe("Team E", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(100, equipe, 10, 50);
 
-        assertTrue(worm.deplacerGauche(monde));
+        assertTrue(worm.deplacerGauche(terrain));
         assertEquals(5, worm.getPosition().getX());
         assertEquals(50, worm.getPosition().getY());
     }

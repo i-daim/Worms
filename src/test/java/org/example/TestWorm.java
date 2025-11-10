@@ -107,10 +107,10 @@ public class TestWorm {
     @Test
     public void testSauter() {
         Equipe equipe = new Equipe("Team F", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(100, equipe, 50, 50);
 
-        assertTrue(worm.sauter(monde));
+        assertTrue(worm.sauter(terrain));
         assertEquals(50, worm.getPosition().getX());
         assertEquals(30, worm.getPosition().getY());
     }

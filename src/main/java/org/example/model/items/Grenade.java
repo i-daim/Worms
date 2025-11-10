@@ -25,7 +25,11 @@ public class Grenade extends Arme implements Utilisable {
         for ( w Worm : ) {
             int w_position_x =  w.getPosition().getX();
             int w_position_y =  w.getPosition().getY();
-            if ( w_position_x)
+            boolean position_x = position_grenade_x <= w_position_x && w_position_x <= position_grenade_x + RAYON;
+            boolean position_y = position_grenade_y <= w_position_y && w_position_y <= position_grenade_y + RAYON;
+            if ( position_x && position_y ) {
+                w.subirDegats(DEGATS);
+            }
         }
     }
 }

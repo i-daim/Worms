@@ -173,7 +173,8 @@ public class Partie {
 
     // ========== GETTERS ==========
 
-    public Terrain getTerrain() {return terrain;}
+    public Terrain getTerrain() {
+        return terrain; }
 
     public Equipe getEquipe1() {
         return equipe1;

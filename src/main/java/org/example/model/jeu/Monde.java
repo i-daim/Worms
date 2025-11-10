@@ -1,8 +1,6 @@
 package org.example.model.jeu;
 
-import org.example.model.entites.Position;
-
-public class Monde { ;
+public class Monde {
 
 
 

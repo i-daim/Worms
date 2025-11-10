@@ -30,4 +30,11 @@ public class Terrain {
     public boolean isCollision(int x, int y) {
         return collisions[x][y];
     }
+
+    public static Terrain creerTerrainVide(int largeur, int hauteur) {
+        boolean[][] collisions = new boolean[largeur][hauteur];
+        int[][] terrainType = new int[largeur][hauteur];
+
+        return new Terrain(largeur, hauteur, collisions, terrainType);
+    }
 }

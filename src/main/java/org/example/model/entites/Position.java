@@ -1,19 +1,15 @@
 package org.example.model.entites;
 
 public class Position {
-    // Attributs
     private final int x;
     private final int y;
-    // Constantes
     private static final int HASHCODE = 31;
 
-    // Constructeur
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    // Getters
     public int getX() {
         return x;
     }
@@ -22,7 +18,6 @@ public class Position {
         return y;
     }
 
-    // Méthodes
     public Position deplacer(int dx, int dy) {
         return new Position(x + dx, y + dy);
     }

@@ -6,7 +6,6 @@ import org.example.model.entites.Worm;
 import java.util.Scanner;
 
 public class VueConsole {
-
     private final Scanner scanner;
 
     public VueConsole() {
@@ -14,24 +13,36 @@ public class VueConsole {
     }
 
     public void afficherBienvenue() {
-        System.out.println("Bienvenue dans la vue console de Worms !");
-        System.out.println(
-                "Commandes : gauche | droite | sauter | degats [n] | exit");
-    }
-
-    public String demanderCommande() {
-        System.out.print("> ");
-        return scanner.next();
-    }
-
-    public int demanderEntier() {
-        return scanner.nextInt();
+        System.out.println("=================================");
+        System.out.println("  Bienvenue dans Worms Game!    ");
+        System.out.println("=================================");
+        System.out.println("Commandes disponibles:");
+        System.out.println("  gauche  - se déplacer à gauche");
+        System.out.println("  droite  - se déplacer à droite");
+        System.out.println("  sauter  - sauter");
+        System.out.println("  degats  - infliger des dégâts");
+        System.out.println("  exit    - quitter");
+        System.out.println("=================================\n");
     }
 
     public void afficherEtat(Worm worm) {
         Position pos = worm.getPosition();
-        System.out.printf("Worm : Position=(%d,%d) | PV=%d | Vivant=%s\n",
-                pos.getX(), pos.getY(), worm.getPointsDeVie(), worm.estVivant());
+        System.out.println("\n--- État du Worm ---");
+        System.out.printf("Position: (%d, %d)\n", pos.getX(), pos.getY());
+        System.out.printf("Points de vie: %d\n", worm.getPointsDeVie());
+        System.out.printf("Vivant: %s\n", worm.estVivant() ? "Oui" : "Non");
+        System.out.println("--------------------");
+    }
+
+    public String demanderCommande() {
+        System.out.print("> ");
+        return scanner.next().toLowerCase();
+    }
+
+    public int demanderEntier() {
+        System.out.print("Combien de dégâts? ");
+        int nombre = scanner.nextInt();
+        return nombre;
     }
 
     public void afficherMessage(String message) {
@@ -40,5 +51,6 @@ public class VueConsole {
 
     public void close() {
         scanner.close();
+        System.out.println("\nMerci d'avoir joué!");
     }
 }

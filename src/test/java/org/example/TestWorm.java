@@ -39,10 +39,10 @@ public class TestWorm {
     @Test
     public void testImpossibiliteDeBougerSiMort() {
         Equipe equipe = new Equipe("Team C", 1);
-        Monde monde = new Monde(10, 10);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
 
         Worm worm = new Worm(0, equipe, 2, 2);
-        worm.deplacerDroite(monde);
+        assertFalse(worm.deplacerDroite(terrain));
 
         assertEquals(2, worm.getPosition().getX());
         assertEquals(2, worm.getPosition().getY());

@@ -19,7 +19,7 @@ public class TestWorm {
         Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(100, equipe, 2, 2);
 
-        worm.deplacerDroite(monde);
+        assertTrue(worm.deplacerDroite(terrain));
         assertEquals(7, worm.getPosition().getX());
         assertEquals(2, worm.getPosition().getY());
     }

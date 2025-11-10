@@ -27,7 +27,7 @@ public class ControllerConsole {
 
             switch (commande) {
                 case "gauche":
-                    if (worm.deplacerGauche(monde)) {
+                    if (worm.deplacerGauche(terrain)) {
                         vue.afficherMessage("Déplacement vers la gauche réussi.");
                     } else {
                         vue.afficherMessage("Impossible de se déplacer vers la gauche.");
@@ -35,7 +35,7 @@ public class ControllerConsole {
                     break;
 
                 case "droite":
-                    if (worm.deplacerDroite(monde)) {
+                    if (worm.deplacerDroite(terrain)) {
                         vue.afficherMessage("Déplacement vers la droite réussi.");
                     } else {
                         vue.afficherMessage("Impossible de se déplacer vers la droite.");
@@ -43,7 +43,7 @@ public class ControllerConsole {
                     break;
 
                 case "sauter":
-                    if (worm.sauter(monde)) {
+                    if (worm.sauter(terrain)) {
                         vue.afficherMessage("Saut réussi.");
                     } else {
                         vue.afficherMessage("Impossible de sauter.");

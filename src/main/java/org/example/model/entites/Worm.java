@@ -1,7 +1,7 @@
 package org.example.model.entites;
 
 import org.example.model.jeu.Equipe;
-import org.example.model.jeu.Monde;
+import org.example.model.jeu.Terrain;
 
 public class Worm extends Entite {
     // Attributs
@@ -62,12 +62,12 @@ public class Worm extends Entite {
     }
 
 
-    public boolean deplacer(Position nouvellePosition, Monde monde) {
+    public boolean deplacer(Position nouvellePosition, Terrain terrain) {
         if (!vivant) {
             return false;
         }
 
-        if (monde.positionValide(nouvellePosition)) {
+        if (positionValide(nouvellePosition, terrain)) {
             setPosition(nouvellePosition);
             return true;
         }
@@ -75,18 +75,34 @@ public class Worm extends Entite {
         return false;
     }
 
-    public boolean deplacerDroite(Monde monde) {
+    public boolean deplacerDroite(Terrain terrain) {
         Position nouvellePos = getPosition().deplacer(DEPLACEMENT_DROITE, 0);
-        return deplacer(nouvellePos, monde);
+        return deplacer(nouvellePos, terrain);
     }
 
-    public boolean deplacerGauche(Monde monde) {
+    public boolean deplacerGauche(Terrain terrain) {
         Position nouvellePos = getPosition().deplacer(DEPLACEMENT_GAUCHE, 0);
-        return deplacer(nouvellePos, monde);
+        return deplacer(nouvellePos, terrain);
     }
 
-    public boolean sauter(Monde monde) {
+
+    public boolean sauter(Terrain terrain) {
         Position nouvellePos = getPosition().deplacer(0, SAUT);
-        return deplacer(nouvellePos, monde);
+        return deplacer(nouvellePos, terrain);
     }
+
+    private boolean positionValide(Position position, Terrain terrain) {
+        int x = position.getX();
+        int y = position.getY();
+
+        // Vérifier que la position est dans les limites du terrain
+        if (x < 0 || x >= terrain.getLargeur() || y < 0 || y >= terrain.getHauteur()) {
+            return false;
+        }
+
+        // Le worm peut se déplacer sur une case SANS collision (terrain vide/air)
+        // Il ne peut PAS se déplacer sur une case AVEC collision (terrain solide)
+        return !terrain.isCollision(x, y);
+    }
+
 }

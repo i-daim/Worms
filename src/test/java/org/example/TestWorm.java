@@ -4,6 +4,7 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
+import org.example.model.jeu.Terrain;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,10 +16,10 @@ public class TestWorm {
     @Test
     public void testDeplacementDansLimites() {
         Equipe equipe = new Equipe("Team A", 1);
-        Monde monde = new Monde(10, 10);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(100, equipe, 2, 2);
 
-        worm.deplacerDroite(monde);
+        assertTrue(worm.deplacerDroite(terrain));
         assertEquals(7, worm.getPosition().getX());
         assertEquals(2, worm.getPosition().getY());
     }
@@ -26,10 +27,10 @@ public class TestWorm {
     @Test
     public void testDeplacementHorsLimite() {
         Equipe equipe = new Equipe("Team B", 1);
-        Monde monde = new Monde(10, 10);
+        Terrain terrain = Terrain.creerTerrainVide(10, 10);
 
         Worm worm = new Worm(100, equipe, 0, 0);
-        worm.deplacerGauche(monde);
+        assertFalse(worm.deplacerGauche(terrain));
 
         assertEquals(0, worm.getPosition().getX());
         assertEquals(0, worm.getPosition().getY());
@@ -38,10 +39,10 @@ public class TestWorm {
     @Test
     public void testImpossibiliteDeBougerSiMort() {
         Equipe equipe = new Equipe("Team C", 1);
-        Monde monde = new Monde(10, 10);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
 
         Worm worm = new Worm(0, equipe, 2, 2);
-        worm.deplacerDroite(monde);
+        assertFalse(worm.deplacerDroite(terrain));
 
         assertEquals(2, worm.getPosition().getX());
         assertEquals(2, worm.getPosition().getY());
@@ -76,9 +77,9 @@ public class TestWorm {
     public void testDeplacementAvecPosition() {
         Equipe equipe = new Equipe("Team A", 1);
         Worm worm = new Worm(100, equipe, 50, 50);
-        Monde monde = new Monde(200, 200);
+        Terrain terrain = Terrain.creerTerrainVide(200, 200);
 
-        assertTrue(worm.deplacerDroite(monde));
+        assertTrue(worm.deplacerDroite(terrain));
         assertEquals(55, worm.getPosition().getX());
         assertEquals(50, worm.getPosition().getY());
     }
@@ -95,10 +96,10 @@ public class TestWorm {
     @Test
     public void testDeplacerGauche() {
         Equipe equipe = new Equipe("Team E", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(100, equipe, 10, 50);
 
-        assertTrue(worm.deplacerGauche(monde));
+        assertTrue(worm.deplacerGauche(terrain));
         assertEquals(5, worm.getPosition().getX());
         assertEquals(50, worm.getPosition().getY());
     }
@@ -106,10 +107,10 @@ public class TestWorm {
     @Test
     public void testSauter() {
         Equipe equipe = new Equipe("Team F", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(100, equipe, 50, 50);
 
-        assertTrue(worm.sauter(monde));
+        assertTrue(worm.sauter(terrain));
         assertEquals(50, worm.getPosition().getX());
         assertEquals(30, worm.getPosition().getY());
     }
@@ -117,15 +118,15 @@ public class TestWorm {
     @Test
     public void testDeplacementVerMortNeBougePas() {
         Equipe equipe = new Equipe("Team G", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
         Worm worm = new Worm(0, equipe, 5, 5);
-        assertFalse(worm.deplacerDroite(monde));
+        assertFalse(worm.deplacerDroite(terrain));
     }
 
     @Test
     public void testDegatsNegatifsSontIgnores() {
         Equipe equipe = new Equipe("Team H", 1);
-        Monde monde = new Monde(100, 100);
+        Terrain terrain = Terrain.creerTerrainVide(100, 100);
 
         Worm worm = new Worm(100, equipe, 5, 5);
         worm.subirDegats(-50);

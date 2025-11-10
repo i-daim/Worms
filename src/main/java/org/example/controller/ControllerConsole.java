@@ -2,16 +2,17 @@ package org.example.controller;
 
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
+import org.example.model.jeu.Terrain;
 import org.example.view.console.VueConsole;
 
 
 public class ControllerConsole {
-    private final Monde monde;
+    private final Terrain terrain;
     private final Worm worm;
     private final VueConsole vue;
 
-    public ControllerConsole(Monde monde, Worm worm, VueConsole vue) {
-        this.monde = monde;
+    public ControllerConsole(Terrain terrain, Worm worm, VueConsole vue) {
+        this.terrain = terrain;
         this.worm = worm;
         this.vue = vue;
     }

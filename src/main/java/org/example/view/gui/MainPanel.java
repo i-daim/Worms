@@ -1,31 +1,31 @@
 package org.example.view.gui;
 
 import javax.swing.JPanel;
-import java.awt.Button;
+import javax.swing.JButton;
 
 public class MainPanel extends JPanel {
 
-    private final Button boutonNewGame;
-    private final Button boutonLoadGame;
-    private final Button boutonQuitter;
+    private final JButton boutonNewGame;
+    private final JButton boutonLoadGame;
+    private final JButton boutonQuitter;
 
     public MainPanel() {
-        boutonNewGame = new Button("Nouvelle Partie");
-        boutonLoadGame = new Button("Charger Partie");
-        boutonQuitter = new Button("Quitter");
+        boutonNewGame = new JButton("Nouvelle Partie");
+        boutonLoadGame = new JButton("Charger Partie");
+        boutonQuitter = new JButton("Quitter");
 
         this.add(boutonNewGame);
         this.add(boutonLoadGame);
         this.add(boutonQuitter);
     }
 
-    public Button getBoutonNewGame() {
+    public JButton getBoutonNewGame() {
         return boutonNewGame;
     }
-    public Button getBoutonLoadGame() {
+    public JButton getBoutonLoadGame() {
         return boutonLoadGame;
     }
-    public Button getBoutonQuitter() {
+    public JButton getBoutonQuitter() {
         return boutonQuitter;
     }
 

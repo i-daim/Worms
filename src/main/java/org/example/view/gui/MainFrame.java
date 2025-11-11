@@ -10,8 +10,8 @@ public class MainFrame extends JFrame {
         this.setSize(1280, 720);
         this.setVisible(true);
 
-        MainPanel mainPanel = new MainPanel();
-        this.setContentPane(mainPanel);
+        MenuPanel menuPanel = new MenuPanel();
+        this.setContentPane(menuPanel);
         // TODO : Ajouter un controleur à relier à la vue.
     }
 

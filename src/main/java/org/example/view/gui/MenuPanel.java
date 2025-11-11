@@ -3,13 +3,13 @@ package org.example.view.gui;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
-public class MainPanel extends JPanel {
+public class MenuPanel extends JPanel {
 
     private final JButton boutonNewGame;
     private final JButton boutonLoadGame;
     private final JButton boutonQuitter;
 
-    public MainPanel() {
+    public MenuPanel() {
         boutonNewGame = new JButton("Nouvelle Partie");
         boutonLoadGame = new JButton("Charger Partie");
         boutonQuitter = new JButton("Quitter");

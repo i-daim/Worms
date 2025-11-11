@@ -10,8 +10,8 @@ public class MainFrame extends JFrame {
         this.setSize(1280, 720);
         this.setVisible(true);
 
-        EcranAccueil ecranAccueil = new EcranAccueil();
-        this.setContentPane(ecranAccueil);
+        MainPanel mainPanel = new MainPanel();
+        this.setContentPane(mainPanel);
         // TODO : Ajouter un controleur à relier à la vue.
     }
 

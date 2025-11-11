@@ -20,8 +20,9 @@ public class MenuPanel extends JPanel {
 
     public MenuPanel() {
         // Chargement de l'image d'arrière plan
-        try{
-            background = new ImageIcon(getClass().getResource("/images/menu/background.png")).getImage();
+        try {
+            background = new ImageIcon(
+                    getClass().getResource("/images/menu/background.png")).getImage();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erreur lors du chargement de l'image");

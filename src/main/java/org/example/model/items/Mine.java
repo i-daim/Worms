@@ -39,7 +39,7 @@ public class Mine extends Arme implements Utilisable {
     public void explosion(Monde monde) {
         int position_mine_x = position.getX(); // position de la mine en x
         int position_mine_y = position.getY(); // position de la mine en y
-        for ( w Worm : ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
+        for ( Worm w : ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
             int w_position_x =  w.getPosition().getX();
             int w_position_y =  w.getPosition().getY();
             boolean position_x = position_mine_x <= w_position_x && w_position_x <= position_mine_x + RAYON; // vérifie que le vers est dans la zone de dégats de la mine en x

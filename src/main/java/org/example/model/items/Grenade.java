@@ -24,7 +24,7 @@ public class Grenade extends Arme implements Utilisable {
         Position position_grenade = lancer(wormActif); // représente la position de la grenade après qu'un joueur l'est lanceé
         int position_grenade_x = position_grenade.getX(); // position de la grenade en x
         int position_grenade_y = position_grenade.getY(); // position de la grenade en y
-        for ( w Worm : ) {
+        for ( Worm w : ) {
             int w_position_x =  w.getPosition().getX();
             int w_position_y =  w.getPosition().getY();
             boolean position_x = position_grenade_x <= w_position_x && w_position_x <= position_grenade_x + RAYON; // vérifie que le vers est dans la zone de dégats de la grenade en x

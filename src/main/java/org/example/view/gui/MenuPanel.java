@@ -2,6 +2,7 @@ package org.example.view.gui;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
 
 public class MenuPanel extends JPanel {
 
@@ -19,14 +20,15 @@ public class MenuPanel extends JPanel {
         this.add(boutonQuitter);
     }
 
-    public JButton getBoutonNewGame() {
-        return boutonNewGame;
-    }
-    public JButton getBoutonLoadGame() {
-        return boutonLoadGame;
-    }
-    public JButton getBoutonQuitter() {
-        return boutonQuitter;
+    public void addNewGameListener(ActionListener listener) {
+        boutonNewGame.addActionListener(listener);
     }
 
+    public void addLoadGameListener(ActionListener listener) {
+        boutonLoadGame.addActionListener(listener);
+    }
+
+    public void addQuitterListener(ActionListener listener) {
+        boutonQuitter.addActionListener(listener);
+    }
 }

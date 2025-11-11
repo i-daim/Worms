@@ -1,28 +1,34 @@
 package org.example.view.gui;
 
 import javax.swing.Box;
-import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import java.awt.Font;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import java.awt.Image;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.awt.Font;
 
 public class MenuPanel extends JPanel {
 
+    private Image background;
     private final JButton boutonNewGame = new JButton("Nouvelle Partie");
     private final JButton boutonLoadGame = new JButton("Charger Partie");
     private final JButton boutonQuitter = new JButton("Quitter");
 
+
     public MenuPanel() {
+        // Chargement de l'image d'arrière plan
+        try{
+            background = new ImageIcon(getClass().getResource("/images/menu/background.png")).getImage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors du chargement de l'image");
+        }
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Titre affiché dans le menu
-        JLabel titre = new JLabel("Worms 0.5");
-        titre.setFont(new Font("Impact", Font.BOLD, 48));
-        titre.setAlignmentX(CENTER_ALIGNMENT);
-
-        // Panel séparé pour les boutons, afin qu'ils soient pas "collés" au titre
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
@@ -34,7 +40,6 @@ public class MenuPanel extends JPanel {
         buttonPanel.add(boutonLoadGame);
         buttonPanel.add(boutonQuitter);
 
-        this.add(titre);
         this.add(Box.createVerticalGlue());
         this.add(buttonPanel);
         this.add(Box.createVerticalGlue());

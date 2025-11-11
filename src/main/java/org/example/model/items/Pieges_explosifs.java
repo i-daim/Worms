@@ -61,8 +61,8 @@ public abstract class Pieges_explosifs extends Arme implements Utilisable {
         for ( Worm w : ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
             int w_position_x =  w.getPosition().getX();
             int w_position_y =  w.getPosition().getY();
-            boolean position_x = position_piege_x <= w_position_x && w_position_x <= position_piege_x + RAYON; // vérifie que le vers est dans la zone de dégats de la mine en x
-            boolean position_y = position_piege_y <= w_position_y && w_position_y <= position_piege_y + RAYON; // vérifie que le vers est dans la zone de dégats de la mine en y
+            boolean position_x = position_piege_x <= w_position_x && w_position_x <= position_piege_x + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la mine en x
+            boolean position_y = position_piege_y <= w_position_y && w_position_y <= position_piege_y + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la mine en y
             if ( position_x && position_y ) {
                 w.subirDegats(this.getDegats());
                 setActive(false); //La mine a explosé donc elle n'est plus en service

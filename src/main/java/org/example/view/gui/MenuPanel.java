@@ -45,6 +45,15 @@ public class MenuPanel extends JPanel {
         this.add(Box.createVerticalGlue());
     }
 
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+        super.paintComponent(g);
+        if (background != null) {
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+
     public void addNewGameListener(ActionListener listener) {
         boutonNewGame.addActionListener(listener);
     }

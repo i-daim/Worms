@@ -30,14 +30,28 @@ public class MenuPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
         boutonNewGame.setAlignmentX(CENTER_ALIGNMENT);
         boutonLoadGame.setAlignmentX(CENTER_ALIGNMENT);
         boutonQuitter.setAlignmentX(CENTER_ALIGNMENT);
 
+        // Rend les boutons plus grands
+        Dimension buttonSize = new Dimension(250, 50);
+        Font buttonFont = new Font("Arial", Font.BOLD, 18);
+
+        boutonNewGame.setPreferredSize(buttonSize);
+        boutonNewGame.setFont(buttonFont);
+        boutonLoadGame.setPreferredSize(buttonSize);
+        boutonLoadGame.setFont(buttonFont);
+        boutonQuitter.setPreferredSize(buttonSize);
+        boutonQuitter.setFont(buttonFont);
+
         buttonPanel.add(boutonNewGame);
+        buttonPanel.add(Box.createVerticalStrut(10)); // Ajout un espace entre les boutons
         buttonPanel.add(boutonLoadGame);
+        buttonPanel.add(Box.createVerticalStrut(10));
         buttonPanel.add(boutonQuitter);
 
         this.add(Box.createVerticalGlue());

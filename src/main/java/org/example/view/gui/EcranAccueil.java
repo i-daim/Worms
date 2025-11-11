@@ -18,4 +18,15 @@ public class EcranAccueil extends JPanel {
         this.add(boutonLoadGame);
         this.add(boutonQuitter);
     }
+
+    public Button getBoutonNewGame() {
+        return boutonNewGame;
+    }
+    public Button getBoutonLoadGame() {
+        return boutonLoadGame;
+    }
+    public Button getBoutonQuitter() {
+        return boutonQuitter;
+    }
+
 }

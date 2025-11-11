@@ -1,4 +1,15 @@
 package org.example.view.gui;
 
-public class EcranAccueil {
+import javax.swing.JPanel;
+
+public class EcranAccueil extends JPanel implements Runnable {
+
+    public EcranAccueil() {
+
+    }
+
+    @Override
+    public void run() {
+
+    }
 }

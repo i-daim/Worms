@@ -1,4 +1,4 @@
 package org.example.view.gui;
 
-public class EcranJeu {
+public class GamePanel {
 }

@@ -1,5 +1,6 @@
 package org.example.view.gui;
 
+import org.example.controller.MenuController;
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame {
@@ -11,8 +12,8 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
 
         MenuPanel menuPanel = new MenuPanel();
+        new MenuController(menuPanel);
         this.setContentPane(menuPanel);
-        // TODO : Ajouter un controleur à relier à la vue.
     }
 
 

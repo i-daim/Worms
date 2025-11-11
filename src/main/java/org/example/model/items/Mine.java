@@ -21,13 +21,17 @@ public class Mine extends Arme implements Utilisable {
         POSITION =  new Position(wormActif_position_x + 1, wormActif_position_y + 1); //+1 pour pas que la mine soit à la même position que son porteur pour éviter qu'il l'active lui-même
     }
 
-    public boolean activation(Monde monde) {
+    //Méthode activation permettant de voir si un vers se situe à la position d'une mine et provoque son explosion
+    public void activation(Monde monde) {
         int position_mine_x = POSITION.getX(); // position de la minde en x
         int position_mine_y = POSITION.getY(); // position de la mine en y
         for ( w Worms : ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
             int w_position_x =  w.getPosition().getX();
             int w_position_y =  w.getPosition().getY();
-            if ( )
+            if ( position_mine_x == w_position_x && position_mine_y == w_position_y ) { //Vérifie que un vers se situe sur la mine
+                explosion(); //Provoque l'appel de la méthode explosion ce qui signifie l'explosion de la mine
+                return;
+            }
         }
     }
 

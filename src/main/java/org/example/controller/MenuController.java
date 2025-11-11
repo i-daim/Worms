@@ -11,6 +11,7 @@ public class MenuController {
 
     public MenuController(MenuPanel menuPanel) {
         this.menuPanel = menuPanel;
+        addListeners();
     }
 
     public void addListeners() {

@@ -1,15 +1,17 @@
 package org.example.view.gui;
 
 import javax.swing.JPanel;
+import java.awt.Button;
 
-public class EcranAccueil extends JPanel implements Runnable {
+public class EcranAccueil extends JPanel {
+
+    private final Button boutonNewGame;
+    private final Button boutonLoadGame;
+    private final Button boutonQuitter;
 
     public EcranAccueil() {
-
-    }
-
-    @Override
-    public void run() {
-
+        boutonNewGame = new Button("Nouvelle Partie");
+        boutonLoadGame = new Button("Charger Partie");
+        boutonQuitter = new Button("Quitter");
     }
 }

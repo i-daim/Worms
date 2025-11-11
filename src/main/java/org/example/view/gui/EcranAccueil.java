@@ -13,5 +13,9 @@ public class EcranAccueil extends JPanel {
         boutonNewGame = new Button("Nouvelle Partie");
         boutonLoadGame = new Button("Charger Partie");
         boutonQuitter = new Button("Quitter");
+
+        this.add(boutonNewGame);
+        this.add(boutonLoadGame);
+        this.add(boutonQuitter);
     }
 }

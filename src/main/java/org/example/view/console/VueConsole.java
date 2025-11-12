@@ -29,32 +29,39 @@ public class VueConsole {
         System.out.println("=================================\n");
     }
 
-    public void afficherEtat(Worm worm) {
-        Position pos = worm.getPosition();
-        System.out.println("\n--- État du Worm ---");
-        System.out.printf("Position: (%d, %d)\n", pos.getX(), pos.getY());
-        System.out.printf("Points de vie: %d\n", worm.getPointsDeVie());
-        System.out.printf("Vivant: %s\n", worm.estVivant() ? "Oui" : "Non");
-        System.out.println("--------------------");
+    public void afficherEtatPartie(Partie partie) {
+        System.out.println("\n" + "─".repeat(60));
+        System.out.println("📊 " + partie.toString());
+        System.out.println("─".repeat(60));
+
+        afficherStatistiquesEquipes(partie);
+        afficherWormActif(partie);
+
+        System.out.println("─".repeat(60));
     }
 
-    public String demanderCommande() {
-        System.out.print("> ");
-        return scanner.next().toLowerCase();
+    private void afficherStatistiquesEquipes(Partie partie) {
+        System.out.println("\n🏆 État des équipes:");
+
+        Equipe[] equipes = partie.getEquipes();
+        for (int i = 0; i < equipes.length; i++) {
+            String indicateur = (i == partie.getIndexEquipeActive()) ? "►" : " ";
+            System.out.println(indicateur + "  " + equipes[i].toString());
+        }
     }
 
-    public int demanderEntier() {
-        System.out.print("Combien de dégâts? ");
-        int nombre = scanner.nextInt();
-        return nombre;
+    private void afficherWormActif(Partie partie) {
+        Worm worm = partie.getWormActif();
+
+        if (worm != null) {
+            Position pos = worm.getPosition();
+            System.out.println("\n🐛 Worm actif (" + partie.getEquipeActive().getNom() + "):");
+            System.out.printf("   Position: %s\n", pos);
+            System.out.printf("   PV: %d/100 ", worm.getPointsDeVie());
+            afficherBarreVie(worm.getPointsDeVie());
+        } else {
+            System.out.println("\n⚠️  Aucun worm actif");
+        }
     }
 
-    public void afficherMessage(String message) {
-        System.out.println(message);
-    }
-
-    public void close() {
-        scanner.close();
-        System.out.println("\nMerci d'avoir joué!");
-    }
 }

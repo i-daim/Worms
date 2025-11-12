@@ -33,6 +33,17 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
         this.position = position;
     }
 
+    //Méthode verificationPosition qui vérifie si le worms se situe sur le piège
+    public boolean verificationPosition(Worm w){
+        int positionPiegeX = getPosition().getX(); // position du piège en x
+        int positionPiegeY = getPosition().getY(); // position du pièege en y
+        int wPositionX =  w.getPosition().getX();
+        int wPositionY =  w.getPosition().getY();
+        return (positionPiegeX == wPositionX && positionPiegeY == wPositionY);
+    }
+
+    public boolean dansZone
+
     //Méthode Poser_piege permettant de poser un piège explosif pour un joueur et met à jour la position du piège
     public void Poser_piege(Worm wormActif) {
         int wormActifPositionX = wormActif.getPosition().getX();
@@ -42,14 +53,10 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
 
     //Méthode activation permettant de voir si un vers se situe à la position d'un piège et provoque son explosion
     public void activation(Monde monde) {
-        int positionPiegeX = getPosition().getX(); // position de la mine en x
-        int positionPiegeY = getPosition().getY(); // position de la mine en y
         if (!isActive()) { return; } //si le piège a déjà explosé on ne peut plus la réutilisé
         for (int i = 0; i < 1; i++) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
             Worm w = new Worm(100,new Equipe("Equipe",1),10,10);
-            int wPositionX =  w.getPosition().getX();
-            int wPositionY =  w.getPosition().getY();
-            if ( positionPiegeX == wPositionX && positionPiegeY == wPositionY ) { //Vérifie que un vers se situe sur un piège
+            if ( verificationPosition(w) ) { //Vérifie que un vers se situe sur un piège
                 explosion(monde); //Provoque l'appel de la méthode explosion ce qui signifie l'explosion du piège
                 return;
             }

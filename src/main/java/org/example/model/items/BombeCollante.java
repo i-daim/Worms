@@ -7,9 +7,9 @@ public class BombeCollante extends GrenadeProjectile {
     public static final int RAYON = 5;
 
     public BombeCollante(String nom) {
-        super(nom,DEGATS,RAYON);
+        super(nom, DEGATS, RAYON);
     }
 
     @Override
-    public void lancer(Worm wormActif){}
+    public void lancer(Worm wormActif) { }
 }

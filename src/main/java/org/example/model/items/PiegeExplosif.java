@@ -46,8 +46,8 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
     public void activation(Monde monde) {
         int posPiegeX = this.getPosition().getX();
         int posPiegeY = this.getPosition().getY();
-        if (!isActive()) {return;} //si le piège a déjà explosé on ne peut plus la réutilisé
-        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())){
+        if (!isActive()) { return; } //si le piège a déjà explosé on ne peut plus la réutilisé
+        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) {
             if (w.getPosition().getX() == posPiegeX && w.getPosition().getY() == posPiegeY) {
                 explosion(monde);
             }
@@ -58,8 +58,8 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
     public void explosion(Monde monde) {
         int posPiegeX = this.getPosition().getX();
         int posPiegeY = this.getPosition().getY();
-        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion()) ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
-            if (w == null){return;}
+        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) { //Renvoyant l'ensemble des vers dans le monde/terrain
+            if (w == null) { return; }
             w.subirDegats(this.getDegats());
             this.active = false;
         }

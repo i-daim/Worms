@@ -5,7 +5,7 @@ public class MiniCanon extends ArmeAFeu {
     public static final int RAYON = 10;
     public static final int NBTIR = 50;
 
-    public MiniCanon(String nom){
+    public MiniCanon(String nom) {
         super(nom, DEGATS, RAYON, NBTIR);
     }
 

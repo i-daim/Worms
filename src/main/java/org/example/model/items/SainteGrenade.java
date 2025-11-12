@@ -5,6 +5,6 @@ public class SainteGrenade extends GrenadeProjectile {
     public static final int RAYON = 10;
 
     public SainteGrenade(String nom) {
-        super(nom,DEGATS,RAYON);
+        super(nom, DEGATS, RAYON);
     }
 }

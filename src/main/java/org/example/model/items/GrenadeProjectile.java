@@ -1,14 +1,13 @@
 package org.example.model.items;
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
-import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
 
-public abstract class GrenadeProjectile extends Arme implements Utilisable{
+public abstract class GrenadeProjectile extends Arme implements Utilisable {
     private Position position;
-    public GrenadeProjectile (String nom,int degat, int rayon) {
-        super(nom,degat,rayon);
-        this.position = new Position(0,0);
+    public GrenadeProjectile(String nom, int degat, int rayon) {
+        super(nom, degat, rayon);
+        this.position = new Position(0, 0);
     }
 
     @Override
@@ -35,14 +34,16 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable{
             return;
         }
         if (angle < 0 || angle > 180) {
-            System.out.println("L'angle n'est pas autorisée. L'angle doit être entre 0 et 180 degreès. Recommencez");
+            System.out.println("L'angle doit être entre 0 et 180°. Recommencez");
             return;
         }
         double positionX = puissance * Math.cos(angle); //Renvoie la position en x
         double positionY = puissance * Math.sin(angle); //Renvoie la position en y
-        int posProjectileX = (int) (positionX + posVersX); //conversion en int pour respecter l'implémentation de la classe Position
+        //conversion en int pour correspondre à Position
+        int posProjectileX = (int) (positionX + posVersX);
         int posProjectileY = (int) (positionY + posVersY);
-        this.setPosition(new Position(posProjectileX, posProjectileY)); //renvoie la nouvelle position du projectile après son lancement
+        //renvoie nouvelle position du projectile après son lancement
+        this.setPosition(new Position(posProjectileX, posProjectileY));
 
     }
 
@@ -50,8 +51,10 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable{
     public void explosion(Monde monde, Worm wormActif) {
         int posPiegeX = this.getPosition().getX();
         int posPiegeY = this.getPosition().getY();
-        for ( Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())){
-            if (w == null){return;}
+        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) {
+            if (w == null) {
+                return;
+            }
             wormActif.subirDegats(this.getDegats());
         }
     }

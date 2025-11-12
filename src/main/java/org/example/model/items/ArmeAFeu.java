@@ -29,7 +29,7 @@ public abstract class ArmeAFeu extends Arme implements Utilisable {
         int wormActifPositionX = wormActif.getPosition().getX();
         int wormActifPositionY = wormActif.getPosition().getY();
         int portee = this.getRayonExplosion();
-        if (this.getNb_tir() == 0) {
+        if (this.getNbTir() == 0) {
             System.out.println("Le worm n'a plus de munitions !");
             return;
         }

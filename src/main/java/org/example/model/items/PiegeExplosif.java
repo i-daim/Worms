@@ -44,9 +44,14 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
 
     //Méthode activation permettant de voir si un vers se situe à la position d'un piège et provoque son explosion
     public void activation(Monde monde) {
-        if (!isActive()) {
-            return;
-        } //si le piège a déjà explosé on ne peut plus la réutilisé
+        int posPiegeX = this.getPosition().getX();
+        int posPiegeY = this.getPosition().getY();
+        if (!isActive()) {return;} //si le piège a déjà explosé on ne peut plus la réutilisé
+        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())){
+            if (w.getPosition().getX() == posPiegeX && w.getPosition().getY() == posPiegeY) {
+                explosion(monde);
+            }
+        }
     }
 
     //Méthode explosion infligeant des dégats aux vers qui ont une position proche d'un piège

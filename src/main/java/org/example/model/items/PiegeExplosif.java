@@ -51,8 +51,12 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
 
     //Méthode explosion infligeant des dégats aux vers qui ont une position proche d'un piège
     public void explosion(Monde monde) {
-        for (Worm w : monde.wormsDansRayon( this.getPosition().getX(), this.getPosition().getY(), this.getRayonExplosion()) ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
-
+        int posPiegeX = this.getPosition().getX();
+        int posPiegeY = this.getPosition().getY();
+        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion()) ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
+            if (w == null){return;}
+            w.subirDegats(this.getDegats());
+            this.active = false;
         }
     }
 }

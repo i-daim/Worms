@@ -38,21 +38,28 @@ public class Equipe {
         Random random = new Random();
 
         for (int i = 0; i < worms.length; i++) {
-            // Position aléatoire dans la zone assignée
             int x = zoneX + random.nextInt(largeurZone);
             int y = zoneY + random.nextInt(hauteurZone);
 
             worms[i] = new Worm(this, x, y);
         }
     }
+    public void passerAuWormSuivant() {
+        int tentatives = 0;
+        do {
+            indexWormActif = (indexWormActif + 1) % worms.length;
+            tentatives++;
+        } while (tentatives < worms.length &&
+                (worms[indexWormActif] == null || !worms[indexWormActif].estVivant()));
+    }
 
     public boolean estEliminee() {
         for (Worm w : worms) {
             if (w != null && w.estVivant()) {
-                return false; // il reste au moins un ver vivant
+                return false;
             }
         }
-        return true; // tous les vers sont morts
+        return true;
     }
 
 

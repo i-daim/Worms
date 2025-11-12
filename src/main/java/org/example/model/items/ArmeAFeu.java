@@ -29,17 +29,13 @@ public abstract class ArmeAFeu extends Arme implements Utilisable{
     public void tir(Monde monde, Worm wormActif) {
         int wormActifPositionX = wormActif.getPosition().getX();
         int wormActifPositionY = wormActif.getPosition().getY();
-        for (int i = 0; i < 1; i++){ //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
-            Worm w = new Worm(100,new Equipe("Equipe",1),10,10);
-            int WPositionX =  w.getPosition().getX();
-            int WPositionY =  w.getPosition().getY();
-            boolean conditionX = wormActifPositionX < WPositionX && WPositionX <= wormActifPositionX + this.getRayonExplosion();
-            boolean conditionY = wormActifPositionY < WPositionY && WPositionY <= wormActifPositionY + this.getRayonExplosion();
-            if (this.getNb_tir() == 0){
-                System.out.println("Le worm n'a plus de munitions !"); //précise au joeur l'absence de munitions
-                return;
-            }
-            if ( (conditionX || conditionY) && w != wormActif){
+        int portee = this.getRayonExplosion();
+        if (this.getNb_tir() == 0){
+            System.out.println("Le worm n'a plus de munitions !"); //précise au joeur l'absence de munitions
+            return;
+        }
+        for (Worm w : monde.wormsDansRayon(wormActifPositionX, wormActifPositionY, portee)){
+            if ( w != wormActif){
                 w.subirDegats(this.getDegats());// Dégats subis aux vers qui se trouvent dans la portée de l'arme
                 setNb_tir(this.getNb_tir() - 1);// Tir donc on décrémente le nombre de tir disponible pour l'arme
             }

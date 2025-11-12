@@ -42,7 +42,15 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
         return (positionPiegeX == wPositionX && positionPiegeY == wPositionY);
     }
 
-    public boolean dansZone
+    public boolean dansZone (Worm w){
+        int positionPiegeX = getPosition().getX(); // position de la mine en x
+        int positionPiegeY = getPosition().getY(); // position de la mine en y
+        int wPositionX =  w.getPosition().getX();
+        int wPositionY =  w.getPosition().getY();
+        boolean position_x = positionPiegeX <= wPositionX && wPositionX <= positionPiegeX + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la mine en x
+        boolean position_y = positionPiegeY <= wPositionY && wPositionY <= positionPiegeY + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la mine en y
+        return position_y && position_x;
+    }
 
     //Méthode Poser_piege permettant de poser un piège explosif pour un joueur et met à jour la position du piège
     public void Poser_piege(Worm wormActif) {
@@ -65,14 +73,8 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
 
     //Méthode explosion infligeant des dégats aux vers qui ont une position proche d'un piège
     public void explosion(Monde monde) {
-        int positionPiegeX = getPosition().getX(); // position de la mine en x
-        int positionPiegeY = getPosition().getY(); // position de la mine en y
         for ( Worm w : ) { //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
-            int wPositionX =  w.getPosition().getX();
-            int wPositionY =  w.getPosition().getY();
-            boolean position_x = positionPiegeX <= wPositionX && wPositionX <= positionPiegeX + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la mine en x
-            boolean position_y = positionPiegeY <= wPositionY && wPositionY <= positionPiegeY + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la mine en y
-            if ( position_x && position_y ) {
+            if ( this.dansZone(w) ) {
                 w.subirDegats(this.getDegats());
                 setActive(false); //La mine a explosé donc elle n'est plus en service
             }

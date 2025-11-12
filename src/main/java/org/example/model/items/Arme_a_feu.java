@@ -33,7 +33,11 @@ public class Arme_a_feu extends Arme implements Utilisable{
             int w_position_y =  w.getPosition().getY();
             boolean condition_x = wormActif_position_x < w_position_x && w_position_x <= wormActif_position_x + this.getRayonExplosion();
             boolean condition_y = wormActif_position_y < w_position_y && w_position_y <= wormActif_position_y + this.getRayonExplosion();
-            if ( condition_x || condition_y && w != wormActif && this.getNb_tir() != 0 ){
+            if (this.getNb_tir() == 0){
+                System.out.println("Le worm n'a plus de munitions !"); //précise au joeur l'absence de munitions
+                return;
+            }
+            if ( (condition_x || condition_y) && w != wormActif){
                 w.subirDegats(this.getDegats());// Dégats subis aux vers qui se trouvent dans la portée de l'arme
                 setNb_tir(this.getNb_tir() - 1);// Tir donc on décrémente le nombre de tir disponible pour l'arme
             }

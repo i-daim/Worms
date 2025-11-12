@@ -1,8 +1,5 @@
 package org.example.model.items;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Monde;
-
 public class Shotgun extends ArmeAFeu {
     public static final int DEGATS = 25;
     public static final int RAYON = 5;
@@ -12,15 +9,6 @@ public class Shotgun extends ArmeAFeu {
         super(nom, DEGATS, RAYON, NBTIR);
     }
 
-    @Override
-    //Méthode permettant de tirer et infliger des dégâts
-    public void tir(Monde monde, Worm wormActif) {
-        int wormActifPositionX = wormActif.getPosition().getX();
-        int wormActifPositionY = wormActif.getPosition().getY();
-        for (Worm w : monde.wormsDansRayon(wormActifPositionX, wormActifPositionY, RAYON)) {
-            if (w != wormActif) {
-                w.subirDegats(DEGATS);
-            }
-        }
-    }
+    //Implémenter plus tard une méthode tir surchager pour les armes de types fusils à pompes
+    // par rapport à la réduction de la distance en lien avec la distance
 }

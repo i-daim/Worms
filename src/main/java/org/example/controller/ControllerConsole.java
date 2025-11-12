@@ -6,7 +6,7 @@ import org.example.view.console.VueConsole;
 
 public class ControllerConsole {
     private final Partie partie;
-    private final VueConsole vue
+    private final VueConsole vue;
     private boolean enCours;
 
     public ControllerConsole(int largeur, int hauteur) {

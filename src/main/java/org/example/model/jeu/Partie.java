@@ -56,6 +56,14 @@ public class Partie {
         return false;
     }
 
+    public boolean sauterWormActuel() {
+        Worm worm = getWormActif();
+        if (worm != null && worm.estVivant()) {
+            return worm.sauter(terrain);
+        }
+        return false;
+    }
+
     public boolean infligerDegatsEquipeEnnemie(int degats) {
         if (degats < 0) {
             degats = 0;

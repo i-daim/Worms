@@ -31,19 +31,10 @@ public class Partie {
         initialiserPartie();
     }
 
-    /**
-     * Initialise la partie : crée les worms et les positionne
-     */
     private void initialiserPartie() {
-        // Initialiser équipe 1 (gauche)
-        initialiserEquipe(equipe1, 100, "Equipe 1");
-
-        // Initialiser équipe 2 (droite)
-        initialiserEquipe(equipe2, terrain.getLargeur() - 100, "Equipe 2");
-
-        // Première équipe commence
-        equipeActive = equipe1;
-        changerWormActif();
+        equipes[0].initialiserEquipe(50, 50, 150, 250);
+        int xDroite = terrain.getLargeur() - 200;
+        equipes[1].initialiserEquipe(xDroite, 50, 150, 250);
     }
 
     /**

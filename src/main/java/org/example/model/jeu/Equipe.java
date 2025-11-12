@@ -62,5 +62,15 @@ public class Equipe {
         return true;
     }
 
+    public int getNombreWormsVivants() {
+        int count = 0;
+        for (Worm w : worms) {
+            if (w != null && w.estVivant()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 
 }

@@ -1,18 +1,22 @@
 package org.example.controller;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Terrain;
+import org.example.model.jeu.Partie;
 import org.example.view.console.VueConsole;
 
-public class ControllerConsole {
-    private final Terrain terrain;
-    private final Worm worm;
-    private final VueConsole vue;
 
-    public ControllerConsole(Terrain terrain, Worm worm, VueConsole vue) {
-        this.terrain = terrain;
-        this.worm = worm;
-        this.vue = vue;
+public class ControllerConsole {
+    private final Partie partie;
+    private final VueConsole vue
+    private boolean enCours;
+
+    public ControllerConsole(int largeur, int hauteur) {
+        // Créer le modèle (Partie contient tout)
+        this.partie = new Partie(largeur, hauteur);
+
+        // Créer la vue
+        this.vue = new VueConsole();
+
+        this.enCours = true;
     }
 
     public void demarrer() {

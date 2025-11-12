@@ -55,13 +55,6 @@ public class Partie {
         }
         return false;
     }
-    public boolean sauterWormActuel() {
-        Worm worm = getWormActif();
-        if (worm != null && worm.estVivant()) {
-            return worm.sauter(terrain);
-        }
-        return false;
-    }
 
     public boolean infligerDegatsEquipeEnnemie(int degats) {
         if (degats < 0) {
@@ -116,31 +109,20 @@ public class Partie {
         }
     }
 
+    // ========== GETTERS ==========
 
-
-    public Equipe getEquipeGagnante() {
-        if (!partieTerminee) {
-            return null;
-        }
-
-        if (equipe1.estEliminee()) {
-            return equipe2;
-        } else {
-            return equipe1;
-        }
+    public Terrain getTerrain() {
+        return terrain;
+    }
+    public Equipe getEquipeActive() {
+        return equipes[indexEquipeActive];
+    }
+    public Equipe getEquipeEnnemie() {
+        int indexEnnemi = (indexEquipeActive + 1) % equipes.length;
+        return equipes[indexEnnemi];
     }
 
-    public void decompterTemps() {
-        if (tempsRestant > 0) {
-            tempsRestant--;
-        } else {
-            finDuTour();
-        }
-    }
 
-    /**
-     * Réinitialise la partie
-     */
     public void reinitialiser() {
         tourActuel = 0;
         tempsRestant = TEMPS_DE_JEU;

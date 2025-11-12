@@ -86,14 +86,16 @@ public class Worm extends Entite {
         int x = position.getX();
         int y = position.getY();
 
-        // Vérifier que la position est dans les limites du terrain
         if (x < 0 || x >= terrain.getLargeur() || y < 0 || y >= terrain.getHauteur()) {
             return false;
         }
 
-        // Le worm peut se déplacer sur une case SANS collision (terrain vide/air)
-        // Il ne peut PAS se déplacer sur une case AVEC collision (terrain solide)
+
         return !terrain.isCollision(x, y);
+    }
+    @Override
+    public String toString() {
+        return "Worm[PV=" + pointsDeVie + ", Vivant=" + vivant + "]";
     }
 
 }

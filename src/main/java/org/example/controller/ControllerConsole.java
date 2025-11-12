@@ -10,7 +10,6 @@ public class ControllerConsole {
     private boolean enCours;
 
     public ControllerConsole(int largeur, int hauteur) {
-        // Créer le modèle (Partie contient tout)
         this.partie = new Partie(largeur, hauteur);
 
         // Créer la vue

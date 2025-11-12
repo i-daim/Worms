@@ -135,100 +135,45 @@ public class Partie {
     public int getIndexEquipeActive() {
         return indexEquipeActive;
     }
-
-
-    public void reinitialiser() {
-        tourActuel = 0;
-        tempsRestant = TEMPS_DE_JEU;
-        partieTerminee = false;
-        initialiserPartie();
+    public Worm getWormActif() {
+        return getEquipeActive().getWormActif();
     }
 
-    public void pauserPartie() {
-    }
-
-    public void reprendrePartie() {
-    }
-
-    // ========== GETTERS ==========
-
-    public Terrain getTerrain() {
-        return terrain; }
-
-    public Equipe getEquipe1() {
-        return equipe1;
-    }
-
-    public Equipe getEquipe2() {
-        return equipe2;
+    public int getTourActuel() {
+        return tourActuel;
     }
 
     public int getTempsRestant() {
         return tempsRestant;
     }
-
-    public static int getTourActuel() {
-        return tourActuel;
-    }
-
-    public Worm getWormActuel() {
-        return wormActuel;
-    }
-
-    public Equipe getEquipeActive() {
-        return equipeActive;
-    }
-
     public boolean estTerminee() {
         return partieTerminee;
     }
 
-    public static int getTempsDeJeu() {
-        return TEMPS_DE_JEU;
-    }
-
-    // ========== SETTERS  ==========
-
-    public void setTempsRestant(int temps) {
-        this.tempsRestant = temps;
-    }
-
-    public void setWormActuel(Worm worm) {
-        if (wormActuel != null) {
-            wormActuel.setActif(false);
+    public Equipe getEquipeGagnante() {
+        if (!partieTerminee) {
+            return null;
         }
-        this.wormActuel = worm;
-        if (worm != null) {
-            worm.setActif(true);
+
+        for (Equipe equipe : equipes) {
+            if (!equipe.estEliminee()) {
+                return equipe;
+            }
         }
+
+        return null;
     }
-
-    // ========== MÉTHODES UTILES ==========
-
     public int getNombreWormsVivants() {
-        int count = 0;
-
-        for (Worm w : equipe1.getWorms()) {
-            if (w != null && w.estVivant()) {
-                count++;
-            }
+        int total = 0;
+        for (Equipe equipe : equipes) {
+            total += equipe.getNombreWormsVivants();
         }
-
-        for (Worm w : equipe2.getWorms()) {
-            if (w != null && w.estVivant()) {
-                count++;
-            }
-        }
-
-        return count;
+        return total;
     }
 
+    @Override
     public String toString() {
-        return "Partie [Tour: " + tourActuel
-                + ", Temps: " + tempsRestant
-                + "s, Worm actif: "
-                + (wormActuel != null ? wormActuel : "Aucun")
-                + ", Équipe active: " + (equipeActive == equipe1 ? "1" : "2")
-                + ", Terminée: " + partieTerminee + "]";
+        return String.format("Tour %d | %s | Temps: %ds",
+                tourActuel, getEquipeActive().getNom(), tempsRestant);
     }
 }

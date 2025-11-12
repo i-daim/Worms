@@ -5,19 +5,15 @@ public class Partie {private final Monde monde;
     private final Equipe equipe1;
     private final Equipe equipe2;
 
-    // Constantes
     private static final int TEMPS_DE_JEU = 60; // secondes par tour
     private static final int NOMBRE_WORMS_PAR_EQUIPE = 4;
-    private boolean actif;
 
-    // Attributs variables
     private int tempsRestant;
     private static int tourActuel = 0;
     private Worm wormActuel;
     private Equipe equipeActive;
     private boolean partieTerminee;
 
-    // Constructeur
     public Partie(int largeurMonde, int hauteurMonde) {
         this.monde = new Monde(largeurMonde, hauteurMonde);
         this.equipe1 = new Equipe("equipe1",NOMBRE_WORMS_PAR_EQUIPE);
@@ -28,55 +24,39 @@ public class Partie {private final Monde monde;
         initialiserPartie();
     }
 
-    /**
-     * Initialise la partie : crée les worms et les positionne
-     */
+
     private void initialiserPartie() {
-        // Initialiser équipe 1 (gauche)
         initialiserEquipe(equipe1, 100, "Equipe 1");
 
-        // Initialiser équipe 2 (droite)
         initialiserEquipe(equipe2, monde.getLargeur() - 100, "Equipe 2");
 
-        // Première équipe commence
         equipeActive = equipe1;
         changerWormActif();
     }
 
-    /**
-     * Initialise une équipe avec ses worms
-     */
     private void initialiserEquipe(Equipe equipe, int positionX, String nomEquipe) {
         Worm[] worms = equipe.getWorms();
 
         for (int i = 0; i < worms.length; i++) {
-            // Créer le worm à une position
             int x = positionX + (i * 30);
             int y = monde.getHauteur() / 2 + (i * 50);
 
             worms[i] = new Worm(100,equipe,x, y); // 100 points de vie
 
-            // Faut ajouter une méthode ajouter au monde
         }
     }
 
-    /**
-     * Passe au tour suivant
-     */
     public void tourSuivant() {
         tourActuel++;
 
-        // Alterner entre équipes
         if (equipeActive == equipe1) {
             equipeActive = equipe2;
         } else {
             equipeActive = equipe1;
         }
 
-        // Changer de worm actif
         changerWormActif();
 
-        // Réinitialiser le temps
         tempsRestant = TEMPS_DE_JEU;
     }
 
@@ -84,7 +64,6 @@ public class Partie {private final Monde monde;
     private void changerWormActif() {
         Worm[] worms = equipeActive.getWorms();
 
-        // Trouver le prochain worm vivant
         for (Worm worm : worms) {
             if (worm != null && worm.estVivant()) {
                 wormActuel = worm;
@@ -93,7 +72,6 @@ public class Partie {private final Monde monde;
             }
         }
 
-        // Si aucun worm vivant, l'équipe a perdu
         wormActuel = null;
     }
 
@@ -102,17 +80,13 @@ public class Partie {private final Monde monde;
         if (partieTerminee) {
             return;
         }
-        // faudrait ajouter une méthode mettre ajour le monde
 
-        // Gérer le temps restant
         tempsRestant -= deltaTime;
 
         if (tempsRestant <= 0) {
-            // Temps écoulé, passer au tour suivant
             finDuTour();
         }
 
-        // Vérifier si la partie est terminée
         verifierFinPartie();
     }
 
@@ -154,9 +128,6 @@ public class Partie {private final Monde monde;
         }
     }
 
-    /**
-     * Réinitialise la partie
-     */
     public void reinitialiser() {
         tourActuel = 0;
         tempsRestant = TEMPS_DE_JEU;
@@ -169,7 +140,7 @@ public class Partie {private final Monde monde;
     public void reprendrePartie() {
     }
 
-    // ========== GETTERS ==========
+    // GETTERS
 
     public Monde getMonde() {
         return monde;
@@ -208,7 +179,7 @@ public class Partie {private final Monde monde;
         return TEMPS_DE_JEU;
     }
 
-    // ========== SETTERS  ==========
+    // SETTERS
 
     public void setTempsRestant(int temps) {
         this.tempsRestant = temps;
@@ -225,8 +196,7 @@ public class Partie {private final Monde monde;
         }
     }
 
-    // ========== MÉTHODES UTILES ==========
-
+    // MÉTHODES A PART
 
     public int getNombreWormsVivants() {
         int count = 0;

@@ -107,6 +107,14 @@ public class VueConsole {
         }
     }
 
+    public void afficherResultatDegats(boolean succes, int degats) {
+        if (succes) {
+            System.out.println("💥 " + degats + " points de dégâts infligés !");
+        } else {
+            System.out.println("❌ Aucune cible ennemie trouvée");
+        }
+    }
+
     public void afficherMessage(String message) {
         System.out.println(message);
     }

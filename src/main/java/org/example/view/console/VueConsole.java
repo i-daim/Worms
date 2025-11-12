@@ -63,6 +63,7 @@ public class VueConsole {
             System.out.println("\n⚠️  Aucun worm actif");
         }
     }
+
     private void afficherBarreVie(int pv) {
         int barres = pv / 10;
         System.out.print("[");
@@ -75,6 +76,7 @@ public class VueConsole {
         }
         System.out.println("]");
     }
+
     public void afficherFinPartie(Partie partie) {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("            🎉 PARTIE TERMINÉE ! 🎉");
@@ -88,6 +90,7 @@ public class VueConsole {
         afficherStatistiquesEquipes(partie);
         System.out.println("\n" + "=".repeat(60));
     }
+
     public void afficherMessage(String message) {
         System.out.println(message);
     }
@@ -107,11 +110,11 @@ public class VueConsole {
         scanner.nextLine(); // Consommer le retour à la ligne
         return valeur;
     }
+
     public void close() {
         scanner.close();
         System.out.println("\n👋 Merci d'avoir joué !");
 
 
-
-
     }
+}

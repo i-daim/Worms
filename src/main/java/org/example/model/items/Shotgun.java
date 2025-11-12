@@ -1,6 +1,7 @@
 package org.example.model.items;
 
 import org.example.model.entites.Worm;
+import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
 
 public class Shotgun extends Arme_a_feu{
@@ -17,7 +18,8 @@ public class Shotgun extends Arme_a_feu{
     public void tir(Monde monde, Worm wormActif) {
         int wormActif_position_x = wormActif.getPosition().getX();
         int wormActif_position_y = wormActif.getPosition().getY();
-        for ( Worm w : ){ //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
+        for (int i=0; i < 1; i++){ //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
+            Worm w = new Worm(100,new Equipe("Equipe",1),10,10);
             int w_position_x =  w.getPosition().getX();
             int w_position_y =  w.getPosition().getY();
             if ( w_position_x == wormActif_position_x + 1 || w_position_y == wormActif_position_y + 1 && w != wormActif ){

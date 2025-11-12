@@ -1,11 +1,12 @@
 package org.example.model.items;
 
 import org.example.model.entites.Worm;
+import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
 
-public abstract class Arme_a_feu extends Arme implements Utilisable{
+public abstract class ArmeAFeu extends Arme implements Utilisable{
     private int nb_tir; //attribut représent le nombre de tir/balle disponible par l'arme
-    public Arme_a_feu(String nom, int degats, int rayon, int nb_tir) {
+    public ArmeAFeu(String nom, int degats, int rayon, int nb_tir) {
         super(nom, degats, rayon);
         this.nb_tir = nb_tir;
     }
@@ -26,18 +27,19 @@ public abstract class Arme_a_feu extends Arme implements Utilisable{
 
     //Méthode permettant de tirer et infliger des dégâts
     public void tir(Monde monde, Worm wormActif) {
-        int wormActif_position_x = wormActif.getPosition().getX();
-        int wormActif_position_y = wormActif.getPosition().getY();
-        for ( Worm w : ){ //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
-            int w_position_x =  w.getPosition().getX();
-            int w_position_y =  w.getPosition().getY();
-            boolean condition_x = wormActif_position_x < w_position_x && w_position_x <= wormActif_position_x + this.getRayonExplosion();
-            boolean condition_y = wormActif_position_y < w_position_y && w_position_y <= wormActif_position_y + this.getRayonExplosion();
+        int wormActifPositionX = wormActif.getPosition().getX();
+        int wormActifPositionY = wormActif.getPosition().getY();
+        for (int i = 0; i < 1; i++){ //Remplir par une méthode renvoyant l'ensemble des vers dans le monde/terrain
+            Worm w = new Worm(100,new Equipe("Equipe",1),10,10);
+            int WPositionX =  w.getPosition().getX();
+            int WPositionY =  w.getPosition().getY();
+            boolean conditionX = wormActifPositionX < WPositionX && WPositionX <= wormActifPositionX + this.getRayonExplosion();
+            boolean conditionY = wormActifPositionY < WPositionY && WPositionY <= wormActifPositionY + this.getRayonExplosion();
             if (this.getNb_tir() == 0){
                 System.out.println("Le worm n'a plus de munitions !"); //précise au joeur l'absence de munitions
                 return;
             }
-            if ( (condition_x || condition_y) && w != wormActif){
+            if ( (conditionX || conditionY) && w != wormActif){
                 w.subirDegats(this.getDegats());// Dégats subis aux vers qui se trouvent dans la portée de l'arme
                 setNb_tir(this.getNb_tir() - 1);// Tir donc on décrémente le nombre de tir disponible pour l'arme
             }

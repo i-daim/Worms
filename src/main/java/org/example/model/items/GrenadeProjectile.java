@@ -1,11 +1,12 @@
 package org.example.model.items;
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
+import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Monde;
 
-public abstract class Grenades_projectiles extends Arme implements Utilisable{
+public abstract class GrenadeProjectile extends Arme implements Utilisable{
     private Position position;
-    public Grenades_projectiles(String nom,int degat, int rayon) {
+    public GrenadeProjectile (String nom,int degat, int rayon) {
         super(nom,degat,rayon);
         this.position = new Position(0,0);
     }
@@ -30,13 +31,14 @@ public abstract class Grenades_projectiles extends Arme implements Utilisable{
     //Méthode explosion infligeant des dégats aux vers qui ont une position proche de la grenade
     public void explosion(Monde monde, Worm wormActif) {
         this.lancer(wormActif); // représente la position de la grenade après qu'un joueur l'est lanceé
-        int position_grenade_x = this.getPosition().getX(); // position de la grenade en x
-        int position_grenade_y = this.getPosition().getY(); // position de la grenade en y
-        for ( Worm w : ) {
-            int w_position_x =  w.getPosition().getX();
-            int w_position_y =  w.getPosition().getY();
-            boolean position_x = position_grenade_x <= w_position_x && w_position_x <= position_grenade_x + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la grenade en x
-            boolean position_y = position_grenade_y <= w_position_y && w_position_y <= position_grenade_y + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la grenade en y
+        int PositionGrenadeX = this.getPosition().getX(); // position de la grenade en x
+        int PositionGrenadeY = this.getPosition().getY(); // position de la grenade en y
+        for ( int i = 0; i < 1; i++) {
+            Worm w = new Worm(100,new Equipe("Equipe",1),10,10);
+            int WPositionX =  w.getPosition().getX();
+            int WPositionY =  w.getPosition().getY();
+            boolean position_x = PositionGrenadeX <= WPositionX && WPositionX <= PositionGrenadeX + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la grenade en x
+            boolean position_y = PositionGrenadeY <= WPositionY && WPositionY <= PositionGrenadeY + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la grenade en y
             if ( position_x && position_y ) {
                 w.subirDegats(this.getDegats());
             }

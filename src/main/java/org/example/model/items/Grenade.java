@@ -4,7 +4,7 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 
-public class Grenade extends Grenades_projectiles{
+public class Grenade extends GrenadeProjectile  {
     public static final int DEGATS = 45;
     public static final int RAYON = 5;
 

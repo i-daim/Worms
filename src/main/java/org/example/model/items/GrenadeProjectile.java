@@ -25,23 +25,34 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable{
         this.position = position;
     }
 
-    //Méthode lancer qui renvoie la position du projectile/grenade après que un joueur les lance
-    public void lancer(Worm wormActif) { }
+    //Méthode lancer qui renvoie la position du projectile/grenade après qu'un joueur les lancé
+    public void lancer(Worm wormActif, int puissance, int angle) {
+        int posVersX = wormActif.getPosition().getX();
+        int posVersY = wormActif.getPosition().getY();
+        int limite = 20;
+        if (puissance > limite) {
+            System.out.println("La puissance dépase la limite autorisée. Recommencez"); //
+            return;
+        }
+        if (angle < 0 || angle > 180) {
+            System.out.println("L'angle n'est pas autorisée. L'angle doit être entre 0 et 180 degreès. Recommencez");
+            return;
+        }
+        double positionX = puissance * Math.cos(angle); //Renvoie la position en x
+        double positionY = puissance * Math.sin(angle); //Renvoie la position en y
+        int posProjectileX = (int) (positionX + posVersX); //conversion en int pour respecter l'implémentation de la classe Position
+        int posProjectileY = (int) (positionY + posVersY);
+        this.setPosition(new Position(posProjectileX, posProjectileY)); //renvoie la nouvelle position du projectile après son lancement
+
+    }
 
     //Méthode explosion infligeant des dégats aux vers qui ont une position proche de la grenade
     public void explosion(Monde monde, Worm wormActif) {
-        this.lancer(wormActif); // représente la position de la grenade après qu'un joueur l'est lanceé
-        int PositionGrenadeX = this.getPosition().getX(); // position de la grenade en x
-        int PositionGrenadeY = this.getPosition().getY(); // position de la grenade en y
-        for ( int i = 0; i < 1; i++) {
-            Worm w = new Worm(100,new Equipe("Equipe",1),10,10);
-            int WPositionX =  w.getPosition().getX();
-            int WPositionY =  w.getPosition().getY();
-            boolean position_x = PositionGrenadeX <= WPositionX && WPositionX <= PositionGrenadeX + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la grenade en x
-            boolean position_y = PositionGrenadeY <= WPositionY && WPositionY <= PositionGrenadeY + this.getRayonExplosion(); // vérifie que le vers est dans la zone de dégats de la grenade en y
-            if ( position_x && position_y ) {
-                w.subirDegats(this.getDegats());
-            }
+        int posPiegeX = this.getPosition().getX();
+        int posPiegeY = this.getPosition().getY();
+        for ( Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())){
+            if (w == null){return;}
+            wormActif.subirDegats(this.getDegats());
         }
     }
 }

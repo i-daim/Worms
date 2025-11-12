@@ -72,5 +72,10 @@ public class Equipe {
         return count;
     }
 
+    @Override
+    public String toString() {
+        return nom + " (" + getNombreWormsVivants() + "/" + worms.length + " vivants)";
+    }
+
 
 }

@@ -63,6 +63,24 @@ public class Partie {
         return false;
     }
 
+    public boolean infligerDegatsEquipeEnnemie(int degats) {
+        if (degats < 0) {
+            degats = 0;
+        }
+
+        Equipe equipeEnnemie = getEquipeEnnemie();
+
+        for (Worm worm : equipeEnnemie.getWorms()) {
+            if (worm != null && worm.estVivant()) {
+                worm.subirDegats(degats);
+                verifierFinPartie();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 
 

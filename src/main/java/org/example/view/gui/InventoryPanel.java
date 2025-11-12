@@ -1,4 +1,4 @@
 package org.example.view.gui;
 
-public class EcranAccueil {
+public class InventoryPanel {
 }

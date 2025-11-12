@@ -3,13 +3,10 @@ package org.example;
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
-import org.example.model.jeu.Monde;
 import org.example.model.jeu.Terrain;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestWorm {
 
@@ -17,7 +14,7 @@ public class TestWorm {
     public void testDeplacementDansLimites() {
         Equipe equipe = new Equipe("Team A", 1);
         Terrain terrain = Terrain.creerTerrainVide(100, 100);
-        Worm worm = new Worm(100, equipe, 2, 2);
+        Worm worm = new Worm(equipe, 2, 2);  // ✅ Plus de pointsDeVie
 
         assertTrue(worm.deplacerDroite(terrain));
         assertEquals(7, worm.getPosition().getX());
@@ -29,7 +26,7 @@ public class TestWorm {
         Equipe equipe = new Equipe("Team B", 1);
         Terrain terrain = Terrain.creerTerrainVide(10, 10);
 
-        Worm worm = new Worm(100, equipe, 0, 0);
+        Worm worm = new Worm(equipe, 0, 0);  // ✅ Plus de pointsDeVie
         assertFalse(worm.deplacerGauche(terrain));
 
         assertEquals(0, worm.getPosition().getX());
@@ -41,9 +38,10 @@ public class TestWorm {
         Equipe equipe = new Equipe("Team C", 1);
         Terrain terrain = Terrain.creerTerrainVide(100, 100);
 
-        Worm worm = new Worm(0, equipe, 2, 2);
-        assertFalse(worm.deplacerDroite(terrain));
+        Worm worm = new Worm(equipe, 2, 2);  // ✅ Créé avec PV_INITIAUX (100)
+        worm.subirDegats(100);  // ✅ Le tuer manuellement
 
+        assertFalse(worm.deplacerDroite(terrain));
         assertEquals(2, worm.getPosition().getX());
         assertEquals(2, worm.getPosition().getY());
         assertFalse(worm.estVivant());
@@ -52,13 +50,13 @@ public class TestWorm {
     @Test
     public void testPriseDeDegats() {
         Equipe equipe = new Equipe("Team D", 1);
-        Worm worm = new Worm(10, equipe, 2, 2);
+        Worm worm = new Worm(equipe, 2, 2);  // ✅ PV_INITIAUX = 100
 
-        worm.subirDegats(5);
-        assertEquals(5, worm.getPointsDeVie());
+        worm.subirDegats(90);  // ✅ 100 - 90 = 10
+        assertEquals(10, worm.getPointsDeVie());
         assertTrue(worm.estVivant());
 
-        worm.subirDegats(10);
+        worm.subirDegats(10);  // ✅ 10 - 10 = 0
         assertEquals(0, worm.getPointsDeVie());
         assertFalse(worm.estVivant());
     }
@@ -66,7 +64,7 @@ public class TestWorm {
     @Test
     public void testSubirDegats() {
         Equipe equipe = new Equipe("Team A", 1);
-        Worm worm = new Worm(100, equipe, 50, 50);
+        Worm worm = new Worm(equipe, 50, 50);  // ✅ Plus de pointsDeVie
 
         worm.subirDegats(30);
         assertEquals(70, worm.getPointsDeVie());
@@ -76,7 +74,7 @@ public class TestWorm {
     @Test
     public void testDeplacementAvecPosition() {
         Equipe equipe = new Equipe("Team A", 1);
-        Worm worm = new Worm(100, equipe, 50, 50);
+        Worm worm = new Worm(equipe, 50, 50);  // ✅ Plus de pointsDeVie
         Terrain terrain = Terrain.creerTerrainVide(200, 200);
 
         assertTrue(worm.deplacerDroite(terrain));
@@ -97,7 +95,7 @@ public class TestWorm {
     public void testDeplacerGauche() {
         Equipe equipe = new Equipe("Team E", 1);
         Terrain terrain = Terrain.creerTerrainVide(100, 100);
-        Worm worm = new Worm(100, equipe, 10, 50);
+        Worm worm = new Worm(equipe, 10, 50);  // ✅ Plus de pointsDeVie
 
         assertTrue(worm.deplacerGauche(terrain));
         assertEquals(5, worm.getPosition().getX());
@@ -108,7 +106,7 @@ public class TestWorm {
     public void testSauter() {
         Equipe equipe = new Equipe("Team F", 1);
         Terrain terrain = Terrain.creerTerrainVide(100, 100);
-        Worm worm = new Worm(100, equipe, 50, 50);
+        Worm worm = new Worm(equipe, 50, 50);  // ✅ Plus de pointsDeVie
 
         assertTrue(worm.sauter(terrain));
         assertEquals(50, worm.getPosition().getX());
@@ -119,7 +117,9 @@ public class TestWorm {
     public void testDeplacementVerMortNeBougePas() {
         Equipe equipe = new Equipe("Team G", 1);
         Terrain terrain = Terrain.creerTerrainVide(100, 100);
-        Worm worm = new Worm(0, equipe, 5, 5);
+        Worm worm = new Worm(equipe, 5, 5);  // ✅ Plus de pointsDeVie
+
+        worm.subirDegats(100);  // ✅ Le tuer
         assertFalse(worm.deplacerDroite(terrain));
     }
 
@@ -128,25 +128,25 @@ public class TestWorm {
         Equipe equipe = new Equipe("Team H", 1);
         Terrain terrain = Terrain.creerTerrainVide(100, 100);
 
-        Worm worm = new Worm(100, equipe, 5, 5);
+        Worm worm = new Worm(equipe, 5, 5);  // ✅ Plus de pointsDeVie
         worm.subirDegats(-50);
-        assertEquals(100, worm.getPointsDeVie());
+        assertEquals(100, worm.getPointsDeVie());  // ✅ Toujours 100 (PV_INITIAUX)
     }
-   /* @Test
+
+    @Test
     public void testEquipeTousElimines() {
         Equipe equipe = new Equipe("Team A", 2);
-        Worm worm1 = new Worm(10, equipe, 10, 50);
-        Worm worm2 = new Worm(10, equipe, 20, 50);
 
-        equipe.ajouterWorm(0, worm1);
-        equipe.ajouterWorm(1, worm2);
+        // ✅ Initialiser l'équipe proprement
+        equipe.initialiserEquipe(10, 10, 50, 20);
 
-        assertFalse(equipe.tousElimines());
+        Worm[] worms = equipe.getWorms();
+        assertFalse(equipe.estEliminee());
 
-        worm1.subirDegats(100);
-        worm2.subirDegats(100);
+        // Tuer tous les worms
+        worms[0].subirDegats(100);
+        worms[1].subirDegats(100);
 
-        assertTrue(equipe.tousElimines());
+        assertTrue(equipe.estEliminee());
     }
-       */
 }

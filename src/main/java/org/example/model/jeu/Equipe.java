@@ -49,7 +49,8 @@ public class Equipe {
         do {
             indexWormActif = (indexWormActif + 1) % worms.length;
             tentatives++;
-        } while (tentatives < worms.length &&
+        } while (tentatives < worms.length
+                &&
                 (worms[indexWormActif] == null || !worms[indexWormActif].estVivant()));
     }
 

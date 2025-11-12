@@ -25,6 +25,13 @@ public class Equipe {
         return indexWormActif;
     }
 
+    public Worm getWormActif() {
+        if (indexWormActif < worms.length && worms[indexWormActif] != null) {
+            return worms[indexWormActif];
+        }
+        return null;
+    }
+
     public void initialiserEquipe(int pointsDeVie, int positionX, int positionY) {
         for (int i = 0; i < worms.length; i++) {
             // TODO : Trouver un moyen de "spawn" les Worms dans une position aléatoire (et valide)

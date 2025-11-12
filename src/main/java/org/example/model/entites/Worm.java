@@ -8,20 +8,20 @@ public class Worm extends Entite {
     private final Equipe equipe;
     private int pointsDeVie;
     private boolean vivant;
-    private boolean actif;
 
     // Champs statiques
     private static final int DEPLACEMENT_DROITE = 5;
     private static final int DEPLACEMENT_GAUCHE = -5;
     private static final int SAUT = -20;
+    private static final int PV_INITIAUX = 100;
 
 
     // Constructeur
-    public Worm(int pointsDeVie, Equipe equipe, int positionX, int positionY) {
+    public Worm(Equipe equipe, int positionX, int positionY) {
         super(positionX, positionY);
-        this.pointsDeVie = pointsDeVie;
+        this.pointsDeVie = PV_INITIAUX;
         this.equipe = equipe;
-        this.vivant = pointsDeVie > 0;
+        this.vivant = true;<
     }
 
     public int getPointsDeVie() {

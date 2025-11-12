@@ -115,6 +115,18 @@ public class VueConsole {
         }
     }
 
+    public void afficherTourPasse() {
+        System.out.println("⏭️  Tour passé");
+    }
+
+    public void afficherPartiAbandon() {
+        System.out.println("\n❌ Partie abandonnée.");
+    }
+
+    public void afficherCommandeInconnue() {
+        System.out.println("❌ Commande inconnue ! Tapez 'info' pour l'aide.");
+    }
+
     public void afficherMessage(String message) {
         System.out.println(message);
     }

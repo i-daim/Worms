@@ -3,7 +3,7 @@ package org.example.model.items;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 
-public class Arme_a_feu extends Arme implements Utilisable{
+public abstract class Arme_a_feu extends Arme implements Utilisable{
     private int nb_tir; //attribut représent le nombre de tir/balle disponible par l'arme
     public Arme_a_feu(String nom, int degats, int rayon, int nb_tir) {
         super(nom, degats, rayon);

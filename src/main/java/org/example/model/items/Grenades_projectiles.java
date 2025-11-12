@@ -3,7 +3,7 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 
-public class Grenades_projectiles extends Arme implements Utilisable{
+public abstract class Grenades_projectiles extends Arme implements Utilisable{
     private Position position;
     public Grenades_projectiles(String nom,int degat, int rayon) {
         super(nom,degat,rayon);

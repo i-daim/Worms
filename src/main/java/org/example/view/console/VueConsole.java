@@ -107,7 +107,11 @@ public class VueConsole {
         scanner.nextLine(); // Consommer le retour à la ligne
         return valeur;
     }
+    public void close() {
+        scanner.close();
+        System.out.println("\n👋 Merci d'avoir joué !");
 
 
 
-}
+
+    }

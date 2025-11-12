@@ -2,6 +2,8 @@ package org.example.view.console;
 
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
+import org.example.model.jeu.Equipe;
+import org.example.model.jeu.Partie;
 
 import java.util.Scanner;
 
@@ -17,11 +19,13 @@ public class VueConsole {
         System.out.println("  Bienvenue dans Worms Game!    ");
         System.out.println("=================================");
         System.out.println("Commandes disponibles:");
-        System.out.println("  gauche  - se déplacer à gauche");
-        System.out.println("  droite  - se déplacer à droite");
-        System.out.println("  sauter  - sauter");
-        System.out.println("  degats  - infliger des dégâts");
-        System.out.println("  exit    - quitter");
+        System.out.println("  gauche  - Déplacer le worm à gauche");
+        System.out.println("  droite  - Déplacer le worm à droite");
+        System.out.println("  sauter  - Faire sauter le worm");
+        System.out.println("  degats  - Infliger des dégâts à l'équipe ennemie");
+        System.out.println("  passer  - Passer son tour");
+        System.out.println("  info    - Afficher l'état complet de la partie");
+        System.out.println("  exit    - Quitter la partie");
         System.out.println("=================================\n");
     }
 

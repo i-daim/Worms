@@ -1,7 +1,22 @@
 package org.example.model.jeu;
 
-public class Monde {
+import org.example.model.entites.Worm;
+import java.util.ArrayList;
 
+public class Monde {
+    private final Partie partie;
+    private ArrayList<Worm> activeWorms;
+
+    public Monde(Partie partie, Terrain terrain) {
+        this.partie = partie;
+        this.activeWorms = new ArrayList<>();
+        for (Worm w : partie.getEquipe1().getWorms()) {
+            activeWorms.add(w);
+        }
+        for (Worm w : partie.getEquipe2().getWorms()) {
+            activeWorms.add(w);
+        }
+    }
 
 
 

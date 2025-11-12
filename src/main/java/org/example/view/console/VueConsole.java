@@ -63,5 +63,17 @@ public class VueConsole {
             System.out.println("\n⚠️  Aucun worm actif");
         }
     }
+    private void afficherBarreVie(int pv) {
+        int barres = pv / 10;
+        System.out.print("[");
+        for (int i = 0; i < 10; i++) {
+            if (i < barres) {
+                System.out.print("█");
+            } else {
+                System.out.print("░");
+            }
+        }
+        System.out.println("]");
+    }
 
 }

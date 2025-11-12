@@ -28,6 +28,12 @@ public class Position {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    public int distance(int x, int y) {
+        int dx = this.x - x;
+        int dy = this.y - y;
+        return (int) Math.sqrt(dx * dx + dy * dy);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

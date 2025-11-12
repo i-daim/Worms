@@ -18,6 +18,14 @@ public class Monde {
         }
     }
 
-
+    public ArrayList<Worm> wormsDansRayon(int x, int y, int rayon) {
+        ArrayList<Worm> worms = new ArrayList<>();
+        for (Worm w : this.activeWorms) {
+            if (w.getPosition().distance(x, y) <= rayon) {
+                worms.add(w);
+            }
+        }
+        return worms;
+    }
 
 }

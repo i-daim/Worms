@@ -80,77 +80,43 @@ public class Partie {
 
         return false;
     }
+    public void passerTour() {
+        finDuTour();
+    }
 
+// ========== GESTION DES TOURS ==========
 
-
-
-
-    public void tourSuivant() {
-        tourActuel++;
-
-        // Alterner entre équipes
-        if (equipeActive == equipe1) {
-            equipeActive = equipe2;
-        } else {
-            equipeActive = equipe1;
+    private void finDuTour() {
+        indexEquipeActive = (indexEquipeActive + 1) % equipes.length;
+        if (indexEquipeActive == 0) {
+            tourActuel++;
         }
-
-        // Changer de worm actif
-        changerWormActif();
-
-        // Réinitialiser le temps
+        getEquipeActive().passerAuWormSuivant();
+        if (getEquipeActive().estEliminee()) {
+            partieTerminee = true;
+            return;
+        }
         tempsRestant = TEMPS_DE_JEU;
     }
 
-    private void changerWormActif() {
-        Worm[] worms = equipeActive.getWorms();
-
-        // Trouver le prochain worm vivant
-        for (Worm worm : worms) {
-            if (worm != null && worm.estVivant()) {
-                wormActuel = worm;
-                wormActuel.setActif(true);
-                return;
-            }
-        }
-
-        // Si aucun worm vivant, l'équipe a perdu
-        wormActuel = null;
-    }
-
-    public void mettreAJour(double deltaTime) {
-        if (partieTerminee) {
-            return;
-        }
-        // faudrait ajouter une méthode mettre ajour le monde
-
-        // Gérer le temps restant
-        tempsRestant -= deltaTime;
-
-        if (tempsRestant <= 0) {
-            // Temps écoulé, passer au tour suivant
+    public void decompterTemps() {
+        if (tempsRestant > 0) {
+            tempsRestant--;
+        } else {
             finDuTour();
         }
-
-        // Vérifier si la partie est terminée
-        verifierFinPartie();
-    }
-
-    public void finDuTour() {
-        if (wormActuel != null) {
-            wormActuel.setActif(false);
-        }
-        tourSuivant();
     }
 
     private void verifierFinPartie() {
-        boolean equipe1Eliminee = equipe1.estEliminee();
-        boolean equipe2Eliminee = equipe2.estEliminee();
-
-        if (equipe1Eliminee || equipe2Eliminee) {
-            partieTerminee = true;
+        for (Equipe equipe : equipes) {
+            if (equipe.estEliminee()) {
+                partieTerminee = true;
+                return;
+            }
         }
     }
+
+
 
     public Equipe getEquipeGagnante() {
         if (!partieTerminee) {

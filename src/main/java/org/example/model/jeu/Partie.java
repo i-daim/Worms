@@ -122,6 +122,20 @@ public class Partie {
         return equipes[indexEnnemi];
     }
 
+    public Equipe getEquipe(int index) {
+        if (index >= 0 && index < equipes.length) {
+            return equipes[index];
+        }
+        return null;
+    }
+    public Equipe[] getEquipes() {
+        return equipes;
+    }
+
+    public int getIndexEquipeActive() {
+        return indexEquipeActive;
+    }
+
 
     public void reinitialiser() {
         tourActuel = 0;

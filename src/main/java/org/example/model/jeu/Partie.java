@@ -48,6 +48,15 @@ public class Partie {
         return false;
     }
 
+    public boolean deplacerWormActuelDroite() {
+        Worm worm = getWormActif();
+        if (worm != null && worm.estVivant()) {
+            return worm.deplacerDroite(terrain);
+        }
+        return false;
+    }
+
+
 
 
     public void tourSuivant() {

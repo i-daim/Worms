@@ -7,19 +7,15 @@ public class Partie {
     private static final int TEMPS_DE_JEU = 60; // secondes par tour
     private static final int NOMBRE_WORMS_PAR_EQUIPE = 4;
 
-    private static int tourActuel = 0;
-
     // Attributs
     private final Terrain terrain;
-    private final Equipe equipe1;
-    private final Equipe equipe2;
+    private final Equipe[] equipes;
 
     // Attributs variables
+    private int indexEquipeActive;
+    private int tourActuel;
     private int tempsRestant;
-    private Worm wormActuel;
-    private Equipe equipeActive;
     private boolean partieTerminee;
-    private boolean actif;
 
     // Constructeur
     public Partie(int largeurMonde, int hauteurMonde) {

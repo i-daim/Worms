@@ -91,6 +91,22 @@ public class VueConsole {
         System.out.println("\n" + "=".repeat(60));
     }
 
+    public void afficherResultatDeplacement(boolean succes, String direction) {
+        if (succes) {
+            System.out.println("✅ Déplacement à " + direction + " réussi");
+        } else {
+            System.out.println("❌ Déplacement impossible (collision ou hors limites)");
+        }
+    }
+
+    public void afficherResultatSaut(boolean succes) {
+        if (succes) {
+            System.out.println("✅ Le worm a sauté !");
+        } else {
+            System.out.println("❌ Saut impossible");
+        }
+    }
+
     public void afficherMessage(String message) {
         System.out.println(message);
     }

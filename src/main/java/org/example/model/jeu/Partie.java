@@ -37,27 +37,19 @@ public class Partie {
         equipes[1].initialiserEquipe(xDroite, 50, 150, 250);
     }
 
-    /**
-     * Initialise une équipe avec ses worms
-     */
-    private void initialiserEquipe(Equipe equipe, int positionX,
-                                   String nomEquipe) {
-        Worm[] worms = equipe.getWorms();
 
-        for (int i = 0; i < worms.length; i++) {
-            // Créer le worm à une position
-            int x = positionX + (i * 30);
-            int y = terrain.getHauteur() / 2 + (i * 50);
+    // ========== ACTIONS DE JEU ==========
 
-            worms[i] = new Worm(100, equipe, x, y); // 100 points de vie
-
-            // Faut ajouter une méthode ajouter au monde
+    public boolean deplacerWormActuelGauche() {
+        Worm worm = getWormActif();
+        if (worm != null && worm.estVivant()) {
+            return worm.deplacerGauche(terrain);
         }
+        return false;
     }
 
-    /**
-     * Passe au tour suivant
-     */
+
+
     public void tourSuivant() {
         tourActuel++;
 

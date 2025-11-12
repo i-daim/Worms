@@ -2,6 +2,8 @@ package org.example.model.jeu;
 
 import org.example.model.entites.Worm;
 
+import java.util.Random;
+
 public class Equipe {
     private final String nom;
     private final Worm[] worms;
@@ -32,10 +34,15 @@ public class Equipe {
         return null;
     }
 
-    public void initialiserEquipe(int pointsDeVie, int positionX, int positionY) {
+    public void initialiserEquipe(int zoneX, int zoneY, int largeurZone, int hauteurZone) {
+        Random random = new Random();
+
         for (int i = 0; i < worms.length; i++) {
-            // TODO : Trouver un moyen de "spawn" les Worms dans une position aléatoire (et valide)
-            worms[i] = new Worm(pointsDeVie, this,  positionX, positionY);
+            // Position aléatoire dans la zone assignée
+            int x = zoneX + random.nextInt(largeurZone);
+            int y = zoneY + random.nextInt(hauteurZone);
+
+            worms[i] = new Worm(this, x, y);
         }
     }
 

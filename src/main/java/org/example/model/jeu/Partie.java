@@ -20,8 +20,11 @@ public class Partie {
     // Constructeur
     public Partie(int largeurMonde, int hauteurMonde) {
         this.terrain = Terrain.creerTerrainVide(largeurMonde, hauteurMonde);
-        this.equipe1 = new Equipe("equipe1", NOMBRE_WORMS_PAR_EQUIPE);
-        this.equipe2 = new Equipe("equipe2", NOMBRE_WORMS_PAR_EQUIPE);
+        this.equipes = new Equipe[2];
+        this.equipes[0] = new Equipe("Équipe 1", NOMBRE_WORMS_PAR_EQUIPE);
+        this.equipes[1] = new Equipe("Équipe 2", NOMBRE_WORMS_PAR_EQUIPE);
+        this.indexEquipeActive = 0;
+        this.tourActuel = 1;
         this.tempsRestant = TEMPS_DE_JEU;
         this.partieTerminee = false;
 

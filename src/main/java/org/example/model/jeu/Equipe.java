@@ -5,10 +5,12 @@ import org.example.model.entites.Worm;
 public class Equipe {
     private final String nom;
     private final Worm[] worms;
+    private int indexWormActif;
 
     public Equipe(String nom, int tailleEquipe) {
         this.nom = nom;
         this.worms = new Worm[tailleEquipe];
+        this.indexWormActif = 0;
     }
 
     public String getNom() {
@@ -17,6 +19,10 @@ public class Equipe {
 
     public Worm[] getWorms() {
         return worms;
+    }
+
+    public int getIndexWormActif() {
+        return indexWormActif;
     }
 
     public void initialiserEquipe(int pointsDeVie, int positionX, int positionY) {

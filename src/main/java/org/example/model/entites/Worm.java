@@ -21,7 +21,7 @@ public class Worm extends Entite {
         super(positionX, positionY);
         this.pointsDeVie = PV_INITIAUX;
         this.equipe = equipe;
-        this.vivant = true;<
+        this.vivant = true;
     }
 
     public int getPointsDeVie() {
@@ -52,15 +52,6 @@ public class Worm extends Entite {
             vivant = false;
         }
     }
-
-    public void setActif(boolean actif) {
-        this.actif = actif;
-    }
-
-    public boolean estActif() {
-        return actif;
-    }
-
 
     public boolean deplacer(Position nouvellePosition, Terrain terrain) {
         if (!vivant) {

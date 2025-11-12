@@ -107,7 +107,7 @@ public class VueConsole {
             System.out.print("⚠️  Veuillez entrer un nombre valide: ");
         }
         int valeur = scanner.nextInt();
-        scanner.nextLine(); // Consommer le retour à la ligne
+        scanner.nextLine();
         return valeur;
     }
 

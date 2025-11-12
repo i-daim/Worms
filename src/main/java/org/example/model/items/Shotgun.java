@@ -3,18 +3,16 @@ package org.example.model.items;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 
-public class Shotgun extends Arme implements Utilisable {
+public class Shotgun extends Arme_a_feu{
     public static final int DEGATS = 25;
     public static final int RAYON = 5;
+    public static final int NBTIR = 2;
 
     public Shotgun(String nom) {
-        super(nom,DEGATS,RAYON);
+        super(nom,DEGATS,RAYON,NBTIR);
     }
 
     @Override
-    public void utiliser(Monde monde, Worm wormActif) {
-    }
-
     //Méthode permettant de tirer et infliger des dégâts
     public void tir(Monde monde, Worm wormActif) {
         int wormActif_position_x = wormActif.getPosition().getX();
@@ -39,5 +37,4 @@ public class Shotgun extends Arme implements Utilisable {
             }
         }
     }
-
 }

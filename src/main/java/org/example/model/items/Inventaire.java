@@ -16,6 +16,9 @@ public class Inventaire {
         }
         stockMunitions.put(u, stockMunitions.getOrDefault(u, 0) + nombre);
     }
+    public Map<Utilisable, Integer> getStockMunitions() {
+        return stockMunitions;
+    }
 
 
 }

@@ -73,6 +73,17 @@ public class Equipe {
         return count;
     }
 
+    public void resetIndex() {
+        indexWormActif = 0;
+
+        // Trouver le premier worm vivant
+        while (indexWormActif < worms.length
+                && (worms[indexWormActif] == null || !worms[indexWormActif].estVivant())) {
+            indexWormActif++;
+        }
+    }
+
+
     @Override
     public String toString() {
         return nom + " (" + getNombreWormsVivants() + "/" + worms.length + " vivants)";

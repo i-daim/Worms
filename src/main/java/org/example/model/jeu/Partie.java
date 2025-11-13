@@ -6,7 +6,7 @@ import org.example.model.entites.Worm;
 public class Partie {
     // Constantes
     private static final int TEMPS_DE_JEU = 60; // secondes par tour
-    private static final int NOMBRE_WORMS_PAR_EQUIPE = 4;
+    private static final int NOMBRE_WORMS_PAR_EQUIPE = 2;
 
     // Attributs
     private final Terrain terrain;

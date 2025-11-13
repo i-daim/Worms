@@ -67,6 +67,25 @@ public class VueConsole {
         }
     }
 
+    public void afficherTousLesWorms(Partie partie) {
+        System.out.println("\n" + "═".repeat(60));
+        System.out.println("           🐛 ÉTAT DE TOUS LES WORMS VIVANTS 🐛");
+        System.out.println("═".repeat(60));
+
+        Equipe equipeActive = partie.getEquipeActive();
+        Equipe equipeEnnemie = partie.getEquipeEnnemie();
+
+        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + equipeActive.getNom());
+        System.out.println("─".repeat(60));
+        afficherWormsEquipe(equipeActive, partie.getWormActif());
+
+        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + equipeEnnemie.getNom());
+        System.out.println("─".repeat(60));
+        afficherWormsEquipe(equipeEnnemie, null);
+
+        System.out.println("═".repeat(60) + "\n");
+    }
+
     private void afficherWormsEquipe(Equipe equipe, Worm wormActif) {
         Worm[] worms = equipe.getWorms();
         int count = 1;

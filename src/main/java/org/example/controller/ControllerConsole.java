@@ -1,73 +1,73 @@
 package org.example.controller;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Terrain;
+import org.example.model.jeu.Partie;
 import org.example.view.console.VueConsole;
 
 public class ControllerConsole {
-    private final Terrain terrain;
-    private final Worm worm;
+    private final Partie partie;
     private final VueConsole vue;
+    private boolean enCours;
 
-    public ControllerConsole(Terrain terrain, Worm worm, VueConsole vue) {
-        this.terrain = terrain;
-        this.worm = worm;
-        this.vue = vue;
+    public ControllerConsole(int largeur, int hauteur) {
+        this.partie = new Partie(largeur, hauteur);
+        this.vue = new VueConsole();
+        this.enCours = true;
     }
 
     public void demarrer() {
         vue.afficherBienvenue();
-        String commande = "";
 
-        while (!commande.equals("exit")) {
-            vue.afficherEtat(worm);
-            commande = vue.demanderCommande();
+        while (enCours && !partie.estTerminee()) {
+            vue.afficherEtatPartie(partie);
+            String commande = vue.demanderCommande();
+            traiterCommande(commande);
+        }
 
-            switch (commande) {
-                case "gauche":
-                    if (worm.deplacerGauche(terrain)) {
-                        vue.afficherMessage("✓ Déplacement vers la gauche réussi.");
-                    } else {
-                        vue.afficherMessage("✗ Impossible de se déplacer vers la gauche.");
-                    }
-                    break;
-
-                case "droite":
-                    if (worm.deplacerDroite(terrain)) {
-                        vue.afficherMessage("✓ Déplacement vers la droite réussi.");
-                    } else {
-                        vue.afficherMessage("✗ Impossible de se déplacer vers la droite.");
-                    }
-                    break;
-
-                case "sauter":
-                    if (worm.sauter(terrain)) {
-                        vue.afficherMessage("✓ Saut réussi.");
-                    } else {
-                        vue.afficherMessage("✗ Impossible de sauter.");
-                    }
-                    break;
-
-                case "degats":
-                    int pts = vue.demanderEntier();
-                    worm.subirDegats(pts);
-                    vue.afficherMessage("✓ Le worm a subi " + pts + " points de dégâts.");
-                    break;
-
-                case "exit":
-                    vue.afficherMessage("Au revoir!");
-                    break;
-
-                default:
-                    vue.afficherMessage("✗ Commande inconnue!");
-            }
-
-            if (!worm.estVivant()) {
-                vue.afficherMessage("\n💀 Le worm est mort. Fin de la partie.");
-                break;
-            }
+        if (partie.estTerminee()) {
+            vue.afficherFinPartie(partie);
         }
 
         vue.close();
+    }
+
+    private void traiterCommande(String commande) {
+        switch (commande) {
+            case "gauche":
+                boolean succesGauche = partie.deplacerWormActuelGauche();
+                vue.afficherResultatDeplacement(succesGauche, "gauche");
+                break;
+
+            case "droite":
+                boolean succesDroite = partie.deplacerWormActuelDroite();
+                vue.afficherResultatDeplacement(succesDroite, "droite");
+                break;
+
+            case "sauter":
+                boolean succesSaut = partie.sauterWormActuel();
+                vue.afficherResultatSaut(succesSaut);
+                break;
+
+            case "degats":
+                int degats = vue.demanderEntier("💥 Combien de dégâts ? ");
+                boolean degatsInfliges = partie.infligerDegatsEquipeEnnemie(degats);
+                vue.afficherResultatDegats(degatsInfliges, degats);
+                break;
+
+            case "passer":
+                partie.passerTour();
+                vue.afficherTourPasse();
+                break;
+
+            case "info":
+                break;
+
+            case "exit":
+                enCours = false;
+                vue.afficherPartiAbandon();
+                break;
+
+            default:
+                vue.afficherCommandeInconnue();
+        }
     }
 }

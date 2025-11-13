@@ -11,6 +11,11 @@ public class Inventaire {
 
     }
     public void ajouterMunition(Utilisable u, int nombre) {
-        if (nombre <= 0) {return;}
+        if (nombre <= 0) {
+            return;
+        }
         stockMunitions.put(u, stockMunitions.getOrDefault(u, 0) + nombre);
-}}
+    }
+
+
+}

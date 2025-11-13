@@ -100,11 +100,13 @@ public class Partie {
         return null;
     }
 
+
+
+// ========== GESTION DES TOURS ==========
+
     public void passerTour() {
         finDuTour();
     }
-
-// ========== GESTION DES TOURS ==========
 
     private void finDuTour() {
         indexEquipeActive = (indexEquipeActive + 1) % equipes.length;

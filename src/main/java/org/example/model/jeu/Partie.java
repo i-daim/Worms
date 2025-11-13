@@ -68,22 +68,29 @@ public class Partie {
         return false;
     }
 
-    public boolean infligerDegatsEquipeEnnemie(int degats) {
+    public String attaquerPosition(int x, int y, int degats) {
         if (degats < 0) {
             degats = 0;
         }
 
-        Equipe equipeEnnemie = getEquipeEnnemie();
+        Worm cible = trouverWormAPosition(x, y);
 
-        for (Worm worm : equipeEnnemie.getWorms()) {
-            if (worm != null && worm.estVivant()) {
-                worm.subirDegats(degats);
-                verifierFinPartie();
-                return true;
-            }
+        if (cible == null) {
+            return "Aucun worm à la position (" + x + ", " + y + ")";
         }
 
-        return false;
+        if (cible.getEquipe() == getEquipeActive()) {
+            return "Vous ne pouvez pas attaquer vos propres worms !";
+        }
+
+        cible.subirDegats(degats);
+        verifierFinPartie();
+
+        if (cible.estVivant()) {
+            return "💥 Worm ennemi touché ! Il lui reste " + cible.getPointsDeVie() + " PV";
+        } else {
+            return "💀 Worm ennemi éliminé !";
+        }
     }
     public void passerTour() {
         finDuTour();

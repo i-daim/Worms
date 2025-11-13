@@ -1,23 +1,21 @@
 package org.example.model.jeu;
 
+import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 
 public class Partie {
-    // Constantes
-    private static final int TEMPS_DE_JEU = 60; // secondes par tour
-    private static final int NOMBRE_WORMS_PAR_EQUIPE = 4;
+    private static final int TEMPS_DE_JEU = 60;
+    private static final int NOMBRE_WORMS_PAR_EQUIPE = 2;
 
-    // Attributs
     private final Terrain terrain;
     private final Equipe[] equipes;
 
-    // Attributs variables
     private int indexEquipeActive;
     private int tourActuel;
     private int tempsRestant;
     private boolean partieTerminee;
+    private boolean actionEffectuee;
 
-    // Constructeur
     public Partie(Terrain terrain) {
         this.terrain = terrain;
         this.equipes = new Equipe[2];
@@ -27,13 +25,14 @@ public class Partie {
         this.tourActuel = 1;
         this.tempsRestant = TEMPS_DE_JEU;
         this.partieTerminee = false;
+        this.actionEffectuee = false;
 
         initialiserPartie();
     }
+
     public Partie(int largeurMonde, int hauteurMonde) {
         this(Terrain.creerTerrainVide(largeurMonde, hauteurMonde));
     }
-
 
     private void initialiserPartie() {
         equipes[0].initialiserEquipe(50, 50, 150, 250);
@@ -41,74 +40,115 @@ public class Partie {
         equipes[1].initialiserEquipe(xDroite, 50, 150, 250);
     }
 
-
-    // ========== ACTIONS DE JEU ==========
-
     public boolean deplacerWormActuelGauche() {
         Worm worm = getWormActif();
-        if (worm != null && worm.estVivant()) {
-            return worm.deplacerGauche(terrain);
+        if (worm != null && worm.estVivant() && !actionEffectuee) {
+            boolean succes = worm.deplacerGauche(terrain);
+            if (succes) {
+                actionEffectuee = true;
+            }
+            return succes;
         }
         return false;
     }
 
     public boolean deplacerWormActuelDroite() {
         Worm worm = getWormActif();
-        if (worm != null && worm.estVivant()) {
-            return worm.deplacerDroite(terrain);
+        if (worm != null && worm.estVivant() && !actionEffectuee) {
+            boolean succes = worm.deplacerDroite(terrain);
+            if (succes) {
+                actionEffectuee = true;
+            }
+            return succes;
         }
         return false;
     }
 
     public boolean sauterWormActuel() {
         Worm worm = getWormActif();
-        if (worm != null && worm.estVivant()) {
-            return worm.sauter(terrain);
+        if (worm != null && worm.estVivant() && !actionEffectuee) {
+            boolean succes = worm.sauter(terrain);
+            if (succes) {
+                actionEffectuee = true;
+            }
+            return succes;
         }
         return false;
     }
 
-    public boolean infligerDegatsEquipeEnnemie(int degats) {
-        if (degats < 0) {
-            degats = 0;
+    public Worm attaquerPosition(int x, int y, int degats) {
+        if (actionEffectuee || degats < 0) {
+            return null;
         }
 
-        Equipe equipeEnnemie = getEquipeEnnemie();
+        Worm cible = trouverWormAPosition(x, y);
+        if (cible != null) {
+            cible.subirDegats(degats);
+            verifierFinPartie();
+            actionEffectuee = true;
+        }
+        return cible;
+    }
 
-        for (Worm worm : equipeEnnemie.getWorms()) {
+    private Worm trouverWormAPosition(int x, int y) {
+        for (Equipe equipe : equipes) {
+            for (Worm worm : equipe.getWorms()) {
+                if (worm != null && worm.estVivant()) {
+                    Position pos = worm.getPosition();
+                    if (pos.getX() == x && pos.getY() == y) {
+                        return worm;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public void passerTour() {
+        actionEffectuee = false;
+
+        getEquipeActive().passerAuWormSuivant();
+
+        if (tousLesWormsOntJoue()) {
+            changerEquipe();
+        }
+
+        tempsRestant = TEMPS_DE_JEU;
+    }
+
+    private boolean tousLesWormsOntJoue() {
+        Equipe equipe = getEquipeActive();
+        int count = 0;
+
+        for (Worm worm : equipe.getWorms()) {
             if (worm != null && worm.estVivant()) {
-                worm.subirDegats(degats);
-                verifierFinPartie();
-                return true;
+                count++;
             }
         }
 
-        return false;
-    }
-    public void passerTour() {
-        finDuTour();
+        return count <= 1 || equipe.getIndexWormActif() == 0;
     }
 
-// ========== GESTION DES TOURS ==========
-
-    private void finDuTour() {
+    private void changerEquipe() {
         indexEquipeActive = (indexEquipeActive + 1) % equipes.length;
+
         if (indexEquipeActive == 0) {
             tourActuel++;
         }
-        getEquipeActive().passerAuWormSuivant();
+
         if (getEquipeActive().estEliminee()) {
             partieTerminee = true;
             return;
         }
-        tempsRestant = TEMPS_DE_JEU;
+
+        getEquipeActive().resetIndex();
     }
 
     public void decompterTemps() {
         if (tempsRestant > 0) {
             tempsRestant--;
         } else {
-            finDuTour();
+            passerTour();
         }
     }
 
@@ -121,14 +161,14 @@ public class Partie {
         }
     }
 
-    // ========== GETTERS ==========
-
     public Terrain getTerrain() {
         return terrain;
     }
+
     public Equipe getEquipeActive() {
         return equipes[indexEquipeActive];
     }
+
     public Equipe getEquipeEnnemie() {
         int indexEnnemi = (indexEquipeActive + 1) % equipes.length;
         return equipes[indexEnnemi];
@@ -140,6 +180,7 @@ public class Partie {
         }
         return null;
     }
+
     public Equipe[] getEquipes() {
         return equipes;
     }
@@ -147,6 +188,7 @@ public class Partie {
     public int getIndexEquipeActive() {
         return indexEquipeActive;
     }
+
     public Worm getWormActif() {
         return getEquipeActive().getWormActif();
     }
@@ -158,6 +200,7 @@ public class Partie {
     public int getTempsRestant() {
         return tempsRestant;
     }
+
     public boolean estTerminee() {
         return partieTerminee;
     }
@@ -175,12 +218,17 @@ public class Partie {
 
         return null;
     }
+
     public int getNombreWormsVivants() {
         int total = 0;
         for (Equipe equipe : equipes) {
             total += equipe.getNombreWormsVivants();
         }
         return total;
+    }
+
+    public boolean actionDejaEffectuee() {
+        return actionEffectuee;
     }
 
     @Override

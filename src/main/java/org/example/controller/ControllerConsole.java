@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.entites.Worm;
 import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
 import org.example.view.console.VueConsole;
@@ -39,20 +40,40 @@ public class ControllerConsole {
     private void traiterCommande(String commande) {
         switch (commande) {
             case "gauche":
-                vue.afficherResultatDeplacement(partie.deplacerWormActuelGauche(), "gauche");
+                boolean reussiteG = partie.deplacerWormActuelGauche();
+                vue.afficherResultatDeplacement(reussiteG, "gauche");
+                if (reussiteG) {
+                    partie.passerTour();
+                }
                 break;
 
             case "droite":
-                vue.afficherResultatDeplacement(partie.deplacerWormActuelDroite(), "droite");
+                boolean reussiteD = partie.deplacerWormActuelDroite();
+                vue.afficherResultatDeplacement(reussiteD, "droite");
+                if (reussiteD) {
+                    partie.passerTour();
+                }
                 break;
 
             case "sauter":
-                vue.afficherResultatSaut(partie.sauterWormActuel());
+                boolean reussiteS = partie.sauterWormActuel();
+                vue.afficherResultatSaut(reussiteS);
+                if (reussiteS) {
+                    partie.passerTour();
+                }
                 break;
 
-            case "degats":
-                int degats = vue.demanderEntier("💥 Dégâts ? ");
-                vue.afficherResultatDegats(partie.infligerDegatsEquipeEnnemie(degats), degats);
+            case "attaquer":
+                int degats = vue.demanderEntier("💥 Combien de dégâts ? ");
+                int x = vue.demanderEntier("🎯 Coordonnée X de la cible : ");
+                int y = vue.demanderEntier("🎯 Coordonnée Y de la cible : ");
+
+                Worm cible = partie.attaquerPosition(x, y, degats);
+                vue.afficherResultatAttaque(cible, x, y, partie.getEquipeActive());
+
+                if (cible != null) {
+                    partie.passerTour();
+                }
                 break;
 
             case "passer":

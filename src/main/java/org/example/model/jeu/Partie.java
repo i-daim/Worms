@@ -68,7 +68,7 @@ public class Partie {
         return false;
     }
 
-    public String attaquerPosition(int x, int y, int degats) {
+    public Worm attaquerPosition(int x, int y, int degats) {
         if (degats < 0) {
             degats = 0;
         }
@@ -76,22 +76,15 @@ public class Partie {
         Worm cible = trouverWormAPosition(x, y);
 
         if (cible == null) {
-            return "Aucun worm à la position (" + x + ", " + y + ")";
-        }
-
-        if (cible.getEquipe() == getEquipeActive()) {
-            return "Vous ne pouvez pas attaquer vos propres worms !";
+            return null;
         }
 
         cible.subirDegats(degats);
         verifierFinPartie();
 
-        if (cible.estVivant()) {
-            return "💥 Worm ennemi touché ! Il lui reste " + cible.getPointsDeVie() + " PV";
-        } else {
-            return "💀 Worm ennemi éliminé !";
-        }
+        return cible;
     }
+
     public void passerTour() {
         finDuTour();
     }

@@ -60,6 +60,10 @@ public class ControllerConsole {
                 vue.afficherTourPasse();
                 break;
 
+            case "worms":
+                vue.afficherTousLesWorms(partie);
+                break;
+
             case "map":
                 vue.afficherTerrain(partie.getTerrain());
                 break;

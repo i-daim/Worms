@@ -40,15 +40,27 @@ public class ControllerConsole {
     private void traiterCommande(String commande) {
         switch (commande) {
             case "gauche":
-                vue.afficherResultatDeplacement(partie.deplacerWormActuelGauche(), "gauche");
+                boolean reussiteG = partie.deplacerWormActuelGauche();
+                vue.afficherResultatDeplacement(reussiteG, "gauche");
+                if (reussiteG) {
+                    partie.passerTour();
+                }
                 break;
 
             case "droite":
-                vue.afficherResultatDeplacement(partie.deplacerWormActuelDroite(), "droite");
+                boolean reussiteD = partie.deplacerWormActuelDroite();
+                vue.afficherResultatDeplacement(reussiteD, "droite");
+                if (reussiteD) {
+                    partie.passerTour();
+                }
                 break;
 
             case "sauter":
-                vue.afficherResultatSaut(partie.sauterWormActuel());
+                boolean reussiteS = partie.sauterWormActuel();
+                vue.afficherResultatSaut(reussiteS);
+                if (reussiteS) {
+                    partie.passerTour();
+                }
                 break;
 
             case "attaquer":
@@ -58,8 +70,11 @@ public class ControllerConsole {
 
                 Worm cible = partie.attaquerPosition(x, y, degats);
                 vue.afficherResultatAttaque(cible, x, y, partie.getEquipeActive());
-                break;
 
+                if (cible != null) {
+                    partie.passerTour();
+                }
+                break;
 
             case "passer":
                 partie.passerTour();

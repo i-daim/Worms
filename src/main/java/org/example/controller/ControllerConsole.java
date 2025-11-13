@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.entites.Worm;
 import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
 import org.example.view.console.VueConsole;
@@ -50,10 +51,15 @@ public class ControllerConsole {
                 vue.afficherResultatSaut(partie.sauterWormActuel());
                 break;
 
-            case "degats":
-                int degats = vue.demanderEntier("💥 Dégâts ? ");
-                vue.afficherResultatDegats(partie.infligerDegatsEquipeEnnemie(degats), degats);
+            case "attaquer":
+                int degats = vue.demanderEntier("💥 Combien de dégâts ? ");
+                int x = vue.demanderEntier("🎯 Coordonnée X de la cible : ");
+                int y = vue.demanderEntier("🎯 Coordonnée Y de la cible : ");
+
+                Worm cible = partie.attaquerPosition(x, y, degats);
+                vue.afficherResultatAttaque(cible, x, y, partie.getEquipeActive());
                 break;
+
 
             case "passer":
                 partie.passerTour();

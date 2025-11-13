@@ -25,6 +25,7 @@ public class VueConsole {
         System.out.println("  sauter  - Faire sauter le worm");
         System.out.println("  degats  - Infliger des dégâts à l'équipe ennemie");
         System.out.println("  passer  - Passer son tour");
+        System.out.println("  worms   - Afficher tous les worms vivants");
         System.out.println("  map     - Afficher la carte du terrain");
         System.out.println("  info    - Afficher l'état complet de la partie");
         System.out.println("  exit    - Quitter la partie");

@@ -155,13 +155,14 @@ public class VueConsole {
 
     private char getCharForTile(int tileId) {
         switch (tileId) {
-            case 0: return ' ';
-            case 1: return '▓';
-            case 2: return '█';
-            case 3: return '■';
+            case 0: return '.';
+            case 1: return '#';
+            case 2: return 'X';
+            case 3: return '@';
             default: return '?';
         }
     }
+
 
     public void afficherResultatDeplacement(boolean succes, String direction) {
         if (succes) {

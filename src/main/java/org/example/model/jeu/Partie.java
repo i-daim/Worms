@@ -110,16 +110,20 @@ public class Partie {
 
     private void finDuTour() {
         indexEquipeActive = (indexEquipeActive + 1) % equipes.length;
+
         if (indexEquipeActive == 0) {
             tourActuel++;
         }
-        getEquipeActive().passerAuWormSuivant();
+
         if (getEquipeActive().estEliminee()) {
             partieTerminee = true;
             return;
         }
+
+        getEquipeActive().passerAuWormSuivant();
         tempsRestant = TEMPS_DE_JEU;
     }
+
 
     public void decompterTemps() {
         if (tempsRestant > 0) {

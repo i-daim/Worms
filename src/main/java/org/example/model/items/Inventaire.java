@@ -8,9 +8,11 @@ public class Inventaire {
 
     public Inventaire() {
         this.stockMunitions = new HashMap<>();
-        // à completer : stockMunitions.put(new Bazooka(), 50);
-        // ...
+
     }
+    public void ajouterMunition(Utilisable u, int quantite) {
+        if (quantite <= 0) return;
+        stockMunitions.put(u, stockMunitions.getOrDefault(u, 0) + quantite);
 
 
-}
+    }}

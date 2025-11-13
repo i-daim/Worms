@@ -179,11 +179,30 @@ public class VueConsole {
         }
     }
 
-    public void afficherResultatDegats(boolean succes, int degats) {
-        if (succes) {
-            System.out.println("💥 " + degats + " points de dégâts infligés !");
+    public void afficherResultatAttaque(Worm cible, int x, int y, Equipe equipeActive) {
+        if (cible == null) {
+            System.out.println("❌ Aucun worm à la position (" + x + ", " + y + ")");
+            return;
+        }
+
+        boolean estAllie = (cible.getEquipe() == equipeActive);
+        boolean wormMort = !cible.estVivant();
+
+        if (estAllie) {
+            if (wormMort) {
+                System.out.println("💀 TIR AMI FATAL ! Vous avez tué votre propre worm !");
+            } else {
+                System.out.println("⚠️  TIR AMI ! Votre worm a été touché (PV restants: "
+                        + cible.getPointsDeVie() + ")");
+
+            }
         } else {
-            System.out.println("❌ Aucune cible ennemie trouvée");
+            if (wormMort) {
+                System.out.println("💀 Worm ennemi éliminé !");
+            } else {
+                System.out.println("💥 Worm ennemi touché ! Il lui reste "
+                        + cible.getPointsDeVie() + " PV");
+            }
         }
     }
 

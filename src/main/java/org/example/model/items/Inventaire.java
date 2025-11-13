@@ -19,6 +19,10 @@ public class Inventaire {
     public Map<Utilisable, Integer> getStockMunitions() {
         return stockMunitions;
     }
+    public boolean estDisponible(Utilisable u) {
+        int qte = stockMunitions.getOrDefault(u, 0);
+        return qte > 0 || qte == -1;
+    }
 
 
 }

@@ -192,13 +192,16 @@ public class VueConsole {
             if (wormMort) {
                 System.out.println("💀 TIR AMI FATAL ! Vous avez tué votre propre worm !");
             } else {
-                System.out.println("⚠️  TIR AMI ! Votre worm a été touché (PV restants: " + cible.getPointsDeVie() + ")");
+                System.out.println("⚠️  TIR AMI ! Votre worm a été touché (PV restants: "
+                        + cible.getPointsDeVie() + ")");
+
             }
         } else {
             if (wormMort) {
                 System.out.println("💀 Worm ennemi éliminé !");
             } else {
-                System.out.println("💥 Worm ennemi touché ! Il lui reste " + cible.getPointsDeVie() + " PV");
+                System.out.println("💥 Worm ennemi touché ! Il lui reste "
+                        + cible.getPointsDeVie() + " PV");
             }
         }
     }

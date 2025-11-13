@@ -34,6 +34,6 @@ public class Inventaire {
         inv.ajouterMunition(new MineAntichar("Mine anti-char"), 50);
         inv.ajouterMunition(new PiqueVer("Pique vert"), 50);
         inv.ajouterMunition(new Shotgun("Shotgun"), 50);
-        inv.ajouterMunition(new Uzi("Uzi"), 50);}
-
+        inv.ajouterMunition(new Uzi("Uzi"), 50);
+    }
 }

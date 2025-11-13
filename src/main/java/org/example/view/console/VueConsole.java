@@ -67,6 +67,30 @@ public class VueConsole {
         }
     }
 
+    private void afficherWormsEquipe(Equipe equipe, Worm wormActif) {
+        Worm[] worms = equipe.getWorms();
+        int count = 1;
+        boolean aucunVivant = true;
+
+        for (Worm worm : worms) {
+            if (worm != null && worm.estVivant()) {
+                aucunVivant = false;
+                Position pos = worm.getPosition();
+                String indicateur = (worm == wormActif) ? "► " : "  ";
+
+                System.out.printf("%sWorm #%d | Position: %s | PV: %3d/100 ",
+                        indicateur, count, pos, worm.getPointsDeVie());
+                afficherBarreVie(worm.getPointsDeVie());
+                count++;
+            }
+        }
+
+        if (aucunVivant) {
+            System.out.println("  ⚰️  Tous les worms sont morts");
+        }
+    }
+
+
     private void afficherBarreVie(int pv) {
         int barres = pv / 10;
         System.out.print("[");

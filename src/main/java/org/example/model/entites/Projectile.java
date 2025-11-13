@@ -2,8 +2,8 @@ package org.example.model.entites;
 
 public abstract class Projectile {
 
-    private Position posDebut;
-    private Position posFin;
+    private final Position posDebut;
+    private final Position posFin;
     private Position posNow;
     private int vitesse;
     private boolean etat;

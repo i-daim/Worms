@@ -18,8 +18,8 @@ public class Partie {
     private boolean partieTerminee;
 
     // Constructeur
-    public Partie(int largeurMonde, int hauteurMonde) {
-        this.terrain = Terrain.creerTerrainVide(largeurMonde, hauteurMonde);
+    public Partie(Terrain terrain) {
+        this.terrain = terrain;
         this.equipes = new Equipe[2];
         this.equipes[0] = new Equipe("Équipe 1", NOMBRE_WORMS_PAR_EQUIPE);
         this.equipes[1] = new Equipe("Équipe 2", NOMBRE_WORMS_PAR_EQUIPE);
@@ -30,6 +30,10 @@ public class Partie {
 
         initialiserPartie();
     }
+    public Partie(int largeurMonde, int hauteurMonde) {
+        this(Terrain.creerTerrainVide(largeurMonde, hauteurMonde));
+    }
+
 
     private void initialiserPartie() {
         equipes[0].initialiserEquipe(50, 50, 150, 250);

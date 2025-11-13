@@ -7,7 +7,8 @@ public class Terrain {
     private final int[][] terrainType;
     private final int ligneEau;
 
-    public Terrain(int largeur, int hauteur, boolean[][] collisions, int[][] terrainType, int ligneEau) {
+    public Terrain(int largeur, int hauteur, boolean[][] collisions,
+                   int[][] terrainType, int ligneEau) {
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.collisions = collisions;

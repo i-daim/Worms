@@ -1,9 +1,9 @@
 package org.example.controller;
 
 import org.example.view.gui.MenuPanel;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class MenuController {
 
@@ -15,27 +15,26 @@ public class MenuController {
     }
 
     public void addListeners() {
-        menuPanel.addNewGameListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO : Faire en sorte de lancer la partie.
+        menuPanel.addNewGameListener(e -> {
+            try {
+                String currentPath = new File(MenuController.class
+                        .getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+
+                String consoleMainClass = "org.example.MainConsole";
+
+                new ProcessBuilder(
+                        "cmd", "/c", "start", "java", "-cp", currentPath, consoleMainClass
+                ).start();
+
+            } catch (IOException | URISyntaxException ex) {
+                ex.printStackTrace();
             }
         });
 
-        menuPanel.addLoadGameListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO : Faire en sorte de charger une partie.
-            }
+        menuPanel.addLoadGameListener(e -> {
+            // à implémenter plus tard
         });
 
-        menuPanel.addQuitterListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        menuPanel.addQuitterListener(e -> System.exit(0));
     }
-
-
 }

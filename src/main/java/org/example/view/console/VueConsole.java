@@ -25,6 +25,7 @@ public class VueConsole {
         System.out.println("  sauter  - Faire sauter le worm");
         System.out.println("  degats  - Infliger des dégâts à l'équipe ennemie");
         System.out.println("  passer  - Passer son tour");
+        System.out.println("  worms   - Afficher tous les worms vivants");
         System.out.println("  map     - Afficher la carte du terrain");
         System.out.println("  info    - Afficher l'état complet de la partie");
         System.out.println("  exit    - Quitter la partie");
@@ -65,6 +66,49 @@ public class VueConsole {
             System.out.println("\n⚠️  Aucun worm actif");
         }
     }
+
+    public void afficherTousLesWorms(Partie partie) {
+        System.out.println("\n" + "═".repeat(60));
+        System.out.println("           🐛 ÉTAT DE TOUS LES WORMS VIVANTS 🐛");
+        System.out.println("═".repeat(60));
+
+        Equipe equipeActive = partie.getEquipeActive();
+        Equipe equipeEnnemie = partie.getEquipeEnnemie();
+
+        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + equipeActive.getNom());
+        System.out.println("─".repeat(60));
+        afficherWormsEquipe(equipeActive, partie.getWormActif());
+
+        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + equipeEnnemie.getNom());
+        System.out.println("─".repeat(60));
+        afficherWormsEquipe(equipeEnnemie, null);
+
+        System.out.println("═".repeat(60) + "\n");
+    }
+
+    private void afficherWormsEquipe(Equipe equipe, Worm wormActif) {
+        Worm[] worms = equipe.getWorms();
+        int count = 1;
+        boolean aucunVivant = true;
+
+        for (Worm worm : worms) {
+            if (worm != null && worm.estVivant()) {
+                aucunVivant = false;
+                Position pos = worm.getPosition();
+                String indicateur = (worm == wormActif) ? "► " : "  ";
+
+                System.out.printf("%sWorm #%d | Position: %s | PV: %3d/100 ",
+                        indicateur, count, pos, worm.getPointsDeVie());
+                afficherBarreVie(worm.getPointsDeVie());
+                count++;
+            }
+        }
+
+        if (aucunVivant) {
+            System.out.println("  ⚰️  Tous les worms sont morts");
+        }
+    }
+
 
     private void afficherBarreVie(int pv) {
         int barres = pv / 10;

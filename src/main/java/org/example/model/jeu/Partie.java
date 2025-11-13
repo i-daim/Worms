@@ -1,5 +1,6 @@
 package org.example.model.jeu;
 
+import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 
 public class Partie {
@@ -83,6 +84,20 @@ public class Partie {
         verifierFinPartie();
 
         return cible;
+    }
+
+    private Worm trouverWormAPosition(int x, int y) {
+        for (Equipe equipe : equipes) {
+            for (Worm worm : equipe.getWorms()) {
+                if (worm != null && worm.estVivant()) {
+                    Position pos = worm.getPosition();
+                    if (pos.getX() == x && pos.getY() == y) {
+                        return worm;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public void passerTour() {

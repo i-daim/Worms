@@ -42,6 +42,7 @@ public class TestEquipe {
         Equipe a = new Equipe("TEAM A",3);
         assertEquals("TEAM A",a.getNom());
     }
+    @Test
     public void testGetWorms() {
         Equipe a = new Equipe("TEAM A",3);
         assertEquals(a.getWorms(),a.getWorms());

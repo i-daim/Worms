@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
             a.deplacer(5, 5);
             assertEquals(2, a.getY());
         }
+        @Test
         public void testEquals(){
             Position p1 = new Position(10, 20);
             Position p2 = new Position(10, 20);

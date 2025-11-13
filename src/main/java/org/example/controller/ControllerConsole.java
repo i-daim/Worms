@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.model.jeu.Partie;
+import org.example.model.jeu.Terrain;
 import org.example.view.console.VueConsole;
 
 public class ControllerConsole {
@@ -8,14 +9,19 @@ public class ControllerConsole {
     private final VueConsole vue;
     private boolean enCours;
 
-    public ControllerConsole(int largeur, int hauteur) {
-        this.partie = new Partie(largeur, hauteur);
+    public ControllerConsole(Terrain terrain) {
+        this.partie = new Partie(terrain);
         this.vue = new VueConsole();
         this.enCours = true;
     }
 
+    public ControllerConsole(int largeur, int hauteur) {
+        this(Terrain.creerTerrainVide(largeur, hauteur));
+    }
+
     public void demarrer() {
         vue.afficherBienvenue();
+        vue.afficherTerrain(partie.getTerrain());
 
         while (enCours && !partie.estTerminee()) {
             vue.afficherEtatPartie(partie);
@@ -33,24 +39,20 @@ public class ControllerConsole {
     private void traiterCommande(String commande) {
         switch (commande) {
             case "gauche":
-                boolean succesGauche = partie.deplacerWormActuelGauche();
-                vue.afficherResultatDeplacement(succesGauche, "gauche");
+                vue.afficherResultatDeplacement(partie.deplacerWormActuelGauche(), "gauche");
                 break;
 
             case "droite":
-                boolean succesDroite = partie.deplacerWormActuelDroite();
-                vue.afficherResultatDeplacement(succesDroite, "droite");
+                vue.afficherResultatDeplacement(partie.deplacerWormActuelDroite(), "droite");
                 break;
 
             case "sauter":
-                boolean succesSaut = partie.sauterWormActuel();
-                vue.afficherResultatSaut(succesSaut);
+                vue.afficherResultatSaut(partie.sauterWormActuel());
                 break;
 
             case "degats":
-                int degats = vue.demanderEntier("💥 Combien de dégâts ? ");
-                boolean degatsInfliges = partie.infligerDegatsEquipeEnnemie(degats);
-                vue.afficherResultatDegats(degatsInfliges, degats);
+                int degats = vue.demanderEntier("💥 Dégâts ? ");
+                vue.afficherResultatDegats(partie.infligerDegatsEquipeEnnemie(degats), degats);
                 break;
 
             case "passer":
@@ -58,7 +60,12 @@ public class ControllerConsole {
                 vue.afficherTourPasse();
                 break;
 
-            case "info":
+            case "worms":
+                vue.afficherTousLesWorms(partie);
+                break;
+
+            case "map":
+                vue.afficherTerrain(partie.getTerrain());
                 break;
 
             case "exit":

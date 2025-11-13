@@ -4,6 +4,7 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Partie;
+import org.example.model.jeu.Terrain;
 
 import java.util.Scanner;
 
@@ -24,6 +25,8 @@ public class VueConsole {
         System.out.println("  sauter  - Faire sauter le worm");
         System.out.println("  degats  - Infliger des dégâts à l'équipe ennemie");
         System.out.println("  passer  - Passer son tour");
+        System.out.println("  worms   - Afficher tous les worms vivants");
+        System.out.println("  map     - Afficher la carte du terrain");
         System.out.println("  info    - Afficher l'état complet de la partie");
         System.out.println("  exit    - Quitter la partie");
         System.out.println("=================================\n");
@@ -64,6 +67,49 @@ public class VueConsole {
         }
     }
 
+    public void afficherTousLesWorms(Partie partie) {
+        System.out.println("\n" + "═".repeat(60));
+        System.out.println("           🐛 ÉTAT DE TOUS LES WORMS VIVANTS 🐛");
+        System.out.println("═".repeat(60));
+
+        Equipe equipeActive = partie.getEquipeActive();
+        Equipe equipeEnnemie = partie.getEquipeEnnemie();
+
+        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + equipeActive.getNom());
+        System.out.println("─".repeat(60));
+        afficherWormsEquipe(equipeActive, partie.getWormActif());
+
+        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + equipeEnnemie.getNom());
+        System.out.println("─".repeat(60));
+        afficherWormsEquipe(equipeEnnemie, null);
+
+        System.out.println("═".repeat(60) + "\n");
+    }
+
+    private void afficherWormsEquipe(Equipe equipe, Worm wormActif) {
+        Worm[] worms = equipe.getWorms();
+        int count = 1;
+        boolean aucunVivant = true;
+
+        for (Worm worm : worms) {
+            if (worm != null && worm.estVivant()) {
+                aucunVivant = false;
+                Position pos = worm.getPosition();
+                String indicateur = (worm == wormActif) ? "► " : "  ";
+
+                System.out.printf("%sWorm #%d | Position: %s | PV: %3d/100 ",
+                        indicateur, count, pos, worm.getPointsDeVie());
+                afficherBarreVie(worm.getPointsDeVie());
+                count++;
+            }
+        }
+
+        if (aucunVivant) {
+            System.out.println("  ⚰️  Tous les worms sont morts");
+        }
+    }
+
+
     private void afficherBarreVie(int pv) {
         int barres = pv / 10;
         System.out.print("[");
@@ -89,6 +135,32 @@ public class VueConsole {
 
         afficherStatistiquesEquipes(partie);
         System.out.println("\n" + "=".repeat(60));
+    }
+
+    public void afficherTerrain(Terrain terrain) {
+        System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getLigneEau() + "):");
+
+        int hauteur = Math.min(terrain.getHauteur(), 25);
+        int largeur = Math.min(terrain.getLargeur(), 60);
+
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                int tileId = terrain.getTileId(x, y);
+                System.out.print(getCharForTile(tileId));
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    private char getCharForTile(int tileId) {
+        switch (tileId) {
+            case 0: return ' ';
+            case 1: return '▓';
+            case 2: return '█';
+            case 3: return '■';
+            default: return '?';
+        }
     }
 
     public void afficherResultatDeplacement(boolean succes, String direction) {
@@ -150,7 +222,5 @@ public class VueConsole {
     public void close() {
         scanner.close();
         System.out.println("\n👋 Merci d'avoir joué !");
-
-
     }
 }

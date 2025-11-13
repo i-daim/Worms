@@ -11,10 +11,13 @@ public class TerrainGenerateur {
 
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
-                if (y < 15) {
+                if (y < 10) {
                     terrainType[y][x] = 0;
                     collisions[y][x] = false;
-                } else if (y < Terrain.getLigneEau()) {
+                } else if (y == 10) {
+                    terrainType[y][x] = 1;
+                    collisions[y][x] = true;
+                } else if (y < 20) {
                     terrainType[y][x] = 2;
                     collisions[y][x] = true;
                 } else {
@@ -24,9 +27,14 @@ public class TerrainGenerateur {
             }
         }
 
-        for (int x = 10; x < 20; x++) {
-            terrainType[15][x] = 1;
-            collisions[15][x] = true;
+        for (int x = 15; x < 25; x++) {
+            terrainType[9][x] = 1;
+            collisions[9][x] = true;
+        }
+
+        for (int x = 30; x < 40; x++) {
+            terrainType[8][x] = 1;
+            collisions[8][x] = true;
         }
 
         return new Terrain(largeur, hauteur, collisions, terrainType);

@@ -35,9 +35,8 @@ public class Partie {
     }
 
     private void initialiserPartie() {
-        equipes[0].initialiserEquipe(50, 50, 150, 250);
-        int xDroite = terrain.getLargeur() - 200;
-        equipes[1].initialiserEquipe(xDroite, 50, 150, 250);
+        equipes[0].initialiserEquipe(5, 5, 8, 8);
+        equipes[1].initialiserEquipe(35, 5, 8, 8);
     }
 
     public boolean deplacerWormActuelGauche() {

@@ -8,20 +8,20 @@ public class Worm extends Entite {
     private final Equipe equipe;
     private int pointsDeVie;
     private boolean vivant;
-    private boolean actif;
 
     // Champs statiques
     private static final int DEPLACEMENT_DROITE = 5;
     private static final int DEPLACEMENT_GAUCHE = -5;
     private static final int SAUT = -20;
+    private static final int PV_INITIAUX = 100;
 
 
     // Constructeur
-    public Worm(int pointsDeVie, Equipe equipe, int positionX, int positionY) {
+    public Worm(Equipe equipe, int positionX, int positionY) {
         super(positionX, positionY);
-        this.pointsDeVie = pointsDeVie;
+        this.pointsDeVie = PV_INITIAUX;
         this.equipe = equipe;
-        this.vivant = pointsDeVie > 0;
+        this.vivant = true;
     }
 
     public int getPointsDeVie() {
@@ -52,15 +52,6 @@ public class Worm extends Entite {
             vivant = false;
         }
     }
-
-    public void setActif(boolean actif) {
-        this.actif = actif;
-    }
-
-    public boolean estActif() {
-        return actif;
-    }
-
 
     public boolean deplacer(Position nouvellePosition, Terrain terrain) {
         if (!vivant) {
@@ -95,14 +86,16 @@ public class Worm extends Entite {
         int x = position.getX();
         int y = position.getY();
 
-        // Vérifier que la position est dans les limites du terrain
         if (x < 0 || x >= terrain.getLargeur() || y < 0 || y >= terrain.getHauteur()) {
             return false;
         }
 
-        // Le worm peut se déplacer sur une case SANS collision (terrain vide/air)
-        // Il ne peut PAS se déplacer sur une case AVEC collision (terrain solide)
+
         return !terrain.isCollision(x, y);
+    }
+    @Override
+    public String toString() {
+        return "Worm[PV=" + pointsDeVie + ", Vivant=" + vivant + "]";
     }
 
 }

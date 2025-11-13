@@ -22,6 +22,10 @@ public class Equipe {
         return nom;
     }
 
+    public Inventaire getInventaire() {
+        return inventaire;
+    }
+
     public Worm[] getWorms() {
         return worms;
     }

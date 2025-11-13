@@ -1,13 +1,16 @@
 package org.example.model.jeu;
 
-import org.example.model.entites.Worm;
 
+import org.example.model.entites.Worm;
+import org.example.model.items.Inventaire;
 import java.util.Random;
 
 public class Equipe {
     private final String nom;
     private final Worm[] worms;
     private int indexWormActif;
+    private final Inventaire inventaire = new Inventaire();
+
 
     public Equipe(String nom, int tailleEquipe) {
         this.nom = nom;
@@ -17,6 +20,10 @@ public class Equipe {
 
     public String getNom() {
         return nom;
+    }
+
+    public Inventaire getInventaire() {
+        return inventaire;
     }
 
     public Worm[] getWorms() {

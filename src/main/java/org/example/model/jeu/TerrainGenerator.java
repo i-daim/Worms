@@ -1,39 +1,74 @@
 package org.example.model.jeu;
 
+import com.google.gson.Gson;
+
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 public class TerrainGenerator {
 
-    public static Terrain creerMapSimple() {
-        int largeur = 50;
-        int hauteur = 10;
+    private Gson gson = new Gson();
 
-        boolean[][] collisions = new boolean[hauteur][largeur];
-        int[][] terrainType = new int[hauteur][largeur];
+    private static class SimpleMap {
+        List<MapLayer> layers;
+        List<Tileset> tilesets;
+        int width;
+        int height;
+    }
 
-        for (int y = 0; y < hauteur; y++) {
-            for (int x = 0; x < largeur; x++) {
-                if (y < 5) {
-                    terrainType[y][x] = 0;
-                    collisions[y][x] = false;
-                } else if (y < 7) {
-                    terrainType[y][x] = 1;
-                    collisions[y][x] = true;
-                } else {
-                    terrainType[y][x] = 2;
-                    collisions[y][x] = true;
+    private static class MapLayer {
+        List<Integer> data;
+    }
+
+    private static class Tileset {
+        String image;
+        int tilewidth;
+        int tileheight;
+        int columns;
+    }
+
+    public Terrain chargerTerrain(String fileName) {
+
+        String filePath = "maps/" + fileName;
+
+        var is = getClass().getClassLoader().getResourceAsStream(filePath);
+
+        if (is == null) {
+            throw new RuntimeException("Fichier non trouvé : " + filePath);
+        }
+
+        try (var reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+
+            var mapData = gson.fromJson(reader, SimpleMap.class);
+
+            if (mapData.tilesets == null || mapData.layers == null
+            || mapData.tilesets.isEmpty() || mapData.layers.isEmpty()) {
+                throw new RuntimeException("Map JSON invalide");
+            }
+            Tileset tileset = mapData.tilesets.get(0);
+            MapLayer layer = mapData.layers.get(0);
+
+            int largeur = mapData.width;
+            int hauteur = mapData.height;
+            List<Integer> data1D = layer.data;
+
+            int[][] terrainType = new int[hauteur][largeur];
+            for (int y = 0; y < hauteur; y++) {
+                for (int x = 0; x < largeur; x++) {
+                    int index1D = y * largeur + x;
+                    int tileId = data1D.get(index1D);
+                    terrainType[y][x] = tileId;
                 }
             }
-        }
 
-        for (int x = 15; x < 25; x++) {
-            terrainType[3][x] = 1;
-            collisions[3][x] = true;
-        }
+            return new Terrain(largeur, hauteur, terrainType, tileset.tilewidth, tileset.tileheight, tileset.image, 1);
 
-        for (int x = 30; x < 40; x++) {
-            terrainType[2][x] = 1;
-            collisions[2][x] = true;
-        }
 
-        return new Terrain(largeur, hauteur, terrainType, 0, 0, "", 0);
+        } catch (Exception e) {
+            System.err.println("Erreur en chargeant la map");
+            e.printStackTrace();
+            return null;
+        }
     }
 }

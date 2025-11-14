@@ -15,4 +15,23 @@ public class GamePanel extends JPanel {
         this.tileManager = new TileManager(terrain);
     }
 
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+        super.paintComponent(g);
+
+        for (int y = 0; y < terrain.getHauteur(); y++) {
+            for (int x = 0; x < terrain.getLargeur(); x++) {
+                int tileId = terrain.getTileId(x, y);
+                BufferedImage tile = tileManager.getTuile(tileId);
+
+                if (tile != null) {
+                    g.drawImage(tile, x * terrain.getTileWidth(),
+                            y * terrain.getTileHeight(), this);
+                }
+            }
+        }
+
+    }
+
+
 }

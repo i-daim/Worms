@@ -8,7 +8,9 @@ public class MainConsole {
     public static void main(String[] args) {
         System.out.println("🎮 Lancement du jeu Worms...\n");
 
-        Terrain terrain = TerrainGenerator.creerMapSimple();
+        TerrainGenerator terrainGenerator = new TerrainGenerator();
+        Terrain terrain = terrainGenerator.chargerTerrain("tempMap.json");
+
         ControllerConsole controller = new ControllerConsole(terrain);
         controller.demarrer();
     }

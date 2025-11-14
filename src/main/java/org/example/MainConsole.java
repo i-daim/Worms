@@ -2,13 +2,13 @@ package org.example;
 
 import org.example.controller.ControllerConsole;
 import org.example.model.jeu.Terrain;
-import org.example.model.jeu.TerrainGenerateur;
+import org.example.model.jeu.TerrainGenerator;
 
 public class MainConsole {
     public static void main(String[] args) {
         System.out.println("🎮 Lancement du jeu Worms...\n");
 
-        Terrain terrain = TerrainGenerateur.creerMapSimple();
+        Terrain terrain = TerrainGenerator.creerMapSimple();
         ControllerConsole controller = new ControllerConsole(terrain);
         controller.demarrer();
     }

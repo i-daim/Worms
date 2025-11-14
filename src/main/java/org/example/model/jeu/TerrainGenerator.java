@@ -1,6 +1,6 @@
 package org.example.model.jeu;
 
-public class TerrainGenerateur {
+public class TerrainGenerator {
 
     public static Terrain creerMapSimple() {
         int largeur = 50;
@@ -34,6 +34,6 @@ public class TerrainGenerateur {
             collisions[2][x] = true;
         }
 
-        return new Terrain(largeur, hauteur, collisions, terrainType);
+        return new Terrain(largeur, hauteur, terrainType, 0, 0, "", 0);
     }
 }

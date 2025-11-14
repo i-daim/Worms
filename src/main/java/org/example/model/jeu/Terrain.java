@@ -42,6 +42,14 @@ public class Terrain {
         return LIGNE_EAU;
     }
 
+    public int getTileId(int x, int y) {
+        if (x < 0 || x >= largeur || y < 0 || y >= hauteur) {
+            return 0;
+        } else {
+            return terrainType[y][x];
+        }
+    }
+
     public boolean[][] setCollisions(int[][] terrainType) {
         boolean[][] collisions = new boolean[hauteur][largeur];
         for (int y = 0; y < hauteur; y++) {

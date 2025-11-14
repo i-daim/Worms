@@ -8,11 +8,22 @@ public class Terrain {
     private final boolean[][] collisions;
     private final int[][] terrainType;
 
-    public Terrain(int largeur, int hauteur, boolean[][] collisions, int[][] terrainType) {
+    private final int tileWidth;
+    private final int tileHeight;
+    private final String fileName;
+    private final int tilesetColumns;
+
+
+    public Terrain(int largeur, int hauteur, boolean[][] collisions, int[][] terrainType,
+                   int tileWidth, int tileHeight, String fileName, int tilesetColumns) {
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.collisions = collisions;
         this.terrainType = terrainType;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.fileName = fileName;
+        this.tilesetColumns = tilesetColumns;
     }
 
     public int getLargeur() {

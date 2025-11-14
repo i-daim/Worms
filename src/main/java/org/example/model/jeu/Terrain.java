@@ -63,6 +63,6 @@ public class Terrain {
     public static Terrain creerTerrainVide(int largeur, int hauteur) {
         boolean[][] collisions = new boolean[hauteur][largeur];
         int[][] terrainType = new int[hauteur][largeur];
-        return new Terrain(largeur, hauteur, collisions, terrainType);
+        return new Terrain(largeur, hauteur, collisions, terrainType, 0, 0, "", 0);
     }
 }

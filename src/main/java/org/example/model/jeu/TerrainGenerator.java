@@ -11,25 +11,24 @@ public class TerrainGenerator {
     private Gson gson = new Gson();
 
     private static class SimpleMap {
-        List<MapLayer> layers;
-        List<Tileset> tilesets;
-        int width;
-        int height;
+        private List<MapLayer> layers;
+        private List<Tileset> tilesets;
+        private int width;
+        private int height;
     }
 
     private static class MapLayer {
-        List<Integer> data;
+        private List<Integer> data;
     }
 
     private static class Tileset {
-        String image;
-        int tilewidth;
-        int tileheight;
-        int columns;
+        private String image;
+        private int tilewidth;
+        private int tileheight;
+        private int columns;
     }
 
     public Terrain chargerTerrain(String fileName) {
-
         String filePath = "maps/" + fileName;
 
         var is = getClass().getClassLoader().getResourceAsStream(filePath);
@@ -61,9 +60,8 @@ public class TerrainGenerator {
                     terrainType[y][x] = tileId;
                 }
             }
-
-            return new Terrain(largeur, hauteur, terrainType, tileset.tilewidth, tileset.tileheight, tileset.image, 1);
-
+            return new Terrain(largeur, hauteur, terrainType,
+                    tileset.tilewidth, tileset.tileheight, tileset.image, 1);
 
         } catch (Exception e) {
             System.err.println("Erreur en chargeant la map");

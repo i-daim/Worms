@@ -3,13 +3,16 @@ package org.example.controller;
 import org.example.model.jeu.Terrain;
 import org.example.model.jeu.TerrainGenerator;
 import org.example.view.gui.GamePanel;
+import org.example.view.gui.MainFrame;
 import org.example.view.gui.MenuPanel;
 
 public class MenuController {
 
+    private final MainFrame mainFrame;
     private final MenuPanel menuPanel;
 
-    public MenuController(MenuPanel menuPanel) {
+    public MenuController(MainFrame mainFrame, MenuPanel menuPanel) {
+        this.mainFrame = mainFrame;
         this.menuPanel = menuPanel;
         addListeners();
     }
@@ -19,8 +22,10 @@ public class MenuController {
             TerrainGenerator terrainGenerator = new TerrainGenerator();
             Terrain terrain = terrainGenerator.chargerTerrain("map0.json");
             GamePanel gamePanel = new GamePanel(terrain);
-            gamePanel.setVisible(true);
-            menuPanel.setVisible(false);
+
+            mainFrame.setContentPane(gamePanel);
+            mainFrame.revalidate();
+            mainFrame.repaint();
         });
 
         menuPanel.addLoadGameListener(e -> {

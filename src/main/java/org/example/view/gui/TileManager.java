@@ -28,7 +28,6 @@ public class TileManager {
             int imageWidth = image.getWidth();
             int imageHeight = image.getHeight();
 
-    }
             for (int y = 0; y < imageHeight; y += tileHeight) {
                 for (int x = 0; x < imageWidth; x += tileWidth) {
                     BufferedImage tile = image.getSubimage(x, y, tileWidth, tileHeight);
@@ -41,4 +40,9 @@ public class TileManager {
             e.printStackTrace();
         }
     }
+
+    public BufferedImage getTuile(int id) {
+        return tilesMap.get(id);
+    }
+
 }

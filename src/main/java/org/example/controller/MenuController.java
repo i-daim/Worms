@@ -1,9 +1,9 @@
 package org.example.controller;
 
+import org.example.model.jeu.Terrain;
+import org.example.model.jeu.TerrainGenerator;
+import org.example.view.gui.GamePanel;
 import org.example.view.gui.MenuPanel;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class MenuController {
 
@@ -16,19 +16,11 @@ public class MenuController {
 
     public void addListeners() {
         menuPanel.addNewGameListener(e -> {
-            try {
-                String currentPath = new File(MenuController.class
-                        .getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
-
-                String consoleMainClass = "org.example.MainConsole";
-
-                new ProcessBuilder(
-                        "cmd", "/c", "start", "java", "-cp", currentPath, consoleMainClass
-                ).start();
-
-            } catch (IOException | URISyntaxException ex) {
-                ex.printStackTrace();
-            }
+            TerrainGenerator terrainGenerator = new TerrainGenerator();
+            Terrain terrain = terrainGenerator.chargerTerrain("map0.json");
+            GamePanel gamePanel = new GamePanel(terrain);
+            gamePanel.setVisible(true);
+            menuPanel.setVisible(false);
         });
 
         menuPanel.addLoadGameListener(e -> {

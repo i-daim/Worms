@@ -14,12 +14,12 @@ public class Terrain {
     private final int tilesetColumns;
 
 
-    public Terrain(int largeur, int hauteur, boolean[][] collisions, int[][] terrainType,
+    public Terrain(int largeur, int hauteur, int[][] terrainType,
                    int tileWidth, int tileHeight, String fileName, int tilesetColumns) {
         this.largeur = largeur;
         this.hauteur = hauteur;
-        this.collisions = collisions;
         this.terrainType = terrainType;
+        this.collisions = setCollisions(terrainType);
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         this.fileName = fileName;
@@ -42,6 +42,18 @@ public class Terrain {
         return LIGNE_EAU;
     }
 
+    public boolean[][] setCollisions(int[][] terrainType) {
+        boolean[][] collisions = new boolean[hauteur][largeur];
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                if (terrainType[y][x] != 0) {
+                    collisions[y][x] = true;
+                }
+            }
+        }
+        return  collisions;
+    }
+
     public boolean isCollision(int x, int y) {
         if (x < 0 || x >= largeur || y < 0 || y >= hauteur) {
             return true;
@@ -53,16 +65,9 @@ public class Terrain {
         return y >= LIGNE_EAU;
     }
 
-    public int getTileId(int x, int y) {
-        if (x < 0 || x >= largeur || y < 0 || y >= hauteur) {
-            return 0;
-        }
-        return terrainType[y][x];
-    }
-
     public static Terrain creerTerrainVide(int largeur, int hauteur) {
         boolean[][] collisions = new boolean[hauteur][largeur];
         int[][] terrainType = new int[hauteur][largeur];
-        return new Terrain(largeur, hauteur, collisions, terrainType, 0, 0, "", 0);
+        return new Terrain(largeur, hauteur, terrainType, 0, 0, "", 0);
     }
 }

@@ -1,8 +1,6 @@
 package org.example;
 
 import org.example.controller.ControllerConsole;
-import org.example.model.jeu.Terrain;
-import org.example.model.jeu.TerrainGenerator;
 
 public class MainConsole {
     public static void main(String[] args) {

@@ -16,8 +16,10 @@ public class Partie {
     private boolean partieTerminee;
     private boolean actionEffectuee;
 
-    public Partie(Terrain terrain) {
-        this.terrain = terrain;
+    public Partie(String mapName) {
+        TerrainGenerator generator = new TerrainGenerator();
+        this.terrain = generator.chargerTerrain(mapName);
+
         this.equipes = new Equipe[2];
         this.equipes[0] = new Equipe("Équipe 1", NOMBRE_WORMS_PAR_EQUIPE);
         this.equipes[1] = new Equipe("Équipe 2", NOMBRE_WORMS_PAR_EQUIPE);

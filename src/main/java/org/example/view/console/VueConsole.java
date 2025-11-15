@@ -138,13 +138,17 @@ public class VueConsole {
     }
 
     public void afficherTerrain(Terrain terrain) {
-        System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getLigneEau() + "):");
+        System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getWaterLevel() + "):");
 
         int hauteur = Math.min(terrain.getHauteur(), 25);
         int largeur = Math.min(terrain.getLargeur(), 60);
 
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
+                if (terrain.estDansEau(y) && terrain.getTileId(x, y) == 0) {
+                    System.out.print("~");
+                    continue;
+                }
                 int tileId = terrain.getTileId(x, y);
                 System.out.print(getCharForTile(tileId));
             }

@@ -1,7 +1,7 @@
 package org.example.model.jeu;
 
 public class Terrain {
-    private static final int LIGNE_EAU = 25;
+    private static final int WATER_LEVEL = 7;
 
     private final int largeur;
     private final int hauteur;
@@ -38,8 +38,8 @@ public class Terrain {
         return terrainType;
     }
 
-    public static int getLigneEau() {
-        return LIGNE_EAU;
+    public static int getWaterLevel() {
+        return WATER_LEVEL;
     }
 
     public int getTileWidth() {
@@ -86,7 +86,7 @@ public class Terrain {
     }
 
     public boolean estDansEau(int y) {
-        return y >= LIGNE_EAU;
+        return y >= WATER_LEVEL;
     }
 
     public static Terrain creerTerrainVide(int largeur, int hauteur) {

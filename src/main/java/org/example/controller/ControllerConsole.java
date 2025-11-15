@@ -2,7 +2,6 @@ package org.example.controller;
 
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Partie;
-import org.example.model.jeu.Terrain;
 import org.example.view.console.VueConsole;
 
 public class ControllerConsole {

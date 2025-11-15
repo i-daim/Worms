@@ -32,10 +32,6 @@ public class Partie {
         initialiserPartie();
     }
 
-    public Partie(int largeurMonde, int hauteurMonde) {
-        this(Terrain.creerTerrainVide(largeurMonde, hauteurMonde));
-    }
-
     private void initialiserPartie() {
         equipes[0].initialiserEquipe(5, 5, 8, 8);
         equipes[1].initialiserEquipe(35, 5, 8, 8);

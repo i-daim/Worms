@@ -60,8 +60,8 @@ public class TerrainGenerator {
                     terrainType[y][x] = tileId;
                 }
             }
-            return new Terrain(largeur, hauteur, terrainType,
-                    tileset.tilewidth, tileset.tileheight, tileset.image, 1);
+            return new Terrain(largeur, hauteur, terrainType, tileset.tilewidth,
+                    tileset.tileheight, tileset.image, tileset.columns);
 
         } catch (Exception e) {
             System.err.println("Erreur en chargeant la map");

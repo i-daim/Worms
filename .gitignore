@@ -6,11 +6,6 @@ target/
 
 ### IntelliJ IDEA ###
 .idea/
-.idea/*
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
 *.iws
 *.iml
 *.ipr
@@ -39,3 +34,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Tiled (éditeur de maps) ###
+*.tiled*

@@ -42,6 +42,22 @@ public class Terrain {
         return LIGNE_EAU;
     }
 
+    public int getTileWidth() {
+        return tileWidth;
+    }
+
+    public int getTileHeight() {
+        return tileHeight;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public int getTilesetColumns() {
+        return tilesetColumns;
+    }
+
     public int getTileId(int x, int y) {
         if (x < 0 || x >= largeur || y < 0 || y >= hauteur) {
             return 0;

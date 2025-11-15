@@ -9,12 +9,12 @@ public class MainFrame extends JFrame {
         this.setTitle("Worms 0.5");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1280, 720);
-        this.setVisible(true);
         this.setResizable(false);
 
         MenuPanel menuPanel = new MenuPanel();
-        new MenuController(menuPanel);
+        new MenuController(this, menuPanel);
         this.setContentPane(menuPanel);
+        this.setVisible(true);
     }
 
 

@@ -1,72 +1,35 @@
 package org.example.model.jeu;
 
-import com.google.gson.Gson;
-
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.awt.image.BufferedImage;
 
 public class TerrainGenerator {
 
-    private Gson gson = new Gson();
+    public static boolean[][] creerCollisions(BufferedImage terrainImage, int tileSize) {
+        // Taille du tableau de booleans
+        int collisionWidth = terrainImage.getWidth() / tileSize;
+        int collisionHeight = terrainImage.getHeight() / tileSize;
 
-    private static class SimpleMap {
-        private List<MapLayer> layers;
-        private List<Tileset> tilesets;
-        private int width;
-        private int height;
-    }
+        boolean[][] collisions = new boolean[collisionHeight][collisionWidth];
 
-    private static class MapLayer {
-        private List<Integer> data;
-    }
+        int imageWidth = terrainImage.getWidth();
+        int imageHeight = terrainImage.getHeight();
 
-    private static class Tileset {
-        private String image;
-        private int tilewidth;
-        private int tileheight;
-        private int columns;
-    }
+        for (int y = 0; y < collisionHeight; y++) {
+            for (int x = 0; x < collisionWidth; x++) {
+                // Calcule les coordonnées du pixel au centre du tile
+                int centerX = x * tileSize + tileSize / 2;
+                int centerY = y * tileSize + tileSize / 2;
 
-    public Terrain chargerTerrain(String fileName) {
-        String filePath = "maps/" + fileName;
-
-        var is = getClass().getClassLoader().getResourceAsStream(filePath);
-
-        if (is == null) {
-            throw new RuntimeException("Fichier non trouvé : " + filePath);
-        }
-
-        try (var reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-
-            var mapData = gson.fromJson(reader, SimpleMap.class);
-
-            if (mapData.tilesets == null || mapData.layers == null
-            || mapData.tilesets.isEmpty() || mapData.layers.isEmpty()) {
-                throw new RuntimeException("Map JSON invalide");
-            }
-            Tileset tileset = mapData.tilesets.get(0);
-            MapLayer layer = mapData.layers.get(0);
-
-            int largeur = mapData.width;
-            int hauteur = mapData.height;
-            List<Integer> data1D = layer.data;
-
-            int[][] terrainType = new int[hauteur][largeur];
-            for (int y = 0; y < hauteur; y++) {
-                for (int x = 0; x < largeur; x++) {
-                    int index1D = y * largeur + x;
-                    int tileId = data1D.get(index1D);
-                    terrainType[y][x] = tileId;
+                if (centerX >= imageWidth || centerY >= imageHeight) {
+                    collisions[y][x] = false;
+                } else {
+                    // Pixel : couleur du pixel aux coordonnées (centerX,centerY)
+                    int pixel =  terrainImage.getRGB(centerX, centerY);
+                    // Vérifie si le pixel est transparent : False si il l'est
+                    collisions[y][x] = (0xff & (pixel >> 24)) > 0;
                 }
             }
-            return new Terrain(largeur, hauteur, terrainType, tileset.tilewidth,
-                    tileset.tileheight, tileset.image, tileset.columns);
-
-        } catch (Exception e) {
-            System.err.println("Erreur en chargeant la map");
-            e.printStackTrace();
-            return null;
         }
+        return collisions;
     }
 }

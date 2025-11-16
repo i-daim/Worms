@@ -145,7 +145,7 @@ public class VueConsole {
 
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
-                if (terrain.estDansEau(y) && terrain.getTileId(x, y) == 0) {
+                if (terrain.isWater(y) && terrain.getTileId(x, y) == 0) {
                     System.out.print("~");
                     continue;
                 }

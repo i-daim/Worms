@@ -85,7 +85,7 @@ public class Terrain {
         return collisions[y][x];
     }
 
-    public boolean estDansEau(int y) {
+    public boolean isWater(int y) {
         return y >= WATER_LEVEL;
     }
 

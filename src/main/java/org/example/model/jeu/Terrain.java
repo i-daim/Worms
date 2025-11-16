@@ -34,10 +34,6 @@ public class Terrain {
         return hauteur;
     }
 
-    public int[][] getTerrainType() {
-        return terrainType;
-    }
-
     public static int getWaterLevel() {
         return WATER_LEVEL;
     }

@@ -55,7 +55,7 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
             if (w == null) {
                 return;
             }
-            wormActif.subirDegats(this.getDegats());
+            wormActif.receiveDmg(this.getDegats());
         }
     }
 }

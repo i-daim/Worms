@@ -60,8 +60,8 @@ public class VueConsole {
             Position pos = worm.getPosition();
             System.out.println("\n🐛 Worm actif (" + partie.getEquipeActive().getNom() + "):");
             System.out.printf("   Position: %s\n", pos);
-            System.out.printf("   PV: %d/100 ", worm.getPointsDeVie());
-            afficherBarreVie(worm.getPointsDeVie());
+            System.out.printf("   PV: %d/100 ", worm.getHealthPoints());
+            afficherBarreVie(worm.getHealthPoints());
         } else {
             System.out.println("\n⚠️  Aucun worm actif");
         }
@@ -92,14 +92,14 @@ public class VueConsole {
         boolean aucunVivant = true;
 
         for (Worm worm : worms) {
-            if (worm != null && worm.estVivant()) {
+            if (worm != null && worm.isAlive()) {
                 aucunVivant = false;
                 Position pos = worm.getPosition();
                 String indicateur = (worm == wormActif) ? "► " : "  ";
 
                 System.out.printf("%sWorm #%d | Position: %s | PV: %3d/100 ",
-                        indicateur, count, pos, worm.getPointsDeVie());
-                afficherBarreVie(worm.getPointsDeVie());
+                        indicateur, count, pos, worm.getHealthPoints());
+                afficherBarreVie(worm.getHealthPoints());
                 count++;
             }
         }
@@ -138,13 +138,17 @@ public class VueConsole {
     }
 
     public void afficherTerrain(Terrain terrain) {
-        System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getLigneEau() + "):");
+        System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getWaterLevel() + "):");
 
-        int hauteur = Math.min(terrain.getHauteur(), 25);
-        int largeur = Math.min(terrain.getLargeur(), 60);
+        int hauteur = Math.min(terrain.getHeight(), 25);
+        int largeur = Math.min(terrain.getWidth(), 60);
 
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
+                if (terrain.isWater(y) && terrain.getTileId(x, y) == 0) {
+                    System.out.print("~");
+                    continue;
+                }
                 int tileId = terrain.getTileId(x, y);
                 System.out.print(getCharForTile(tileId));
             }
@@ -187,15 +191,15 @@ public class VueConsole {
             return;
         }
 
-        boolean estAllie = (cible.getEquipe() == equipeActive);
-        boolean wormMort = !cible.estVivant();
+        boolean estAllie = (cible.getTeam() == equipeActive);
+        boolean wormMort = !cible.isAlive();
 
         if (estAllie) {
             if (wormMort) {
                 System.out.println("💀 TIR AMI FATAL ! Vous avez tué votre propre worm !");
             } else {
                 System.out.println("⚠️  TIR AMI ! Votre worm a été touché (PV restants: "
-                        + cible.getPointsDeVie() + ")");
+                        + cible.getHealthPoints() + ")");
 
             }
         } else {
@@ -203,7 +207,7 @@ public class VueConsole {
                 System.out.println("💀 Worm ennemi éliminé !");
             } else {
                 System.out.println("💥 Worm ennemi touché ! Il lui reste "
-                        + cible.getPointsDeVie() + " PV");
+                        + cible.getHealthPoints() + " PV");
             }
         }
     }

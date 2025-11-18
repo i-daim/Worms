@@ -31,11 +31,11 @@ public class TestEquipe {
         Equipe b = new Equipe("TEAM B",3);
         b.initialiserEquipe(100,10,10,10);
         Worm[] worms = b.getWorms() ;
-        worms[0].subirDegats(100);
+        worms[0].receiveDmg(100);
         boolean estEliminee = b.estEliminee();
         assertFalse(estEliminee);
-        assertFalse(worms[0].estVivant());
-        assertTrue(worms[1].estVivant());
+        assertFalse(worms[0].isAlive());
+        assertTrue(worms[1].isAlive());
     }
     @Test
     public void testGetNom() {

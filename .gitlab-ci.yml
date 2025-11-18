@@ -36,4 +36,4 @@ build-and-test-job:
     - mvn verify
   artifacts:
     paths:
-      - target/Worms-1.0-SNAPSHOT.jar
+      - target/Worms.jar

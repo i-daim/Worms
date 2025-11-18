@@ -2,7 +2,6 @@ package org.example.controller;
 
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Partie;
-import org.example.model.jeu.Terrain;
 import org.example.view.console.VueConsole;
 
 public class ControllerConsole {
@@ -10,14 +9,10 @@ public class ControllerConsole {
     private final VueConsole vue;
     private boolean enCours;
 
-    public ControllerConsole(Terrain terrain) {
-        this.partie = new Partie(terrain);
+    public ControllerConsole(String mapName) {
+        this.partie = new Partie(mapName);
         this.vue = new VueConsole();
         this.enCours = true;
-    }
-
-    public ControllerConsole(int largeur, int hauteur) {
-        this(Terrain.creerTerrainVide(largeur, hauteur));
     }
 
     public void demarrer() {

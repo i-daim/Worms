@@ -58,12 +58,12 @@ public class Equipe {
             tentatives++;
         } while (tentatives < worms.length
                 &&
-                (worms[indexWormActif] == null || !worms[indexWormActif].estVivant()));
+                (worms[indexWormActif] == null || !worms[indexWormActif].isAlive()));
     }
 
     public boolean estEliminee() {
         for (Worm w : worms) {
-            if (w != null && w.estVivant()) {
+            if (w != null && w.isAlive()) {
                 return false;
             }
         }
@@ -73,7 +73,7 @@ public class Equipe {
     public int getNombreWormsVivants() {
         int count = 0;
         for (Worm w : worms) {
-            if (w != null && w.estVivant()) {
+            if (w != null && w.isAlive()) {
                 count++;
             }
         }
@@ -85,7 +85,7 @@ public class Equipe {
 
         // Trouver le premier worm vivant
         while (indexWormActif < worms.length
-                && (worms[indexWormActif] == null || !worms[indexWormActif].estVivant())) {
+                && (worms[indexWormActif] == null || !worms[indexWormActif].isAlive())) {
             indexWormActif++;
         }
     }

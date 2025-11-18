@@ -5,98 +5,85 @@ import org.example.model.jeu.Terrain;
 
 public class Worm extends Entite {
     // Attributs
-    private final Equipe equipe;
-    private int pointsDeVie;
-    private boolean vivant;
+    private final Equipe team;
+    private int healthPoints;
+    private boolean alive;
 
     // Champs statiques
-    private static final int DEPLACEMENT_DROITE = 5;
-    private static final int DEPLACEMENT_GAUCHE = -5;
-    private static final int SAUT = -20;
-    private static final int PV_INITIAUX = 100;
     private static final int SPEED = 5;
+    private static final int JUMP = -20;
+    private static final int INITIAL_HP = 100;
 
 
     // Constructeur
-    public Worm(Equipe equipe, int positionX, int positionY) {
-        super(positionX, positionY);
-        this.pointsDeVie = PV_INITIAUX;
-        this.equipe = equipe;
-        this.vivant = true;
+    public Worm(Equipe team, int positionX, int positionY) {
+        super(positionX, positionY, SPEED);
+        this.healthPoints = INITIAL_HP;
+        this.team = team;
+        this.alive = true;
     }
 
-    public int getPointsDeVie() {
-        return pointsDeVie;
+    public int getHealthPoints() {
+        return healthPoints;
     }
 
-    public boolean estVivant() {
-        return vivant;
+    public boolean isAlive() {
+        return alive;
     }
 
-    public Equipe getEquipe() {
-        return equipe;
+    public Equipe getTeam() {
+        return team;
     }
 
-    public void subirDegats(int degats) {
-        if (!vivant) {
+    public void receiveDmg(int damage) {
+        if (!alive) {
             return;
         }
 
-        if (degats < 0) {
-            degats = 0;
+        if (damage < 0) {
+            damage = 0;
         }
 
-        pointsDeVie -= degats;
+        healthPoints -= damage;
 
-        if (pointsDeVie <= 0) {
-            pointsDeVie = 0;
-            vivant = false;
+        if (healthPoints <= 0) {
+            healthPoints = 0;
+            alive = false;
         }
     }
 
-    public boolean deplacer(Position nouvellePosition, Terrain terrain) {
-        if (!vivant) {
+    public boolean move(Position newPosition, Terrain terrain) {
+        if (!alive) {
             return false;
         }
 
-        if (positionValide(nouvellePosition, terrain)) {
-            setPosition(nouvellePosition);
+        if (terrain.possibleMove(newPosition)) {
+            setPosition(newPosition);
             return true;
         }
 
         return false;
     }
 
-    public boolean deplacerDroite(Terrain terrain) {
-        Position nouvellePos = getPosition().deplacer(DEPLACEMENT_DROITE, 0);
-        return deplacer(nouvellePos, terrain);
+    public boolean moveRight(Terrain terrain) {
+        Position newPosition = getPosition().deplacer(SPEED, 0);
+        return move(newPosition, terrain);
     }
 
-    public boolean deplacerGauche(Terrain terrain) {
-        Position nouvellePos = getPosition().deplacer(DEPLACEMENT_GAUCHE, 0);
-        return deplacer(nouvellePos, terrain);
+    public boolean moveLeft(Terrain terrain) {
+        Position newPosition = getPosition().deplacer(-SPEED, 0);
+        return move(newPosition, terrain);
     }
 
 
-    public boolean sauter(Terrain terrain) {
-        Position nouvellePos = getPosition().deplacer(0, SAUT);
-        return deplacer(nouvellePos, terrain);
+    public boolean jump(Terrain terrain) {
+        Position newPosition = getPosition().deplacer(0, JUMP);
+        return move(newPosition, terrain);
     }
 
-    private boolean positionValide(Position position, Terrain terrain) {
-        int x = position.getX();
-        int y = position.getY();
-
-        if (x < 0 || x >= terrain.getWidth() || y < 0 || y >= terrain.getHeight()) {
-            return false;
-        }
-
-
-        return !terrain.isCollision(x, y);
-    }
     @Override
     public String toString() {
-        return "Worm[PV=" + pointsDeVie + ", Vivant=" + vivant + "]";
+        return "Worm[PV=" + healthPoints + ", Vivant=" + alive + "]";
     }
 
 }

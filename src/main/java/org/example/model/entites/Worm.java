@@ -14,6 +14,7 @@ public class Worm extends Entite {
     private static final int DEPLACEMENT_GAUCHE = -5;
     private static final int SAUT = -20;
     private static final int PV_INITIAUX = 100;
+    private static final int SPEED = 5;
 
 
     // Constructeur

@@ -4,6 +4,7 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Terrain;
+import org.example.model.jeu.TerrainGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ public class TestWorm {
     @Test
     public void testDeplacementDansLimites() {
         Equipe equipe = new Equipe("Team A", 1);
-        Terrain terrain = Terrain.creerTerrainVide(100, 100);
+        Terrain terrain = TerrainGenerator.creerTerrain("");
         Worm worm = new Worm(equipe, 2, 2);
 
         assertTrue(worm.moveRight(terrain));
@@ -24,7 +25,7 @@ public class TestWorm {
     @Test
     public void testDeplacementHorsLimite() {
         Equipe equipe = new Equipe("Team B", 1);
-        Terrain terrain = Terrain.creerTerrainVide(10, 10);
+        Terrain terrain = TerrainGenerator.creerTerrain("");
 
         Worm worm = new Worm(equipe, 0, 0);
         assertFalse(worm.moveLeft(terrain));
@@ -36,7 +37,7 @@ public class TestWorm {
     @Test
     public void testImpossibiliteDeBougerSiMort() {
         Equipe equipe = new Equipe("Team C", 1);
-        Terrain terrain = Terrain.creerTerrainVide(100, 100);
+        Terrain terrain = TerrainGenerator.creerTerrain("");
 
         Worm worm = new Worm(equipe, 2, 2);
         worm.receiveDmg(100);
@@ -74,12 +75,12 @@ public class TestWorm {
     @Test
     public void testDeplacementAvecPosition() {
         Equipe equipe = new Equipe("Team A", 1);
-        Worm worm = new Worm(equipe, 50, 50);
-        Terrain terrain = Terrain.creerTerrainVide(200, 200);
+        Worm worm = new Worm(equipe, 50, 25);
+        Terrain terrain = TerrainGenerator.creerTerrainVide(100,100);
 
         assertTrue(worm.moveRight(terrain));
         assertEquals(55, worm.getPosition().getX());
-        assertEquals(50, worm.getPosition().getY());
+        assertEquals(25, worm.getPosition().getY());
     }
 
     @Test
@@ -94,18 +95,18 @@ public class TestWorm {
     @Test
     public void testMoveLeft() {
         Equipe equipe = new Equipe("Team E", 1);
-        Terrain terrain = Terrain.creerTerrainVide(100, 100);
-        Worm worm = new Worm(equipe, 10, 50);
+        Terrain terrain = TerrainGenerator.creerTerrainVide(100, 100);
+        Worm worm = new Worm(equipe, 10, 25);
 
         assertTrue(worm.moveLeft(terrain));
         assertEquals(5, worm.getPosition().getX());
-        assertEquals(50, worm.getPosition().getY());
+        assertEquals(25, worm.getPosition().getY());
     }
 
     @Test
     public void testJump() {
         Equipe equipe = new Equipe("Team F", 1);
-        Terrain terrain = Terrain.creerTerrainVide(100, 100);
+        Terrain terrain = TerrainGenerator.creerTerrainVide(100, 100);
         Worm worm = new Worm(equipe, 50, 50);
 
         assertTrue(worm.jump(terrain));
@@ -116,7 +117,7 @@ public class TestWorm {
     @Test
     public void testDeplacementVerMortNeBougePas() {
         Equipe equipe = new Equipe("Team G", 1);
-        Terrain terrain = Terrain.creerTerrainVide(100, 100);
+        Terrain terrain = TerrainGenerator.creerTerrainVide(100, 100);
         Worm worm = new Worm(equipe, 5, 5);
 
         worm.receiveDmg(100);
@@ -126,7 +127,7 @@ public class TestWorm {
     @Test
     public void testDegatsNegatifsSontIgnores() {
         Equipe equipe = new Equipe("Team H", 1);
-        Terrain terrain = Terrain.creerTerrainVide(100, 100);
+        Terrain terrain = TerrainGenerator.creerTerrainVide(100, 100);
 
         Worm worm = new Worm(equipe, 5, 5);
         worm.receiveDmg(-50);

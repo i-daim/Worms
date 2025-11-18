@@ -19,8 +19,7 @@ public class MenuController {
 
     public void addListeners() {
         menuPanel.addNewGameListener(e -> {
-            TerrainGenerator terrainGenerator = new TerrainGenerator();
-            Terrain terrain = terrainGenerator.chargerTerrain("map0.json");
+            Terrain terrain = TerrainGenerator.creerTerrain("liberty.png");
             GamePanel gamePanel = new GamePanel(terrain);
 
             mainFrame.setContentPane(gamePanel);

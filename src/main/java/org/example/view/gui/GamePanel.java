@@ -19,8 +19,8 @@ public class GamePanel extends JPanel {
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
 
-        for (int y = 0; y < terrain.getHauteur(); y++) {
-            for (int x = 0; x < terrain.getLargeur(); x++) {
+        for (int y = 0; y < terrain.getHeight(); y++) {
+            for (int x = 0; x < terrain.getWidth(); x++) {
                 int tileId = terrain.getTileId(x, y);
                 BufferedImage tile = tileManager.getTuile(tileId);
 

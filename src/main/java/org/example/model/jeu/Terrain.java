@@ -1,10 +1,12 @@
 package org.example.model.jeu;
 
-public class Terrain {
-    private static final int LIGNE_EAU = 25;
+import org.example.model.entites.Position;
 
-    private final int largeur;
-    private final int hauteur;
+public class Terrain {
+    private static final int WATER_LEVEL = 7;
+
+    private final int width;
+    private final int height;
     private final boolean[][] collisions;
     private final int[][] terrainType;
 
@@ -14,10 +16,10 @@ public class Terrain {
     private final int tilesetColumns;
 
 
-    public Terrain(int largeur, int hauteur, int[][] terrainType,
+    public Terrain(int width, int height, int[][] terrainType,
                    int tileWidth, int tileHeight, String fileName, int tilesetColumns) {
-        this.largeur = largeur;
-        this.hauteur = hauteur;
+        this.width = width;
+        this.height = height;
         this.terrainType = terrainType;
         this.collisions = setCollisions(terrainType);
         this.tileWidth = tileWidth;
@@ -26,20 +28,16 @@ public class Terrain {
         this.tilesetColumns = tilesetColumns;
     }
 
-    public int getLargeur() {
-        return largeur;
+    public int getWidth() {
+        return width;
     }
 
-    public int getHauteur() {
-        return hauteur;
+    public int getHeight() {
+        return height;
     }
 
-    public int[][] getTerrainType() {
-        return terrainType;
-    }
-
-    public static int getLigneEau() {
-        return LIGNE_EAU;
+    public static int getWaterLevel() {
+        return WATER_LEVEL;
     }
 
     public int getTileWidth() {
@@ -59,7 +57,7 @@ public class Terrain {
     }
 
     public int getTileId(int x, int y) {
-        if (x < 0 || x >= largeur || y < 0 || y >= hauteur) {
+        if (x < 0 || x >= width || y < 0 || y >= height) {
             return 0;
         } else {
             return terrainType[y][x];
@@ -67,9 +65,9 @@ public class Terrain {
     }
 
     public boolean[][] setCollisions(int[][] terrainType) {
-        boolean[][] collisions = new boolean[hauteur][largeur];
-        for (int y = 0; y < hauteur; y++) {
-            for (int x = 0; x < largeur; x++) {
+        boolean[][] collisions = new boolean[height][width];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 if (terrainType[y][x] != 0) {
                     collisions[y][x] = true;
                 }
@@ -79,19 +77,28 @@ public class Terrain {
     }
 
     public boolean isCollision(int x, int y) {
-        if (x < 0 || x >= largeur || y < 0 || y >= hauteur) {
+        if (x < 0 || x >= width || y < 0 || y >= height) {
             return true;
         }
         return collisions[y][x];
     }
 
-    public boolean estDansEau(int y) {
-        return y >= LIGNE_EAU;
+    public boolean isWater(int y) {
+        return y >= WATER_LEVEL;
     }
 
     public static Terrain creerTerrainVide(int largeur, int hauteur) {
         boolean[][] collisions = new boolean[hauteur][largeur];
         int[][] terrainType = new int[hauteur][largeur];
         return new Terrain(largeur, hauteur, terrainType, 0, 0, "", 0);
+    }
+
+    public boolean possibleMove(Position pos) {
+        int posX = pos.getX();
+        int posY = pos.getY();
+        if (posX > width ||  posX < 0 || posY > height || posY < 0) {
+            return false;
+        }
+        return !collisions[posY][posX];
     }
 }

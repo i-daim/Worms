@@ -65,7 +65,7 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
             if (w == null) {
                 return;
             }
-            w.subirDegats(this.getDegats());
+            w.receiveDmg(this.getDegats());
             this.active = false;
         }
     }

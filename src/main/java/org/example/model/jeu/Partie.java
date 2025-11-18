@@ -39,8 +39,8 @@ public class Partie {
 
     public boolean deplacerWormActuelGauche() {
         Worm worm = getWormActif();
-        if (worm != null && worm.estVivant() && !actionEffectuee) {
-            boolean succes = worm.deplacerGauche(terrain);
+        if (worm != null && worm.isAlive() && !actionEffectuee) {
+            boolean succes = worm.moveLeft(terrain);
             if (succes) {
                 actionEffectuee = true;
             }
@@ -51,8 +51,8 @@ public class Partie {
 
     public boolean deplacerWormActuelDroite() {
         Worm worm = getWormActif();
-        if (worm != null && worm.estVivant() && !actionEffectuee) {
-            boolean succes = worm.deplacerDroite(terrain);
+        if (worm != null && worm.isAlive() && !actionEffectuee) {
+            boolean succes = worm.moveRight(terrain);
             if (succes) {
                 actionEffectuee = true;
             }
@@ -63,8 +63,8 @@ public class Partie {
 
     public boolean sauterWormActuel() {
         Worm worm = getWormActif();
-        if (worm != null && worm.estVivant() && !actionEffectuee) {
-            boolean succes = worm.sauter(terrain);
+        if (worm != null && worm.isAlive() && !actionEffectuee) {
+            boolean succes = worm.jump(terrain);
             if (succes) {
                 actionEffectuee = true;
             }
@@ -80,7 +80,7 @@ public class Partie {
 
         Worm cible = trouverWormAPosition(x, y);
         if (cible != null) {
-            cible.subirDegats(degats);
+            cible.receiveDmg(degats);
             verifierFinPartie();
             actionEffectuee = true;
         }
@@ -90,7 +90,7 @@ public class Partie {
     private Worm trouverWormAPosition(int x, int y) {
         for (Equipe equipe : equipes) {
             for (Worm worm : equipe.getWorms()) {
-                if (worm != null && worm.estVivant()) {
+                if (worm != null && worm.isAlive()) {
                     Position pos = worm.getPosition();
                     if (pos.getX() == x && pos.getY() == y) {
                         return worm;
@@ -118,7 +118,7 @@ public class Partie {
         int count = 0;
 
         for (Worm worm : equipe.getWorms()) {
-            if (worm != null && worm.estVivant()) {
+            if (worm != null && worm.isAlive()) {
                 count++;
             }
         }

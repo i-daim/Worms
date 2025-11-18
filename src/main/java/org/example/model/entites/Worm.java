@@ -86,7 +86,7 @@ public class Worm extends Entite {
         int x = position.getX();
         int y = position.getY();
 
-        if (x < 0 || x >= terrain.getLargeur() || y < 0 || y >= terrain.getHauteur()) {
+        if (x < 0 || x >= terrain.getWidth() || y < 0 || y >= terrain.getHeight()) {
             return false;
         }
 

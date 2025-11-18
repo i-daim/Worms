@@ -140,8 +140,8 @@ public class VueConsole {
     public void afficherTerrain(Terrain terrain) {
         System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getWaterLevel() + "):");
 
-        int hauteur = Math.min(terrain.getHauteur(), 25);
-        int largeur = Math.min(terrain.getLargeur(), 60);
+        int hauteur = Math.min(terrain.getHeight(), 25);
+        int largeur = Math.min(terrain.getWidth(), 60);
 
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {

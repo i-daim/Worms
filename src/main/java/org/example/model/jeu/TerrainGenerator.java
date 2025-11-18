@@ -59,4 +59,18 @@ public class TerrainGenerator {
             return null;
         }
     }
+
+    public static Terrain creerTerrainVide(int largeur, int hauteur) {
+        boolean[][] collisions = new boolean[hauteur][largeur];
+
+        int plateformeX = 3;
+        int plateformeY = hauteur / 2 - 1;
+
+        for (int y = plateformeY; y < plateformeY + 2; y++) {
+            for (int x = plateformeX; x < largeur - plateformeX; x++) {
+                collisions[y][x] = true;
+            }
+        }
+        return new Terrain(largeur, hauteur, collisions, null);
+    }
 }

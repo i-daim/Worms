@@ -87,12 +87,6 @@ public class Terrain {
         return y >= WATER_LEVEL;
     }
 
-    public static Terrain creerTerrainVide(int largeur, int hauteur) {
-        boolean[][] collisions = new boolean[hauteur][largeur];
-        int[][] terrainType = new int[hauteur][largeur];
-        return new Terrain(largeur, hauteur, terrainType, 0, 0, "", 0);
-    }
-
     public boolean possibleMove(Position pos) {
         int posX = pos.getX();
         int posY = pos.getY();

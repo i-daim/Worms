@@ -1,5 +1,7 @@
 package org.example.model.jeu;
 
+import org.example.model.entites.Position;
+
 public class Terrain {
     private static final int WATER_LEVEL = 7;
 
@@ -89,5 +91,14 @@ public class Terrain {
         boolean[][] collisions = new boolean[hauteur][largeur];
         int[][] terrainType = new int[hauteur][largeur];
         return new Terrain(largeur, hauteur, terrainType, 0, 0, "", 0);
+    }
+
+    public boolean possibleMove(Position pos) {
+        int posX = pos.getX();
+        int posY = pos.getY();
+        if (posX > width ||  posX < 0 || posY > height || posY < 0) {
+            return false;
+        }
+        return !collisions[posY][posX];
     }
 }

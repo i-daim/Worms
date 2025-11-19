@@ -9,8 +9,8 @@ public class ControllerConsole {
     private final VueConsole vue;
     private boolean enCours;
 
-    public ControllerConsole(String mapName) {
-        this.partie = new Partie(mapName);
+    public ControllerConsole() {
+        this.partie = new Partie("");
         this.vue = new VueConsole();
         this.enCours = true;
     }

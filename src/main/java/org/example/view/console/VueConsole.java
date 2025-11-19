@@ -145,28 +145,16 @@ public class VueConsole {
 
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
-                if (terrain.isWater(y) && terrain.getTileId(x, y) == 0) {
+                if (terrain.isWater(y) && !terrain.isCollision(x, y)) {
                     System.out.print("~");
                     continue;
                 }
-                int tileId = terrain.getTileId(x, y);
-                System.out.print(getCharForTile(tileId));
+                System.out.print(terrain.isCollision(x, y) ? 'X' : ' ');
             }
             System.out.println();
         }
         System.out.println();
     }
-
-    private char getCharForTile(int tileId) {
-        switch (tileId) {
-            case 0: return ' ';
-            case 1: return 'X';
-            case 2: return '~';
-            default: return '?';
-        }
-    }
-
-
 
 
     public void afficherResultatDeplacement(boolean succes, String direction) {

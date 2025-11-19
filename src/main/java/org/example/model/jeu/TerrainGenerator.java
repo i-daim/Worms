@@ -51,7 +51,7 @@ public class TerrainGenerator {
                     }
                 }
             }
-            return new Terrain(imageWidth, imageHeight, collisions, terrainImage);
+            return new Terrain(collisions, terrainImage);
 
         } catch (Exception e) {
             System.err.println(
@@ -71,6 +71,6 @@ public class TerrainGenerator {
                 collisions[y][x] = true;
             }
         }
-        return new Terrain(largeur, hauteur, collisions, null);
+        return new Terrain(collisions, null);
     }
 }

@@ -22,9 +22,13 @@ public class MenuController {
             Terrain terrain = TerrainGenerator.creerTerrain("liberty.png");
             GamePanel gamePanel = new GamePanel(terrain);
 
+            new GameController(gamePanel);
+
             mainFrame.setContentPane(gamePanel);
             mainFrame.revalidate();
             mainFrame.repaint();
+
+            gamePanel.requestFocusInWindow();
         });
 
         menuPanel.addLoadGameListener(e -> {

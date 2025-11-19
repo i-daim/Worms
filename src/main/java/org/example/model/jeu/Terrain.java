@@ -7,24 +7,28 @@ import java.awt.image.BufferedImage;
 public class Terrain {
     private static final int WATER_LEVEL = 7;
 
-    private final int width;
-    private final int height;
     private final boolean[][] collisions;
     private final BufferedImage image;
 
-    public Terrain(int width, int height, boolean[][] collisions,  BufferedImage image) {
-        this.width = width;
-        this.height = height;
+    public Terrain(boolean[][] collisions, BufferedImage image) {
         this.collisions = collisions;
         this.image = image;
     }
 
     public int getWidth() {
-        return width;
+        return image.getWidth();
     }
 
     public int getHeight() {
-        return height;
+        return image.getHeight();
+    }
+
+    public int getCollisionsWidth() {
+        return collisions[0].length;
+    }
+
+    public int getCollisionsHeight() {
+        return collisions.length;
     }
 
     public boolean[][] getCollisions() {
@@ -40,7 +44,8 @@ public class Terrain {
     }
 
     public boolean isCollision(int x, int y) {
-        if (x < 0 || x >= width || y < 0 || y >= height) {
+        if (x < 0 || x >= getCollisionsWidth()
+                || y < 0 || y >= getCollisionsHeight()) {
             return true;
         }
         return collisions[y][x];
@@ -53,7 +58,8 @@ public class Terrain {
     public boolean possibleMove(Position pos) {
         int posX = pos.getX();
         int posY = pos.getY();
-        if (posX > width ||  posX < 0 || posY > height || posY < 0) {
+        if (posX > getCollisionsWidth() ||  posX < 0
+                || posY > getCollisionsHeight() || posY < 0) {
             return false;
         }
         return !collisions[posY][posX];

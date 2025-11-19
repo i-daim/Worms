@@ -8,28 +8,17 @@ import java.awt.image.BufferedImage;
 public class GamePanel extends JPanel {
 
     private final Terrain terrain;
-    private final TileManager tileManager;
 
     public GamePanel(Terrain terrain) {
         this.terrain = terrain;
-        this.tileManager = new TileManager(terrain);
     }
 
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
 
-        for (int y = 0; y < terrain.getHeight(); y++) {
-            for (int x = 0; x < terrain.getWidth(); x++) {
-                int tileId = terrain.getTileId(x, y);
-                BufferedImage tile = tileManager.getTuile(tileId);
-
-                if (tile != null) {
-                    g.drawImage(tile, x * terrain.getTileWidth(),
-                            y * terrain.getTileHeight(), this);
-                }
-            }
-        }
+        BufferedImage terrainImage = terrain.getImage();
+        g.drawImage(terrainImage, 0, 0, this);
 
     }
 

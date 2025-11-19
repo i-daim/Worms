@@ -2,30 +2,21 @@ package org.example.model.jeu;
 
 import org.example.model.entites.Position;
 
+import java.awt.image.BufferedImage;
+
 public class Terrain {
     private static final int WATER_LEVEL = 7;
 
     private final int width;
     private final int height;
     private final boolean[][] collisions;
-    private final int[][] terrainType;
+    private final BufferedImage image;
 
-    private final int tileWidth;
-    private final int tileHeight;
-    private final String fileName;
-    private final int tilesetColumns;
-
-
-    public Terrain(int width, int height, int[][] terrainType,
-                   int tileWidth, int tileHeight, String fileName, int tilesetColumns) {
+    public Terrain(int width, int height, boolean[][] collisions,  BufferedImage image) {
         this.width = width;
         this.height = height;
-        this.terrainType = terrainType;
-        this.collisions = setCollisions(terrainType);
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
-        this.fileName = fileName;
-        this.tilesetColumns = tilesetColumns;
+        this.collisions = collisions;
+        this.image = image;
     }
 
     public int getWidth() {
@@ -36,44 +27,16 @@ public class Terrain {
         return height;
     }
 
+    public boolean[][] getCollisions() {
+        return collisions;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
     public static int getWaterLevel() {
         return WATER_LEVEL;
-    }
-
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public int getTilesetColumns() {
-        return tilesetColumns;
-    }
-
-    public int getTileId(int x, int y) {
-        if (x < 0 || x >= width || y < 0 || y >= height) {
-            return 0;
-        } else {
-            return terrainType[y][x];
-        }
-    }
-
-    public boolean[][] setCollisions(int[][] terrainType) {
-        boolean[][] collisions = new boolean[height][width];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                if (terrainType[y][x] != 0) {
-                    collisions[y][x] = true;
-                }
-            }
-        }
-        return  collisions;
     }
 
     public boolean isCollision(int x, int y) {
@@ -85,12 +48,6 @@ public class Terrain {
 
     public boolean isWater(int y) {
         return y >= WATER_LEVEL;
-    }
-
-    public static Terrain creerTerrainVide(int largeur, int hauteur) {
-        boolean[][] collisions = new boolean[hauteur][largeur];
-        int[][] terrainType = new int[hauteur][largeur];
-        return new Terrain(largeur, hauteur, terrainType, 0, 0, "", 0);
     }
 
     public boolean possibleMove(Position pos) {

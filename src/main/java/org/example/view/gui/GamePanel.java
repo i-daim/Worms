@@ -10,6 +10,7 @@ public class GamePanel extends JPanel {
 
     private final Terrain terrain;
     private int cameraX = 0;
+    private int cameraY = 0;
 
     public GamePanel(Terrain terrain) {
         this.terrain = terrain;
@@ -19,14 +20,20 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.translate(-cameraX, -cameraY);
 
         BufferedImage terrainImage = terrain.getImage();
-        g.drawImage(terrainImage, 0, 0, this);
+        g2.drawImage(terrainImage, 0, 0, this);
+
+        g2.translate(cameraX, cameraY);
 
     }
 
-    public void setCamera(int x) {
+    public void setCamera(int x, int y) {
         cameraX = x;
+        cameraY = y;
         repaint();
     }
 

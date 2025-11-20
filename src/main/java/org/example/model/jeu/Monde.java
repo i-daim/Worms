@@ -10,10 +10,10 @@ public class Monde {
     public Monde(Partie partie, Terrain terrain) {
         this.partie = partie;
         this.activeWorms = new ArrayList<>();
-        for (Worm w : partie.getEquipe(1).getWorms()) {
+        for (Worm w : partie.getTeam(1).getWorms()) {
             activeWorms.add(w);
         }
-        for (Worm w : partie.getEquipe(2).getWorms()) {
+        for (Worm w : partie.getTeam(2).getWorms()) {
             activeWorms.add(w);
         }
     }

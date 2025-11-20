@@ -19,13 +19,13 @@ public class ControllerConsole {
         vue.afficherBienvenue();
         vue.afficherTerrain(partie.getTerrain());
 
-        while (enCours && !partie.estTerminee()) {
+        while (enCours && !partie.isOver()) {
             vue.afficherEtatPartie(partie);
             String commande = vue.demanderCommande();
             traiterCommande(commande);
         }
 
-        if (partie.estTerminee()) {
+        if (partie.isOver()) {
             vue.afficherFinPartie(partie);
         }
 
@@ -38,7 +38,7 @@ public class ControllerConsole {
                 boolean reussiteG = partie.deplacerWormActuelGauche();
                 vue.afficherResultatDeplacement(reussiteG, "gauche");
                 if (reussiteG) {
-                    partie.passerTour();
+                    partie.skipRound();
                 }
                 break;
 
@@ -46,7 +46,7 @@ public class ControllerConsole {
                 boolean reussiteD = partie.deplacerWormActuelDroite();
                 vue.afficherResultatDeplacement(reussiteD, "droite");
                 if (reussiteD) {
-                    partie.passerTour();
+                    partie.skipRound();
                 }
                 break;
 
@@ -54,7 +54,7 @@ public class ControllerConsole {
                 boolean reussiteS = partie.sauterWormActuel();
                 vue.afficherResultatSaut(reussiteS);
                 if (reussiteS) {
-                    partie.passerTour();
+                    partie.skipRound();
                 }
                 break;
 
@@ -64,15 +64,15 @@ public class ControllerConsole {
                 int y = vue.demanderEntier("🎯 Coordonnée Y de la cible : ");
 
                 Worm cible = partie.attaquerPosition(x, y, degats);
-                vue.afficherResultatAttaque(cible, x, y, partie.getEquipeActive());
+                vue.afficherResultatAttaque(cible, x, y, partie.getActiveTeam());
 
                 if (cible != null) {
-                    partie.passerTour();
+                    partie.skipRound();
                 }
                 break;
 
             case "passer":
-                partie.passerTour();
+                partie.skipRound();
                 vue.afficherTourPasse();
                 break;
 

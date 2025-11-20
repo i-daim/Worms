@@ -46,19 +46,19 @@ public class VueConsole {
     private void afficherStatistiquesEquipes(Partie partie) {
         System.out.println("\n🏆 État des équipes:");
 
-        Equipe[] equipes = partie.getEquipes();
+        Equipe[] equipes = partie.getTeams();
         for (int i = 0; i < equipes.length; i++) {
-            String indicateur = (i == partie.getIndexEquipeActive()) ? "►" : " ";
+            String indicateur = (i == partie.getActiveTeamIndex()) ? "►" : " ";
             System.out.println(indicateur + "  " + equipes[i].toString());
         }
     }
 
     private void afficherWormActif(Partie partie) {
-        Worm worm = partie.getWormActif();
+        Worm worm = partie.getActiveWorm();
 
         if (worm != null) {
             Position pos = worm.getPosition();
-            System.out.println("\n🐛 Worm actif (" + partie.getEquipeActive().getNom() + "):");
+            System.out.println("\n🐛 Worm actif (" + partie.getActiveTeam().getNom() + "):");
             System.out.printf("   Position: %s\n", pos);
             System.out.printf("   PV: %d/100 ", worm.getHealthPoints());
             afficherBarreVie(worm.getHealthPoints());
@@ -72,12 +72,12 @@ public class VueConsole {
         System.out.println("           🐛 ÉTAT DE TOUS LES WORMS VIVANTS 🐛");
         System.out.println("═".repeat(60));
 
-        Equipe equipeActive = partie.getEquipeActive();
-        Equipe equipeEnnemie = partie.getEquipeEnnemie();
+        Equipe equipeActive = partie.getActiveTeam();
+        Equipe equipeEnnemie = partie.getEnnemyTeam();
 
         System.out.println("\n💚 ÉQUIPE ALLIÉE : " + equipeActive.getNom());
         System.out.println("─".repeat(60));
-        afficherWormsEquipe(equipeActive, partie.getWormActif());
+        afficherWormsEquipe(equipeActive, partie.getActiveWorm());
 
         System.out.println("\n💀 ÉQUIPE ENNEMIE : " + equipeEnnemie.getNom());
         System.out.println("─".repeat(60));
@@ -128,7 +128,7 @@ public class VueConsole {
         System.out.println("            🎉 PARTIE TERMINÉE ! 🎉");
         System.out.println("=".repeat(60));
 
-        Equipe gagnante = partie.getEquipeGagnante();
+        Equipe gagnante = partie.getWinningTeam();
         if (gagnante != null) {
             System.out.println("\n🏆 " + gagnante.getNom() + " a gagné ! 🏆\n");
         }

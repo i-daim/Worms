@@ -35,7 +35,7 @@ public class ControllerConsole {
     private void traiterCommande(String commande) {
         switch (commande) {
             case "gauche":
-                boolean reussiteG = partie.deplacerWormActuelGauche();
+                boolean reussiteG = partie.getActiveWorm().moveLeft(partie.getTerrain());
                 vue.afficherResultatDeplacement(reussiteG, "gauche");
                 if (reussiteG) {
                     partie.skipRound();
@@ -43,7 +43,7 @@ public class ControllerConsole {
                 break;
 
             case "droite":
-                boolean reussiteD = partie.deplacerWormActuelDroite();
+                boolean reussiteD = partie.getActiveWorm().moveRight(partie.getTerrain());
                 vue.afficherResultatDeplacement(reussiteD, "droite");
                 if (reussiteD) {
                     partie.skipRound();
@@ -51,7 +51,7 @@ public class ControllerConsole {
                 break;
 
             case "sauter":
-                boolean reussiteS = partie.sauterWormActuel();
+                boolean reussiteS = partie.getActiveWorm().jump(partie.getTerrain());
                 vue.afficherResultatSaut(reussiteS);
                 if (reussiteS) {
                     partie.skipRound();

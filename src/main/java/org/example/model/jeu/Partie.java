@@ -35,70 +35,6 @@ public class Partie {
         equipes[1].initialiserEquipe(35, 5, 8, 8);
     }
 
-    public boolean deplacerWormActuelGauche() {
-        Worm worm = getActiveWorm();
-        if (worm != null && worm.isAlive() && !actionDone) {
-            boolean succes = worm.moveLeft(terrain);
-            if (succes) {
-                actionDone = true;
-            }
-            return succes;
-        }
-        return false;
-    }
-
-    public boolean deplacerWormActuelDroite() {
-        Worm worm = getActiveWorm();
-        if (worm != null && worm.isAlive() && !actionDone) {
-            boolean succes = worm.moveRight(terrain);
-            if (succes) {
-                actionDone = true;
-            }
-            return succes;
-        }
-        return false;
-    }
-
-    public boolean sauterWormActuel() {
-        Worm worm = getActiveWorm();
-        if (worm != null && worm.isAlive() && !actionDone) {
-            boolean succes = worm.jump(terrain);
-            if (succes) {
-                actionDone = true;
-            }
-            return succes;
-        }
-        return false;
-    }
-
-    public Worm attaquerPosition(int x, int y, int degats) {
-        if (actionDone || degats < 0) {
-            return null;
-        }
-
-        Worm cible = trouverWormAPosition(x, y);
-        if (cible != null) {
-            cible.receiveDmg(degats);
-            checkGameOver();
-            actionDone = true;
-        }
-        return cible;
-    }
-
-    private Worm trouverWormAPosition(int x, int y) {
-        for (Equipe equipe : equipes) {
-            for (Worm worm : equipe.getWorms()) {
-                if (worm != null && worm.isAlive()) {
-                    Position pos = worm.getPosition();
-                    if (pos.getX() == x && pos.getY() == y) {
-                        return worm;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     public void skipRound() {
         actionDone = false;
 
@@ -155,6 +91,37 @@ public class Partie {
             }
         }
     }
+
+    public Worm attaquerPosition(int x, int y, int degats) {
+        if (actionDone || degats < 0) {
+            return null;
+        }
+
+        Worm cible = trouverWormAPosition(x, y);
+        if (cible != null) {
+            cible.receiveDmg(degats);
+            checkGameOver();
+            actionDone = true;
+        }
+        return cible;
+    }
+
+    private Worm trouverWormAPosition(int x, int y) {
+        for (Equipe equipe : equipes) {
+            for (Worm worm : equipe.getWorms()) {
+                if (worm != null && worm.isAlive()) {
+                    Position pos = worm.getPosition();
+                    if (pos.getX() == x && pos.getY() == y) {
+                        return worm;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /* GETTERS */
 
     public Terrain getTerrain() {
         return terrain;

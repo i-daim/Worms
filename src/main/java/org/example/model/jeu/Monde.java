@@ -18,6 +18,10 @@ public class Monde {
         }
     }
 
+    public void update(double elapsedTime) {
+
+    }
+
     public ArrayList<Worm> wormsDansRayon(int x, int y, int rayon) {
         ArrayList<Worm> worms = new ArrayList<>();
         for (Worm w : this.activeWorms) {

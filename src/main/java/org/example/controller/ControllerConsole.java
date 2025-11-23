@@ -38,7 +38,7 @@ public class ControllerConsole {
                 boolean reussiteG = partie.getActiveWorm().moveLeft(partie.getTerrain());
                 vue.afficherResultatDeplacement(reussiteG, "gauche");
                 if (reussiteG) {
-                    partie.skipRound();
+                    partie.skipTurn();
                 }
                 break;
 
@@ -46,7 +46,7 @@ public class ControllerConsole {
                 boolean reussiteD = partie.getActiveWorm().moveRight(partie.getTerrain());
                 vue.afficherResultatDeplacement(reussiteD, "droite");
                 if (reussiteD) {
-                    partie.skipRound();
+                    partie.skipTurn();
                 }
                 break;
 
@@ -54,7 +54,7 @@ public class ControllerConsole {
                 boolean reussiteS = partie.getActiveWorm().jump(partie.getTerrain());
                 vue.afficherResultatSaut(reussiteS);
                 if (reussiteS) {
-                    partie.skipRound();
+                    partie.skipTurn();
                 }
                 break;
 
@@ -67,12 +67,12 @@ public class ControllerConsole {
                 vue.afficherResultatAttaque(cible, x, y, partie.getActiveTeam());
 
                 if (cible != null) {
-                    partie.skipRound();
+                    partie.skipTurn();
                 }
                 break;
 
             case "passer":
-                partie.skipRound();
+                partie.skipTurn();
                 vue.afficherTourPasse();
                 break;
 

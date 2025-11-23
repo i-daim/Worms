@@ -12,6 +12,7 @@ public class Partie {
     private final Equipe[] equipes;
 
     private int activeTeamIndex;
+    private int activeWormIndex;
     private int currentRound;
     private int timeLeft;
     private boolean gameOver;
@@ -28,62 +29,55 @@ public class Partie {
         initializeGame();
     }
 
+    public void update(double elapsedTime) {
+        monde.update(elapsedTime);
+
+        checkGameOver();
+
+        countTimeLeft();
+    }
+
     private void initializeGame() {
         equipes[0].initialiserEquipe(5, 5, 8, 8);
         equipes[1].initialiserEquipe(35, 5, 8, 8);
 
         this.activeTeamIndex = 0;
+        this.activeWormIndex = 0;
         this.currentRound = 1;
         this.timeLeft = ROUND_TIME;
         this.gameOver = false;
         this.actionDone = false;
     }
 
-    public void skipRound() {
+    public void skipTurn() {
         actionDone = false;
 
-        getActiveTeam().passerAuWormSuivant();
-
-        if (tousLesWormsOntJoue()) {
-            nextTeam();
+        if (getTeam(0).isActiveLastWorm() && getTeam(1).isActiveLastWorm()) {
+            currentRound++;
         }
+
+        nextTurn();
 
         timeLeft = ROUND_TIME;
     }
 
-    private boolean tousLesWormsOntJoue() {
-        Equipe equipe = getActiveTeam();
-        int count = 0;
-
-        for (Worm worm : equipe.getWorms()) {
-            if (worm != null && worm.isAlive()) {
-                count++;
-            }
-        }
-
-        return count <= 1 || equipe.getIndexWormActif() == 0;
-    }
-
-    private void nextTeam() {
+    private void nextTurn() {
         activeTeamIndex = (activeTeamIndex + 1) % equipes.length;
-
-        if (activeTeamIndex == 0) {
-            currentRound++;
-        }
 
         if (getActiveTeam().estEliminee()) {
             gameOver = true;
             return;
         }
+        getActiveTeam().passerAuWormSuivant();
 
-        getActiveTeam().resetIndex();
+        activeWormIndex = getActiveTeam().getIndexWormActif();
     }
 
     public void countTimeLeft() {
         if (timeLeft > 0) {
             timeLeft--;
         } else {
-            skipRound();
+            skipTurn();
         }
     }
 

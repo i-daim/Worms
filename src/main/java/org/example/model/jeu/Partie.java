@@ -8,6 +8,7 @@ public class Partie {
     public static final int TEAM_SIZE = 2;
 
     private final Terrain terrain;
+    private final Monde monde;
     private final Equipe[] equipes;
 
     private int activeTeamIndex;
@@ -18,14 +19,11 @@ public class Partie {
 
     public Partie(String mapName) {
         this.terrain = TerrainGenerator.creerTerrain(mapName);
+        this.monde = new Monde(this, this.terrain);
+
         this.equipes = new Equipe[2];
         this.equipes[0] = new Equipe("Équipe 1", TEAM_SIZE);
         this.equipes[1] = new Equipe("Équipe 2", TEAM_SIZE);
-        this.activeTeamIndex = 0;
-        this.currentRound = 1;
-        this.timeLeft = ROUND_TIME;
-        this.gameOver = false;
-        this.actionDone = false;
 
         initializeGame();
     }
@@ -33,6 +31,12 @@ public class Partie {
     private void initializeGame() {
         equipes[0].initialiserEquipe(5, 5, 8, 8);
         equipes[1].initialiserEquipe(35, 5, 8, 8);
+
+        this.activeTeamIndex = 0;
+        this.currentRound = 1;
+        this.timeLeft = ROUND_TIME;
+        this.gameOver = false;
+        this.actionDone = false;
     }
 
     public void skipRound() {

@@ -20,11 +20,12 @@ public class Partie {
 
     public Partie(String mapName) {
         this.terrain = TerrainGenerator.creerTerrain(mapName);
-        this.monde = new Monde(this, this.terrain);
 
         this.equipes = new Equipe[2];
         this.equipes[0] = new Equipe("Équipe 1", TEAM_SIZE);
         this.equipes[1] = new Equipe("Équipe 2", TEAM_SIZE);
+
+        this.monde = new Monde(this, this.terrain);
 
         initializeGame();
     }
@@ -123,6 +124,10 @@ public class Partie {
 
     public Terrain getTerrain() {
         return terrain;
+    }
+
+    public Monde getMonde() {
+        return monde;
     }
 
     public Equipe getActiveTeam() {

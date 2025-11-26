@@ -28,4 +28,8 @@ public class Monde {
         return worms;
     }
 
+    public Terrain getTerrain() {
+        return partie.getTerrain();
+    }
+
 }

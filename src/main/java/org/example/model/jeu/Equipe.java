@@ -90,6 +90,15 @@ public class Equipe {
         }
     }
 
+    public boolean isActiveLastWorm() {
+        for (int i = indexWormActif + 1; i < worms.length; i++) {
+            if (worms[i] != null && worms[i].isAlive()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public String toString() {

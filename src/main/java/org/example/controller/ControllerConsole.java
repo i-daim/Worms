@@ -19,13 +19,13 @@ public class ControllerConsole {
         vue.afficherBienvenue();
         vue.afficherTerrain(partie.getTerrain());
 
-        while (enCours && !partie.estTerminee()) {
+        while (enCours && !partie.isOver()) {
             vue.afficherEtatPartie(partie);
             String commande = vue.demanderCommande();
             traiterCommande(commande);
         }
 
-        if (partie.estTerminee()) {
+        if (partie.isOver()) {
             vue.afficherFinPartie(partie);
         }
 
@@ -35,26 +35,26 @@ public class ControllerConsole {
     private void traiterCommande(String commande) {
         switch (commande) {
             case "gauche":
-                boolean reussiteG = partie.deplacerWormActuelGauche();
+                boolean reussiteG = partie.getActiveWorm().moveLeft(partie.getTerrain());
                 vue.afficherResultatDeplacement(reussiteG, "gauche");
                 if (reussiteG) {
-                    partie.passerTour();
+                    partie.skipTurn();
                 }
                 break;
 
             case "droite":
-                boolean reussiteD = partie.deplacerWormActuelDroite();
+                boolean reussiteD = partie.getActiveWorm().moveRight(partie.getTerrain());
                 vue.afficherResultatDeplacement(reussiteD, "droite");
                 if (reussiteD) {
-                    partie.passerTour();
+                    partie.skipTurn();
                 }
                 break;
 
             case "sauter":
-                boolean reussiteS = partie.sauterWormActuel();
+                boolean reussiteS = partie.getActiveWorm().jump(partie.getTerrain());
                 vue.afficherResultatSaut(reussiteS);
                 if (reussiteS) {
-                    partie.passerTour();
+                    partie.skipTurn();
                 }
                 break;
 
@@ -64,15 +64,15 @@ public class ControllerConsole {
                 int y = vue.demanderEntier("🎯 Coordonnée Y de la cible : ");
 
                 Worm cible = partie.attaquerPosition(x, y, degats);
-                vue.afficherResultatAttaque(cible, x, y, partie.getEquipeActive());
+                vue.afficherResultatAttaque(cible, x, y, partie.getActiveTeam());
 
                 if (cible != null) {
-                    partie.passerTour();
+                    partie.skipTurn();
                 }
                 break;
 
             case "passer":
-                partie.passerTour();
+                partie.skipTurn();
                 vue.afficherTourPasse();
                 break;
 

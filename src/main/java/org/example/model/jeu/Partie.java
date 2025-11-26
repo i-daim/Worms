@@ -4,83 +4,102 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 
 public class Partie {
-    private static final int TEMPS_DE_JEU = 60;
-    private static final int NOMBRE_WORMS_PAR_EQUIPE = 2;
+    public static final int ROUND_TIME = 60;
+    public static final int TEAM_SIZE = 2;
 
     private final Terrain terrain;
+    private final Monde monde;
     private final Equipe[] equipes;
 
-    private int indexEquipeActive;
-    private int tourActuel;
-    private int tempsRestant;
-    private boolean partieTerminee;
-    private boolean actionEffectuee;
+    private int activeTeamIndex;
+    private int activeWormIndex;
+    private int currentRound;
+    private int timeLeft;
+    private boolean gameOver;
+    private boolean actionDone;
 
     public Partie(String mapName) {
         this.terrain = TerrainGenerator.creerTerrain(mapName);
-        this.equipes = new Equipe[2];
-        this.equipes[0] = new Equipe("Équipe 1", NOMBRE_WORMS_PAR_EQUIPE);
-        this.equipes[1] = new Equipe("Équipe 2", NOMBRE_WORMS_PAR_EQUIPE);
-        this.indexEquipeActive = 0;
-        this.tourActuel = 1;
-        this.tempsRestant = TEMPS_DE_JEU;
-        this.partieTerminee = false;
-        this.actionEffectuee = false;
+        this.monde = new Monde(this, this.terrain);
 
-        initialiserPartie();
+        this.equipes = new Equipe[2];
+        this.equipes[0] = new Equipe("Équipe 1", TEAM_SIZE);
+        this.equipes[1] = new Equipe("Équipe 2", TEAM_SIZE);
+
+        initializeGame();
     }
 
-    private void initialiserPartie() {
+    public void update(double elapsedTime) {
+        monde.update(elapsedTime);
+
+        checkGameOver();
+
+        countTimeLeft();
+    }
+
+    private void initializeGame() {
         equipes[0].initialiserEquipe(5, 5, 8, 8);
         equipes[1].initialiserEquipe(35, 5, 8, 8);
+
+        this.activeTeamIndex = 0;
+        this.activeWormIndex = 0;
+        this.currentRound = 1;
+        this.timeLeft = ROUND_TIME;
+        this.gameOver = false;
+        this.actionDone = false;
     }
 
-    public boolean deplacerWormActuelGauche() {
-        Worm worm = getWormActif();
-        if (worm != null && worm.isAlive() && !actionEffectuee) {
-            boolean succes = worm.moveLeft(terrain);
-            if (succes) {
-                actionEffectuee = true;
-            }
-            return succes;
+    public void skipTurn() {
+        actionDone = false;
+
+        if (getTeam(0).isActiveLastWorm() && getTeam(1).isActiveLastWorm()) {
+            currentRound++;
         }
-        return false;
+
+        nextTurn();
+
+        timeLeft = ROUND_TIME;
     }
 
-    public boolean deplacerWormActuelDroite() {
-        Worm worm = getWormActif();
-        if (worm != null && worm.isAlive() && !actionEffectuee) {
-            boolean succes = worm.moveRight(terrain);
-            if (succes) {
-                actionEffectuee = true;
-            }
-            return succes;
+    private void nextTurn() {
+        activeTeamIndex = (activeTeamIndex + 1) % equipes.length;
+
+        if (getActiveTeam().estEliminee()) {
+            gameOver = true;
+            return;
         }
-        return false;
+        getActiveTeam().passerAuWormSuivant();
+
+        activeWormIndex = getActiveTeam().getIndexWormActif();
     }
 
-    public boolean sauterWormActuel() {
-        Worm worm = getWormActif();
-        if (worm != null && worm.isAlive() && !actionEffectuee) {
-            boolean succes = worm.jump(terrain);
-            if (succes) {
-                actionEffectuee = true;
-            }
-            return succes;
+    public void countTimeLeft() {
+        if (timeLeft > 0) {
+            timeLeft--;
+        } else {
+            skipTurn();
         }
-        return false;
+    }
+
+    private void checkGameOver() {
+        for (Equipe equipe : equipes) {
+            if (equipe.estEliminee()) {
+                gameOver = true;
+                return;
+            }
+        }
     }
 
     public Worm attaquerPosition(int x, int y, int degats) {
-        if (actionEffectuee || degats < 0) {
+        if (actionDone || degats < 0) {
             return null;
         }
 
         Worm cible = trouverWormAPosition(x, y);
         if (cible != null) {
             cible.receiveDmg(degats);
-            verifierFinPartie();
-            actionEffectuee = true;
+            checkGameOver();
+            actionDone = true;
         }
         return cible;
     }
@@ -99,109 +118,55 @@ public class Partie {
         return null;
     }
 
-    public void passerTour() {
-        actionEffectuee = false;
 
-        getEquipeActive().passerAuWormSuivant();
-
-        if (tousLesWormsOntJoue()) {
-            changerEquipe();
-        }
-
-        tempsRestant = TEMPS_DE_JEU;
-    }
-
-    private boolean tousLesWormsOntJoue() {
-        Equipe equipe = getEquipeActive();
-        int count = 0;
-
-        for (Worm worm : equipe.getWorms()) {
-            if (worm != null && worm.isAlive()) {
-                count++;
-            }
-        }
-
-        return count <= 1 || equipe.getIndexWormActif() == 0;
-    }
-
-    private void changerEquipe() {
-        indexEquipeActive = (indexEquipeActive + 1) % equipes.length;
-
-        if (indexEquipeActive == 0) {
-            tourActuel++;
-        }
-
-        if (getEquipeActive().estEliminee()) {
-            partieTerminee = true;
-            return;
-        }
-
-        getEquipeActive().resetIndex();
-    }
-
-    public void decompterTemps() {
-        if (tempsRestant > 0) {
-            tempsRestant--;
-        } else {
-            passerTour();
-        }
-    }
-
-    private void verifierFinPartie() {
-        for (Equipe equipe : equipes) {
-            if (equipe.estEliminee()) {
-                partieTerminee = true;
-                return;
-            }
-        }
-    }
+    /* GETTERS */
 
     public Terrain getTerrain() {
         return terrain;
     }
 
-    public Equipe getEquipeActive() {
-        return equipes[indexEquipeActive];
+    public Equipe getActiveTeam() {
+        return equipes[activeTeamIndex];
     }
 
-    public Equipe getEquipeEnnemie() {
-        int indexEnnemi = (indexEquipeActive + 1) % equipes.length;
+    public Equipe getEnnemyTeam() {
+        int indexEnnemi = (activeTeamIndex + 1) % equipes.length;
         return equipes[indexEnnemi];
     }
 
-    public Equipe getEquipe(int index) {
+    public Equipe getTeam(int index) {
         if (index >= 0 && index < equipes.length) {
             return equipes[index];
         }
         return null;
     }
 
-    public Equipe[] getEquipes() {
+    public Equipe[] getTeams() {
         return equipes;
     }
 
-    public int getIndexEquipeActive() {
-        return indexEquipeActive;
+    public int getActiveTeamIndex() {
+        return activeTeamIndex;
     }
 
-    public Worm getWormActif() {
-        return getEquipeActive().getWormActif();
+    public Worm getActiveWorm() {
+        return getActiveTeam().getWormActif();
     }
 
-    public int getTourActuel() {
-        return tourActuel;
+    public int getCurrentRound() {
+        return currentRound;
     }
 
-    public int getTempsRestant() {
-        return tempsRestant;
+    public int getTimeLeft() {
+        return timeLeft;
     }
 
-    public boolean estTerminee() {
-        return partieTerminee;
+    public boolean isOver() {
+        return gameOver;
     }
 
-    public Equipe getEquipeGagnante() {
-        if (!partieTerminee) {
+    public Equipe getWinningTeam() {
+        if (!gameOver) {
             return null;
         }
 
@@ -214,7 +179,7 @@ public class Partie {
         return null;
     }
 
-    public int getNombreWormsVivants() {
+    public int getAliveWorms() {
         int total = 0;
         for (Equipe equipe : equipes) {
             total += equipe.getNombreWormsVivants();
@@ -222,13 +187,13 @@ public class Partie {
         return total;
     }
 
-    public boolean actionDejaEffectuee() {
-        return actionEffectuee;
+    public boolean isActionDone() {
+        return actionDone;
     }
 
     @Override
     public String toString() {
         return String.format("Tour %d | %s | Temps: %ds",
-                tourActuel, getEquipeActive().getNom(), tempsRestant);
+                currentRound, getActiveTeam().getNom(), timeLeft);
     }
 }

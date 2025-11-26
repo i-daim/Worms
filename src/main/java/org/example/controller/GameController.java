@@ -11,7 +11,7 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final Timer gameLoop;
-    private static final int CAMERA_SPEED = 10;
+    private static final int CAMERA_SPEED = 15;
     private Point mousePosition = new Point(0, 0);
 
     public GameController(GamePanel gamePanel) {
@@ -37,11 +37,14 @@ public class GameController {
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
         int limit = 50;
+
         int camX = gamePanel.getCameraX();
         int camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
 
+        double zoomX = gamePanel.getZoomX();
+        double zoomY = gamePanel.getZoomY();
 
         if (mousePos.x > width - limit) {
             camX += CAMERA_SPEED;
@@ -55,8 +58,12 @@ public class GameController {
             camY -= CAMERA_SPEED;
         }
 
-        camX = Math.max(0, Math.min(camX, terrainWidth - width));
-        camY = Math.max(0, Math.min(camY, terrainHeight - height));
+        int viewportWidth = (int) (width / zoomX);
+        int viewportHeight = (int) (height / zoomY);
+
+
+        camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
+        camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
 
         gamePanel.setCamera(camX, camY);
     }

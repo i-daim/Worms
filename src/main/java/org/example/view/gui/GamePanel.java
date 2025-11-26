@@ -4,6 +4,7 @@ import org.example.model.jeu.Terrain;
 
 import javax.swing.JPanel;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
@@ -39,14 +40,20 @@ public class GamePanel extends JPanel {
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
 
+
+    public Point screenToWorld(Point screenPoint) {
+        double worldX = (screenPoint.x / getZoomX()) + cameraX;
+        double worldY = (screenPoint.y / getZoomY()) + cameraY;
+        return new Point((int) worldX, (int) worldY);
     }
 
+
     public double getZoomX() {
-        return Math.max(1.0, (double) this.getWidth() / DEFAULT_WIDTH);
+        return Math.max(1.0, (double) getWidth()/DEFAULT_WIDTH);
     }
 
     public double getZoomY() {
-        return Math.max(1.0, (double) this.getHeight() / DEFAULT_HEIGHT);
+        return Math.max(1.0, (double) getHeight()/DEFAULT_HEIGHT);
     }
 
     public void setCamera(int x, int y) {
@@ -66,7 +73,4 @@ public class GamePanel extends JPanel {
     public Terrain getTerrain() {
         return terrain;
     }
-
-
-
 }

@@ -18,15 +18,26 @@ public class Terrain {
     }
 
     public void makeHole(int centerX, int centerY, int radius) {
-        for (int y = centerX - radius; y <= centerX + radius; y++) {
-            for (int x = centerY - radius; x <= centerY + radius; x++) {
+        // Boucle qui commence à la position du trou pour mieux réduire les calculs
+        for (int y = centerY - radius; y <= centerY + radius; y++) {
+            for (int x = centerX - radius; x <= centerX + radius; x++) {
 
-                if (y >= 0 && y < getWidth() && x >= 0 && x < getHeight()) {
-                    image.setRGB(x, y, 0x000000);
+                // Vérifie que les coordonnées sont dans l'image
+                if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()) {
 
-                    int colX = x / TILE_SIZE;
-                    int colY = y / TILE_SIZE;
-                    collisions[colY][colX] = false;
+                    // Vérifie que le pixel est dans le rayon (pour avoir un cercle au lieu d'un carré)
+                    double distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                    if (distance <= radius) {
+                        image.setRGB(x, y, 0x00000000); // Rend le pixel transparent
+
+                        // Màj des collisions (à vérifier)
+                        int colX = x / TILE_SIZE;
+                        int colY = y / TILE_SIZE;
+                        if (colX >= 0 && colX < getCollisionsWidth()
+                                && colY >= 0 && colY < getCollisionsHeight()) {
+                            collisions[colY][colX] = false;
+                        }
+                    }
                 }
             }
         }

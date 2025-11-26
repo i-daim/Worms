@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
 
-    private static final int DEFAULT_WIDTH = 1280;
     private static final int DEFAULT_HEIGHT = 720;
+    private static final int DEFAULT_WIDTH = 1280;
 
     private final Terrain terrain;
     private int cameraX = 0;
@@ -25,20 +25,22 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
         g2.scale(getZoomX(), getZoomY());
 
         g2.translate(-cameraX, -cameraY);
 
         BufferedImage terrainImage = terrain.getImage();
-        g2.drawImage(terrainImage, 0, 0, this);
+        if (terrainImage != null) {
+            g2.drawImage(terrainImage, 0, 0, this);
+        }
 
-        g2.translate(cameraX, cameraY);
-        g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
+        g2.dispose();
+    }
 
 
     public Point screenToWorld(Point screenPoint) {

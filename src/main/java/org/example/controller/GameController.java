@@ -4,6 +4,8 @@ import org.example.view.gui.GamePanel;
 
 import java.awt.Point;
 import javax.swing.Timer;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -31,6 +33,16 @@ public class GameController {
             }
         });
 
+        // Test avec la touche E pour créer un trou (sur la position de la souris)
+        gamePanel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_E) {
+                    Point worldPos = gamePanel.screenToWorld(mousePosition);
+                    gamePanel.getTerrain().makeHole(worldPos.x, worldPos.y, 25);
+                }
+            }
+        });
     }
 
     private void handleCameraScroll(Point mousePos) {

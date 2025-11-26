@@ -4,6 +4,8 @@ import org.example.model.entites.Position;
 
 import java.awt.image.BufferedImage;
 
+import static org.example.model.jeu.TerrainGenerator.TILE_SIZE;
+
 public class Terrain {
     private static final int WATER_LEVEL = 7;
 
@@ -13,6 +15,21 @@ public class Terrain {
     public Terrain(boolean[][] collisions, BufferedImage image) {
         this.collisions = collisions;
         this.image = image;
+    }
+
+    public void makeHole(int centerX, int centerY, int radius) {
+        for (int y = centerX - radius; y <= centerX + radius; y++) {
+            for (int x = centerY - radius; x <= centerY + radius; x++) {
+
+                if (y >= 0 && y < getWidth() && x >= 0 && x < getHeight()) {
+                    image.setRGB(x, y, 0x000000);
+
+                    int colX = x / TILE_SIZE;
+                    int colY = y / TILE_SIZE;
+                    collisions[colY][colX] = false;
+                }
+            }
+        }
     }
 
     public int getWidth() {

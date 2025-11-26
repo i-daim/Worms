@@ -51,11 +51,11 @@ public class GamePanel extends JPanel {
 
 
     public double getZoomX() {
-        return Math.max(1.0, (double) getWidth()/DEFAULT_WIDTH);
+        return Math.max(1.0, (double) getWidth() / DEFAULT_WIDTH);
     }
 
     public double getZoomY() {
-        return Math.max(1.0, (double) getHeight()/DEFAULT_HEIGHT);
+        return Math.max(1.0, (double) getHeight() / DEFAULT_HEIGHT);
     }
 
     public void setCamera(int x, int y) {

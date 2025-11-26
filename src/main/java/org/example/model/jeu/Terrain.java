@@ -25,8 +25,10 @@ public class Terrain {
                 // Vérifie que les coordonnées sont dans l'image
                 if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()) {
 
-                    // Vérifie que le pixel est dans le rayon (pour avoir un cercle au lieu d'un carré)
-                    double distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                    // Vérifie que le pixel est dans le rayon
+                    // (pour avoir un cercle au lieu d'un carré)
+                    double distance = Math.sqrt(Math.pow(x - centerX, 2)
+                            + Math.pow(y - centerY, 2));
                     if (distance <= radius) {
                         image.setRGB(x, y, 0x00000000); // Rend le pixel transparent
 

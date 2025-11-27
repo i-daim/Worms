@@ -7,6 +7,7 @@ import org.example.model.entites.Worm;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
@@ -31,10 +32,10 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
         // Zoom + ajustement de la caméra
         g2.scale(getZoomX(), getZoomY());
@@ -42,7 +43,9 @@ public class GamePanel extends JPanel {
 
         // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
-        g2.drawImage(terrainImage, 0, 0, this);
+        if (terrainImage != null) {
+            g2.drawImage(terrainImage, 0, 0, this);
+        }
 
         // Affichage des entites
         drawWorms(g2);
@@ -51,7 +54,15 @@ public class GamePanel extends JPanel {
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
 
+        g2.dispose();
     }
+
+    public Point screenToWorld(Point screenPoint) {
+        double worldX = (screenPoint.x / getZoomX()) + cameraX;
+        double worldY = (screenPoint.y / getZoomY()) + cameraY;
+        return new Point((int) worldX, (int) worldY);
+    }
+
 
     public void drawWorms(Graphics2D g2) {
         for (Worm w : partie.getMonde().getActiveWorms()) {
@@ -77,11 +88,11 @@ public class GamePanel extends JPanel {
 
 
     public double getZoomX() {
-        return Math.max(1.0, (double) this.getWidth() / DEFAULT_WIDTH);
+        return Math.max(1.0, (double) getWidth() / DEFAULT_WIDTH);
     }
 
     public double getZoomY() {
-        return Math.max(1.0, (double) this.getHeight() / DEFAULT_HEIGHT);
+        return Math.max(1.0, (double) getHeight() / DEFAULT_HEIGHT);
     }
 
     public void setCamera(int x, int y) {

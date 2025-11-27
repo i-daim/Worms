@@ -4,6 +4,8 @@ import org.example.model.entites.Position;
 
 import java.awt.image.BufferedImage;
 
+import static org.example.model.jeu.TerrainGenerator.TILE_SIZE;
+
 public class Terrain {
     private static final int WATER_LEVEL = 7;
 
@@ -13,6 +15,34 @@ public class Terrain {
     public Terrain(boolean[][] collisions, BufferedImage image) {
         this.collisions = collisions;
         this.image = image;
+    }
+
+    public void makeHole(int centerX, int centerY, int radius) {
+        // Boucle qui commence à la position du trou pour mieux réduire les calculs
+        for (int y = centerY - radius; y <= centerY + radius; y++) {
+            for (int x = centerX - radius; x <= centerX + radius; x++) {
+
+                // Vérifie que les coordonnées sont dans l'image
+                if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()) {
+
+                    // Vérifie que le pixel est dans le rayon
+                    // (pour avoir un cercle au lieu d'un carré)
+                    double distance = Math.sqrt(Math.pow(x - centerX, 2)
+                            + Math.pow(y - centerY, 2));
+                    if (distance <= radius) {
+                        image.setRGB(x, y, 0x00000000); // Rend le pixel transparent
+
+                        // Màj des collisions (à vérifier)
+                        int colX = x / TILE_SIZE;
+                        int colY = y / TILE_SIZE;
+                        if (colX >= 0 && colX < getCollisionsWidth()
+                                && colY >= 0 && colY < getCollisionsHeight()) {
+                            collisions[colY][colX] = false;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public int getWidth() {

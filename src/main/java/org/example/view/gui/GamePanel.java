@@ -50,52 +50,6 @@ public class GamePanel extends JPanel {
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
     }
 
-    private void drawWorms(Graphics2D g2) {
-        for (int i = 0; i < 2; i++) {
-            Equipe equipe = partie.getTeam(i);
-            if (equipe == null) {
-                continue;
-            }
-
-            for (Worm worm : equipe.getWorms()) {
-                if (worm != null && worm.isAlive()) {
-                    int x = worm.getPosition().getX();
-                    int y = worm.getPosition().getY();
-
-                    if (i == 0) {
-                        g2.setColor(Color.BLUE);
-                    } else {
-                        g2.setColor(Color.RED);
-                    }
-
-                    g2.fillOval(x - 8, y - 8, 16, 16);
-
-                    g2.setColor(Color.BLACK);
-                    g2.drawOval(x - 8, y - 8, 16, 16);
-
-                    drawHealthBar(g2, worm, x, y);
-                }
-            }
-        }
-    }
-
-    private void drawHealthBar(Graphics2D g2, Worm worm, int x, int y) {
-        int barWidth = 30;
-        int barHeight = 4;
-        int barX = x - barWidth / 2;
-        int barY = y - 15;
-
-        g2.setColor(Color.BLACK);
-        g2.fillRect(barX, barY, barWidth, barHeight);
-
-        int healthWidth = (int) ((worm.getHealthPoints() / 100.0) * barWidth);
-        g2.setColor(Color.GREEN);
-        g2.fillRect(barX, barY, healthWidth, barHeight);
-
-        g2.setColor(Color.WHITE);
-        g2.drawRect(barX, barY, barWidth, barHeight);
-    }
-
     public double getZoomX() {
         return Math.max(1.0, (double) this.getWidth() / DEFAULT_WIDTH);
     }

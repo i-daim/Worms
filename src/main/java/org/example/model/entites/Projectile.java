@@ -26,6 +26,9 @@ public class Projectile extends Entite {
     public Worm getShooter() {
         return shooter;
     }
+    public Body getBody() {
+        return body;
+    }
 
 
 

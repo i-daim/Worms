@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -82,8 +83,22 @@ public class HUDPanel extends JPanel {
             int[] yPoints = {barY - 6, barY - 2, barY - 2};
             g2.fillPolygon(xPoints, yPoints, 3);
         }
+    }
 
+    private void drawTurnTimer(Graphics2D g2, int x, int y) {
+        int timeLeft = partie.getTimeLeft();
 
+        g2.setColor(Color.WHITE);
+        g2.fillRoundRect(x, y, 100, 40, 10, 10);
+
+        g2.setColor(Color.DARK_GRAY);
+        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        String text = String.format("%02d", timeLeft);
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+        g2.drawString(text, x + (100 - textWidth) / 2, y + 24);
+
+        g2.setFont(new Font("Arial", Font.PLAIN, 14));
+        g2.drawString("TIME", x + 35, y + 12);
     }
 
 

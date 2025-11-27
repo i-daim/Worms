@@ -10,7 +10,6 @@ import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.entites.Projectile;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import java.util.HashMap;
@@ -45,6 +44,9 @@ public class PhysicsEngine {
     }
     public void setWind(double windX, double windY) {
         this.wind = new Vector2(windX, windY);
+    }
+    public Vector2 getWind() {
+        return wind;
     }
     public void update() {
         limitFallVelocities();

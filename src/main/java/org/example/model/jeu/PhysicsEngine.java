@@ -255,4 +255,41 @@ public class PhysicsEngine {
             }
         }
     }
+    private void explodeProjectile(Projectile proj) {
+        int explosionX = proj.getPosition().getX();
+        int explosionY = proj.getPosition().getY();
+        int radius = proj.getWeapon().getRayonExplosion();
+        int damage = proj.getWeapon().getDegats();
+
+        // Infliger dégâts aux worms proches
+        for (Map.Entry<Worm, Body> entry : wormBodies.entrySet()) {
+            Worm worm = entry.getKey();
+            if (!worm.isAlive()) {
+                continue;
+            }
+
+            Position wormPos = worm.getPosition();
+            double distance = wormPos.distance(explosionX, explosionY);
+
+            if (distance <= radius * SCALE) {
+                // Dégâts diminuent avec la distance
+                double damageRatio = 1.0 - (distance / (radius * SCALE));
+                int finalDamage = (int) (damage * damageRatio);
+
+                if (finalDamage > 0) {
+                    worm.receiveDmg(finalDamage);
+                }
+
+                // Onde de choc (pousse les worms)
+                Body wormBody = entry.getValue();
+                if (wormBody != null && distance > 0) {
+                    double knockbackForce = 50.0 * damageRatio;
+                    double dx = (wormPos.getX() - explosionX) / distance;
+                    double dy = (wormPos.getY() - explosionY) / distance;
+                    wormBody.applyImpulse(new Vector2(dx * knockbackForce, dy * knockbackForce));
+                }
+            }
+        }
+    }
+
 }

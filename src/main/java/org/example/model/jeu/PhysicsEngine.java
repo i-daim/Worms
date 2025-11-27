@@ -16,7 +16,7 @@ public class PhysicsEngine {
     private final World<Body> world;
 
     private final double dt = 1.0 / 60.0;
-    private final Vector2 gravity = new Vector2(0, 25.0); // ✅ CORRIGÉ : Gravité plus rapide
+    private final Vector2 gravity = new Vector2(0, 50.0);
 
     private final Map<Worm, Body> wormBodies = new HashMap<>();
 
@@ -26,7 +26,7 @@ public class PhysicsEngine {
     private final Terrain terrain;
 
     private static final double VITESSE_CHUTE_SAFE = 0.5;
-    private static final double VITESSE_CHUTE_MAX = 25.0; // ✅ CORRIGÉ : Augmenté
+    private static final double VITESSE_CHUTE_MAX = 50.0;
     private static final int MULTIPLICATEUR_DEGATS = 10;
 
     private static final double WORM_WIDTH = Converter.toMeters(20);
@@ -103,18 +103,17 @@ public class PhysicsEngine {
         return Math.abs(vel.y) < 0.5;
     }
 
-
     public void addWorm(Worm worm) {
         Body body = new Body();
 
         BodyFixture fixture = new BodyFixture(Geometry.createRectangle(WORM_WIDTH, WORM_HEIGHT));
         fixture.setFriction(0.9);
         fixture.setRestitution(0.1);
-        fixture.setDensity(1.2); // ✅ CORRIGÉ : Un peu plus lourd
+        fixture.setDensity(1.2);
         body.addFixture(fixture);
 
         body.setMass(MassType.NORMAL);
-        body.setLinearDamping(0.02); // ✅ CORRIGÉ : Presque pas de friction d'air !
+        body.setLinearDamping(0.005);
         body.setAngularDamping(0.8);
 
         body.translate(
@@ -142,14 +141,14 @@ public class PhysicsEngine {
     public void jumpWorm(Worm worm) {
         Body body = wormBodies.get(worm);
         if (body != null && isOnGround(body)) {
-            body.applyImpulse(new Vector2(0, -8.0)); // ✅ CORRIGÉ : Saut plus puissant
+            body.applyImpulse(new Vector2(0, -10.0));
         }
     }
 
     public void moveWorm(Worm worm, double direction) {
         Body body = wormBodies.get(worm);
         if (body != null) {
-            double speed = 5.0 * direction; // ✅ CORRIGÉ : 2x plus rapide !
+            double speed = 10.0 * direction;
             double velY = body.getLinearVelocity().y;
             body.setLinearVelocity(new Vector2(speed, velY));
             body.setAtRest(false);

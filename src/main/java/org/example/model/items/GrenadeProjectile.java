@@ -15,6 +15,10 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
     @Override
     public void utiliser(Monde monde, Worm wormActif) {
     }
+    @Override
+    public double getInitialVelocity() {
+        return 18.0;
+    }
 
     //getter
     public Position getPosition() {

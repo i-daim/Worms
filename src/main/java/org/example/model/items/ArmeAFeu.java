@@ -42,4 +42,5 @@ public abstract class ArmeAFeu extends Arme implements Utilisable {
         }
     }
 
+
 }

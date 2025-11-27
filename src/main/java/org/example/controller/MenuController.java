@@ -18,7 +18,7 @@ public class MenuController {
 
     public void addListeners() {
         menuPanel.addNewGameListener(e -> {
-            Partie partie = new Partie("liberty.png");
+            Partie partie = new Partie("liberty");
             GamePanel gamePanel = new GamePanel(partie);
 
             new GameController(gamePanel, partie);

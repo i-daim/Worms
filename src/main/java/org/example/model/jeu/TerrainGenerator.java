@@ -14,7 +14,8 @@ public class TerrainGenerator {
             return creerTerrainVide(40, 10);
         }
 
-        String filePath = "maps/" + mapName;
+        String filePath = "maps/" + mapName + ".png";
+        String backgroundPath = "maps/" + mapName + "_background.png";
 
         try (InputStream is = TerrainGenerator.class.getClassLoader()
                 .getResourceAsStream(filePath)) {
@@ -51,7 +52,17 @@ public class TerrainGenerator {
                     }
                 }
             }
-            return new Terrain(collisions, terrainImage);
+
+            try (InputStream backgroundIs = TerrainGenerator.class.getClassLoader()
+                    .getResourceAsStream(backgroundPath)) {
+                BufferedImage backgroundImage = ImageIO.read(backgroundIs);
+                return new Terrain(collisions, terrainImage, backgroundImage);
+
+            } catch (Exception e) {
+                System.err.println(
+                        "Erreur (chargement du fond de la map) : " + e.getMessage());
+                return new Terrain(collisions, terrainImage, null);
+            }
 
         } catch (Exception e) {
             System.err.println(
@@ -71,6 +82,6 @@ public class TerrainGenerator {
                 collisions[y][x] = true;
             }
         }
-        return new Terrain(collisions, null);
+        return new Terrain(collisions, null, null);
     }
 }

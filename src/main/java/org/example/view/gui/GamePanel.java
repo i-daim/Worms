@@ -34,11 +34,19 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_SPEED);
 
         // Zoom + ajustement de la caméra
         g2.scale(getZoomX(), getZoomY());
         g2.translate(-cameraX, -cameraY);
+
+        // Affichage du background
+        BufferedImage backgroundImage = terrain.getBackground();
+        if (backgroundImage != null) {
+            g2.drawImage(backgroundImage, 0, 0, this);
+        }
 
         // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();

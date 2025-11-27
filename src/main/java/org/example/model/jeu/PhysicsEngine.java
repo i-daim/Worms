@@ -115,6 +115,22 @@ public class PhysicsEngine {
         fixture.setDensity(1.0);
         body.addFixture(fixture);
 
+        body.setMass(MassType.NORMAL);
+        body.setLinearDamping(0.5);
+        body.setAngularDamping(0.8);
+
+        body.translate(
+                worm.getPosition().getX() / SCALE,
+                worm.getPosition().getY() / SCALE
+        );
+
+        body.setUserData(worm);
+
+        this.world.addBody(body);
+        this.wormBodies.put(worm, body);
+        this.wormStates.put(worm, new WormPhysicsState());
+    }
+
 
 
 

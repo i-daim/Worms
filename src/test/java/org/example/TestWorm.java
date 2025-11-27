@@ -137,7 +137,7 @@ public class TestWorm {
     @Test
     public void testEquipeTousElimines() {
         Equipe equipe = new Equipe("Team A", 2);
-        equipe.initialiserEquipe("map1", 0);
+        equipe.initialiserEquipe("", 0);
 
         Worm[] worms = equipe.getWorms();
         assertFalse(equipe.estEliminee());

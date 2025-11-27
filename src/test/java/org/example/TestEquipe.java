@@ -20,7 +20,7 @@ public class TestEquipe {
     @Test
     public void testInitialiserEquipe() {
         Equipe a = new Equipe("TEAM A",3);
-        a.initialiserEquipe("map1",0);
+        a.initialiserEquipe("",0);
         Worm[] worms = a.getWorms() ;
         for(Worm w : worms){
             assertNotNull(w);
@@ -29,7 +29,7 @@ public class TestEquipe {
     @Test
     public void testEquipeEliminee() {
         Equipe b = new Equipe("TEAM B",3);
-        b.initialiserEquipe("map1",1);
+        b.initialiserEquipe("",1);
         Worm[] worms = b.getWorms() ;
         worms[0].receiveDmg(100);
         boolean estEliminee = b.estEliminee();

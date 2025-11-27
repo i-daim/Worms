@@ -15,22 +15,19 @@ import java.util.Map;
 public class PhysicsEngine {
     private final World<Body> world;
 
-    // Conversion : 1 mètre physique = 20 pixels à l'écran
     public static final double SCALE = 20.0;
 
-    private final double dt = 1.0 / 60.0; // 60 updates par seconde
+    private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 9.8);
 
-    // Map pour lier un Worm (Modèle jeu) à son Body (Modèle physique)
     private final Map<Worm, Body> wormBodies = new HashMap<>();
     private final Map<Worm, WormPhysicsState> wormStates = new HashMap<>();
 
     private final Terrain terrain;
 
-    private static final double VITESSE_CHUTE_SAFE = 8.0; // m/s
-    private static final double VITESSE_CHUTE_MAX = 15.0; // Vitesse terminale
+    private static final double VITESSE_CHUTE_SAFE = 8.0;
+    private static final double VITESSE_CHUTE_MAX = 15.0;
     private static final int MULTIPLICATEUR_DEGATS = 3;
-
 
     public PhysicsEngine(Terrain terrain) {
         this.world = new World<>();
@@ -41,7 +38,6 @@ public class PhysicsEngine {
 
     public void update() {
         limitFallVelocities();
-
         world.update(dt);
 
         for (Map.Entry<Worm, Body> entry : wormBodies.entrySet()) {
@@ -53,10 +49,10 @@ public class PhysicsEngine {
             }
 
             checkFallDamage(worm, body);
+
             Vector2 v = body.getTransform().getTranslation();
             int pixelX = (int) (v.x * SCALE);
             int pixelY = (int) (v.y * SCALE);
-
             worm.setPosition(new Position(pixelX, pixelY));
 
             if (body.getLinearVelocity().getMagnitude() < 0.1) {
@@ -64,44 +60,46 @@ public class PhysicsEngine {
                 body.setAngularVelocity(0);
             }
         }
-
-        private void limitFallVelocities () {
-            for (Body body : wormBodies.values()) {
-                Vector2 vel = body.getLinearVelocity();
-                if (vel.y > VITESSE_CHUTE_MAX) {
-                    body.setLinearVelocity(vel.x, VITESSE_CHUTE_MAX);
-                }
-            }
-        }
-
-        private void checkFallDamage (Worm worm, Body body){
-            WormPhysicsState state = wormStates.get(worm);
-            if (state == null) {
-                state = new WormPhysicsState();
-                wormStates.put(worm, state);
-            }
-
-            Vector2 currentVel = body.getLinearVelocity();
-            double currentVelY = currentVel.y;
-            boolean isOnGround = isOnGround(body);
-
-            if (state.wasInAir && isOnGround && state.maxFallSpeed > VITESSE_CHUTE_SAFE)
-
-
-        }
-        int degats = (int) ((state.maxFallSpeed - VITESSE_CHUTE_SAFE) * MULTIPLICATEUR_DEGATS);
-        if (degats > 0) {
-            worm.receiveDmg(degats);
-            // Stocker les informations de chute dans l'état
-            state.lastFallDamage = degats;
-            state.lastFallSpeed = state.maxFallSpeed;
-            state.hasTakenFallDamage = true;
-        }
-        state.maxFallSpeed = 0;
     }
+
+    private void limitFallVelocities() {
+        for (Body body : wormBodies.values()) {
+            Vector2 vel = body.getLinearVelocity();
+            if (vel.y > VITESSE_CHUTE_MAX) {
+                body.setLinearVelocity(vel.x, VITESSE_CHUTE_MAX);
+            }
+        }
+    }
+
+    private void checkFallDamage(Worm worm, Body body) {
+        WormPhysicsState state = wormStates.get(worm);
+        if (state == null) {
+            state = new WormPhysicsState();
+            wormStates.put(worm, state);
+        }
+
+        Vector2 currentVel = body.getLinearVelocity();
+        double currentVelY = currentVel.y;
+        boolean isOnGround = isOnGround(body);
+
+        if (state.wasInAir && isOnGround && state.maxFallSpeed > VITESSE_CHUTE_SAFE) {
+            int degats = (int) ((state.maxFallSpeed - VITESSE_CHUTE_SAFE) * MULTIPLICATEUR_DEGATS);
+            if (degats > 0) {
+                worm.receiveDmg(degats);
+                state.lastFallDamage = degats;
+                state.lastFallSpeed = state.maxFallSpeed;
+                state.hasTakenFallDamage = true;
+            }
+            state.maxFallSpeed = 0;
+        }
 
         if (!isOnGround) {
-        state.maxFallSpeed = Math.max(state.maxFallSpeed, Math.abs(currentVelY));
+            state.maxFallSpeed = Math.max(state.maxFallSpeed, Math.abs(currentVelY));
+        }
+        state.wasInAir = !isOnGround;
     }
-    state.wasInAir = !isOnGround;
-}
+
+    private boolean isOnGround(Body body) {
+        Vector2 vel = body.getLinearVelocity();
+        return Math.abs(vel.y) < 0.5 && body.getInContactBodies(false).size() > 0;
+    }

@@ -176,19 +176,29 @@ public class PhysicsEngine {
         }
     }
 
-    private void createTerrainSegment(int x, int y, int w, int h) {
+    private void createTerrainSegment(int tileX, int tileY, int tileWidth, int tileHeight) {
         Body terrainBody = new Body();
 
-        double centerX = Converter.toMeters(x + w / 2);
-        double centerY = Converter.toMeters(y + h / 2);
-        double width = Converter.toMeters(w);
-        double height = Converter.toMeters(h);
+        // Convertit les tileX et tileY en pixels
+        double pixelX = tileX * TerrainGenerator.TILE_SIZE;
+        double pixelY = tileY * TerrainGenerator.TILE_SIZE;
+        double pixelWidth = tileWidth * TerrainGenerator.TILE_SIZE;
+        double pixelHeight = tileHeight * TerrainGenerator.TILE_SIZE;
 
-        BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
+        double pixelCenterX = pixelX + (pixelWidth / 2.0);
+        double pixelCenterY = pixelY + (pixelHeight / 2.0);
+
+        // Convertit les pixels en meters pour dyn4j
+        double meterCenterX = Converter.toMeters((int)pixelCenterX);
+        double meterCenterY = Converter.toMeters((int)pixelCenterY);
+        double meterWidth = Converter.toMeters((int)pixelWidth);
+        double meterHeight = Converter.toMeters((int)pixelHeight);
+
+        BodyFixture fixture = new BodyFixture(Geometry.createRectangle(meterWidth, meterHeight));
         fixture.setFriction(0.8);
         fixture.setRestitution(0.1);
         terrainBody.addFixture(fixture);
-        terrainBody.translate(centerX, centerY);
+        terrainBody.translate(meterCenterX, meterCenterY);
         terrainBody.setMass(MassType.INFINITE);
 
         world.addBody(terrainBody);

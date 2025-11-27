@@ -1,7 +1,9 @@
 package org.example.model.jeu;
 
+import org.example.model.entites.Projectile;
 import org.example.model.entites.Worm;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Monde {
     private final Partie partie;
@@ -60,4 +62,8 @@ public class Monde {
         return physicsEngine;
 
     }
+    public List<Projectile> getActiveProjectiles() {
+        return physicsEngine.getActiveProjectiles();
+    }
+
 }

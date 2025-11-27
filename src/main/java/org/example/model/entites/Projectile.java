@@ -20,6 +20,9 @@ public class Projectile extends Entite {
         this.shooter = shooter;
         this.state = State.FLYING;
      }
+    public Arme getWeapon() {
+        return weapon;
+    }
 
 
 

@@ -191,6 +191,10 @@ public class Partie {
         return actionDone;
     }
 
+    public Monde getMonde() {
+        return monde;
+    }
+
     @Override
     public String toString() {
         return String.format("Tour %d | %s | Temps: %ds",

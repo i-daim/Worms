@@ -19,6 +19,16 @@ public class ControllerConsole {
         vue.afficherBienvenue();
         vue.afficherTerrain(partie.getTerrain());
 
+        // Faire tomber les worms
+        System.out.println("\n⏳ Les worms tombent...\n");
+
+        for (int i = 0; i < 180; i++) {
+            partie.update(1.0 / 60.0);
+        }
+
+        // Afficher l'état après la chute
+        vue.afficherEtatApresChute(partie);
+
         while (enCours && !partie.isOver()) {
             vue.afficherEtatPartie(partie);
             String commande = vue.demanderCommande();
@@ -51,11 +61,15 @@ public class ControllerConsole {
                 break;
 
             case "sauter":
-                boolean reussiteS = partie.getActiveWorm().jump(partie.getTerrain());
-                vue.afficherResultatSaut(reussiteS);
-                if (reussiteS) {
-                    partie.skipTurn();
+                partie.getMonde().getPhysicsEngine().jumpWorm(partie.getActiveWorm());
+
+                System.out.println("⏳ Le worm saute...");
+                for (int i = 0; i < 120; i++) {
+                    partie.update(1.0 / 60.0);
                 }
+
+                vue.afficherResultatSaut(true);
+                partie.skipTurn();
                 break;
 
             case "attaquer":
@@ -91,6 +105,7 @@ public class ControllerConsole {
 
             default:
                 vue.afficherCommandeInconnue();
+                break;
         }
     }
 }

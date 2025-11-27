@@ -1,8 +1,10 @@
 package org.example.view.gui;
 
+import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
 
 import javax.swing.JPanel;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -13,24 +15,25 @@ public class GamePanel extends JPanel {
     private static final int DEFAULT_HEIGHT = 720;
 
     private final Terrain terrain;
+    private final Partie partie;
     private int cameraX = 0;
     private int cameraY = 0;
 
-    public GamePanel(Terrain terrain) {
+    public GamePanel(Terrain terrain, Partie partie) {
         this.terrain = terrain;
+        this.partie = partie;
         this.setDoubleBuffered(true);
     }
 
     @Override
-    protected void paintComponent(java.awt.Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
         g2.scale(getZoomX(), getZoomY());
-
         g2.translate(-cameraX, -cameraY);
 
         BufferedImage terrainImage = terrain.getImage();
@@ -38,7 +41,6 @@ public class GamePanel extends JPanel {
 
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
-
     }
 
     public double getZoomX() {
@@ -66,7 +68,4 @@ public class GamePanel extends JPanel {
     public Terrain getTerrain() {
         return terrain;
     }
-
-
-
 }

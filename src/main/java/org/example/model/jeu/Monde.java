@@ -5,20 +5,17 @@ import java.util.ArrayList;
 
 public class Monde {
     private final Partie partie;
+    private final PhysicsEngine physicsEngine;
     private ArrayList<Worm> activeWorms;
 
     public Monde(Partie partie, Terrain terrain) {
         this.partie = partie;
+        this.physicsEngine = new PhysicsEngine(terrain);
         this.activeWorms = new ArrayList<>();
-        for (Worm w : partie.getTeam(1).getWorms()) {
-            activeWorms.add(w);
-        }
-        for (Worm w : partie.getTeam(2).getWorms()) {
-            activeWorms.add(w);
-        }
     }
 
     public void update(double elapsedTime) {
+        physicsEngine.update();
 
     }
 
@@ -32,4 +29,23 @@ public class Monde {
         return worms;
     }
 
+    public void initialiserPhysique() {
+        for (Worm w : partie.getTeam(0).getWorms()) {
+            if (w != null) {
+                activeWorms.add(w);
+                physicsEngine.addWorm(w);
+            }
+        }
+        for (Worm w : partie.getTeam(1).getWorms()) {
+            if (w != null) {
+                activeWorms.add(w);
+                physicsEngine.addWorm(w);
+            }
+        }
+    }
+
+    public PhysicsEngine getPhysicsEngine() {
+        return physicsEngine;
+
+    }
 }

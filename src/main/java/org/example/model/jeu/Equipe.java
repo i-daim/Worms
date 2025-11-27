@@ -45,12 +45,13 @@ public class Equipe {
         Random random = new Random();
 
         for (int i = 0; i < worms.length; i++) {
-            int x = zoneX + random.nextInt(largeurZone);
+            int x = zoneX + (largeurZone / 2);
             int y = zoneY + random.nextInt(hauteurZone);
 
             worms[i] = new Worm(this, x, y);
         }
     }
+
     public void passerAuWormSuivant() {
         int tentatives = 0;
         do {

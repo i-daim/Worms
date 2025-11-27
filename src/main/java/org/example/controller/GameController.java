@@ -83,21 +83,21 @@ public class GameController {
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
-            final double TARGET_FPS = 60.0;
-            final double NS_PER_UPDATE = 1_000_000_000.0 / TARGET_FPS;
+            final double targetFps = 60.0;
+            final double nsPerUpdate = 1_000_000_000.0 / targetFps;
 
             while (running) {
                 long now = System.nanoTime();
-                double delta = (now - lastTime) / NS_PER_UPDATE;
+                double delta = (now - lastTime) / nsPerUpdate;
                 lastTime = now;
 
                 if (delta > 0) {
                     update();
                 }
 
-                // Attendre pour maintenir 60 FPS stable
                 try {
-                    long sleepTime = (long) ((NS_PER_UPDATE - (System.nanoTime() - now)) / 1_000_000);
+                    long sleepNs = (long) (nsPerUpdate - (System.nanoTime() - now));
+                    long sleepTime = sleepNs / 1_000_000;
                     if (sleepTime > 0) {
                         Thread.sleep(sleepTime);
                     }

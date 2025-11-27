@@ -212,4 +212,36 @@ public class PhysicsEngine {
     public Body getWormBody(Worm worm) {
         return wormBodies.get(worm);
     }
+
+    public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
+        Body body = new Body();
+
+        double radius = 5.0 / SCALE;
+        BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+        fixture.setFriction(0.3);
+        fixture.setRestitution(0.3);
+        fixture.setDensity(1.5);
+
+        body.addFixture(fixture);
+        body.setMass(MassType.NORMAL);
+        body.setBullet(true);
+
+        double startX = projectile.getPosition().getX() / SCALE;
+        double startY = projectile.getPosition().getY() / SCALE;
+        body.translate(startX, startY);
+
+        double angleRad = Math.toRadians(angleDegrees);
+        double baseVelocity = projectile.getWeapon().getInitialVelocity();
+        double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
+
+        double vx = velocityMagnitude * Math.cos(angleRad);
+        double vy = -velocityMagnitude * Math.sin(angleRad);
+
+        body.setLinearVelocity(vx, vy);
+        body.setUserData(projectile);
+
+        projectile.setBody(body);
+        this.world.addBody(body);
+        this.activeProjectiles.add(projectile);
+    }
 }

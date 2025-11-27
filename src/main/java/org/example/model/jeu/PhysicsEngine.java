@@ -189,10 +189,10 @@ public class PhysicsEngine {
         double pixelCenterY = pixelY + (pixelHeight / 2.0);
 
         // Convertit les pixels en meters pour dyn4j
-        double meterCenterX = Converter.toMeters((int)pixelCenterX);
-        double meterCenterY = Converter.toMeters((int)pixelCenterY);
-        double meterWidth = Converter.toMeters((int)pixelWidth);
-        double meterHeight = Converter.toMeters((int)pixelHeight);
+        double meterCenterX = Converter.toMeters((int) pixelCenterX);
+        double meterCenterY = Converter.toMeters((int) pixelCenterY);
+        double meterWidth = Converter.toMeters((int) pixelWidth);
+        double meterHeight = Converter.toMeters((int) pixelHeight);
 
         BodyFixture fixture = new BodyFixture(Geometry.createRectangle(meterWidth, meterHeight));
         fixture.setFriction(0.8);

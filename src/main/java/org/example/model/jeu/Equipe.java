@@ -6,7 +6,6 @@ import org.example.model.entites.Worm;
 import org.example.model.items.Inventaire;
 
 import java.util.List;
-import java.util.Random;
 
 public class Equipe {
     private final String nom;

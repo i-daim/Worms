@@ -1,7 +1,7 @@
 package org.example.model.jeu;
 
 public class Converter {
-    public final static double SCALE = 20.0;
+    public static final double SCALE = 20.0;
 
     public static double toMeters(int pixels) {
         return pixels / SCALE;

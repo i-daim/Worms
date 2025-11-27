@@ -18,13 +18,17 @@ public class Partie {
     private boolean gameOver;
     private boolean actionDone;
 
+    private String mapName;
+
     public Partie(String mapName) {
+        this.mapName = mapName;
         this.terrain = TerrainGenerator.creerTerrain(mapName);
-        this.monde = new Monde(this, this.terrain);
 
         this.equipes = new Equipe[2];
         this.equipes[0] = new Equipe("Équipe 1", TEAM_SIZE);
         this.equipes[1] = new Equipe("Équipe 2", TEAM_SIZE);
+
+        this.monde = new Monde(this, this.terrain);
 
         initializeGame();
     }
@@ -38,8 +42,8 @@ public class Partie {
     }
 
     private void initializeGame() {
-        equipes[0].initialiserEquipe(5, -100, 8, 1);
-        equipes[1].initialiserEquipe(35, -100, 8, 1);
+        equipes[0].initialiserEquipe(mapName, 0);
+        equipes[1].initialiserEquipe(mapName, 1);
 
         monde.initialiserPhysique();
 
@@ -135,6 +139,10 @@ public class Partie {
         return terrain;
     }
 
+    public Monde getMonde() {
+        return monde;
+    }
+
     public Equipe getActiveTeam() {
         return equipes[activeTeamIndex];
     }
@@ -199,10 +207,6 @@ public class Partie {
 
     public boolean isActionDone() {
         return actionDone;
-    }
-
-    public Monde getMonde() {
-        return monde;
     }
 
     @Override

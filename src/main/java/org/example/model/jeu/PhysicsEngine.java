@@ -27,9 +27,9 @@ public class PhysicsEngine {
 
     private final Terrain terrain;
 
-    private static final double VITESSE_CHUTE_SAFE = 8.0;
+    private static final double VITESSE_CHUTE_SAFE = 0.5;
     private static final double VITESSE_CHUTE_MAX = 15.0;
-    private static final int MULTIPLICATEUR_DEGATS = 3;
+    private static final int MULTIPLICATEUR_DEGATS = 10;
 
     public PhysicsEngine(Terrain terrain) {
         this.world = new World<>();

@@ -13,4 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PhysicsEngine {
+    private final World<Body> world;
+
+    // Conversion : 1 mètre physique = 20 pixels à l'écran
+    public static final double SCALE = 20.0;
+
+    private final double dt = 1.0 / 60.0; // 60 updates par seconde
+    private final Vector2 gravity = new Vector2(0, 9.8);
+
+    // Map pour lier un Worm (Modèle jeu) à son Body (Modèle physique)
+    private final Map<Worm, Body> wormBodies = new HashMap<>();
+    private final Map<Worm, WormPhysicsState> wormStates = new HashMap<>();
+
+    private final Terrain terrain;
 }

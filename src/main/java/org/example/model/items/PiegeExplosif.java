@@ -17,7 +17,10 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
     @Override
     public void utiliser(Monde monde, Worm wormActif) {
     }
-
+    @Override
+    public double getInitialVelocity() {
+        return 0;
+    }
 
     //getters
     public Position getPosition() {

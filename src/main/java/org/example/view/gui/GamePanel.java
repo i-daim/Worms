@@ -17,6 +17,7 @@ public class GamePanel extends JPanel {
 
     private final Partie partie;
     private final Terrain terrain;
+    private final HUDPanel hudPanel;
     private int cameraX = 0;
     private int cameraY = 0;
 
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel {
     public GamePanel(Partie partie) {
         this.partie = partie;
         this.terrain = partie.getTerrain();
+        this.hudPanel = new HUDPanel(partie);
         this.setDoubleBuffered(true);
     }
 
@@ -55,9 +57,16 @@ public class GamePanel extends JPanel {
         // Affichage des entites
         drawWorms(g2);
 
+        // Affichage des barres de vie
+        hudPanel.drawHealthBars(g2, partie, cameraX, cameraY);
 
+        // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
+
+        // Affichage du HUD (après le zoom car non concerné)
+        hudPanel.setSize(getWidth(), 100);
+        hudPanel.paintComponent(g2);
 
     }
 

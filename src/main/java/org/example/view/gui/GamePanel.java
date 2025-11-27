@@ -2,6 +2,7 @@ package org.example.view.gui;
 
 import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
+import org.example.model.entites.Worm;
 
 import javax.swing.JPanel;
 import java.awt.Graphics2D;
@@ -34,17 +35,41 @@ public class GamePanel extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                             RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
+        // Zoom + ajustement de la caméra
         g2.scale(getZoomX(), getZoomY());
-
         g2.translate(-cameraX, -cameraY);
 
+        // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
         g2.drawImage(terrainImage, 0, 0, this);
+
+        // Affichage des entites
+        drawWorms(g2);
+
 
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
 
     }
+
+    public void drawWorms(Graphics2D g2) {
+        for (Worm w : partie.getMonde().getActiveWorms()) {
+            if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
+                int posX = w.getPosition().getX();
+                int posY = w.getPosition().getY();
+
+                if (w.getTeam() == partie.getTeam(0)) {
+                    BufferedImage sprite = AnimationManager.getZlerp("idle").getFrames().get(0);
+                    g2.drawImage(sprite, posX, posY, this);
+                } else {
+                    // Pour quand on aura des animations séparées pour la 2e équipe
+                    BufferedImage sprite = AnimationManager.getGlorb("idle").getFrames().get(0);
+                    g2.drawImage(sprite, posX, posY, this);
+                }
+            }
+        }
+    }
+
 
     public double getZoomX() {
         return Math.max(1.0, (double) this.getWidth() / DEFAULT_WIDTH);

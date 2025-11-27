@@ -19,6 +19,10 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
     public double getInitialVelocity() {
         return 18.0;
     }
+    @Override
+    public boolean isAffectedByWind() {
+        return true; // Les balles sont peu affectées par le vent
+    }
 
     //getter
     public Position getPosition() {

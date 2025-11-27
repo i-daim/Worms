@@ -39,8 +39,10 @@ public class Partie {
     }
 
     private void initializeGame() {
-        equipes[0].initialiserEquipe(5, 5, 8, 8);
-        equipes[1].initialiserEquipe(35, 5, 8, 8);
+        equipes[0].initialiserEquipe(5, -100, 8, 1);
+        equipes[1].initialiserEquipe(35, -100, 8, 1);
+
+        monde.initialiserPhysique();
 
         this.activeTeamIndex = 0;
         this.activeWormIndex = 0;
@@ -49,6 +51,7 @@ public class Partie {
         this.gameOver = false;
         this.actionDone = false;
     }
+
 
     public void skipTurn() {
         actionDone = false;
@@ -74,13 +77,20 @@ public class Partie {
         activeWormIndex = getActiveTeam().getIndexWormActif();
     }
 
+    private int frameCounter = 0;
+
     public void countTimeLeft() {
-        if (timeLeft > 0) {
-            timeLeft--;
-        } else {
-            skipTurn();
+        frameCounter++;
+        if (frameCounter >= 60) {  // 1 seconde à 60 FPS
+            frameCounter = 0;
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                skipTurn();
+            }
         }
     }
+
 
     private void checkGameOver() {
         for (Equipe equipe : equipes) {
@@ -194,6 +204,10 @@ public class Partie {
 
     public boolean isActionDone() {
         return actionDone;
+    }
+
+    public Monde getMonde() {
+        return monde;
     }
 
     @Override

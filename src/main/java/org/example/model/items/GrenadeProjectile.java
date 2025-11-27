@@ -1,7 +1,8 @@
 package org.example.model.items;
-import org.example.model.entites.Position;
+
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
+import org.example.model.entites.Position;
 
 public abstract class GrenadeProjectile extends Arme implements Utilisable {
     private Position position;
@@ -12,6 +13,14 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
 
     @Override
     public void utiliser(Monde monde, Worm wormActif) {
+    }
+    @Override
+    public double getInitialVelocity() {
+        return 18.0;
+    }
+    @Override
+    public boolean isAffectedByWind() {
+        return true; // Les balles sont peu affectées par le vent
     }
 
     //getter
@@ -58,4 +67,5 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
             wormActif.receiveDmg(this.getDegats());
         }
     }
+
 }

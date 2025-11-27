@@ -11,11 +11,11 @@ public class AnimationManager {
 
     public AnimationManager() {
         // Animations joueur //
-        zlerps.put("idle", new Animation("characters/zlerp/idle",1));
-        glorbs.put("idle", new Animation("characters/glorb/idle",1));
+        zlerps.put("idle", new Animation("characters/zlerp/idle", 1));
+        glorbs.put("idle", new Animation("characters/glorb/idle", 1));
 
         // Animations monde //
-        //animations.put("explosion", new Animation("explosion",4));
+        //animations.put("explosion", new Animation("explosion", 4));
 
     }
 

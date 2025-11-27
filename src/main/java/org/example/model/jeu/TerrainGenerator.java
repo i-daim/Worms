@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 public class TerrainGenerator {
 
-    private static final int TILE_SIZE = 16;
+    public static final int TILE_SIZE = 16;
 
 
     public static Terrain creerTerrain(String mapName) {

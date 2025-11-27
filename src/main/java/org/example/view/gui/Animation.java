@@ -32,7 +32,8 @@ public class Animation {
             return ImageIO.read(is);
 
         } catch (Exception e) {
-            System.err.println("Erreur (chargement de l'animation " + name + ") : " + e.getMessage());
+            System.err.println("Erreur (chargement de l'animation " + name + ") : "
+                    + e.getMessage());
             return null;
         }
     }

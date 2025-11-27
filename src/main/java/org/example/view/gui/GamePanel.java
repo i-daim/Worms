@@ -57,6 +57,9 @@ public class GamePanel extends JPanel {
         // Affichage des entites
         drawWorms(g2);
 
+        // Affichage des barres de vie
+        hudPanel.drawHealthBars(g2, partie, cameraX, cameraY);
+
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());

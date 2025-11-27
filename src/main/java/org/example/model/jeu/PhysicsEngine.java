@@ -101,8 +101,9 @@ public class PhysicsEngine {
 
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();
-        return Math.abs(vel.y) < 0.5;
+        return Math.abs(vel.y) < 3.0;
     }
+
 
     public void addWorm(Worm worm) {
         Body body = new Body();
@@ -142,9 +143,11 @@ public class PhysicsEngine {
     public void jumpWorm(Worm worm) {
         Body body = wormBodies.get(worm);
         if (body != null && isOnGround(body)) {
-            body.applyImpulse(new Vector2(0, -10.0));
+            body.applyImpulse(new Vector2(0, -20.0));
+            body.setAtRest(false);
         }
     }
+
 
     public void moveWorm(Worm worm, double direction) {
         Body body = wormBodies.get(worm);

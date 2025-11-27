@@ -42,6 +42,8 @@ public class HUDPanel extends JPanel {
 
         g2.setColor(new Color(0, 0, 0, 180));
         g2.fillRect(0, 0, width, height);
+
+        drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
     }
 
     public void drawHealthBars(Graphics2D g2, Partie partie, int cameraX, int cameraY) {
@@ -76,11 +78,9 @@ public class HUDPanel extends JPanel {
 
         // Inidicateur en triangle si le worm est actif
         if (active) {
-            g2.setColor(Color.YELLOW);
-            g2.drawRect(barX-2, barY-2, barWidth+4, barHeight+4);
-
+            g2.setColor(Color.RED);
             int[] xPoints = {posX, posX - 4, posX + 4};
-            int[] yPoints = {barY - 6, barY - 2, barY - 2};
+            int[] yPoints = {barY - 10, barY - 15, barY - 15};
             g2.fillPolygon(xPoints, yPoints, 3);
         }
     }
@@ -95,10 +95,10 @@ public class HUDPanel extends JPanel {
         g2.setFont(new Font("Arial", Font.BOLD, 24));
         String text = String.format("%02d", timeLeft);
         int textWidth = g2.getFontMetrics().stringWidth(text);
-        g2.drawString(text, x + (100 - textWidth) / 2, y + 24);
+        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
 
         g2.setFont(new Font("Arial", Font.PLAIN, 14));
-        g2.drawString("TIME", x + 35, y + 12);
+        g2.drawString("TIME", x + 35, y + 15);
     }
 
 

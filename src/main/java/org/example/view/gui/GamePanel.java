@@ -49,6 +49,12 @@ public class GamePanel extends JPanel {
             g2.drawImage(backgroundImage, 0, 0, this);
         }
 
+        // Affichage de l'eau (arrière plan)
+        int waterY = DEFAULT_HEIGHT -
+                animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
+
+        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY, 100);
+
         // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
         g2.drawImage(terrainImage, 0, 0, this);

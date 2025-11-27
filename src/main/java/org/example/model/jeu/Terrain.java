@@ -9,10 +9,12 @@ public class Terrain {
 
     private final boolean[][] collisions;
     private final BufferedImage image;
+    private final BufferedImage background;
 
-    public Terrain(boolean[][] collisions, BufferedImage image) {
+    public Terrain(boolean[][] collisions, BufferedImage image, BufferedImage background) {
         this.collisions = collisions;
         this.image = image;
+        this.background = background;
     }
 
     public int getWidth() {
@@ -37,6 +39,10 @@ public class Terrain {
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public BufferedImage getBackground() {
+        return background;
     }
 
     public static int getWaterLevel() {

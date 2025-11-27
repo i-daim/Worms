@@ -26,7 +26,11 @@ public abstract class Arme implements Utilisable {
 
     public abstract double getInitialVelocity();
     public abstract boolean isAffectedByWind();
-    public abstract Projectile createProjectile(Worm shooter);
+    public Projectile createProjectile(Worm shooter) {
+        int x = shooter.getPosition().getX();
+        int y = shooter.getPosition().getY();
+        return new Projectile(this, shooter, x, y);
+    }
 
 
 

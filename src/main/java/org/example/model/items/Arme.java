@@ -1,5 +1,8 @@
 package org.example.model.items;
 
+import org.example.model.entites.Projectile;
+import org.example.model.entites.Worm;
+
 public abstract class Arme implements Utilisable {
     private String nom;
     private int degats;
@@ -20,6 +23,8 @@ public abstract class Arme implements Utilisable {
     public int getRayonExplosion() {
         return rayonExplosion;
     }
+
+    public abstract int getInitialVelocity();
 
 
 

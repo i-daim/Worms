@@ -40,6 +40,12 @@ public class GamePanel extends JPanel {
         g2.scale(getZoomX(), getZoomY());
         g2.translate(-cameraX, -cameraY);
 
+        // Affichage du background
+        BufferedImage backgroundImage = terrain.getBackground();
+        if (backgroundImage != null) {
+            g2.drawImage(backgroundImage, 0, 0, this);
+        }
+
         // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
         g2.drawImage(terrainImage, 0, 0, this);

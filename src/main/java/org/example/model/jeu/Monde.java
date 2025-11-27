@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Monde {
     private final Partie partie;
+    private final PhysicsEngine physicsEngine;
     private ArrayList<Worm> activeWorms;
 
     public Monde(Partie partie, Terrain terrain) {

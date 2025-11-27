@@ -56,6 +56,10 @@ public class GamePanel extends JPanel {
         // Affichage des entites
         drawWorms(g2);
 
+        // Affichage de l'eau
+        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
+
+
 
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());

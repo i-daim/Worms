@@ -45,6 +45,9 @@ public class Projectile extends Entite {
     public void incrementFrame() {
         frameCount++;
     }
+    public int getFrameCount() {
+        return frameCount;
+    }
 
 
 

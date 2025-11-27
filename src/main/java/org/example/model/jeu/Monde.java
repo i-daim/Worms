@@ -12,6 +12,8 @@ public class Monde {
         this.partie = partie;
         this.physicsEngine = new PhysicsEngine(terrain);
         this.activeWorms = new ArrayList<>();
+
+        initialiserPhysique();
     }
 
     public void update(double elapsedTime) {

@@ -26,4 +26,9 @@ public class PhysicsEngine {
     private final Map<Worm, WormPhysicsState> wormStates = new HashMap<>();
 
     private final Terrain terrain;
+
+    private static final double VITESSE_CHUTE_SAFE = 8.0; // m/s
+    private static final double VITESSE_CHUTE_MAX = 15.0; // Vitesse terminale
+    private static final int MULTIPLICATEUR_DEGATS = 3;
+
 }

@@ -11,6 +11,7 @@ import org.example.model.entites.Worm;
 import org.example.model.entites.Projectile;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -288,6 +289,40 @@ public class PhysicsEngine {
                     double dy = (wormPos.getY() - explosionY) / distance;
                     wormBody.applyImpulse(new Vector2(dx * knockbackForce, dy * knockbackForce));
                 }
+            }
+        }
+    }
+    private void updateProjectiles() {
+        Iterator<Projectile> iterator = activeProjectiles.iterator();
+
+        while (iterator.hasNext()) {
+            Projectile proj = iterator.next();
+            Body body = proj.getBody();
+
+            if (body == null) {
+                iterator.remove();
+                continue;
+            }
+
+            proj.incrementFrame();
+
+            Vector2 pos = body.getTransform().getTranslation();
+            int x = (int) (pos.x * SCALE);
+            int y = (int) (pos.y * SCALE);
+            proj.setPosition(new Position(x, y));
+
+            if (y > terrain.getCollisionsHeight() + 100 || x < -50 || x > terrain.getCollisionsWidth() + 50) {
+                proj.setState(Projectile.ProjectileState.OUT_OF_BOUNDS);
+                world.removeBody(body);
+                iterator.remove();
+                continue;
+            }
+
+            if (body.getLinearVelocity().getMagnitude() < 1.0 && proj.getFrameCount() > 10) {
+                proj.setState(Projectile.ProjectileState.EXPLODED);
+                explodeProjectile(proj);
+                world.removeBody(body);
+                iterator.remove();
             }
         }
     }

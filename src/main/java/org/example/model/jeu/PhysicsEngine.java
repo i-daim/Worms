@@ -65,4 +65,13 @@ public class PhysicsEngine {
             }
         }
 
+        private void limitFallVelocities() {
+            for (Body body : wormBodies.values()) {
+                Vector2 vel = body.getLinearVelocity();
+                if (vel.y > VITESSE_CHUTE_MAX) {
+                    body.setLinearVelocity(vel.x, VITESSE_CHUTE_MAX);
+                }
+            }
+        }
+
 }

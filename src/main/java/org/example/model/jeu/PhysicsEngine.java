@@ -81,5 +81,11 @@ public class PhysicsEngine {
                 wormStates.put(worm, state);
             }
 
+            Vector2 currentVel = body.getLinearVelocity();
+            double currentVelY = currentVel.y;
+            boolean isOnGround = isOnGround(body);
+
+            if (state.wasInAir && isOnGround && state.maxFallSpeed > VITESSE_CHUTE_SAFE)
+
 
         }

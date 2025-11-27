@@ -61,11 +61,15 @@ public class GamePanel extends JPanel {
 
                 if (w.getTeam() == partie.getTeam(0)) {
                     BufferedImage sprite = AnimationManager.getZlerp("idle").getFrames().get(0);
-                    g2.drawImage(sprite, posX, posY, this);
+                    int drawX = posX - sprite.getWidth() / 2;
+                    int drawY = posY - sprite.getHeight() / 2;
+                    g2.drawImage(sprite, drawX, drawY, this);
                 } else {
                     // Pour quand on aura des animations séparées pour la 2e équipe
                     BufferedImage sprite = AnimationManager.getGlorb("idle").getFrames().get(0);
-                    g2.drawImage(sprite, posX, posY, this);
+                    int drawX = posX - sprite.getWidth() / 2;
+                    int drawY = posY - sprite.getHeight() / 2;
+                    g2.drawImage(sprite, drawX, drawY, this);
                 }
             }
         }

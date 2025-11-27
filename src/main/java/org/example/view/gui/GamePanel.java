@@ -1,5 +1,6 @@
 package org.example.view.gui;
 
+import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
 
 import javax.swing.JPanel;
@@ -9,9 +10,10 @@ import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
 
-    private static final int DEFAULT_WIDTH = 1280;
-    private static final int DEFAULT_HEIGHT = 720;
+    public static final int DEFAULT_WIDTH = 1280;
+    public static final int DEFAULT_HEIGHT = 720;
 
+    private final Partie partie;
     private final Terrain terrain;
     private int cameraX = 0;
     private int cameraY = 0;

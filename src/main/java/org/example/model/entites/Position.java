@@ -28,10 +28,10 @@ public class Position {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public int distance(int x, int y) {
+    public double distance(int x, int y) {  // Retourner double
         int dx = this.x - x;
         int dy = this.y - y;
-        return (int) Math.sqrt(dx * dx + dy * dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     @Override

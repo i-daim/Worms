@@ -18,9 +18,10 @@ public class MenuController {
 
     public void addListeners() {
         menuPanel.addNewGameListener(e -> {
-            GamePanel gamePanel = new GamePanel(new Partie("liberty.png"));
+            Partie partie = new Partie("liberty.png");
+            GamePanel gamePanel = new GamePanel(partie);
 
-            new GameController(gamePanel);
+            new GameController(gamePanel, partie);
 
             mainFrame.setContentPane(gamePanel);
             mainFrame.revalidate();

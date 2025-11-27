@@ -19,6 +19,9 @@ public class ControllerConsole {
         vue.afficherBienvenue();
         vue.afficherTerrain(partie.getTerrain());
 
+        // Faire tomber les worms et afficher les dégâts
+        simulerChuteInitiale();
+
         while (enCours && !partie.isOver()) {
             vue.afficherEtatPartie(partie);
             String commande = vue.demanderCommande();
@@ -30,6 +33,52 @@ public class ControllerConsole {
         }
 
         vue.close();
+    }
+
+
+    private void simulerChuteInitiale() {
+        vue.afficherChute();
+
+        // Sauvegarder les HP initiaux
+        int[][] hpAvant = sauvegarderHP();
+
+        // Simuler la chute (3 secondes à 60 FPS)
+        for (int i = 0; i < 180; i++) {
+            partie.update(1.0 / 60.0);
+        }
+
+        // Afficher les résultats via la Vue
+        vue.afficherDegatsDeChuteInitiaux(partie, hpAvant);
+    }
+
+
+    private int[][] sauvegarderHP() {
+        int[][] hpAvant = new int[2][2];
+        for (int i = 0; i < 2; i++) {
+            Worm[] worms = partie.getTeam(i).getWorms();
+            for (int j = 0; j < worms.length; j++) {
+                if (worms[j] != null) {
+                    hpAvant[i][j] = worms[j].getHealthPoints();
+                }
+            }
+        }
+        return hpAvant;
+    }
+
+
+    private void simulerSaut(Worm worm) {
+        int hpAvant = worm.getHealthPoints();
+
+        partie.getMonde().getPhysicsEngine().jumpWorm(worm);
+
+        vue.afficherSautEnCours();
+
+        for (int i = 0; i < 120; i++) {
+            partie.update(1.0 / 60.0);
+        }
+
+        int degats = hpAvant - worm.getHealthPoints();
+        vue.afficherDegatsChuteApresAction(degats);
     }
 
     private void traiterCommande(String commande) {
@@ -51,11 +100,9 @@ public class ControllerConsole {
                 break;
 
             case "sauter":
-                boolean reussiteS = partie.getActiveWorm().jump(partie.getTerrain());
-                vue.afficherResultatSaut(reussiteS);
-                if (reussiteS) {
-                    partie.skipTurn();
-                }
+                simulerSaut(partie.getActiveWorm());
+                vue.afficherResultatSaut(true);
+                partie.skipTurn();
                 break;
 
             case "attaquer":
@@ -91,6 +138,7 @@ public class ControllerConsole {
 
             default:
                 vue.afficherCommandeInconnue();
+                break;
         }
     }
 }

@@ -156,8 +156,8 @@ public class VueConsole {
         System.out.println();
     }
 
-    public void afficherDegatsDeChuteInitiaux(Partie partie, int[][] hpAvant) {
-        System.out.println("💥 RÉSULTAT DE LA CHUTE :\n");
+    public void afficherEtatApresChute(Partie partie) {
+        System.out.println("\n💥 ÉTAT DES WORMS APRÈS LA CHUTE :\n");
 
         for (int i = 0; i < 2; i++) {
             System.out.println("🔹 " + partie.getTeam(i).getNom() + " :");
@@ -165,33 +165,15 @@ public class VueConsole {
             Worm[] worms = partie.getTeam(i).getWorms();
             for (int j = 0; j < worms.length; j++) {
                 Worm w = worms[j];
-                if (w != null) {
-                    int degats = hpAvant[i][j] - w.getHealthPoints();
-                    if (degats > 0) {
-                        System.out.println("   → Worm #" + (j + 1) + " : "
-                                + degats + " dégâts | PV: " + w.getHealthPoints() + "/100");
-                    } else {
-                        System.out.println("   → Worm #" + (j + 1) + " : Aucun dégât | PV: "
-                                + w.getHealthPoints() + "/100");
-                    }
+                if (w != null && w.isAlive()) {
+                    System.out.println("   → Worm #" + (j + 1) + " : PV = "
+                            + w.getHealthPoints() + "/100");
                 }
             }
         }
         System.out.println();
     }
 
-    public void afficherChute() {
-        System.out.println("\n⏳ Les worms tombent depuis leur position de spawn...\n");
-    }
-
-    public void afficherDegatsChuteApresAction(int degats) {
-        if (degats > 0) {
-            System.out.println("💥 Dégâts de chute : " + degats + " PV");
-        }
-    }
-    public void afficherSautEnCours() {
-        System.out.println("⏳ Le worm saute et retombe...");
-    }
 
 
 

@@ -45,5 +45,9 @@ public abstract class ArmeAFeu extends Arme implements Utilisable {
     public double getInitialVelocity() {
         return 35.0;
     }
+    @Override
+    public boolean isAffectedByWind() {
+        return false;
+    }
 
 }

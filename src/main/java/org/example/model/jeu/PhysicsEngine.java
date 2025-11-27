@@ -31,4 +31,12 @@ public class PhysicsEngine {
     private static final double VITESSE_CHUTE_MAX = 15.0; // Vitesse terminale
     private static final int MULTIPLICATEUR_DEGATS = 3;
 
+
+    public PhysicsEngine(Terrain terrain) {
+        this.world = new World<>();
+        this.world.setGravity(gravity);
+        this.terrain = terrain;
+        createTerrainBodies();
+    }
+
 }

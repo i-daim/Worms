@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class GamePanel extends JPanel {
 
@@ -50,12 +51,21 @@ public class GamePanel extends JPanel {
             g2.drawImage(backgroundImage, 0, 0, this);
         }
 
+        // Affichage de l'eau (arrière plan)
+        int waterY = DEFAULT_HEIGHT
+                - animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
+
+        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY, 100);
+
         // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
         g2.drawImage(terrainImage, 0, 0, this);
 
         // Affichage des entites
         drawWorms(g2);
+
+        // Affichage de l'eau
+        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
 
         // Affichage des barres de vie
         hudPanel.drawHealthBars(g2, partie, cameraX, cameraY);
@@ -89,6 +99,22 @@ public class GamePanel extends JPanel {
                     g2.drawImage(sprite, drawX, drawY, this);
                 }
             }
+        }
+    }
+
+    private void drawAnimation(Graphics2D g2, Animation animation,
+                               int drawX, int drawY, int speedMs) {
+
+        if (animation != null && !animation.getFrames().isEmpty()) {
+            List<BufferedImage> frames = animation.getFrames();
+
+            long timeIndex = System.currentTimeMillis() / speedMs;
+
+            int frameIndex = (int) (timeIndex % frames.size());
+
+            BufferedImage currentFrame = frames.get(frameIndex);
+
+            g2.drawImage(currentFrame, drawX, drawY, this);
         }
     }
 

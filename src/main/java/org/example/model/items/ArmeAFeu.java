@@ -41,6 +41,9 @@ public abstract class ArmeAFeu extends Arme implements Utilisable {
             }
         }
     }
-
+    @Override
+    public double getInitialVelocity() {
+        return 35.0;
+    }
 
 }

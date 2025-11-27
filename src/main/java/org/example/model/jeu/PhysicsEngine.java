@@ -244,4 +244,15 @@ public class PhysicsEngine {
         this.world.addBody(body);
         this.activeProjectiles.add(projectile);
     }
+    private void applyWindToProjectiles() {
+        for (Projectile proj : activeProjectiles) {
+            if (proj.isActive() && proj.getWeapon().isAffectedByWind()) {
+                Body body = proj.getBody();
+                if (body != null) {
+                    Vector2 windForce = wind.product(0.5); // 50% de la force du vent
+                    body.applyForce(windForce);
+                }
+            }
+        }
+    }
 }

@@ -12,15 +12,6 @@ public class Monde {
         this.partie = partie;
         this.physicsEngine = new PhysicsEngine(terrain);
         this.activeWorms = new ArrayList<>();
-
-        for (Worm w : partie.getTeam(0).getWorms()) {
-            activeWorms.add(w);
-            physicsEngine.addWorm(w);
-        }
-        for (Worm w : partie.getTeam(1).getWorms()) {
-            activeWorms.add(w);
-            physicsEngine.addWorm(w);
-        }
     }
 
     public void update(double elapsedTime) {

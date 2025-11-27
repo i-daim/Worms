@@ -43,7 +43,9 @@ public class PhysicsEngine {
         this.terrain = terrain;
         createTerrainBodies();
     }
-
+    public void setWind(double windX, double windY) {
+        this.wind = new Vector2(windX, windY);
+    }
     public void update() {
         limitFallVelocities();
         world.update(dt);

@@ -29,6 +29,21 @@ public class Monde {
         return worms;
     }
 
+    public void initialiserPhysique() {
+        for (Worm w : partie.getTeam(0).getWorms()) {
+            if (w != null) {
+                activeWorms.add(w);
+                physicsEngine.addWorm(w);
+            }
+        }
+        for (Worm w : partie.getTeam(1).getWorms()) {
+            if (w != null) {
+                activeWorms.add(w);
+                physicsEngine.addWorm(w);
+            }
+        }
+    }
+
     public PhysicsEngine getPhysicsEngine() {
         return physicsEngine;
 

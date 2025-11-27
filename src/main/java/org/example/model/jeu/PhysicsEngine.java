@@ -138,6 +138,12 @@ public class PhysicsEngine {
             world.removeBody(body);
         }
     }
+    public void jumpWorm(Worm worm) {
+        Body body = wormBodies.get(worm);
+        if (body != null && isOnGround(body)) {
+            body.applyImpulse(new Vector2(0, -6.5));
+        }
+    }
 
 
 

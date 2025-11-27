@@ -25,6 +25,7 @@ public abstract class Arme implements Utilisable {
     }
 
     public abstract int getInitialVelocity();
+    public abstract Projectile createProjectile(Worm shooter);
 
 
 

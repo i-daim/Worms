@@ -83,10 +83,19 @@ public class Worm extends Entite {
     }
 
     public boolean isVisible(int cameraX, int cameraY) {
+        if (!alive) {
+            return false;
+        }
+
         int posX = getPosition().getX();
         int posY = getPosition().getY();
-        return posX >= cameraX && posX <= cameraX + GamePanel.DEFAULT_WIDTH
-                && posY >= cameraY && posY <= cameraY + GamePanel.DEFAULT_HEIGHT;
+
+        int margin = 200;
+
+        return posX >= cameraX - margin
+                && posX <= cameraX + GamePanel.DEFAULT_WIDTH + margin
+                && posY >= cameraY - margin
+                && posY <= cameraY + GamePanel.DEFAULT_HEIGHT + margin;
     }
 
     @Override

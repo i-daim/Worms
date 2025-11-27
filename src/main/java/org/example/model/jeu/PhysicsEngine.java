@@ -143,7 +143,7 @@ public class PhysicsEngine {
     public void jumpWorm(Worm worm) {
         Body body = wormBodies.get(worm);
         if (body != null && isOnGround(body)) {
-            body.applyImpulse(new Vector2(0, -20.0));
+            body.applyImpulse(new Vector2(0, -45.0));
             body.setAtRest(false);
         }
     }
@@ -152,7 +152,7 @@ public class PhysicsEngine {
     public void moveWorm(Worm worm, double direction) {
         Body body = wormBodies.get(worm);
         if (body != null) {
-            double speed = 10.0 * direction;
+            double speed = 3.0 * direction;
             double velY = body.getLinearVelocity().y;
             body.setLinearVelocity(new Vector2(speed, velY));
             body.setAtRest(false);

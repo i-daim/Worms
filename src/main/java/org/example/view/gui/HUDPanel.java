@@ -4,6 +4,7 @@ import org.example.model.jeu.Partie;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,6 +29,16 @@ public class HUDPanel extends JPanel {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+
+        drawTopBar(g2);
+    }
+
+    private void drawTopBar(Graphics2D g2) {
+        int width = this.getWidth();
+        int height = 50;
+
+        g2.setColor(new Color(0, 0, 0, 180));
+        g2.fillRect(0, 0, width, height);
     }
 
 }

@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.model.jeu.Partie;
-import org.example.model.jeu.Terrain;
 import org.example.view.gui.GamePanel;
 import org.example.view.gui.MainFrame;
 import org.example.view.gui.MenuPanel;
@@ -20,8 +19,7 @@ public class MenuController {
     public void addListeners() {
         menuPanel.addNewGameListener(e -> {
             Partie partie = new Partie("liberty.png");
-            Terrain terrain = partie.getTerrain();
-            GamePanel gamePanel = new GamePanel(terrain, partie);
+            GamePanel gamePanel = new GamePanel(partie);
 
             new GameController(gamePanel, partie);
 

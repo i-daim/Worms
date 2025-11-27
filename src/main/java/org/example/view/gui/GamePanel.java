@@ -69,7 +69,6 @@ public class GamePanel extends JPanel {
 
         // Affichage des barres de vie
         hudPanel.drawHealthBars(g2, partie, cameraX, cameraY);
-        src/main/java/org/example/view/gui/GamePanel.java
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);

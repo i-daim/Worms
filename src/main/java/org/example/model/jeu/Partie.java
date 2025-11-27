@@ -38,9 +38,10 @@ public class Partie {
     }
 
     private void initializeGame() {
-        equipes[0].initialiserEquipe(5, 0, 8, 1);    // EN HAUTEUR (y=0)
-        equipes[1].initialiserEquipe(35, 0, 8, 1);   // EN HAUTEUR (y=0)
+        equipes[0].initialiserEquipe(5, 0, 8, 1);
+        equipes[1].initialiserEquipe(35, 0, 8, 1);
 
+        monde.initialiserPhysique();
         this.activeTeamIndex = 0;
         this.activeWormIndex = 0;
         this.currentRound = 1;

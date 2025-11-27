@@ -24,7 +24,8 @@ public abstract class Arme implements Utilisable {
         return rayonExplosion;
     }
 
-    public abstract int getInitialVelocity();
+    public abstract double getInitialVelocity();
+    public abstract boolean isAffectedByWind();
     public abstract Projectile createProjectile(Worm shooter);
 
 

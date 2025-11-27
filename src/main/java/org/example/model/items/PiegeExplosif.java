@@ -1,7 +1,6 @@
 package org.example.model.items;
 
 import org.example.model.entites.Position;
-import org.example.model.entites.Projectile;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 

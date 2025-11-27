@@ -1,6 +1,5 @@
 package org.example.model.items;
 
-import org.example.model.entites.Projectile;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 import org.example.model.entites.Position;
@@ -68,4 +67,5 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
             wormActif.receiveDmg(this.getDegats());
         }
     }
+
 }

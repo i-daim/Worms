@@ -8,15 +8,21 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
+import org.example.model.entites.Projectile;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class PhysicsEngine {
     private final World<Body> world;
 
     public static final double SCALE = 20.0;
-
+    private final List<Projectile> activeProjectiles = new ArrayList<>();
+    private Vector2 wind = new Vector2(0, 0); // Vent (x, y)
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 9.8);
 

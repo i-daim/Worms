@@ -21,7 +21,10 @@ public class PhysicsEngine {
     private final Vector2 gravity = new Vector2(0, 9.8);
 
     private final Map<Worm, Body> wormBodies = new HashMap<>();
-    private final Map<Worm, WormPhysicsState> wormStates = new HashMap<>();
+
+    // États de chute pour chaque worm
+    private final Map<Worm, Boolean> wasInAir = new HashMap<>();
+    private final Map<Worm, Double> maxFallSpeed = new HashMap<>();
 
     private final Terrain terrain;
 
@@ -72,31 +75,28 @@ public class PhysicsEngine {
     }
 
     private void checkFallDamage(Worm worm, Body body) {
-        WormPhysicsState state = wormStates.get(worm);
-        if (state == null) {
-            state = new WormPhysicsState();
-            wormStates.put(worm, state);
-        }
-
         Vector2 currentVel = body.getLinearVelocity();
         double currentVelY = currentVel.y;
         boolean isOnGround = isOnGround(body);
 
-        if (state.wasInAir && isOnGround && state.maxFallSpeed > VITESSE_CHUTE_SAFE) {
-            int degats = (int) ((state.maxFallSpeed - VITESSE_CHUTE_SAFE) * MULTIPLICATEUR_DEGATS);
+        boolean wasAirborne = wasInAir.getOrDefault(worm, false);
+        double maxSpeed = maxFallSpeed.getOrDefault(worm, 0.0);
+
+        if (wasAirborne && isOnGround && maxSpeed > VITESSE_CHUTE_SAFE) {
+            int degats = (int) ((maxSpeed - VITESSE_CHUTE_SAFE) * MULTIPLICATEUR_DEGATS);
             if (degats > 0) {
                 worm.receiveDmg(degats);
-                state.lastFallDamage = degats;
-                state.lastFallSpeed = state.maxFallSpeed;
-                state.hasTakenFallDamage = true;
+                // Pas de print ici - respect du MVC
             }
-            state.maxFallSpeed = 0;
+            maxFallSpeed.put(worm, 0.0);
         }
 
         if (!isOnGround) {
-            state.maxFallSpeed = Math.max(state.maxFallSpeed, Math.abs(currentVelY));
+            double newMaxSpeed = Math.max(maxSpeed, Math.abs(currentVelY));
+            maxFallSpeed.put(worm, newMaxSpeed);
         }
-        state.wasInAir = !isOnGround;
+
+        wasInAir.put(worm, !isOnGround);
     }
 
     private boolean isOnGround(Body body) {
@@ -128,22 +128,26 @@ public class PhysicsEngine {
 
         this.world.addBody(body);
         this.wormBodies.put(worm, body);
-        this.wormStates.put(worm, new WormPhysicsState());
+        this.wasInAir.put(worm, false);
+        this.maxFallSpeed.put(worm, 0.0);
     }
 
     public void removeWorm(Worm worm) {
         Body body = wormBodies.remove(worm);
-        wormStates.remove(worm);
+        wasInAir.remove(worm);
+        maxFallSpeed.remove(worm);
         if (body != null) {
             world.removeBody(body);
         }
     }
+
     public void jumpWorm(Worm worm) {
         Body body = wormBodies.get(worm);
         if (body != null && isOnGround(body)) {
             body.applyImpulse(new Vector2(0, -6.5));
         }
     }
+
     public void moveWorm(Worm worm, double direction) {
         Body body = wormBodies.get(worm);
         if (body != null) {
@@ -192,22 +196,11 @@ public class PhysicsEngine {
         world.addBody(terrainBody);
     }
 
-    public FallDamageInfo getFallDamageInfo(Worm worm) {
-        WormPhysicsState state = wormStates.get(worm);
-        if (state != null && state.hasTakenFallDamage) {
-            FallDamageInfo info = new FallDamageInfo(
-                    state.lastFallDamage,
-                    state.lastFallSpeed
-            );
-            state.hasTakenFallDamage = false; // Réinitialiser après lecture
-            return info;
-        }
-        return null;
+    public World<Body> getWorld() {
+        return world;
     }
 
-
-
-
-
-
+    public Body getWormBody(Worm worm) {
+        return wormBodies.get(worm);
+    }
 }

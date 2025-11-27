@@ -17,8 +17,8 @@ public class Worm extends Entite {
 
 
     // Constructeur
-    public Worm(Equipe team, int positionX, int positionY) {
-        super(positionX, positionY, SPEED);
+    public Worm(Equipe team, Position position) {
+        super(position.getX(), position.getY(), SPEED);
         this.healthPoints = INITIAL_HP;
         this.team = team;
         this.alive = true;

@@ -74,4 +74,12 @@ public class PhysicsEngine {
             }
         }
 
-}
+        private void checkFallDamage(Worm worm, Body body) {
+            WormPhysicsState state = wormStates.get(worm);
+            if (state == null) {
+                state = new WormPhysicsState();
+                wormStates.put(worm, state);
+            }
+
+
+        }

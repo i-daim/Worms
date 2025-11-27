@@ -33,4 +33,10 @@ public class SpawnPoints {
         // Autre map
     }
 
+    public static List<Position> getSpawns(String mapName, int team) {
+        if (mapName.equals("liberty.png")) {
+            return libertySpawns.get(team);
+        }
+        return null;
+    }
 }

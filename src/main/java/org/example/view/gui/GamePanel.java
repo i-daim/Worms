@@ -6,7 +6,10 @@ import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
 
 import javax.swing.JPanel;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
@@ -50,7 +53,9 @@ public class GamePanel extends JPanel {
     private void drawWorms(Graphics2D g2) {
         for (int i = 0; i < 2; i++) {
             Equipe equipe = partie.getTeam(i);
-            if (equipe == null) continue;
+            if (equipe == null) {
+                continue;
+            }
 
             for (Worm worm : equipe.getWorms()) {
                 if (worm != null && worm.isAlive()) {

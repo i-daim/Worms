@@ -76,8 +76,12 @@ public class GameController {
                     partie.getMonde().getPhysicsEngine().jumpWorm(activeWorm);
                 }
                 break;
+            default:
+                // Ne rien faire pour les autres touches
+                break;
         }
     }
+
 
     private void handleCameraScroll(Point mousePos) {
         int width = gamePanel.getWidth();

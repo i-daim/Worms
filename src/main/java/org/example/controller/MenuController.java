@@ -2,7 +2,6 @@ package org.example.controller;
 
 import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
-import org.example.model.jeu.TerrainGenerator;
 import org.example.view.gui.GamePanel;
 import org.example.view.gui.MainFrame;
 import org.example.view.gui.MenuPanel;

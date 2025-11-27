@@ -18,13 +18,17 @@ public class Partie {
     private boolean gameOver;
     private boolean actionDone;
 
+    private String mapName;
+
     public Partie(String mapName) {
+        this.mapName = mapName;
         this.terrain = TerrainGenerator.creerTerrain(mapName);
-        this.monde = new Monde(this, this.terrain);
 
         this.equipes = new Equipe[2];
         this.equipes[0] = new Equipe("Équipe 1", TEAM_SIZE);
         this.equipes[1] = new Equipe("Équipe 2", TEAM_SIZE);
+
+        this.monde = new Monde(this, this.terrain);
 
         initializeGame();
     }
@@ -38,8 +42,10 @@ public class Partie {
     }
 
     private void initializeGame() {
-        equipes[0].initialiserEquipe(5, 5, 8, 8);
-        equipes[1].initialiserEquipe(35, 5, 8, 8);
+        equipes[0].initialiserEquipe(mapName, 0);
+        equipes[1].initialiserEquipe(mapName, 1);
+
+        monde.initialiserPhysique();
 
         this.activeTeamIndex = 0;
         this.activeWormIndex = 0;
@@ -48,6 +54,7 @@ public class Partie {
         this.gameOver = false;
         this.actionDone = false;
     }
+
 
     public void skipTurn() {
         actionDone = false;
@@ -73,13 +80,20 @@ public class Partie {
         activeWormIndex = getActiveTeam().getIndexWormActif();
     }
 
+    private int frameCounter = 0;
+
     public void countTimeLeft() {
-        if (timeLeft > 0) {
-            timeLeft--;
-        } else {
-            skipTurn();
+        frameCounter++;
+        if (frameCounter >= 60) {  // 1 seconde à 60 FPS
+            frameCounter = 0;
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                skipTurn();
+            }
         }
     }
+
 
     private void checkGameOver() {
         for (Equipe equipe : equipes) {
@@ -123,6 +137,10 @@ public class Partie {
 
     public Terrain getTerrain() {
         return terrain;
+    }
+
+    public Monde getMonde() {
+        return monde;
     }
 
     public Equipe getActiveTeam() {

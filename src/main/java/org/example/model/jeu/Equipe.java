@@ -1,9 +1,11 @@
 package org.example.model.jeu;
 
 
+import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
 import org.example.model.items.Inventaire;
-import java.util.Random;
+
+import java.util.List;
 
 public class Equipe {
     private final String nom;
@@ -41,16 +43,13 @@ public class Equipe {
         return null;
     }
 
-    public void initialiserEquipe(int zoneX, int zoneY, int largeurZone, int hauteurZone) {
-        Random random = new Random();
-
+    public void initialiserEquipe(String mapName, int team) {
+        List<Position> spawns = SpawnPoints.getSpawns(mapName, team);
         for (int i = 0; i < worms.length; i++) {
-            int x = zoneX + random.nextInt(largeurZone);
-            int y = zoneY + random.nextInt(hauteurZone);
-
-            worms[i] = new Worm(this, x, y);
+            worms[i] = new Worm(this, spawns.get(i));
         }
     }
+
     public void passerAuWormSuivant() {
         int tentatives = 0;
         do {

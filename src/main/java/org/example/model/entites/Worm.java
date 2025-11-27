@@ -2,6 +2,7 @@ package org.example.model.entites;
 
 import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Terrain;
+import org.example.view.gui.GamePanel;
 
 public class Worm extends Entite {
     // Attributs
@@ -16,8 +17,8 @@ public class Worm extends Entite {
 
 
     // Constructeur
-    public Worm(Equipe team, int positionX, int positionY) {
-        super(positionX, positionY, SPEED);
+    public Worm(Equipe team, Position position) {
+        super(position.getX(), position.getY(), SPEED);
         this.healthPoints = INITIAL_HP;
         this.team = team;
         this.alive = true;
@@ -79,6 +80,13 @@ public class Worm extends Entite {
     public boolean jump(Terrain terrain) {
         Position newPosition = getPosition().deplacer(0, JUMP);
         return move(newPosition, terrain);
+    }
+
+    public boolean isVisible(int cameraX, int cameraY) {
+        int posX = getPosition().getX();
+        int posY = getPosition().getY();
+        return posX >= cameraX && posX <= cameraX + GamePanel.DEFAULT_WIDTH
+                && posY >= cameraY && posY <= cameraY + GamePanel.DEFAULT_HEIGHT;
     }
 
     @Override

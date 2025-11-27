@@ -156,6 +156,26 @@ public class VueConsole {
         System.out.println();
     }
 
+    public void afficherEtatApresChute(Partie partie) {
+        System.out.println("\n💥 ÉTAT DES WORMS APRÈS LA CHUTE :\n");
+
+        for (int i = 0; i < 2; i++) {
+            System.out.println("🔹 " + partie.getTeam(i).getNom() + " :");
+
+            Worm[] worms = partie.getTeam(i).getWorms();
+            for (int j = 0; j < worms.length; j++) {
+                Worm w = worms[j];
+                if (w != null && w.isAlive()) {
+                    System.out.println("   → Worm #" + (j + 1) + " : PV = "
+                            + w.getHealthPoints() + "/100");
+                }
+            }
+        }
+        System.out.println();
+    }
+
+
+
 
     public void afficherResultatDeplacement(boolean succes, String direction) {
         if (succes) {

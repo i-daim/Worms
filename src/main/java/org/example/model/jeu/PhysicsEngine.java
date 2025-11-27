@@ -144,6 +144,15 @@ public class PhysicsEngine {
             body.applyImpulse(new Vector2(0, -6.5));
         }
     }
+    public void moveWorm(Worm worm, double direction) {
+        Body body = wormBodies.get(worm);
+        if (body != null) {
+            double speed = 2.0 * direction;
+            double velY = body.getLinearVelocity().y;
+            body.setLinearVelocity(new Vector2(speed, velY));
+            body.setAsleep(false);
+        }
+    }
 
 
 

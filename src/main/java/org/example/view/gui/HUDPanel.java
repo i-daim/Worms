@@ -1,6 +1,7 @@
 package org.example.view.gui;
 
 import org.example.model.entites.Worm;
+import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Partie;
 
 import javax.swing.JPanel;
@@ -40,6 +41,16 @@ public class HUDPanel extends JPanel {
 
         g2.setColor(new Color(0, 0, 0, 180));
         g2.fillRect(0, 0, width, height);
+    }
+
+    public void drawHealthBars(Graphics2D g2, Partie partie, int cameraX, int cameraY) {
+        for (Equipe equipe : partie.getTeams()) {
+            for (Worm worm : equipe.getWorms()) {
+                if (worm != null && worm.isAlive()) {
+                    drawWormHealthBar(g2, worm, partie.getActiveWorm() == worm);
+                }
+            }
+        }
     }
 
     private void drawWormHealthBar(Graphics2D g2, Worm worm, boolean active) {

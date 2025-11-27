@@ -22,7 +22,6 @@ public class PhysicsEngine {
 
     private final Map<Worm, Body> wormBodies = new HashMap<>();
 
-    // États de chute pour chaque worm
     private final Map<Worm, Boolean> wasInAir = new HashMap<>();
     private final Map<Worm, Double> maxFallSpeed = new HashMap<>();
 
@@ -86,7 +85,6 @@ public class PhysicsEngine {
             int degats = (int) ((maxSpeed - VITESSE_CHUTE_SAFE) * MULTIPLICATEUR_DEGATS);
             if (degats > 0) {
                 worm.receiveDmg(degats);
-                // Pas de print ici - respect du MVC
             }
             maxFallSpeed.put(worm, 0.0);
         }
@@ -101,8 +99,9 @@ public class PhysicsEngine {
 
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();
-        return Math.abs(vel.y) < 0.5 && body.getInContactBodies(false).size() > 0;
+        return Math.abs(vel.y) < 0.5;
     }
+
 
     public void addWorm(Worm worm) {
         Body body = new Body();

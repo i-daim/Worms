@@ -18,6 +18,9 @@ public class GamePanel extends JPanel {
 
     public GamePanel(Terrain terrain) {
         this.terrain = terrain;
+    public GamePanel(Partie partie) {
+        this.partie = partie;
+        this.terrain = partie.getTerrain();
         this.setDoubleBuffered(true);
     }
 

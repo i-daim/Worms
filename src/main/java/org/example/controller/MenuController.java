@@ -1,7 +1,6 @@
 package org.example.controller;
 
-import org.example.model.jeu.Terrain;
-import org.example.model.jeu.TerrainGenerator;
+import org.example.model.jeu.Partie;
 import org.example.view.gui.GamePanel;
 import org.example.view.gui.MainFrame;
 import org.example.view.gui.MenuPanel;
@@ -19,8 +18,7 @@ public class MenuController {
 
     public void addListeners() {
         menuPanel.addNewGameListener(e -> {
-            Terrain terrain = TerrainGenerator.creerTerrain("liberty.png");
-            GamePanel gamePanel = new GamePanel(terrain);
+            GamePanel gamePanel = new GamePanel(new Partie("liberty.png"));
 
             new GameController(gamePanel);
 

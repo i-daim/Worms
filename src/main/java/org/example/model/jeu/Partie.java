@@ -79,10 +79,9 @@ public class Partie {
     public void countTimeLeft() {
         if (timeLeft > 0) {
             timeLeft--;
-        } else {
-            skipTurn();
         }
     }
+
 
     private void checkGameOver() {
         for (Equipe equipe : equipes) {

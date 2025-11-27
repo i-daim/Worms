@@ -16,7 +16,7 @@ public class PhysicsEngine {
     private final World<Body> world;
 
     private final double dt = 1.0 / 60.0;
-    private final Vector2 gravity = new Vector2(0, 70.0);
+    private final Vector2 gravity = new Vector2(0, 60.0);
 
 
     private final Map<Worm, Body> wormBodies = new HashMap<>();
@@ -27,7 +27,7 @@ public class PhysicsEngine {
     private final Terrain terrain;
 
     private static final double VITESSE_CHUTE_SAFE = 15;
-    private static final double VITESSE_CHUTE_MAX = 100.0;
+    private static final double VITESSE_CHUTE_MAX = 20.0;
     private static final int MULTIPLICATEUR_DEGATS = 1;
 
     private static final double WORM_WIDTH = Converter.toMeters(20);

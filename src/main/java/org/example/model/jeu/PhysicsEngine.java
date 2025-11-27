@@ -154,6 +154,26 @@ public class PhysicsEngine {
         }
     }
 
+    private void createTerrainBodies() {
+        boolean[][] collisions = terrain.getCollisions();
+        int height = collisions.length;
+        int width = collisions[0].length;
+
+        for (int y = 0; y < height; y++) {
+            int startX = -1;
+            for (int x = 0; x <= width; x++) {
+                boolean isCollision = (x < width) && collisions[y][x];
+
+                if (isCollision && startX == -1) {
+                    startX = x;
+                } else if (!isCollision && startX != -1) {
+                    createTerrainSegment(startX, y, x - startX, 1);
+                    startX = -1;
+                }
+            }
+        }
+    }
+
 
 
 

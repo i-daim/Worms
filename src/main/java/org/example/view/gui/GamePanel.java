@@ -1,12 +1,9 @@
 package org.example.view.gui;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Equipe;
 import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
 
 import javax.swing.JPanel;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -35,16 +32,12 @@ public class GamePanel extends JPanel {
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2.scale(getZoomX(), getZoomY());
         g2.translate(-cameraX, -cameraY);
 
         BufferedImage terrainImage = terrain.getImage();
         g2.drawImage(terrainImage, 0, 0, this);
-
-        drawWorms(g2);
 
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());

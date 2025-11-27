@@ -76,9 +76,17 @@ public class Partie {
         activeWormIndex = getActiveTeam().getIndexWormActif();
     }
 
+    private int frameCounter = 0;
+
     public void countTimeLeft() {
-        if (timeLeft > 0) {
-            timeLeft--;
+        frameCounter++;
+        if (frameCounter >= 60) {  // 1 seconde à 60 FPS
+            frameCounter = 0;
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                skipTurn();
+            }
         }
     }
 

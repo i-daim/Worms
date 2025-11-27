@@ -8,7 +8,7 @@ public class Projectile extends Entite {
         FLYING,
         EXPLODED,
         OUT_OF_BOUNDS
-    }
+      }
     private final Arme weapon;
     private final Worm shooter;
     private Body body;
@@ -19,7 +19,7 @@ public class Projectile extends Entite {
         this.weapon = weapon;
         this.shooter = shooter;
         this.state = State.FLYING;
-    }
+     }
 
 
 

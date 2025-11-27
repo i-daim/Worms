@@ -18,7 +18,10 @@ public class Partie {
     private boolean gameOver;
     private boolean actionDone;
 
+    private String mapName;
+
     public Partie(String mapName) {
+        this.mapName = mapName;
         this.terrain = TerrainGenerator.creerTerrain(mapName);
 
         this.equipes = new Equipe[2];
@@ -39,8 +42,8 @@ public class Partie {
     }
 
     private void initializeGame() {
-        equipes[0].initialiserEquipe(5, -100, 8, 1);
-        equipes[1].initialiserEquipe(35, -100, 8, 1);
+        equipes[0].initialiserEquipe(mapName, 0);
+        equipes[1].initialiserEquipe(mapName, 1);
 
         monde.initialiserPhysique();
 

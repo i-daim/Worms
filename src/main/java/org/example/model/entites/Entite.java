@@ -8,6 +8,10 @@ public abstract class Entite {
         this.position = new Position(x, y);
         this.speed = speed;
     }
+    protected Entite() {
+        this.position = new Position(0, 0);
+        this.speed = 0;
+    }
 
     public Position getPosition() {
         return position;

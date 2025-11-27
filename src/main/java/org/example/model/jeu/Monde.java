@@ -24,6 +24,7 @@ public class Monde {
     }
 
     public void update(double elapsedTime) {
+        physicsEngine.update();
 
     }
 

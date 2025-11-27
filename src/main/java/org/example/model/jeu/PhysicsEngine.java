@@ -53,5 +53,10 @@ public class PhysicsEngine {
             }
 
             checkFallDamage(worm, body);
+            Vector2 v = body.getTransform().getTranslation();
+            int pixelX = (int) (v.x * SCALE);
+            int pixelY = (int) (v.y * SCALE);
+
+            worm.setPosition(new Position(pixelX, pixelY));
 
 }

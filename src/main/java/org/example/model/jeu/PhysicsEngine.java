@@ -39,4 +39,19 @@ public class PhysicsEngine {
         createTerrainBodies();
     }
 
+    public void update() {
+        limitFallVelocities();
+
+        world.update(dt);
+
+        for (Map.Entry<Worm, Body> entry : wormBodies.entrySet()) {
+            Worm worm = entry.getKey();
+            Body body = entry.getValue();
+
+            if (!worm.isAlive()) {
+                continue;
+            }
+
+            checkFallDamage(worm, body);
+
 }

@@ -19,8 +19,15 @@ public class ControllerConsole {
         vue.afficherBienvenue();
         vue.afficherTerrain(partie.getTerrain());
 
-        // Faire tomber les worms et afficher les dégâts
-        simulerChuteInitiale();
+        // Faire tomber les worms
+        System.out.println("\n⏳ Les worms tombent...\n");
+
+        for (int i = 0; i < 180; i++) {
+            partie.update(1.0 / 60.0);
+        }
+
+        // Afficher l'état après la chute
+        vue.afficherEtatApresChute(partie);
 
         while (enCours && !partie.isOver()) {
             vue.afficherEtatPartie(partie);
@@ -33,52 +40,6 @@ public class ControllerConsole {
         }
 
         vue.close();
-    }
-
-
-    private void simulerChuteInitiale() {
-        vue.afficherChute();
-
-        // Sauvegarder les HP initiaux
-        int[][] hpAvant = sauvegarderHP();
-
-        // Simuler la chute (3 secondes à 60 FPS)
-        for (int i = 0; i < 180; i++) {
-            partie.update(1.0 / 60.0);
-        }
-
-        // Afficher les résultats via la Vue
-        vue.afficherDegatsDeChuteInitiaux(partie, hpAvant);
-    }
-
-
-    private int[][] sauvegarderHP() {
-        int[][] hpAvant = new int[2][2];
-        for (int i = 0; i < 2; i++) {
-            Worm[] worms = partie.getTeam(i).getWorms();
-            for (int j = 0; j < worms.length; j++) {
-                if (worms[j] != null) {
-                    hpAvant[i][j] = worms[j].getHealthPoints();
-                }
-            }
-        }
-        return hpAvant;
-    }
-
-
-    private void simulerSaut(Worm worm) {
-        int hpAvant = worm.getHealthPoints();
-
-        partie.getMonde().getPhysicsEngine().jumpWorm(worm);
-
-        vue.afficherSautEnCours();
-
-        for (int i = 0; i < 120; i++) {
-            partie.update(1.0 / 60.0);
-        }
-
-        int degats = hpAvant - worm.getHealthPoints();
-        vue.afficherDegatsChuteApresAction(degats);
     }
 
     private void traiterCommande(String commande) {
@@ -100,7 +61,13 @@ public class ControllerConsole {
                 break;
 
             case "sauter":
-                simulerSaut(partie.getActiveWorm());
+                partie.getMonde().getPhysicsEngine().jumpWorm(partie.getActiveWorm());
+
+                System.out.println("⏳ Le worm saute...");
+                for (int i = 0; i < 120; i++) {
+                    partie.update(1.0 / 60.0);
+                }
+
                 vue.afficherResultatSaut(true);
                 partie.skipTurn();
                 break;

@@ -38,4 +38,8 @@ public class Monde {
         return worms;
     }
 
+    public PhysicsEngine getPhysicsEngine() {
+        return physicsEngine;
+
+    }
 }

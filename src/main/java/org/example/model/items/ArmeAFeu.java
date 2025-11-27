@@ -1,5 +1,6 @@
 package org.example.model.items;
 
+import org.example.model.entites.Projectile;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 
@@ -40,4 +41,5 @@ public abstract class ArmeAFeu extends Arme implements Utilisable {
             }
         }
     }
+
 }

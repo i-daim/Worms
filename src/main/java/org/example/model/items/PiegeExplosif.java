@@ -1,6 +1,7 @@
 package org.example.model.items;
 
 import org.example.model.entites.Position;
+import org.example.model.entites.Projectile;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
 
@@ -16,6 +17,7 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
     @Override
     public void utiliser(Monde monde, Worm wormActif) {
     }
+
 
     //getters
     public Position getPosition() {
@@ -69,4 +71,5 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
             this.active = false;
         }
     }
+
 }

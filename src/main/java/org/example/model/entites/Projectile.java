@@ -4,7 +4,7 @@ import org.dyn4j.dynamics.Body;
 import org.example.model.items.Arme;
 
 public class Projectile extends Entite {
-    public enum State {
+    public enum ProjectileState {
         FLYING,
         EXPLODED,
         OUT_OF_BOUNDS
@@ -12,13 +12,14 @@ public class Projectile extends Entite {
     private final Arme weapon;
     private final Worm shooter;
     private Body body;
-    private State state;
+    private ProjectileState state;
+    private int frameCount;
 
     public Projectile(Arme weapon, Worm shooter, int startX, int startY) {
         super(startX, startY, 1);
         this.weapon = weapon;
         this.shooter = shooter;
-        this.state = State.FLYING;
+        this.state = ProjectileState.FLYING;
      }
     public Arme getWeapon() {
         return weapon;
@@ -32,14 +33,17 @@ public class Projectile extends Entite {
     public void setBody(Body body) {
         this.body = body;
     }
-    public State getState() {
+    public ProjectileState getState() {
         return state;
     }
-    public void setState(State state) {
+    public void setState(ProjectileState state) {
         this.state = state;
     }
     public boolean isActive() {
-        return state == State.FLYING;
+        return state == ProjectileState.FLYING;
+    }
+    public void incrementFrame() {
+        frameCount++;
     }
 
 

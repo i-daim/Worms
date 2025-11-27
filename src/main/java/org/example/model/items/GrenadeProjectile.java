@@ -21,17 +21,6 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
         return position;
     }
 
-    @Override
-    public int getInitialVelocity() {
-        return 15;
-    }
-    @Override
-    public Projectile createProjectile(Worm shooter) {
-        int x = shooter.getPosition().getX();
-        int y = shooter.getPosition().getY();
-        return new Projectile(this, shooter, x, y);
-    }
-
     //setter
     public void setPosition(Position position) {
         this.position = position;

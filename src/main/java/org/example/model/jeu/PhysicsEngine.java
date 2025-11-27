@@ -131,6 +131,14 @@ public class PhysicsEngine {
         this.wormStates.put(worm, new WormPhysicsState());
     }
 
+    public void removeWorm(Worm worm) {
+        Body body = wormBodies.remove(worm);
+        wormStates.remove(worm);
+        if (body != null) {
+            world.removeBody(body);
+        }
+    }
+
 
 
 

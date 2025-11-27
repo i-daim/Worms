@@ -21,7 +21,10 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
     public double getInitialVelocity() {
         return 0;
     }
-
+    @Override
+    public boolean isAffectedByWind() {
+        return false;
+    }
     //getters
     public Position getPosition() {
         return position;

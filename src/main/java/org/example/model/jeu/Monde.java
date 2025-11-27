@@ -32,7 +32,13 @@ public class Monde {
     }
 
     public ArrayList<Worm> getActiveWorms() {
-        return activeWorms;
+        ArrayList<Worm> living = new ArrayList<>();
+        for (Worm w : activeWorms) {
+            if (w != null && w.isAlive()) {
+                living.add(w);
+            }
+        }
+        return living;
     }
 
     public void initialiserPhysique() {

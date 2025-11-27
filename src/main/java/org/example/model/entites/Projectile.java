@@ -32,6 +32,9 @@ public class Projectile extends Entite {
     public void setBody(Body body) {
         this.body = body;
     }
+    public State getState() {
+        return state;
+    }
 
 
 

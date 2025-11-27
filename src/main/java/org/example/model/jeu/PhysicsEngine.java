@@ -15,8 +15,6 @@ import java.util.Map;
 public class PhysicsEngine {
     private final World<Body> world;
 
-    public static final double SCALE = 20.0;
-
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 9.8);
 
@@ -30,6 +28,9 @@ public class PhysicsEngine {
     private static final double VITESSE_CHUTE_SAFE = 0.5;
     private static final double VITESSE_CHUTE_MAX = 15.0;
     private static final int MULTIPLICATEUR_DEGATS = 10;
+
+    private static final double WORM_WIDTH = Converter.toMeters(20);
+    private static final double WORM_HEIGHT = Converter.toMeters(37);
 
     public PhysicsEngine(Terrain terrain) {
         this.world = new World<>();
@@ -53,8 +54,8 @@ public class PhysicsEngine {
             checkFallDamage(worm, body);
 
             Vector2 v = body.getTransform().getTranslation();
-            int pixelX = (int) (v.x * SCALE);
-            int pixelY = (int) (v.y * SCALE);
+            int pixelX = Converter.toPixels(v.x);
+            int pixelY = Converter.toPixels(v.y);
             worm.setPosition(new Position(pixelX, pixelY));
 
             if (body.getLinearVelocity().getMagnitude() < 0.1) {
@@ -106,9 +107,7 @@ public class PhysicsEngine {
     public void addWorm(Worm worm) {
         Body body = new Body();
 
-        double radius = 8.0 / SCALE;
-
-        BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+        BodyFixture fixture = new BodyFixture(Geometry.createRectangle(WORM_WIDTH, WORM_HEIGHT));
         fixture.setFriction(0.9);
         fixture.setRestitution(0.1);
         fixture.setDensity(1.0);
@@ -119,8 +118,8 @@ public class PhysicsEngine {
         body.setAngularDamping(0.8);
 
         body.translate(
-                worm.getPosition().getX() / SCALE,
-                worm.getPosition().getY() / SCALE
+                Converter.toMeters(worm.getPosition().getX()),
+                Converter.toMeters(worm.getPosition().getY())
         );
 
         body.setUserData(worm);
@@ -180,10 +179,10 @@ public class PhysicsEngine {
     private void createTerrainSegment(int x, int y, int w, int h) {
         Body terrainBody = new Body();
 
-        double centerX = (x + w / 2.0) / SCALE;
-        double centerY = (y + h / 2.0) / SCALE;
-        double width = w / SCALE;
-        double height = h / SCALE;
+        double centerX = Converter.toMeters(x + w / 2);
+        double centerY = Converter.toMeters(y + h / 2);
+        double width = Converter.toMeters(w);
+        double height = Converter.toMeters(h);
 
         BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
         fixture.setFriction(0.8);

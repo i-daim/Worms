@@ -18,8 +18,8 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
-    public GamePanel(Terrain terrain) {
-        this.terrain = terrain;
+    private final AnimationManager animationManager = new AnimationManager();
+
     public GamePanel(Partie partie) {
         this.partie = partie;
         this.terrain = partie.getTerrain();

@@ -174,6 +174,38 @@ public class PhysicsEngine {
         }
     }
 
+    private void createTerrainSegment(int x, int y, int w, int h) {
+        Body terrainBody = new Body();
+
+        double centerX = (x + w / 2.0) / SCALE;
+        double centerY = (y + h / 2.0) / SCALE;
+        double width = w / SCALE;
+        double height = h / SCALE;
+
+        BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
+        fixture.setFriction(0.8);
+        fixture.setRestitution(0.1);
+        terrainBody.addFixture(fixture);
+        terrainBody.translate(centerX, centerY);
+        terrainBody.setMass(MassType.INFINITE);
+
+        world.addBody(terrainBody);
+    }
+
+    public FallDamageInfo getFallDamageInfo(Worm worm) {
+        WormPhysicsState state = wormStates.get(worm);
+        if (state != null && state.hasTakenFallDamage) {
+            FallDamageInfo info = new FallDamageInfo(
+                    state.lastFallDamage,
+                    state.lastFallSpeed
+            );
+            state.hasTakenFallDamage = false; // Réinitialiser après lecture
+            return info;
+        }
+        return null;
+    }
+
+
 
 
 

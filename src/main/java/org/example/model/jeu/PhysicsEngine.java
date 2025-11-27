@@ -59,4 +59,10 @@ public class PhysicsEngine {
 
             worm.setPosition(new Position(pixelX, pixelY));
 
+            if (body.getLinearVelocity().getMagnitude() < 0.1) {
+                body.setLinearVelocity(0, 0);
+                body.setAngularVelocity(0);
+            }
+        }
+
 }

@@ -66,7 +66,7 @@ public class HUDPanel extends JPanel {
         int barY = posY - 15;
 
         g2.setColor(Color.BLACK);
-        g2.fillRect(barX-1, barY-1, barWidth+2, barHeight+2);
+        g2.fillRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2);
 
         // Barre de vie
         int hp = worm.getHealthPoints();

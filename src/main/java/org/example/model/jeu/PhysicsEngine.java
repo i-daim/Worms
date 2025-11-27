@@ -326,5 +326,8 @@ public class PhysicsEngine {
             }
         }
     }
+    public List<Projectile> getActiveProjectiles() {
+        return new ArrayList<>(activeProjectiles);
+    }
 
 }

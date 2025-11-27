@@ -153,7 +153,7 @@ public class PhysicsEngine {
             double speed = 2.0 * direction;
             double velY = body.getLinearVelocity().y;
             body.setLinearVelocity(new Vector2(speed, velY));
-            body.setAsleep(false);
+            body.setAtRest(false);
         }
     }
 

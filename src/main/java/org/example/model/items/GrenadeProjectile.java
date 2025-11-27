@@ -1,7 +1,9 @@
 package org.example.model.items;
-import org.example.model.entites.Position;
+
+import org.example.model.entites.Projectile;
 import org.example.model.entites.Worm;
 import org.example.model.jeu.Monde;
+import org.example.model.entites.Position;
 
 public abstract class GrenadeProjectile extends Arme implements Utilisable {
     private Position position;
@@ -22,6 +24,12 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
     @Override
     public int getInitialVelocity() {
         return 15;
+    }
+    @Override
+    public Projectile createProjectile(Worm shooter) {
+        int x = shooter.getPosition().getX();
+        int y = shooter.getPosition().getY();
+        return new Projectile(this, shooter, x, y);
     }
 
     //setter

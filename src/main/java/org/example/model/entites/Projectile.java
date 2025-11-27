@@ -38,6 +38,9 @@ public class Projectile extends Entite {
     public void setState(State state) {
         this.state = state;
     }
+    public boolean isActive() {
+        return state == State.FLYING;
+    }
 
 
 

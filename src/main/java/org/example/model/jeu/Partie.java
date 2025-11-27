@@ -2,6 +2,8 @@ package org.example.model.jeu;
 
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
+import org.example.model.entites.Projectile;
+import org.example.model.items.Arme;
 
 public class Partie {
     public static final int ROUND_TIME = 60;
@@ -209,5 +211,21 @@ public class Partie {
     public String toString() {
         return String.format("Tour %d | %s | Temps: %ds",
                 currentRound, getActiveTeam().getNom(), timeLeft);
+    }
+    public Projectile fireWeapon(Arme weapon, int angleDegrees, int powerPercent) {
+        if (actionDone || powerPercent < 0 || powerPercent > 100) {
+            return null;
+        }
+
+        Worm shooter = getActiveWorm();
+        if (shooter == null || !shooter.isAlive()) {
+            return null;
+        }
+
+        Projectile proj = weapon.createProjectile(shooter);
+        monde.getPhysicsEngine().addProjectile(proj, angleDegrees, powerPercent);
+
+        actionDone = true;
+        return proj;
     }
 }

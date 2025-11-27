@@ -73,6 +73,7 @@ public class PhysicsEngine {
                 body.setAngularVelocity(0);
             }
         }
+        updateProjectiles();
     }
 
     private void limitFallVelocities() {

@@ -103,3 +103,20 @@ public class PhysicsEngine {
         Vector2 vel = body.getLinearVelocity();
         return Math.abs(vel.y) < 0.5 && body.getInContactBodies(false).size() > 0;
     }
+
+    public void addWorm(Worm worm) {
+        Body body = new Body();
+
+        double radius = 8.0 / SCALE;
+
+        BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+        fixture.setFriction(0.9);
+        fixture.setRestitution(0.1);
+        fixture.setDensity(1.0);
+        body.addFixture(fixture);
+
+
+
+
+
+}

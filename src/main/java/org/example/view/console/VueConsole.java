@@ -189,6 +189,10 @@ public class VueConsole {
             System.out.println("💥 Dégâts de chute : " + degats + " PV");
         }
     }
+    public void afficherSautEnCours() {
+        System.out.println("⏳ Le worm saute et retombe...");
+    }
+
 
 
     public void afficherResultatDeplacement(boolean succes, String direction) {

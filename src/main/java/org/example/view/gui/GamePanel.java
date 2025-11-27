@@ -50,8 +50,8 @@ public class GamePanel extends JPanel {
         }
 
         // Affichage de l'eau (arrière plan)
-        int waterY = DEFAULT_HEIGHT -
-                animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
+        int waterY = DEFAULT_HEIGHT
+                - animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
 
         drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY, 100);
 
@@ -94,7 +94,8 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void drawAnimation(Graphics2D g2, Animation animation, int drawX, int drawY, int speedMs) {
+    private void drawAnimation(Graphics2D g2, Animation animation,
+                               int drawX, int drawY, int speedMs) {
 
         if (animation != null && !animation.getFrames().isEmpty()) {
             List<BufferedImage> frames = animation.getFrames();

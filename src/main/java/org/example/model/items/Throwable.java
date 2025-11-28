@@ -60,7 +60,7 @@ public abstract class Throwable extends Weapon implements Usable {
     public void explosion(GameWorld gameWorld, Alien alienActif) {
         int posPiegeX = this.getPosition().getX();
         int posPiegeY = this.getPosition().getY();
-        for (Alien w : gameWorld.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) {
+        for (Alien w : gameWorld.aliensInRadius(posPiegeX, posPiegeY, this.getRayonExplosion())) {
             if (w == null) {
                 return;
             }

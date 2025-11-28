@@ -33,7 +33,7 @@ public abstract class Firearm extends Weapon implements Usable {
             System.out.println("Le worm n'a plus de munitions !");
             return;
         }
-        for (Alien w : gameWorld.wormsDansRayon(wormActifPositionX, wormActifPositionY, portee)) {
+        for (Alien w : gameWorld.aliensInRadius(wormActifPositionX, wormActifPositionY, portee)) {
             if (w != alienActif) {
                 setNbTir(this.getNbTir() - 1); // Tir on décrémente le nombre de tir pour l'arme
             }

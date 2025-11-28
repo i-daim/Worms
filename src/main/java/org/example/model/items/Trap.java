@@ -57,7 +57,7 @@ public abstract class Trap extends Weapon implements Usable {
         if (!isActive()) { //si le piège a déjà explosé on ne peut plus la réutilisé
             return;
         }
-        for (Alien w : gameWorld.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) {
+        for (Alien w : gameWorld.aliensInRadius(posPiegeX, posPiegeY, this.getRayonExplosion())) {
             if (w.getPosition().getX() == posPiegeX && w.getPosition().getY() == posPiegeY) {
                 explosion(gameWorld);
             }
@@ -68,7 +68,7 @@ public abstract class Trap extends Weapon implements Usable {
     public void explosion(GameWorld gameWorld) {
         int posPiegeX = this.getPosition().getX();
         int posPiegeY = this.getPosition().getY();
-        for (Alien w : gameWorld.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) {
+        for (Alien w : gameWorld.aliensInRadius(posPiegeX, posPiegeY, this.getRayonExplosion())) {
             if (w == null) {
                 return;
             }

@@ -33,6 +33,10 @@ public class Monde {
         return worms;
     }
 
+    public Terrain getTerrain() {
+        return partie.getTerrain();
+    }
+
     public ArrayList<Worm> getActiveWorms() {
         ArrayList<Worm> living = new ArrayList<>();
         for (Worm w : activeWorms) {

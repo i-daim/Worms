@@ -139,7 +139,7 @@ public class TestAlien {
         Team team = new Team("Team A", 2);
         team.initializeTeam("", 0);
 
-        Alien[] aliens = team.getWorms();
+        Alien[] aliens = team.getAliens();
         assertFalse(team.isEliminated());
 
         aliens[0].receiveDmg(100);

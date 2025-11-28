@@ -13,9 +13,9 @@ import java.awt.Font;
 public class MenuPanel extends JPanel {
 
     private Image background;
-    private final JButton boutonNewGame = new JButton("Nouvelle Partie");
-    private final JButton boutonLoadGame = new JButton("Charger Partie");
-    private final JButton boutonQuitter = new JButton("Quitter");
+    private final JButton boutonNewGame = new JButton("New Game");
+    private final JButton boutonLoadGame = new JButton("Load Game");
+    private final JButton boutonQuitter = new JButton("Quit");
 
 
     public MenuPanel() {

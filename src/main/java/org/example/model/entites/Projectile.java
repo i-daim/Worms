@@ -1,30 +1,30 @@
 package org.example.model.entites;
 
 import org.dyn4j.dynamics.Body;
-import org.example.model.items.Arme;
+import org.example.model.items.Weapon;
 
-public class Projectile extends Entite {
+public class Projectile extends Entity {
     public enum ProjectileState {
         FLYING,
         EXPLODED,
         OUT_OF_BOUNDS
       }
-    private final Arme weapon;
-    private final Worm shooter;
+    private final Weapon weapon;
+    private final Alien shooter;
     private Body body;
     private ProjectileState state;
     private int frameCount;
 
-    public Projectile(Arme weapon, Worm shooter, int startX, int startY) {
+    public Projectile(Weapon weapon, Alien shooter, int startX, int startY) {
         super(startX, startY, 1);
         this.weapon = weapon;
         this.shooter = shooter;
         this.state = ProjectileState.FLYING;
      }
-    public Arme getWeapon() {
+    public Weapon getWeapon() {
         return weapon;
     }
-    public Worm getShooter() {
+    public Alien getShooter() {
         return shooter;
     }
     public Body getBody() {

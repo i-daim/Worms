@@ -1,18 +1,18 @@
 package org.example.model.items;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Monde;
+import org.example.model.entites.Alien;
+import org.example.model.jeu.GameWorld;
 import org.example.model.entites.Position;
 
-public abstract class GrenadeProjectile extends Arme implements Utilisable {
+public abstract class Throwable extends Weapon implements Usable {
     private Position position;
-    public GrenadeProjectile(String nom, int degat, int rayon) {
+    public Throwable(String nom, int degat, int rayon) {
         super(nom, degat, rayon);
         this.position = new Position(0, 0);
     }
 
     @Override
-    public void utiliser(Monde monde, Worm wormActif) {
+    public void utiliser(GameWorld gameWorld, Alien alienActif) {
     }
     @Override
     public double getInitialVelocity() {
@@ -34,9 +34,9 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
     }
 
     //Méthode lancer qui renvoie la position du projectile/grenade après qu'un joueur les lancé
-    public void lancer(Worm wormActif, int puissance, int angle) {
-        int posVersX = wormActif.getPosition().getX();
-        int posVersY = wormActif.getPosition().getY();
+    public void lancer(Alien alienActif, int puissance, int angle) {
+        int posVersX = alienActif.getPosition().getX();
+        int posVersY = alienActif.getPosition().getY();
         int limite = 20;
         if (puissance > limite) {
             System.out.println("La puissance dépase la limite autorisée. Recommencez"); //
@@ -57,14 +57,14 @@ public abstract class GrenadeProjectile extends Arme implements Utilisable {
     }
 
     //Méthode explosion infligeant des dégats aux vers qui ont une position proche de la grenade
-    public void explosion(Monde monde, Worm wormActif) {
+    public void explosion(GameWorld gameWorld, Alien alienActif) {
         int posPiegeX = this.getPosition().getX();
         int posPiegeY = this.getPosition().getY();
-        for (Worm w : monde.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) {
+        for (Alien w : gameWorld.wormsDansRayon(posPiegeX, posPiegeY, this.getRayonExplosion())) {
             if (w == null) {
                 return;
             }
-            wormActif.receiveDmg(this.getDegats());
+            alienActif.receiveDmg(this.getDegats());
         }
     }
 

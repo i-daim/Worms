@@ -1,14 +1,14 @@
 package org.example.model.entites;
 
-public abstract class Entite {
+public abstract class Entity {
     private Position position;
     private int speed;
 
-    public Entite(int x, int y, int speed) {
+    public Entity(int x, int y, int speed) {
         this.position = new Position(x, y);
         this.speed = speed;
     }
-    protected Entite() {
+    protected Entity() {
         this.position = new Position(0, 0);
         this.speed = 0;
     }

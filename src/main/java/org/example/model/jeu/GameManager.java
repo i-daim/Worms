@@ -1,17 +1,17 @@
 package org.example.model.jeu;
 
+import org.example.model.entites.Alien;
 import org.example.model.entites.Position;
-import org.example.model.entites.Worm;
 import org.example.model.entites.Projectile;
-import org.example.model.items.Arme;
+import org.example.model.items.Weapon;
 
-public class Partie {
+public class GameManager {
     public static final int ROUND_TIME = 60;
     public static final int TEAM_SIZE = 2;
 
     private final Terrain terrain;
-    private final Monde monde;
-    private final Equipe[] equipes;
+    private final GameWorld gameWorld;
+    private final Team[] teams;
 
     private int activeTeamIndex;
     private int activeWormIndex;
@@ -22,21 +22,21 @@ public class Partie {
 
     private String mapName;
 
-    public Partie(String mapName) {
+    public GameManager(String mapName) {
         this.mapName = mapName;
-        this.terrain = TerrainGenerator.creerTerrain(mapName);
+        this.terrain = TerrainGenerator.createTerrain(mapName);
 
-        this.equipes = new Equipe[2];
-        this.equipes[0] = new Equipe("Équipe 1", TEAM_SIZE);
-        this.equipes[1] = new Equipe("Équipe 2", TEAM_SIZE);
+        this.teams = new Team[2];
+        this.teams[0] = new Team("Équipe 1", TEAM_SIZE);
+        this.teams[1] = new Team("Équipe 2", TEAM_SIZE);
 
-        this.monde = new Monde(this, this.terrain);
+        this.gameWorld = new GameWorld(this, this.terrain);
 
         initializeGame();
     }
 
     public void update(double elapsedTime) {
-        monde.update(elapsedTime);
+        gameWorld.update(elapsedTime);
 
         checkGameOver();
 
@@ -44,10 +44,10 @@ public class Partie {
     }
 
     private void initializeGame() {
-        equipes[0].initialiserEquipe(mapName, 0);
-        equipes[1].initialiserEquipe(mapName, 1);
+        teams[0].initialiserEquipe(mapName, 0);
+        teams[1].initialiserEquipe(mapName, 1);
 
-        monde.initialiserPhysique();
+        gameWorld.initialiserPhysique();
 
         this.activeTeamIndex = 0;
         this.activeWormIndex = 0;
@@ -71,7 +71,7 @@ public class Partie {
     }
 
     private void nextTurn() {
-        activeTeamIndex = (activeTeamIndex + 1) % equipes.length;
+        activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
         if (getActiveTeam().estEliminee()) {
             gameOver = true;
@@ -98,20 +98,20 @@ public class Partie {
 
 
     private void checkGameOver() {
-        for (Equipe equipe : equipes) {
-            if (equipe.estEliminee()) {
+        for (Team team : teams) {
+            if (team.estEliminee()) {
                 gameOver = true;
                 return;
             }
         }
     }
 
-    public Worm attaquerPosition(int x, int y, int degats) {
+    public Alien attaquerPosition(int x, int y, int degats) {
         if (actionDone || degats < 0) {
             return null;
         }
 
-        Worm cible = trouverWormAPosition(x, y);
+        Alien cible = trouverWormAPosition(x, y);
         if (cible != null) {
             cible.receiveDmg(degats);
             checkGameOver();
@@ -120,13 +120,13 @@ public class Partie {
         return cible;
     }
 
-    private Worm trouverWormAPosition(int x, int y) {
-        for (Equipe equipe : equipes) {
-            for (Worm worm : equipe.getWorms()) {
-                if (worm != null && worm.isAlive()) {
-                    Position pos = worm.getPosition();
+    private Alien trouverWormAPosition(int x, int y) {
+        for (Team team : teams) {
+            for (Alien alien : team.getWorms()) {
+                if (alien != null && alien.isAlive()) {
+                    Position pos = alien.getPosition();
                     if (pos.getX() == x && pos.getY() == y) {
-                        return worm;
+                        return alien;
                     }
                 }
             }
@@ -141,35 +141,35 @@ public class Partie {
         return terrain;
     }
 
-    public Monde getMonde() {
-        return monde;
+    public GameWorld getMonde() {
+        return gameWorld;
     }
 
-    public Equipe getActiveTeam() {
-        return equipes[activeTeamIndex];
+    public Team getActiveTeam() {
+        return teams[activeTeamIndex];
     }
 
-    public Equipe getEnnemyTeam() {
-        int indexEnnemi = (activeTeamIndex + 1) % equipes.length;
-        return equipes[indexEnnemi];
+    public Team getEnnemyTeam() {
+        int indexEnnemi = (activeTeamIndex + 1) % teams.length;
+        return teams[indexEnnemi];
     }
 
-    public Equipe getTeam(int index) {
-        if (index >= 0 && index < equipes.length) {
-            return equipes[index];
+    public Team getTeam(int index) {
+        if (index >= 0 && index < teams.length) {
+            return teams[index];
         }
         return null;
     }
 
-    public Equipe[] getTeams() {
-        return equipes;
+    public Team[] getTeams() {
+        return teams;
     }
 
     public int getActiveTeamIndex() {
         return activeTeamIndex;
     }
 
-    public Worm getActiveWorm() {
+    public Alien getActiveWorm() {
         return getActiveTeam().getWormActif();
     }
 
@@ -185,14 +185,14 @@ public class Partie {
         return gameOver;
     }
 
-    public Equipe getWinningTeam() {
+    public Team getWinningTeam() {
         if (!gameOver) {
             return null;
         }
 
-        for (Equipe equipe : equipes) {
-            if (!equipe.estEliminee()) {
-                return equipe;
+        for (Team team : teams) {
+            if (!team.estEliminee()) {
+                return team;
             }
         }
 
@@ -201,8 +201,8 @@ public class Partie {
 
     public int getAliveWorms() {
         int total = 0;
-        for (Equipe equipe : equipes) {
-            total += equipe.getNombreWormsVivants();
+        for (Team team : teams) {
+            total += team.getNombreWormsVivants();
         }
         return total;
     }
@@ -216,18 +216,18 @@ public class Partie {
         return String.format("Tour %d | %s | Temps: %ds",
                 currentRound, getActiveTeam().getNom(), timeLeft);
     }
-    public Projectile fireWeapon(Arme weapon, int angleDegrees, int powerPercent) {
+    public Projectile fireWeapon(Weapon weapon, int angleDegrees, int powerPercent) {
         if (actionDone || powerPercent < 0 || powerPercent > 100) {
             return null;
         }
 
-        Worm shooter = getActiveWorm();
+        Alien shooter = getActiveWorm();
         if (shooter == null || !shooter.isAlive()) {
             return null;
         }
 
         Projectile proj = weapon.createProjectile(shooter);
-        monde.getPhysicsEngine().addProjectile(proj, angleDegrees, powerPercent);
+        gameWorld.getPhysicsEngine().addProjectile(proj, angleDegrees, powerPercent);
 
         actionDone = true;
         return proj;

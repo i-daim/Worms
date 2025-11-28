@@ -1,6 +1,6 @@
 package org.example.model.items;
 
-public class Grenade extends GrenadeProjectile  {
+public class Grenade extends Throwable {
     public static final int DEGATS = 45;
     public static final int RAYON = 5;
 

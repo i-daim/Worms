@@ -1,11 +1,11 @@
 package org.example.model.items;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Monde;
+import org.example.model.entites.Alien;
+import org.example.model.jeu.GameWorld;
 
-public abstract class ArmeAFeu extends Arme implements Utilisable {
+public abstract class Firearm extends Weapon implements Usable {
     private int nbTir; //attribut représent le nombre de tir/balle disponible par l'arme
-    public ArmeAFeu(String nom, int degats, int rayon, int nbTir) {
+    public Firearm(String nom, int degats, int rayon, int nbTir) {
         super(nom, degats, rayon);
         this.nbTir = nbTir;
     }
@@ -21,20 +21,20 @@ public abstract class ArmeAFeu extends Arme implements Utilisable {
     }
 
     @Override
-    public void utiliser(Monde monde, Worm wormActif) {
+    public void utiliser(GameWorld gameWorld, Alien alienActif) {
     }
 
     //Méthode permettant de tirer et infliger des dégâts
-    public void tir(Monde monde, Worm wormActif) {
-        int wormActifPositionX = wormActif.getPosition().getX();
-        int wormActifPositionY = wormActif.getPosition().getY();
+    public void tir(GameWorld gameWorld, Alien alienActif) {
+        int wormActifPositionX = alienActif.getPosition().getX();
+        int wormActifPositionY = alienActif.getPosition().getY();
         int portee = this.getRayonExplosion();
         if (this.getNbTir() == 0) {
             System.out.println("Le worm n'a plus de munitions !");
             return;
         }
-        for (Worm w : monde.wormsDansRayon(wormActifPositionX, wormActifPositionY, portee)) {
-            if (w != wormActif) {
+        for (Alien w : gameWorld.wormsDansRayon(wormActifPositionX, wormActifPositionY, portee)) {
+            if (w != alienActif) {
                 w.receiveDmg(this.getDegats()); // Dégats aux vers dans la portée de l'arme
                 setNbTir(this.getNbTir() - 1); // Tir on décrémente le nombre de tir pour l'arme
             }

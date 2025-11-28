@@ -1,7 +1,7 @@
 package org.example.controller;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Partie;
+import org.example.model.entites.Alien;
+import org.example.model.jeu.GameManager;
 import org.example.view.gui.GamePanel;
 
 import java.awt.Point;
@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
 public class GameController {
 
     private final GamePanel gamePanel;
-    private final Partie partie;
+    private final GameManager gameManager;
     private static final int CAMERA_SPEED = 15;
     private Point mousePosition = new Point(0, 0);
 
@@ -23,9 +23,9 @@ public class GameController {
     private volatile boolean running = true;
     private Thread gameThread;
 
-    public GameController(GamePanel gamePanel, Partie partie) {
+    public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
-        this.partie = partie;
+        this.gameManager = gameManager;
 
         addListeners();
         startGameLoop();
@@ -55,8 +55,8 @@ public class GameController {
     }
 
     private void handleKeyPress(int keyCode, boolean pressed) {
-        Worm activeWorm = partie.getActiveWorm();
-        if (activeWorm == null || !activeWorm.isAlive()) {
+        Alien activeAlien = gameManager.getActiveWorm();
+        if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
 
@@ -72,7 +72,7 @@ public class GameController {
             case KeyEvent.VK_SPACE:
             case KeyEvent.VK_UP:
                 if (pressed) {
-                    partie.getMonde().getPhysicsEngine().jumpWorm(activeWorm);
+                    gameManager.getMonde().getPhysicsEngine().jumpWorm(activeAlien);
                 }
                 break;
             default:
@@ -150,18 +150,18 @@ public class GameController {
             handleCameraScroll(mousePosition);
         }
 
-        Worm activeWorm = partie.getActiveWorm();
-        if (activeWorm != null && activeWorm.isAlive()) {
+        Alien activeAlien = gameManager.getActiveWorm();
+        if (activeAlien != null && activeAlien.isAlive()) {
             if (leftPressed && !rightPressed) {
-                partie.getMonde().getPhysicsEngine().moveWorm(activeWorm, -1.0);
+                gameManager.getMonde().getPhysicsEngine().moveWorm(activeAlien, -1.0);
             } else if (rightPressed && !leftPressed) {
-                partie.getMonde().getPhysicsEngine().moveWorm(activeWorm, 1.0);
+                gameManager.getMonde().getPhysicsEngine().moveWorm(activeAlien, 1.0);
             } else {
-                partie.getMonde().getPhysicsEngine().moveWorm(activeWorm, 0);
+                gameManager.getMonde().getPhysicsEngine().moveWorm(activeAlien, 0);
             }
         }
 
-        partie.update(1.0 / 60.0);
+        gameManager.update(1.0 / 60.0);
 
         gamePanel.repaint();
     }

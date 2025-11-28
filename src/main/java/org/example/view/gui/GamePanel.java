@@ -1,8 +1,8 @@
 package org.example.view.gui;
 
-import org.example.model.jeu.Partie;
+import org.example.model.entites.Alien;
+import org.example.model.jeu.GameManager;
 import org.example.model.jeu.Terrain;
-import org.example.model.entites.Worm;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
     public static final int DEFAULT_WIDTH = 1280;
     public static final int DEFAULT_HEIGHT = 720;
 
-    private final Partie partie;
+    private final GameManager gameManager;
     private final Terrain terrain;
     private final HUDPanel hudPanel;
     private int cameraX = 0;
@@ -24,10 +24,10 @@ public class GamePanel extends JPanel {
 
     private final AnimationManager animationManager = new AnimationManager();
 
-    public GamePanel(Partie partie) {
-        this.partie = partie;
-        this.terrain = partie.getTerrain();
-        this.hudPanel = new HUDPanel(partie);
+    public GamePanel(GameManager gameManager) {
+        this.gameManager = gameManager;
+        this.terrain = gameManager.getTerrain();
+        this.hudPanel = new HUDPanel(gameManager);
         this.setDoubleBuffered(true);
     }
 
@@ -68,7 +68,7 @@ public class GamePanel extends JPanel {
         drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
 
         // Affichage des barres de vie
-        hudPanel.drawHealthBars(g2, partie, cameraX, cameraY);
+        hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
@@ -81,12 +81,12 @@ public class GamePanel extends JPanel {
     }
 
     public void drawWorms(Graphics2D g2) {
-        for (Worm w : partie.getMonde().getActiveWorms()) {
+        for (Alien w : gameManager.getMonde().getActiveWorms()) {
             if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
                 int posX = w.getPosition().getX();
                 int posY = w.getPosition().getY();
 
-                if (w.getTeam() == partie.getTeam(0)) {
+                if (w.getTeam() == gameManager.getTeam(0)) {
                     BufferedImage sprite = AnimationManager.getZlerp("idle").getFrames().get(0);
                     int drawX = posX - sprite.getWidth() / 2;
                     int drawY = posY - sprite.getHeight() / 2;

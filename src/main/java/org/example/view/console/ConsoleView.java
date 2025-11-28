@@ -1,17 +1,17 @@
 package org.example.view.console;
 
+import org.example.model.entites.Alien;
 import org.example.model.entites.Position;
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Equipe;
-import org.example.model.jeu.Partie;
+import org.example.model.jeu.Team;
+import org.example.model.jeu.GameManager;
 import org.example.model.jeu.Terrain;
 
 import java.util.Scanner;
 
-public class VueConsole {
+public class ConsoleView {
     private final Scanner scanner;
 
-    public VueConsole() {
+    public ConsoleView() {
         this.scanner = new Scanner(System.in);
     }
 
@@ -32,74 +32,74 @@ public class VueConsole {
         System.out.println("=================================\n");
     }
 
-    public void afficherEtatPartie(Partie partie) {
+    public void afficherEtatPartie(GameManager gameManager) {
         System.out.println("\n" + "─".repeat(60));
-        System.out.println("📊 " + partie.toString());
+        System.out.println("📊 " + gameManager.toString());
         System.out.println("─".repeat(60));
 
-        afficherStatistiquesEquipes(partie);
-        afficherWormActif(partie);
+        afficherStatistiquesEquipes(gameManager);
+        afficherWormActif(gameManager);
 
         System.out.println("─".repeat(60));
     }
 
-    private void afficherStatistiquesEquipes(Partie partie) {
+    private void afficherStatistiquesEquipes(GameManager gameManager) {
         System.out.println("\n🏆 État des équipes:");
 
-        Equipe[] equipes = partie.getTeams();
-        for (int i = 0; i < equipes.length; i++) {
-            String indicateur = (i == partie.getActiveTeamIndex()) ? "►" : " ";
-            System.out.println(indicateur + "  " + equipes[i].toString());
+        Team[] teams = gameManager.getTeams();
+        for (int i = 0; i < teams.length; i++) {
+            String indicateur = (i == gameManager.getActiveTeamIndex()) ? "►" : " ";
+            System.out.println(indicateur + "  " + teams[i].toString());
         }
     }
 
-    private void afficherWormActif(Partie partie) {
-        Worm worm = partie.getActiveWorm();
+    private void afficherWormActif(GameManager gameManager) {
+        Alien alien = gameManager.getActiveWorm();
 
-        if (worm != null) {
-            Position pos = worm.getPosition();
-            System.out.println("\n🐛 Worm actif (" + partie.getActiveTeam().getNom() + "):");
+        if (alien != null) {
+            Position pos = alien.getPosition();
+            System.out.println("\n🐛 Worm actif (" + gameManager.getActiveTeam().getNom() + "):");
             System.out.printf("   Position: %s\n", pos);
-            System.out.printf("   PV: %d/100 ", worm.getHealthPoints());
-            afficherBarreVie(worm.getHealthPoints());
+            System.out.printf("   PV: %d/100 ", alien.getHealthPoints());
+            afficherBarreVie(alien.getHealthPoints());
         } else {
             System.out.println("\n⚠️  Aucun worm actif");
         }
     }
 
-    public void afficherTousLesWorms(Partie partie) {
+    public void afficherTousLesWorms(GameManager gameManager) {
         System.out.println("\n" + "═".repeat(60));
         System.out.println("           🐛 ÉTAT DE TOUS LES WORMS VIVANTS 🐛");
         System.out.println("═".repeat(60));
 
-        Equipe equipeActive = partie.getActiveTeam();
-        Equipe equipeEnnemie = partie.getEnnemyTeam();
+        Team teamActive = gameManager.getActiveTeam();
+        Team teamEnnemie = gameManager.getEnnemyTeam();
 
-        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + equipeActive.getNom());
+        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + teamActive.getNom());
         System.out.println("─".repeat(60));
-        afficherWormsEquipe(equipeActive, partie.getActiveWorm());
+        afficherWormsEquipe(teamActive, gameManager.getActiveWorm());
 
-        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + equipeEnnemie.getNom());
+        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getNom());
         System.out.println("─".repeat(60));
-        afficherWormsEquipe(equipeEnnemie, null);
+        afficherWormsEquipe(teamEnnemie, null);
 
         System.out.println("═".repeat(60) + "\n");
     }
 
-    private void afficherWormsEquipe(Equipe equipe, Worm wormActif) {
-        Worm[] worms = equipe.getWorms();
+    private void afficherWormsEquipe(Team team, Alien alienActif) {
+        Alien[] aliens = team.getWorms();
         int count = 1;
         boolean aucunVivant = true;
 
-        for (Worm worm : worms) {
-            if (worm != null && worm.isAlive()) {
+        for (Alien alien : aliens) {
+            if (alien != null && alien.isAlive()) {
                 aucunVivant = false;
-                Position pos = worm.getPosition();
-                String indicateur = (worm == wormActif) ? "► " : "  ";
+                Position pos = alien.getPosition();
+                String indicateur = (alien == alienActif) ? "► " : "  ";
 
                 System.out.printf("%sWorm #%d | Position: %s | PV: %3d/100 ",
-                        indicateur, count, pos, worm.getHealthPoints());
-                afficherBarreVie(worm.getHealthPoints());
+                        indicateur, count, pos, alien.getHealthPoints());
+                afficherBarreVie(alien.getHealthPoints());
                 count++;
             }
         }
@@ -123,17 +123,17 @@ public class VueConsole {
         System.out.println("]");
     }
 
-    public void afficherFinPartie(Partie partie) {
+    public void afficherFinPartie(GameManager gameManager) {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("            🎉 PARTIE TERMINÉE ! 🎉");
         System.out.println("=".repeat(60));
 
-        Equipe gagnante = partie.getWinningTeam();
+        Team gagnante = gameManager.getWinningTeam();
         if (gagnante != null) {
             System.out.println("\n🏆 " + gagnante.getNom() + " a gagné ! 🏆\n");
         }
 
-        afficherStatistiquesEquipes(partie);
+        afficherStatistiquesEquipes(gameManager);
         System.out.println("\n" + "=".repeat(60));
     }
 
@@ -156,15 +156,15 @@ public class VueConsole {
         System.out.println();
     }
 
-    public void afficherEtatApresChute(Partie partie) {
+    public void afficherEtatApresChute(GameManager gameManager) {
         System.out.println("\n💥 ÉTAT DES WORMS APRÈS LA CHUTE :\n");
 
         for (int i = 0; i < 2; i++) {
-            System.out.println("🔹 " + partie.getTeam(i).getNom() + " :");
+            System.out.println("🔹 " + gameManager.getTeam(i).getNom() + " :");
 
-            Worm[] worms = partie.getTeam(i).getWorms();
-            for (int j = 0; j < worms.length; j++) {
-                Worm w = worms[j];
+            Alien[] aliens = gameManager.getTeam(i).getWorms();
+            for (int j = 0; j < aliens.length; j++) {
+                Alien w = aliens[j];
                 if (w != null && w.isAlive()) {
                     System.out.println("   → Worm #" + (j + 1) + " : PV = "
                             + w.getHealthPoints() + "/100");
@@ -193,13 +193,13 @@ public class VueConsole {
         }
     }
 
-    public void afficherResultatAttaque(Worm cible, int x, int y, Equipe equipeActive) {
+    public void afficherResultatAttaque(Alien cible, int x, int y, Team teamActive) {
         if (cible == null) {
             System.out.println("❌ Aucun worm à la position (" + x + ", " + y + ")");
             return;
         }
 
-        boolean estAllie = (cible.getTeam() == equipeActive);
+        boolean estAllie = (cible.getTeam() == teamActive);
         boolean wormMort = !cible.isAlive();
 
         if (estAllie) {

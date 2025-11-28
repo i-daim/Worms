@@ -1,6 +1,6 @@
 package org.example.model.items;
 
-public class MiniCanon extends ArmeAFeu {
+public class MiniCanon extends Firearm {
     public static final int DEGATS = 5;
     public static final int RAYON = 10;
     public static final int NBTIR = 50;

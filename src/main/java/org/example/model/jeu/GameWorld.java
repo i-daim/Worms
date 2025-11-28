@@ -1,19 +1,20 @@
 package org.example.model.jeu;
 
+import org.example.model.entites.Alien;
 import org.example.model.entites.Projectile;
-import org.example.model.entites.Worm;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Monde {
-    private final Partie partie;
+public class GameWorld {
+    private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
-    private ArrayList<Worm> activeWorms;
+    private ArrayList<Alien> activeAliens;
 
-    public Monde(Partie partie, Terrain terrain) {
-        this.partie = partie;
+    public GameWorld(GameManager gameManager, Terrain terrain) {
+        this.gameManager = gameManager;
         this.physicsEngine = new PhysicsEngine(terrain);
-        this.activeWorms = new ArrayList<>();
+        this.activeAliens = new ArrayList<>();
 
         initialiserPhysique();
     }
@@ -23,19 +24,19 @@ public class Monde {
 
     }
 
-    public ArrayList<Worm> wormsDansRayon(int x, int y, int rayon) {
-        ArrayList<Worm> worms = new ArrayList<>();
-        for (Worm w : this.activeWorms) {
+    public ArrayList<Alien> wormsDansRayon(int x, int y, int rayon) {
+        ArrayList<Alien> aliens = new ArrayList<>();
+        for (Alien w : this.activeAliens) {
             if (w.getPosition().distance(x, y) <= rayon) {
-                worms.add(w);
+                aliens.add(w);
             }
         }
-        return worms;
+        return aliens;
     }
 
-    public ArrayList<Worm> getActiveWorms() {
-        ArrayList<Worm> living = new ArrayList<>();
-        for (Worm w : activeWorms) {
+    public ArrayList<Alien> getActiveWorms() {
+        ArrayList<Alien> living = new ArrayList<>();
+        for (Alien w : activeAliens) {
             if (w != null && w.isAlive()) {
                 living.add(w);
             }
@@ -44,15 +45,15 @@ public class Monde {
     }
 
     public void initialiserPhysique() {
-        for (Worm w : partie.getTeam(0).getWorms()) {
+        for (Alien w : gameManager.getTeam(0).getWorms()) {
             if (w != null) {
-                activeWorms.add(w);
+                activeAliens.add(w);
                 physicsEngine.addWorm(w);
             }
         }
-        for (Worm w : partie.getTeam(1).getWorms()) {
+        for (Alien w : gameManager.getTeam(1).getWorms()) {
             if (w != null) {
-                activeWorms.add(w);
+                activeAliens.add(w);
                 physicsEngine.addWorm(w);
             }
         }

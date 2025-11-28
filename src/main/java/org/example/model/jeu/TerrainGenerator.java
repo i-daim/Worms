@@ -9,9 +9,9 @@ public class TerrainGenerator {
     public static final int TILE_SIZE = 16;
 
 
-    public static Terrain creerTerrain(String mapName) {
+    public static Terrain createTerrain(String mapName) {
         if (mapName == null || mapName.isEmpty()) {
-            return creerTerrainVide(40, 10);
+            return createEmptyTerrain(40, 10);
         }
 
         String filePath = "maps/" + mapName + ".png";
@@ -71,7 +71,7 @@ public class TerrainGenerator {
         }
     }
 
-    public static Terrain creerTerrainVide(int largeur, int hauteur) {
+    public static Terrain createEmptyTerrain(int largeur, int hauteur) {
         boolean[][] collisions = new boolean[hauteur][largeur];
 
         int plateformeX = 3;

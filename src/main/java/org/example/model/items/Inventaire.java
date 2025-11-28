@@ -2,32 +2,32 @@ package org.example.model.items;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.example.model.jeu.Equipe;
+import org.example.model.jeu.Team;
 
 public class Inventaire {
-    private final Map<Utilisable, Integer> stockMunitions;
+    private final Map<Usable, Integer> stockMunitions;
 
     public Inventaire() {
         this.stockMunitions = new HashMap<>();
 
     }
-    public void ajouterMunition(Utilisable u, int nombre) {
+    public void ajouterMunition(Usable u, int nombre) {
         if (nombre <= 0) {
             return;
         }
         stockMunitions.put(u, stockMunitions.getOrDefault(u, 0) + nombre);
     }
-    public Map<Utilisable, Integer> getStockMunitions() {
+    public Map<Usable, Integer> getStockMunitions() {
         return stockMunitions;
     }
-    public boolean estDisponible(Utilisable u) {
+    public boolean estDisponible(Usable u) {
         int qte = stockMunitions.getOrDefault(u, 0);
         return qte > 0 || qte == -1;
     }
-    private void initialiserInventaireEquipe(Equipe equipe) {
-        Inventaire inv = equipe.getInventaire();
+    private void initialiserInventaireEquipe(Team team) {
+        Inventaire inv = team.getInventaire();
 
-        inv.ajouterMunition(new BombeCollante("Bombe collante"), 50);
+        inv.ajouterMunition(new StickyBomb("Bombe collante"), 50);
         inv.ajouterMunition(new Grenade("Grenade"), 50);
         inv.ajouterMunition(new SainteGrenade("Sainte grenade"), 50);
         inv.ajouterMunition(new Mine("Mine"), 50);

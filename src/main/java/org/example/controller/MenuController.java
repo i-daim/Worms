@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.example.model.jeu.Partie;
+import org.example.model.jeu.GameManager;
 import org.example.view.gui.GamePanel;
 import org.example.view.gui.MainFrame;
 import org.example.view.gui.MenuPanel;
@@ -18,10 +18,10 @@ public class MenuController {
 
     public void addListeners() {
         menuPanel.addNewGameListener(e -> {
-            Partie partie = new Partie("liberty");
-            GamePanel gamePanel = new GamePanel(partie);
+            GameManager gameManager = new GameManager("liberty");
+            GamePanel gamePanel = new GamePanel(gameManager);
 
-            new GameController(gamePanel, partie);
+            new GameController(gamePanel, gameManager);
 
             mainFrame.setContentPane(gamePanel);
             mainFrame.revalidate();

@@ -1,8 +1,8 @@
 package org.example.view.gui;
 
-import org.example.model.entites.Worm;
-import org.example.model.jeu.Equipe;
-import org.example.model.jeu.Partie;
+import org.example.model.entites.Alien;
+import org.example.model.jeu.Team;
+import org.example.model.jeu.GameManager;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -15,10 +15,10 @@ import java.awt.RenderingHints;
 
 public class HUDPanel extends JPanel {
 
-    private final Partie partie;
+    private final GameManager gameManager;
 
-    public HUDPanel(Partie partie) {
-        this.partie = partie;
+    public HUDPanel(GameManager gameManager) {
+        this.gameManager = gameManager;
 
         this.setOpaque(false);
         this.setLayout(new BorderLayout());
@@ -46,19 +46,19 @@ public class HUDPanel extends JPanel {
         drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
     }
 
-    public void drawHealthBars(Graphics2D g2, Partie partie, int cameraX, int cameraY) {
-        for (Equipe equipe : partie.getTeams()) {
-            for (Worm worm : equipe.getWorms()) {
-                if (worm != null && worm.isAlive()) {
-                    drawWormHealthBar(g2, worm, partie.getActiveWorm() == worm);
+    public void drawHealthBars(Graphics2D g2, GameManager gameManager, int cameraX, int cameraY) {
+        for (Team team : gameManager.getTeams()) {
+            for (Alien alien : team.getWorms()) {
+                if (alien != null && alien.isAlive()) {
+                    drawWormHealthBar(g2, alien, gameManager.getActiveWorm() == alien);
                 }
             }
         }
     }
 
-    private void drawWormHealthBar(Graphics2D g2, Worm worm, boolean active) {
-        int posX = worm.getPosition().getX();
-        int posY = worm.getPosition().getY();
+    private void drawWormHealthBar(Graphics2D g2, Alien alien, boolean active) {
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
 
         int barWidth = 30;
         int barHeight = 5;
@@ -69,7 +69,7 @@ public class HUDPanel extends JPanel {
         g2.fillRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2);
 
         // Barre de vie
-        int hp = worm.getHealthPoints();
+        int hp = alien.getHealthPoints();
         int healthWidth = (int) ((hp / 100.0) * barWidth);
 
         Color healthColor = hp > 60 ? Color.GREEN : hp > 25 ? Color.ORANGE : Color.RED;
@@ -86,7 +86,7 @@ public class HUDPanel extends JPanel {
     }
 
     private void drawTurnTimer(Graphics2D g2, int x, int y) {
-        int timeLeft = partie.getTimeLeft();
+        int timeLeft = gameManager.getTimeLeft();
 
         g2.setColor(Color.WHITE);
         g2.fillRoundRect(x, y, 100, 40, 10, 10);

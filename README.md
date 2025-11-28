@@ -9,10 +9,10 @@ Worms est un jeu de stratégie et de placement qui consiste à l'affrontement de
 ## Installation
 - Première étape : Ouvrir le terminal et exécutez
 
-    git clone https://moule.informatique.univ-paris-diderot.fr/daimi/worms.git
+    git clone https://moule.informatique.univ-paris-diderot.fr/daimi/aliens.git
 - Deuxième étape : Se déplacer dans le dossier du projet  
 
-    cd worms
+    cd aliens
 - Troisième étape : Compiler le projet avec Maven  
     mvn compile
 - Quatrième étape : Lancer le jeu    

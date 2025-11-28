@@ -1,12 +1,12 @@
 package org.example.model.entites;
 
-import org.example.model.jeu.Equipe;
+import org.example.model.jeu.Team;
 import org.example.model.jeu.Terrain;
 import org.example.view.gui.GamePanel;
 
-public class Worm extends Entite {
+public class Alien extends Entity {
     // Attributs
-    private final Equipe team;
+    private final Team team;
     private int healthPoints;
     private boolean alive;
 
@@ -17,7 +17,7 @@ public class Worm extends Entite {
 
 
     // Constructeur
-    public Worm(Equipe team, Position position) {
+    public Alien(Team team, Position position) {
         super(position.getX(), position.getY(), SPEED);
         this.healthPoints = INITIAL_HP;
         this.team = team;
@@ -32,7 +32,7 @@ public class Worm extends Entite {
         return alive;
     }
 
-    public Equipe getTeam() {
+    public Team getTeam() {
         return team;
     }
 

@@ -2,6 +2,8 @@ package org.example.model.jeu;
 
 import org.example.model.entites.Position;
 import org.example.model.entites.Worm;
+import org.example.model.entites.Projectile;
+import org.example.model.items.Arme;
 
 public class Partie {
     public static final int ROUND_TIME = 60;
@@ -18,13 +20,17 @@ public class Partie {
     private boolean gameOver;
     private boolean actionDone;
 
+    private String mapName;
+
     public Partie(String mapName) {
+        this.mapName = mapName;
         this.terrain = TerrainGenerator.creerTerrain(mapName);
-        this.monde = new Monde(this, this.terrain);
 
         this.equipes = new Equipe[2];
         this.equipes[0] = new Equipe("Équipe 1", TEAM_SIZE);
         this.equipes[1] = new Equipe("Équipe 2", TEAM_SIZE);
+
+        this.monde = new Monde(this, this.terrain);
 
         initializeGame();
     }
@@ -38,8 +44,8 @@ public class Partie {
     }
 
     private void initializeGame() {
-        equipes[0].initialiserEquipe(5, -100, 8, 1);
-        equipes[1].initialiserEquipe(35, -100, 8, 1);
+        equipes[0].initialiserEquipe(mapName, 0);
+        equipes[1].initialiserEquipe(mapName, 1);
 
         monde.initialiserPhysique();
 
@@ -135,6 +141,10 @@ public class Partie {
         return terrain;
     }
 
+    public Monde getMonde() {
+        return monde;
+    }
+
     public Equipe getActiveTeam() {
         return equipes[activeTeamIndex];
     }
@@ -201,13 +211,25 @@ public class Partie {
         return actionDone;
     }
 
-    public Monde getMonde() {
-        return monde;
-    }
-
     @Override
     public String toString() {
         return String.format("Tour %d | %s | Temps: %ds",
                 currentRound, getActiveTeam().getNom(), timeLeft);
+    }
+    public Projectile fireWeapon(Arme weapon, int angleDegrees, int powerPercent) {
+        if (actionDone || powerPercent < 0 || powerPercent > 100) {
+            return null;
+        }
+
+        Worm shooter = getActiveWorm();
+        if (shooter == null || !shooter.isAlive()) {
+            return null;
+        }
+
+        Projectile proj = weapon.createProjectile(shooter);
+        monde.getPhysicsEngine().addProjectile(proj, angleDegrees, powerPercent);
+
+        actionDone = true;
+        return proj;
     }
 }

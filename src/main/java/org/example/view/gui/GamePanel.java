@@ -2,26 +2,32 @@ package org.example.view.gui;
 
 import org.example.model.jeu.Partie;
 import org.example.model.jeu.Terrain;
+import org.example.model.entites.Worm;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class GamePanel extends JPanel {
 
-    private static final int DEFAULT_WIDTH = 1280;
-    private static final int DEFAULT_HEIGHT = 720;
+    public static final int DEFAULT_WIDTH = 1280;
+    public static final int DEFAULT_HEIGHT = 720;
 
-    private final Terrain terrain;
     private final Partie partie;
+    private final Terrain terrain;
+    private final HUDPanel hudPanel;
     private int cameraX = 0;
     private int cameraY = 0;
 
-    public GamePanel(Terrain terrain, Partie partie) {
-        this.terrain = terrain;
+    private final AnimationManager animationManager = new AnimationManager();
+
+    public GamePanel(Partie partie) {
         this.partie = partie;
+        this.terrain = partie.getTerrain();
+        this.hudPanel = new HUDPanel(partie);
         this.setDoubleBuffered(true);
     }
 
@@ -31,17 +37,87 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_SPEED);
 
+        // Zoom + ajustement de la caméra
         g2.scale(getZoomX(), getZoomY());
         g2.translate(-cameraX, -cameraY);
 
+        // Affichage du background
+        BufferedImage backgroundImage = terrain.getBackground();
+        if (backgroundImage != null) {
+            g2.drawImage(backgroundImage, 0, 0, this);
+        }
+
+        // Affichage de l'eau (arrière plan)
+        int waterY = DEFAULT_HEIGHT
+                - animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
+
+        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY, 100);
+
+        // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
         g2.drawImage(terrainImage, 0, 0, this);
 
+        // Affichage des entites
+        drawWorms(g2);
+
+        // Affichage de l'eau
+        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
+
+        // Affichage des barres de vie
+        hudPanel.drawHealthBars(g2, partie, cameraX, cameraY);
+
+        // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
+
+        // Affichage du HUD (après le zoom car non concerné)
+        hudPanel.setSize(getWidth(), 100);
+        hudPanel.paintComponent(g2);
+
     }
+
+    public void drawWorms(Graphics2D g2) {
+        for (Worm w : partie.getMonde().getActiveWorms()) {
+            if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
+                int posX = w.getPosition().getX();
+                int posY = w.getPosition().getY();
+
+                if (w.getTeam() == partie.getTeam(0)) {
+                    BufferedImage sprite = AnimationManager.getZlerp("idle").getFrames().get(0);
+                    int drawX = posX - sprite.getWidth() / 2;
+                    int drawY = posY - sprite.getHeight() / 2;
+                    g2.drawImage(sprite, drawX, drawY, this);
+                } else {
+                    // Pour quand on aura des animations séparées pour la 2e équipe
+                    BufferedImage sprite = AnimationManager.getGlorb("idle").getFrames().get(0);
+                    int drawX = posX - sprite.getWidth() / 2;
+                    int drawY = posY - sprite.getHeight() / 2;
+                    g2.drawImage(sprite, drawX, drawY, this);
+                }
+            }
+        }
+    }
+
+    private void drawAnimation(Graphics2D g2, Animation animation,
+                               int drawX, int drawY, int speedMs) {
+
+        if (animation != null && !animation.getFrames().isEmpty()) {
+            List<BufferedImage> frames = animation.getFrames();
+
+            long timeIndex = System.currentTimeMillis() / speedMs;
+
+            int frameIndex = (int) (timeIndex % frames.size());
+
+            BufferedImage currentFrame = frames.get(frameIndex);
+
+            g2.drawImage(currentFrame, drawX, drawY, this);
+        }
+    }
+
 
     public double getZoomX() {
         return Math.max(1.0, (double) this.getWidth() / DEFAULT_WIDTH);

@@ -1,7 +1,9 @@
 package org.example.model.jeu;
 
+import org.example.model.entites.Projectile;
 import org.example.model.entites.Worm;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Monde {
     private final Partie partie;
@@ -12,6 +14,8 @@ public class Monde {
         this.partie = partie;
         this.physicsEngine = new PhysicsEngine(terrain);
         this.activeWorms = new ArrayList<>();
+
+        initialiserPhysique();
     }
 
     public void update(double elapsedTime) {
@@ -27,6 +31,16 @@ public class Monde {
             }
         }
         return worms;
+    }
+
+    public ArrayList<Worm> getActiveWorms() {
+        ArrayList<Worm> living = new ArrayList<>();
+        for (Worm w : activeWorms) {
+            if (w != null && w.isAlive()) {
+                living.add(w);
+            }
+        }
+        return living;
     }
 
     public void initialiserPhysique() {
@@ -48,4 +62,8 @@ public class Monde {
         return physicsEngine;
 
     }
+    public List<Projectile> getActiveProjectiles() {
+        return physicsEngine.getActiveProjectiles();
+    }
+
 }

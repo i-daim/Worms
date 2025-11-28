@@ -7,6 +7,7 @@ import org.example.model.entites.Worm;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -34,7 +35,7 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                             RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
@@ -78,7 +79,15 @@ public class GamePanel extends JPanel {
         hudPanel.setSize(getWidth(), 100);
         hudPanel.paintComponent(g2);
 
+        g2.dispose();
     }
+
+    public Point screenToWorld(Point screenPoint) {
+        double worldX = (screenPoint.x / getZoomX()) + cameraX;
+        double worldY = (screenPoint.y / getZoomY()) + cameraY;
+        return new Point((int) worldX, (int) worldY);
+    }
+
 
     public void drawWorms(Graphics2D g2) {
         for (Worm w : partie.getMonde().getActiveWorms()) {
@@ -120,11 +129,11 @@ public class GamePanel extends JPanel {
 
 
     public double getZoomX() {
-        return Math.max(1.0, (double) this.getWidth() / DEFAULT_WIDTH);
+        return Math.max(1.0, (double) getWidth() / DEFAULT_WIDTH);
     }
 
     public double getZoomY() {
-        return Math.max(1.0, (double) this.getHeight() / DEFAULT_HEIGHT);
+        return Math.max(1.0, (double) getHeight() / DEFAULT_HEIGHT);
     }
 
     public void setCamera(int x, int y) {

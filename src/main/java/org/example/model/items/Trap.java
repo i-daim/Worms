@@ -72,7 +72,6 @@ public abstract class Trap extends Weapon implements Usable {
             if (w == null) {
                 return;
             }
-            w.receiveDmg(this.getDegats());
             this.active = false;
         }
     }

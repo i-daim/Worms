@@ -64,7 +64,6 @@ public abstract class Throwable extends Weapon implements Usable {
             if (w == null) {
                 return;
             }
-            alienActif.receiveDmg(this.getDegats());
         }
     }
 

@@ -35,7 +35,6 @@ public abstract class Firearm extends Weapon implements Usable {
         }
         for (Alien w : gameWorld.wormsDansRayon(wormActifPositionX, wormActifPositionY, portee)) {
             if (w != alienActif) {
-                w.receiveDmg(this.getDegats()); // Dégats aux vers dans la portée de l'arme
                 setNbTir(this.getNbTir() - 1); // Tir on décrémente le nombre de tir pour l'arme
             }
         }

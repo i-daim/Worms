@@ -17,7 +17,7 @@ public class ControllerConsole {
 
     public void demarrer() {
         vue.afficherBienvenue();
-        vue.afficherTerrain(gameManager.getTerrain());
+        vue.afficherTerrain(gameManager);
 
         // Faire tomber les worms
         System.out.println("\n⏳ Les worms tombent...\n");
@@ -95,7 +95,7 @@ public class ControllerConsole {
                 break;
 
             case "map":
-                vue.afficherTerrain(gameManager.getTerrain());
+                vue.afficherTerrain(gameManager);
                 break;
 
             case "exit":

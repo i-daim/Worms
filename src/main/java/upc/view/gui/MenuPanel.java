@@ -19,9 +19,9 @@ import java.awt.Font;
 public class MenuPanel extends JPanel {
 
     private Image background;
-    private final JButton NewGame = createGameButton("New Game");
-    private final JButton LoadGame = createGameButton("Load Game");
-    private final JButton Quitter = createGameButton("Quit");
+    private final JButton newGame = createGameButton("New Game");
+    private final JButton loadGame = createGameButton("Load Game");
+    private final JButton quitGame = createGameButton("Quit");
 
 
     public MenuPanel() {
@@ -38,11 +38,11 @@ public class MenuPanel extends JPanel {
 
         this.add(Box.createVerticalGlue());
 
-        this.add(NewGame);
+        this.add(newGame);
         this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
-        this.add(LoadGame);
+        this.add(loadGame);
         this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
-        this.add(Quitter);
+        this.add(quitGame);
 
         this.add(Box.createVerticalGlue());
     }
@@ -60,19 +60,24 @@ public class MenuPanel extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
 
                 // Choisit la couleur en fonction de si le bouton est survolé ou pas
-                if (getModel().isPressed()) g2.setColor(new Color(35, 45, 55));
-                else if (getModel().isRollover()) g2.setColor(new Color(75, 85, 95));
-                else g2.setColor(new Color(55, 65, 75));
+                if (getModel().isPressed()) {
+                    g2.setColor(new Color(35, 45, 55));
+                } else if (getModel().isRollover()) {
+                    g2.setColor(new Color(75, 85, 95));
+                } else {
+                    g2.setColor(new Color(55, 65, 75));
+                }
 
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
 
                 // Bordure du bouton
                 g2.setColor(Color.BLACK);
                 g2.setStroke(new BasicStroke(2));
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 30, 30);
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
 
                 super.paintComponent(g);
             }
@@ -96,14 +101,14 @@ public class MenuPanel extends JPanel {
 
 
     public void addNewGameListener(ActionListener listener) {
-        NewGame.addActionListener(listener);
+        newGame.addActionListener(listener);
     }
 
     public void addLoadGameListener(ActionListener listener) {
-        LoadGame.addActionListener(listener);
+        loadGame.addActionListener(listener);
     }
 
     public void addQuitterListener(ActionListener listener) {
-        Quitter.addActionListener(listener);
+        quitGame.addActionListener(listener);
     }
 }

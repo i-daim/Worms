@@ -34,9 +34,9 @@ public class PhysicsEngine {
 
     private final Terrain terrain;
 
-    private static final double VITESSE_CHUTE_SAFE = 15;
-    private static final double VITESSE_CHUTE_MAX = 20.0;
-    private static final int MULTIPLICATEUR_DEGATS = 1;
+    private static final double SAFE_FALL_SPEED = 15;
+    private static final double MAX_FALL_SPEED = 20.0;
+    private static final int DMG_MULTIPLIER = 1;
 
     private static final double WORM_WIDTH = Converter.toMeters(20);
     private static final double WORM_HEIGHT = Converter.toMeters(37);
@@ -83,8 +83,8 @@ public class PhysicsEngine {
     private void limitFallVelocities() {
         for (Body body : wormBodies.values()) {
             Vector2 vel = body.getLinearVelocity();
-            if (vel.y > VITESSE_CHUTE_MAX) {
-                body.setLinearVelocity(vel.x, VITESSE_CHUTE_MAX);
+            if (vel.y > MAX_FALL_SPEED) {
+                body.setLinearVelocity(vel.x, MAX_FALL_SPEED);
             }
         }
     }
@@ -97,8 +97,8 @@ public class PhysicsEngine {
         boolean wasAirborne = wasInAir.getOrDefault(alien, false);
         double maxSpeed = maxFallSpeed.getOrDefault(alien, 0.0);
 
-        if (wasAirborne && isOnGround && maxSpeed > VITESSE_CHUTE_SAFE) {
-            int degats = (int) ((maxSpeed - VITESSE_CHUTE_SAFE) * MULTIPLICATEUR_DEGATS);
+        if (wasAirborne && isOnGround && maxSpeed > SAFE_FALL_SPEED) {
+            int degats = (int) ((maxSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
             if (degats > 0) {
                 alien.receiveDmg(degats);
             }

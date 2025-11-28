@@ -16,7 +16,14 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
     @Override
     public void utiliser(Monde monde, Worm wormActif) {
     }
-
+    @Override
+    public double getInitialVelocity() {
+        return 0;
+    }
+    @Override
+    public boolean isAffectedByWind() {
+        return false;
+    }
     //getters
     public Position getPosition() {
         return position;
@@ -69,4 +76,5 @@ public abstract class PiegeExplosif extends Arme implements Utilisable {
             this.active = false;
         }
     }
+
 }

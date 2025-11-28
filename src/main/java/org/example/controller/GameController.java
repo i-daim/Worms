@@ -5,7 +5,6 @@ import org.example.model.jeu.Partie;
 import org.example.view.gui.GamePanel;
 
 import java.awt.Point;
-import javax.swing.Timer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
@@ -15,21 +14,21 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final Partie partie;
-    private final Timer gameLoop;
     private static final int CAMERA_SPEED = 15;
     private Point mousePosition = new Point(0, 0);
 
     private boolean leftPressed = false;
     private boolean rightPressed = false;
 
+    private volatile boolean running = true;
+    private Thread gameThread;
+
     public GameController(GamePanel gamePanel, Partie partie) {
         this.gamePanel = gamePanel;
         this.partie = partie;
 
         addListeners();
-
-        this.gameLoop = new Timer(16, e -> update());
-        this.gameLoop.start();
+        startGameLoop();
     }
 
     private void addListeners() {
@@ -80,11 +79,40 @@ public class GameController {
                 Point worldPos = gamePanel.screenToWorld(mousePosition);
                 partie.getTerrain().makeHole(worldPos.x, worldPos.y, 25);
             default:
-                // Ne rien faire pour les autres touches
                 break;
         }
     }
 
+    private void startGameLoop() {
+        gameThread = new Thread(() -> {
+            long lastTime = System.nanoTime();
+            final double targetFps = 60.0;
+            final double nsPerUpdate = 1_000_000_000.0 / targetFps;
+
+            while (running) {
+                long now = System.nanoTime();
+                double delta = (now - lastTime) / nsPerUpdate;
+                lastTime = now;
+
+                if (delta > 0) {
+                    update();
+                }
+
+                try {
+                    long sleepNs = (long) (nsPerUpdate - (System.nanoTime() - now));
+                    long sleepTime = sleepNs / 1_000_000;
+                    if (sleepTime > 0) {
+                        Thread.sleep(sleepTime);
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+        gameThread.setDaemon(true);
+        gameThread.start();
+    }
 
     private void handleCameraScroll(Point mousePos) {
         int width = gamePanel.getWidth();
@@ -120,7 +148,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    public void update() {
+    private void update() {
         if (mousePosition != null) {
             handleCameraScroll(mousePosition);
         }
@@ -139,5 +167,16 @@ public class GameController {
         partie.update(1.0 / 60.0);
 
         gamePanel.repaint();
+    }
+
+    public void stop() {
+        running = false;
+        if (gameThread != null) {
+            try {
+                gameThread.join(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }

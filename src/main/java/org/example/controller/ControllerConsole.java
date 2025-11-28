@@ -15,9 +15,9 @@ public class ControllerConsole {
         this.enCours = true;
     }
 
-    public void demarrer() {
-        vue.afficherBienvenue();
-        vue.afficherTerrain(gameManager);
+    public void start() {
+        vue.printWelcome();
+        vue.printTerrain(gameManager);
 
         // Faire tomber les worms
         System.out.println("\n⏳ Les worms tombent...\n");
@@ -27,26 +27,26 @@ public class ControllerConsole {
         }
 
         // Afficher l'état après la chute
-        vue.afficherEtatApresChute(gameManager);
+        vue.printStateAfterFall(gameManager);
 
         while (enCours && !gameManager.isOver()) {
-            vue.afficherEtatPartie(gameManager);
-            String commande = vue.demanderCommande();
-            traiterCommande(commande);
+            vue.printGameState(gameManager);
+            String command = vue.requestCommand();
+            traiterCommande(command);
         }
 
         if (gameManager.isOver()) {
-            vue.afficherFinPartie(gameManager);
+            vue.printGameOver(gameManager);
         }
 
         vue.close();
     }
 
-    private void traiterCommande(String commande) {
-        switch (commande) {
+    private void traiterCommande(String command) {
+        switch (command) {
             case "gauche":
                 boolean reussiteG = gameManager.getActiveWorm().moveLeft(gameManager.getTerrain());
-                vue.afficherResultatDeplacement(reussiteG, "gauche");
+                vue.printMovementResult(reussiteG, "gauche");
                 if (reussiteG) {
                     gameManager.skipTurn();
                 }
@@ -54,57 +54,57 @@ public class ControllerConsole {
 
             case "droite":
                 boolean reussiteD = gameManager.getActiveWorm().moveRight(gameManager.getTerrain());
-                vue.afficherResultatDeplacement(reussiteD, "droite");
+                vue.printMovementResult(reussiteD, "droite");
                 if (reussiteD) {
                     gameManager.skipTurn();
                 }
                 break;
 
             case "sauter":
-                gameManager.getMonde().getPhysicsEngine().jumpWorm(gameManager.getActiveWorm());
+                gameManager.getWorld().getPhysicsEngine().jumpWorm(gameManager.getActiveWorm());
 
                 System.out.println("⏳ Le worm saute...");
                 for (int i = 0; i < 120; i++) {
                     gameManager.update(1.0 / 60.0);
                 }
 
-                vue.afficherResultatSaut(true);
+                vue.printJumpResult(true);
                 gameManager.skipTurn();
                 break;
 
             case "attaquer":
-                int degats = vue.demanderEntier("💥 Combien de dégâts ? ");
-                int x = vue.demanderEntier("🎯 Coordonnée X de la cible : ");
-                int y = vue.demanderEntier("🎯 Coordonnée Y de la cible : ");
+                int damage = vue.requestInteger("💥 Combien de dégâts ? ");
+                int x = vue.requestInteger("🎯 Coordonnée X de la cible : ");
+                int y = vue.requestInteger("🎯 Coordonnée Y de la cible : ");
 
-                Alien cible = gameManager.attaquerPosition(x, y, degats);
-                vue.afficherResultatAttaque(cible, x, y, gameManager.getActiveTeam());
+                Alien target = gameManager.attaquerPosition(x, y, damage);
+                vue.printAttackResult(target, x, y, gameManager.getActiveTeam());
 
-                if (cible != null) {
+                if (target != null) {
                     gameManager.skipTurn();
                 }
                 break;
 
             case "passer":
                 gameManager.skipTurn();
-                vue.afficherTourPasse();
+                vue.printTurnSkipped();
                 break;
 
-            case "worms":
-                vue.afficherTousLesWorms(gameManager);
+            case "aliens":
+                vue.printAliensStats(gameManager);
                 break;
 
             case "map":
-                vue.afficherTerrain(gameManager);
+                vue.printTerrain(gameManager);
                 break;
 
             case "exit":
                 enCours = false;
-                vue.afficherPartiAbandon();
+                vue.printGameAbandoned();
                 break;
 
             default:
-                vue.afficherCommandeInconnue();
+                vue.printUnknownCommand();
                 break;
         }
     }

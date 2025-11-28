@@ -35,7 +35,6 @@ public abstract class ArmeAFeu extends Arme implements Utilisable {
         }
         for (Worm w : monde.wormsDansRayon(wormActifPositionX, wormActifPositionY, portee)) {
             if (w != wormActif) {
-                w.receiveDmg(this.getDegats()); // Dégats aux vers dans la portée de l'arme
                 setNbTir(this.getNbTir() - 1); // Tir on décrémente le nombre de tir pour l'arme
             }
         }

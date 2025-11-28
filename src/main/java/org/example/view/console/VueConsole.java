@@ -137,7 +137,8 @@ public class VueConsole {
         System.out.println("\n" + "=".repeat(60));
     }
 
-    public void afficherTerrain(Terrain terrain) {
+    public void afficherTerrain(Partie partie) {
+        Terrain terrain = partie.getTerrain();
         System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getWaterLevel() + "):");
 
         int hauteur = Math.min(terrain.getCollisionsHeight(), 25);
@@ -145,15 +146,26 @@ public class VueConsole {
 
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
-                if (terrain.isWater(y) && !terrain.isCollision(x, y)) {
-                    System.out.print("~");
-                    continue;
-                }
-                System.out.print(terrain.isCollision(x, y) ? 'X' : ' ');
+                System.out.print(symbolePourTuile(x, y, partie));
             }
             System.out.println();
         }
         System.out.println();
+    }
+
+    public char symbolePourTuile(int x, int y, Partie partie) {
+        Worm w = partie.trouverWormAPosition(x, y);
+        Terrain terrain = partie.getTerrain();
+        if (w != null && w.isAlive()) {
+            return 'W';
+        }
+        if (terrain.isCollision(x, y)) {
+            return 'X';
+        }
+        if (terrain.isWater(y) && terrain.isCollision(x, y)) {
+            return '~';
+        }
+        return ' ';
     }
 
     public void afficherEtatApresChute(Partie partie) {
@@ -173,8 +185,6 @@ public class VueConsole {
         }
         System.out.println();
     }
-
-
 
 
     public void afficherResultatDeplacement(boolean succes, String direction) {

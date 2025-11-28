@@ -9,6 +9,4 @@ public class Shotgun extends ArmeAFeu {
         super(nom, DEGATS, RAYON, NBTIR);
     }
 
-    //Implémenter plus tard une méthode tir surchager pour les armes de types fusils à pompes
-    // par rapport à la réduction de la distance en lien avec la distance
 }

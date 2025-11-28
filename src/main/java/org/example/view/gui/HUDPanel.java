@@ -48,9 +48,9 @@ public class HUDPanel extends JPanel {
 
     public void drawHealthBars(Graphics2D g2, GameManager gameManager, int cameraX, int cameraY) {
         for (Team team : gameManager.getTeams()) {
-            for (Alien alien : team.getWorms()) {
+            for (Alien alien : team.getAliens()) {
                 if (alien != null && alien.isAlive()) {
-                    drawWormHealthBar(g2, alien, gameManager.getActiveWorm() == alien);
+                    drawWormHealthBar(g2, alien, gameManager.getActiveAlien() == alien);
                 }
             }
         }

@@ -54,7 +54,7 @@ public class ConsoleView {
     }
 
     private void printActiveAlienStats(GameManager gameManager) {
-        Alien alien = gameManager.getActiveWorm();
+        Alien alien = gameManager.getActiveAlien();
 
         if (alien != null) {
             Position pos = alien.getPosition();
@@ -77,7 +77,7 @@ public class ConsoleView {
 
         System.out.println("\n💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
         System.out.println("─".repeat(60));
-        printAliensTeam(teamActive, gameManager.getActiveWorm());
+        printAliensTeam(teamActive, gameManager.getActiveAlien());
 
         System.out.println("\n💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
         System.out.println("─".repeat(60));
@@ -87,7 +87,7 @@ public class ConsoleView {
     }
 
     private void printAliensTeam(Team team, Alien alienActif) {
-        Alien[] aliens = team.getWorms();
+        Alien[] aliens = team.getAliens();
         int count = 1;
         boolean noneAlive = true;
 
@@ -154,7 +154,7 @@ public class ConsoleView {
     }
 
     public char symbolForTile(int x, int y, GameManager gameManager) {
-        Alien w = gameManager.getWormAtPosition(x, y);
+        Alien w = gameManager.getAlienAtPosition(x, y);
         Terrain terrain = gameManager.getTerrain();
         if (w != null && w.isAlive()) {
             return 'W';
@@ -174,7 +174,7 @@ public class ConsoleView {
         for (int i = 0; i < 2; i++) {
             System.out.println("🔹 " + gameManager.getTeam(i).getName() + " :");
 
-            Alien[] aliens = gameManager.getTeam(i).getWorms();
+            Alien[] aliens = gameManager.getTeam(i).getAliens();
             for (int j = 0; j < aliens.length; j++) {
                 Alien a = aliens[j];
                 if (a != null && a.isAlive()) {

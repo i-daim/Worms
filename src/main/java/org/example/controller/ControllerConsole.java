@@ -45,7 +45,7 @@ public class ControllerConsole {
     private void traiterCommande(String command) {
         switch (command) {
             case "gauche":
-                boolean reussiteG = gameManager.getActiveWorm().moveLeft(gameManager.getTerrain());
+                boolean reussiteG = gameManager.getActiveAlien().moveLeft(gameManager.getTerrain());
                 vue.printMovementResult(reussiteG, "gauche");
                 if (reussiteG) {
                     gameManager.skipTurn();
@@ -53,7 +53,7 @@ public class ControllerConsole {
                 break;
 
             case "droite":
-                boolean reussiteD = gameManager.getActiveWorm().moveRight(gameManager.getTerrain());
+                boolean reussiteD = gameManager.getActiveAlien().moveRight(gameManager.getTerrain());
                 vue.printMovementResult(reussiteD, "droite");
                 if (reussiteD) {
                     gameManager.skipTurn();
@@ -61,7 +61,7 @@ public class ControllerConsole {
                 break;
 
             case "sauter":
-                gameManager.getWorld().getPhysicsEngine().jumpWorm(gameManager.getActiveWorm());
+                gameManager.getWorld().getPhysicsEngine().jumpWorm(gameManager.getActiveAlien());
 
                 System.out.println("⏳ Le worm saute...");
                 for (int i = 0; i < 120; i++) {
@@ -77,7 +77,7 @@ public class ControllerConsole {
                 int x = vue.requestInteger("🎯 Coordonnée X de la cible : ");
                 int y = vue.requestInteger("🎯 Coordonnée Y de la cible : ");
 
-                Alien target = gameManager.attaquerPosition(x, y, damage);
+                Alien target = gameManager.attackPosition(x, y, damage);
                 vue.printAttackResult(target, x, y, gameManager.getActiveTeam());
 
                 if (target != null) {

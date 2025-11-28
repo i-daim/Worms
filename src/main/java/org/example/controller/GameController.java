@@ -75,6 +75,9 @@ public class GameController {
                     gameManager.getMonde().getPhysicsEngine().jumpWorm(activeAlien);
                 }
                 break;
+            case KeyEvent.VK_E:
+                Point worldPos = gamePanel.screenToWorld(mousePosition);
+                partie.getTerrain().makeHole(worldPos.x, worldPos.y, 25);
             default:
                 break;
         }

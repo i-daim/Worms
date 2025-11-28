@@ -34,6 +34,10 @@ public class GameWorld {
         return aliens;
     }
 
+    public Terrain getTerrain() {
+        return gameManager.getTerrain();
+    }
+
     public ArrayList<Alien> getActiveWorms() {
         ArrayList<Alien> living = new ArrayList<>();
         for (Alien w : activeAliens) {

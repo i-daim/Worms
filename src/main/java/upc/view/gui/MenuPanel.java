@@ -63,7 +63,8 @@ public class MenuPanel extends JPanel {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                 // Choisit la couleur en fonction de si le bouton est survolé ou pas
-                if (getModel().isRollover()) g2.setColor(new Color(75, 85, 95));
+                if (getModel().isPressed()) g2.setColor(new Color(35, 45, 55));
+                else if (getModel().isRollover()) g2.setColor(new Color(75, 85, 95));
                 else g2.setColor(new Color(55, 65, 75));
 
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);

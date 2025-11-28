@@ -15,35 +15,35 @@ public class ConsoleView {
         this.scanner = new Scanner(System.in);
     }
 
-    public void afficherBienvenue() {
+    public void printWelcome() {
         System.out.println("=================================");
         System.out.println("  Bienvenue dans Worms Game!    ");
         System.out.println("=================================");
         System.out.println("Commandes disponibles:");
-        System.out.println("  gauche  - Déplacer le worm à gauche");
-        System.out.println("  droite  - Déplacer le worm à droite");
-        System.out.println("  sauter  - Faire sauter le worm");
-        System.out.println("  degats  - Infliger des dégâts à l'équipe ennemie");
+        System.out.println("  gauche  - Déplacer l'alien à gauche");
+        System.out.println("  droite  - Déplacer l'alien à droite");
+        System.out.println("  sauter  - Faire sauter l'alien");
+        System.out.println("  dégâts  - Infliger des dégâts à l'équipe ennemie");
         System.out.println("  passer  - Passer son tour");
-        System.out.println("  worms   - Afficher tous les worms vivants");
+        System.out.println("  aliens  - Afficher tous les aliens vivants");
         System.out.println("  map     - Afficher la carte du terrain");
         System.out.println("  info    - Afficher l'état complet de la partie");
         System.out.println("  exit    - Quitter la partie");
         System.out.println("=================================\n");
     }
 
-    public void afficherEtatPartie(GameManager gameManager) {
+    public void printGameState(GameManager gameManager) {
         System.out.println("\n" + "─".repeat(60));
         System.out.println("📊 " + gameManager.toString());
         System.out.println("─".repeat(60));
 
-        afficherStatistiquesEquipes(gameManager);
-        afficherWormActif(gameManager);
+        printTeamStats(gameManager);
+        printActiveAlienStats(gameManager);
 
         System.out.println("─".repeat(60));
     }
 
-    private void afficherStatistiquesEquipes(GameManager gameManager) {
+    private void printTeamStats(GameManager gameManager) {
         System.out.println("\n🏆 État des équipes:");
 
         Team[] teams = gameManager.getTeams();
@@ -53,23 +53,23 @@ public class ConsoleView {
         }
     }
 
-    private void afficherWormActif(GameManager gameManager) {
+    private void printActiveAlienStats(GameManager gameManager) {
         Alien alien = gameManager.getActiveWorm();
 
         if (alien != null) {
             Position pos = alien.getPosition();
-            System.out.println("\n🐛 Worm actif (" + gameManager.getActiveTeam().getName() + "):");
+            System.out.println("\n🐛 Alien actif (" + gameManager.getActiveTeam().getName() + "):");
             System.out.printf("   Position: %s\n", pos);
             System.out.printf("   PV: %d/100 ", alien.getHealthPoints());
-            afficherBarreVie(alien.getHealthPoints());
+            printHealthBar(alien.getHealthPoints());
         } else {
-            System.out.println("\n⚠️  Aucun worm actif");
+            System.out.println("\n⚠️  Aucun alien actif");
         }
     }
 
-    public void afficherTousLesWorms(GameManager gameManager) {
+    public void printAliensStats(GameManager gameManager) {
         System.out.println("\n" + "═".repeat(60));
-        System.out.println("           🐛 ÉTAT DE TOUS LES WORMS VIVANTS 🐛");
+        System.out.println("           🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
         System.out.println("═".repeat(60));
 
         Team teamActive = gameManager.getActiveTeam();
@@ -77,40 +77,40 @@ public class ConsoleView {
 
         System.out.println("\n💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
         System.out.println("─".repeat(60));
-        afficherWormsEquipe(teamActive, gameManager.getActiveWorm());
+        printAliensTeam(teamActive, gameManager.getActiveWorm());
 
         System.out.println("\n💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
         System.out.println("─".repeat(60));
-        afficherWormsEquipe(teamEnnemie, null);
+        printAliensTeam(teamEnnemie, null);
 
         System.out.println("═".repeat(60) + "\n");
     }
 
-    private void afficherWormsEquipe(Team team, Alien alienActif) {
+    private void printAliensTeam(Team team, Alien alienActif) {
         Alien[] aliens = team.getWorms();
         int count = 1;
-        boolean aucunVivant = true;
+        boolean noneAlive = true;
 
         for (Alien alien : aliens) {
             if (alien != null && alien.isAlive()) {
-                aucunVivant = false;
+                noneAlive = false;
                 Position pos = alien.getPosition();
                 String indicateur = (alien == alienActif) ? "► " : "  ";
 
-                System.out.printf("%sWorm #%d | Position: %s | PV: %3d/100 ",
+                System.out.printf("%sAlien #%d | Position: %s | PV: %3d/100 ",
                         indicateur, count, pos, alien.getHealthPoints());
-                afficherBarreVie(alien.getHealthPoints());
+                printHealthBar(alien.getHealthPoints());
                 count++;
             }
         }
 
-        if (aucunVivant) {
-            System.out.println("  ⚰️  Tous les worms sont morts");
+        if (noneAlive) {
+            System.out.println("  ⚰️  Tous les aliens sont morts");
         }
     }
 
 
-    private void afficherBarreVie(int pv) {
+    private void printHealthBar(int pv) {
         int barres = pv / 10;
         System.out.print("[");
         for (int i = 0; i < 10; i++) {
@@ -123,7 +123,7 @@ public class ConsoleView {
         System.out.println("]");
     }
 
-    public void afficherFinPartie(GameManager gameManager) {
+    public void printGameOver(GameManager gameManager) {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("            🎉 PARTIE TERMINÉE ! 🎉");
         System.out.println("=".repeat(60));
@@ -133,29 +133,29 @@ public class ConsoleView {
             System.out.println("\n🏆 " + gagnante.getName() + " a gagné ! 🏆\n");
         }
 
-        afficherStatistiquesEquipes(gameManager);
+        printTeamStats(gameManager);
         System.out.println("\n" + "=".repeat(60));
     }
 
-    public void afficherTerrain(GameManager gameManager) {
+    public void printTerrain(GameManager gameManager) {
         Terrain terrain = gameManager.getTerrain();
         System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getWaterLevel() + "):");
 
-        int hauteur = Math.min(terrain.getCollisionsHeight(), 25);
-        int largeur = Math.min(terrain.getCollisionsWidth(), 60);
+        int height = Math.min(terrain.getCollisionsHeight(), 25);
+        int width = Math.min(terrain.getCollisionsWidth(), 60);
 
-        for (int y = 0; y < hauteur; y++) {
-            for (int x = 0; x < largeur; x++) {
-                System.out.print(symbolePourTuile(x, y, partie));
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                System.out.print(symbolForTile(x, y, gameManager));
             }
             System.out.println();
         }
         System.out.println();
     }
 
-    public char symbolePourTuile(int x, int y, Partie partie) {
-        Worm w = partie.trouverWormAPosition(x, y);
-        Terrain terrain = partie.getTerrain();
+    public char symbolForTile(int x, int y, GameManager gameManager) {
+        Alien w = gameManager.getWormAtPosition(x, y);
+        Terrain terrain = gameManager.getTerrain();
         if (w != null && w.isAlive()) {
             return 'W';
         }
@@ -168,18 +168,18 @@ public class ConsoleView {
         return ' ';
     }
 
-    public void afficherEtatApresChute(GameManager gameManager) {
-        System.out.println("\n💥 ÉTAT DES WORMS APRÈS LA CHUTE :\n");
+    public void printStateAfterFall(GameManager gameManager) {
+        System.out.println("\n💥 ÉTAT DES ALIENS APRÈS LA CHUTE :\n");
 
         for (int i = 0; i < 2; i++) {
             System.out.println("🔹 " + gameManager.getTeam(i).getName() + " :");
 
             Alien[] aliens = gameManager.getTeam(i).getWorms();
             for (int j = 0; j < aliens.length; j++) {
-                Alien w = aliens[j];
-                if (w != null && w.isAlive()) {
-                    System.out.println("   → Worm #" + (j + 1) + " : PV = "
-                            + w.getHealthPoints() + "/100");
+                Alien a = aliens[j];
+                if (a != null && a.isAlive()) {
+                    System.out.println("   → Alien #" + (j + 1) + " : PV = "
+                            + a.getHealthPoints() + "/100");
                 }
             }
         }
@@ -187,79 +187,79 @@ public class ConsoleView {
     }
 
 
-    public void afficherResultatDeplacement(boolean succes, String direction) {
-        if (succes) {
+    public void printMovementResult(boolean success, String direction) {
+        if (success) {
             System.out.println("✅ Déplacement à " + direction + " réussi");
         } else {
             System.out.println("❌ Déplacement impossible (collision ou hors limites)");
         }
     }
 
-    public void afficherResultatSaut(boolean succes) {
-        if (succes) {
-            System.out.println("✅ Le worm a sauté !");
+    public void printJumpResult(boolean success) {
+        if (success) {
+            System.out.println("✅ L'alien a sauté !");
         } else {
             System.out.println("❌ Saut impossible");
         }
     }
 
-    public void afficherResultatAttaque(Alien cible, int x, int y, Team teamActive) {
-        if (cible == null) {
-            System.out.println("❌ Aucun worm à la position (" + x + ", " + y + ")");
+    public void printAttackResult(Alien target, int x, int y, Team activeTeam) {
+        if (target == null) {
+            System.out.println("❌ Aucun alien à la position (" + x + ", " + y + ")");
             return;
         }
 
-        boolean estAllie = (cible.getTeam() == teamActive);
-        boolean wormMort = !cible.isAlive();
+        boolean isAlly = (target.getTeam() == activeTeam);
+        boolean alienDead = !target.isAlive();
 
-        if (estAllie) {
-            if (wormMort) {
-                System.out.println("💀 TIR AMI FATAL ! Vous avez tué votre propre worm !");
+        if (isAlly) {
+            if (alienDead) {
+                System.out.println("💀 TIR AMI FATAL ! Vous avez tué votre propre alien !");
             } else {
-                System.out.println("⚠️  TIR AMI ! Votre worm a été touché (PV restants: "
-                        + cible.getHealthPoints() + ")");
+                System.out.println("⚠️  TIR AMI ! Votre alien a été touché (PV restants: "
+                        + target.getHealthPoints() + ")");
 
             }
         } else {
-            if (wormMort) {
-                System.out.println("💀 Worm ennemi éliminé !");
+            if (alienDead) {
+                System.out.println("💀 Alien ennemi éliminé !");
             } else {
-                System.out.println("💥 Worm ennemi touché ! Il lui reste "
-                        + cible.getHealthPoints() + " PV");
+                System.out.println("💥 Alien ennemi touché ! Il lui reste "
+                        + target.getHealthPoints() + " PV");
             }
         }
     }
 
-    public void afficherTourPasse() {
+    public void printTurnSkipped() {
         System.out.println("⏭️  Tour passé");
     }
 
-    public void afficherPartiAbandon() {
+    public void printGameAbandoned() {
         System.out.println("\n❌ Partie abandonnée.");
     }
 
-    public void afficherCommandeInconnue() {
+    public void printUnknownCommand() {
         System.out.println("❌ Commande inconnue ! Tapez 'info' pour l'aide.");
     }
 
-    public void afficherMessage(String message) {
+    public void printMessage(String message) {
         System.out.println(message);
     }
 
-    public String demanderCommande() {
+    public String requestCommand() {
         System.out.print("\n💬 > ");
         return scanner.nextLine().toLowerCase().trim();
     }
 
-    public int demanderEntier(String message) {
+    public int requestInteger(String message) {
         System.out.print(message);
         while (!scanner.hasNextInt()) {
             scanner.next();
             System.out.print("⚠️  Veuillez entrer un nombre valide: ");
         }
-        int valeur = scanner.nextInt();
+        int value = scanner.nextInt();
         scanner.nextLine();
-        return valeur;
+        return value;
     }
 
     public void close() {

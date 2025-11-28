@@ -120,7 +120,7 @@ public class Partie {
         return cible;
     }
 
-    private Worm trouverWormAPosition(int x, int y) {
+    public Worm trouverWormAPosition(int x, int y) {
         for (Equipe equipe : equipes) {
             for (Worm worm : equipe.getWorms()) {
                 if (worm != null && worm.isAlive()) {

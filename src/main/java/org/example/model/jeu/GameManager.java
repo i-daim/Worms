@@ -14,7 +14,6 @@ public class GameManager {
     private final Team[] teams;
 
     private int activeTeamIndex;
-    private int activeWormIndex;
     private int currentRound;
     private int timeLeft;
     private boolean gameOver;
@@ -27,8 +26,8 @@ public class GameManager {
         this.terrain = TerrainGenerator.createTerrain(mapName);
 
         this.teams = new Team[2];
-        this.teams[0] = new Team("Équipe 1", TEAM_SIZE);
-        this.teams[1] = new Team("Équipe 2", TEAM_SIZE);
+        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
+        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
 
         this.gameWorld = new GameWorld(this, this.terrain);
 
@@ -47,10 +46,9 @@ public class GameManager {
         teams[0].initializeTeam(mapName, 0);
         teams[1].initializeTeam(mapName, 1);
 
-        gameWorld.initialiserPhysique();
+        gameWorld.initializePhysics();
 
         this.activeTeamIndex = 0;
-        this.activeWormIndex = 0;
         this.currentRound = 1;
         this.timeLeft = ROUND_TIME;
         this.gameOver = false;
@@ -61,7 +59,7 @@ public class GameManager {
     public void skipTurn() {
         actionDone = false;
 
-        if (getTeam(0).isActiveLastWorm() && getTeam(1).isActiveLastWorm()) {
+        if (getTeam(0).isActiveLastAlien() && getTeam(1).isActiveLastAlien()) {
             currentRound++;
         }
 
@@ -77,9 +75,7 @@ public class GameManager {
             gameOver = true;
             return;
         }
-        getActiveTeam().skipToNextWorm();
-
-        activeWormIndex = getActiveTeam().getActiveWormIndex();
+        getActiveTeam().skipToNextAlien();
     }
 
     private int frameCounter = 0;
@@ -106,23 +102,23 @@ public class GameManager {
         }
     }
 
-    public Alien attaquerPosition(int x, int y, int degats) {
-        if (actionDone || degats < 0) {
+    public Alien attackPosition(int x, int y, int damage) {
+        if (actionDone || damage < 0) {
             return null;
         }
 
-        Alien cible = trouverWormAPosition(x, y);
-        if (cible != null) {
-            cible.receiveDmg(degats);
+        Alien target = getAlienAtPosition(x, y);
+        if (target != null) {
+            target.receiveDmg(damage);
             checkGameOver();
             actionDone = true;
         }
-        return cible;
+        return target;
     }
 
-    private Alien trouverWormAPosition(int x, int y) {
+    public Alien getAlienAtPosition(int x, int y) {
         for (Team team : teams) {
-            for (Alien alien : team.getWorms()) {
+            for (Alien alien : team.getAliens()) {
                 if (alien != null && alien.isAlive()) {
                     Position pos = alien.getPosition();
                     if (pos.getX() == x && pos.getY() == y) {
@@ -141,7 +137,7 @@ public class GameManager {
         return terrain;
     }
 
-    public GameWorld getMonde() {
+    public GameWorld getWorld() {
         return gameWorld;
     }
 
@@ -169,8 +165,8 @@ public class GameManager {
         return activeTeamIndex;
     }
 
-    public Alien getActiveWorm() {
-        return getActiveTeam().getActiveWorm();
+    public Alien getActiveAlien() {
+        return getActiveTeam().getActiveAlien();
     }
 
     public int getCurrentRound() {
@@ -202,7 +198,7 @@ public class GameManager {
     public int getAliveWorms() {
         int total = 0;
         for (Team team : teams) {
-            total += team.getAliveWormsNumber();
+            total += team.getAliveAliensNumber();
         }
         return total;
     }
@@ -211,17 +207,12 @@ public class GameManager {
         return actionDone;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Tour %d | %s | Temps: %ds",
-                currentRound, getActiveTeam().getName(), timeLeft);
-    }
     public Projectile fireWeapon(Weapon weapon, int angleDegrees, int powerPercent) {
         if (actionDone || powerPercent < 0 || powerPercent > 100) {
             return null;
         }
 
-        Alien shooter = getActiveWorm();
+        Alien shooter = getActiveAlien();
         if (shooter == null || !shooter.isAlive()) {
             return null;
         }
@@ -231,5 +222,11 @@ public class GameManager {
 
         actionDone = true;
         return proj;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Tour %d | %s | Temps: %ds",
+                currentRound, getActiveTeam().getName(), timeLeft);
     }
 }

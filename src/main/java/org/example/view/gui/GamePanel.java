@@ -90,7 +90,7 @@ public class GamePanel extends JPanel {
 
 
     public void drawWorms(Graphics2D g2) {
-        for (Alien w : gameManager.getMonde().getActiveWorms()) {
+        for (Alien w : gameManager.getWorld().getActiveWorms()) {
             if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
                 int posX = w.getPosition().getX();
                 int posY = w.getPosition().getY();

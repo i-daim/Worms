@@ -55,7 +55,7 @@ public class GameController {
     }
 
     private void handleKeyPress(int keyCode, boolean pressed) {
-        Alien activeAlien = gameManager.getActiveWorm();
+        Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
@@ -72,7 +72,7 @@ public class GameController {
             case KeyEvent.VK_SPACE:
             case KeyEvent.VK_UP:
                 if (pressed) {
-                    gameManager.getMonde().getPhysicsEngine().jumpWorm(activeAlien);
+                    gameManager.getWorld().getPhysicsEngine().jumpWorm(activeAlien);
                 }
                 break;
             case KeyEvent.VK_E:
@@ -153,14 +153,14 @@ public class GameController {
             handleCameraScroll(mousePosition);
         }
 
-        Alien activeAlien = gameManager.getActiveWorm();
+        Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             if (leftPressed && !rightPressed) {
-                gameManager.getMonde().getPhysicsEngine().moveWorm(activeAlien, -1.0);
+                gameManager.getWorld().getPhysicsEngine().moveWorm(activeAlien, -1.0);
             } else if (rightPressed && !leftPressed) {
-                gameManager.getMonde().getPhysicsEngine().moveWorm(activeAlien, 1.0);
+                gameManager.getWorld().getPhysicsEngine().moveWorm(activeAlien, 1.0);
             } else {
-                gameManager.getMonde().getPhysicsEngine().moveWorm(activeAlien, 0);
+                gameManager.getWorld().getPhysicsEngine().moveWorm(activeAlien, 0);
             }
         }
 

@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.example.model.jeu.Team;
 
-public class Inventaire {
+public class Inventory {
     private final Map<Usable, Integer> stockMunitions;
 
-    public Inventaire() {
+    public Inventory() {
         this.stockMunitions = new HashMap<>();
 
     }
@@ -25,7 +25,7 @@ public class Inventaire {
         return qte > 0 || qte == -1;
     }
     private void initialiserInventaireEquipe(Team team) {
-        Inventaire inv = team.getInventaire();
+        Inventory inv = team.getInventaire();
 
         inv.ajouterMunition(new StickyBomb("Bombe collante"), 50);
         inv.ajouterMunition(new Grenade("Grenade"), 50);

@@ -3,7 +3,7 @@ package org.example.model.jeu;
 
 import org.example.model.entites.Alien;
 import org.example.model.entites.Position;
-import org.example.model.items.Inventaire;
+import org.example.model.items.Inventory;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class Team {
     private final String nom;
     private final Alien[] aliens;
     private int indexWormActif;
-    private final Inventaire inventaire = new Inventaire();
+    private final Inventory inventory = new Inventory();
 
 
     public Team(String nom, int tailleEquipe) {
@@ -24,8 +24,8 @@ public class Team {
         return nom;
     }
 
-    public Inventaire getInventaire() {
-        return inventaire;
+    public Inventory getInventaire() {
+        return inventory;
     }
 
     public Alien[] getWorms() {

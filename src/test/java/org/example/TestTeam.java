@@ -13,14 +13,14 @@ public class TestTeam {
     @Test
     public void testConstructeur() {
         Team a = new Team("TEAM A",3);
-        assertEquals("TEAM A",a.getNom());
+        assertEquals("TEAM A",a.getName());
         assertEquals(3,a.getWorms().length);
     }
     //Test InitialiserEquipeCreeLesWorms
     @Test
-    public void testInitialiserEquipe() {
+    public void testInitializeTeam() {
         Team a = new Team("TEAM A",3);
-        a.initialiserEquipe("",0);
+        a.initializeTeam("",0);
         Alien[] aliens = a.getWorms() ;
         for(Alien w : aliens){
             assertNotNull(w);
@@ -29,10 +29,10 @@ public class TestTeam {
     @Test
     public void testEquipeEliminee() {
         Team b = new Team("TEAM B",3);
-        b.initialiserEquipe("",1);
+        b.initializeTeam("",1);
         Alien[] aliens = b.getWorms() ;
         aliens[0].receiveDmg(100);
-        boolean estEliminee = b.estEliminee();
+        boolean estEliminee = b.isEliminated();
         assertFalse(estEliminee);
         assertFalse(aliens[0].isAlive());
         assertTrue(aliens[1].isAlive());
@@ -40,7 +40,7 @@ public class TestTeam {
     @Test
     public void testGetNom() {
         Team a = new Team("TEAM A",3);
-        assertEquals("TEAM A",a.getNom());
+        assertEquals("TEAM A",a.getName());
     }
     @Test
     public void testGetWorms() {

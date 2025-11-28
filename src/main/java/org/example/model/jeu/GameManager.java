@@ -44,8 +44,8 @@ public class GameManager {
     }
 
     private void initializeGame() {
-        teams[0].initialiserEquipe(mapName, 0);
-        teams[1].initialiserEquipe(mapName, 1);
+        teams[0].initializeTeam(mapName, 0);
+        teams[1].initializeTeam(mapName, 1);
 
         gameWorld.initialiserPhysique();
 
@@ -73,13 +73,13 @@ public class GameManager {
     private void nextTurn() {
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        if (getActiveTeam().estEliminee()) {
+        if (getActiveTeam().isEliminated()) {
             gameOver = true;
             return;
         }
-        getActiveTeam().passerAuWormSuivant();
+        getActiveTeam().skipToNextWorm();
 
-        activeWormIndex = getActiveTeam().getIndexWormActif();
+        activeWormIndex = getActiveTeam().getActiveWormIndex();
     }
 
     private int frameCounter = 0;
@@ -99,7 +99,7 @@ public class GameManager {
 
     private void checkGameOver() {
         for (Team team : teams) {
-            if (team.estEliminee()) {
+            if (team.isEliminated()) {
                 gameOver = true;
                 return;
             }
@@ -170,7 +170,7 @@ public class GameManager {
     }
 
     public Alien getActiveWorm() {
-        return getActiveTeam().getWormActif();
+        return getActiveTeam().getActiveWorm();
     }
 
     public int getCurrentRound() {
@@ -191,7 +191,7 @@ public class GameManager {
         }
 
         for (Team team : teams) {
-            if (!team.estEliminee()) {
+            if (!team.isEliminated()) {
                 return team;
             }
         }
@@ -202,7 +202,7 @@ public class GameManager {
     public int getAliveWorms() {
         int total = 0;
         for (Team team : teams) {
-            total += team.getNombreWormsVivants();
+            total += team.getAliveWormsNumber();
         }
         return total;
     }
@@ -214,7 +214,7 @@ public class GameManager {
     @Override
     public String toString() {
         return String.format("Tour %d | %s | Temps: %ds",
-                currentRound, getActiveTeam().getNom(), timeLeft);
+                currentRound, getActiveTeam().getName(), timeLeft);
     }
     public Projectile fireWeapon(Weapon weapon, int angleDegrees, int powerPercent) {
         if (actionDone || powerPercent < 0 || powerPercent > 100) {

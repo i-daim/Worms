@@ -137,14 +137,14 @@ public class TestAlien {
     @Test
     public void testEquipeTousElimines() {
         Team team = new Team("Team A", 2);
-        team.initialiserEquipe("", 0);
+        team.initializeTeam("", 0);
 
         Alien[] aliens = team.getWorms();
-        assertFalse(team.estEliminee());
+        assertFalse(team.isEliminated());
 
         aliens[0].receiveDmg(100);
         aliens[1].receiveDmg(100);
 
-        assertTrue(team.estEliminee());
+        assertTrue(team.isEliminated());
     }
 }

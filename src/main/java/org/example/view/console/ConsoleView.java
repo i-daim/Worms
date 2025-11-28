@@ -58,7 +58,7 @@ public class ConsoleView {
 
         if (alien != null) {
             Position pos = alien.getPosition();
-            System.out.println("\n🐛 Worm actif (" + gameManager.getActiveTeam().getNom() + "):");
+            System.out.println("\n🐛 Worm actif (" + gameManager.getActiveTeam().getName() + "):");
             System.out.printf("   Position: %s\n", pos);
             System.out.printf("   PV: %d/100 ", alien.getHealthPoints());
             afficherBarreVie(alien.getHealthPoints());
@@ -75,11 +75,11 @@ public class ConsoleView {
         Team teamActive = gameManager.getActiveTeam();
         Team teamEnnemie = gameManager.getEnnemyTeam();
 
-        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + teamActive.getNom());
+        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
         System.out.println("─".repeat(60));
         afficherWormsEquipe(teamActive, gameManager.getActiveWorm());
 
-        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getNom());
+        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
         System.out.println("─".repeat(60));
         afficherWormsEquipe(teamEnnemie, null);
 
@@ -130,7 +130,7 @@ public class ConsoleView {
 
         Team gagnante = gameManager.getWinningTeam();
         if (gagnante != null) {
-            System.out.println("\n🏆 " + gagnante.getNom() + " a gagné ! 🏆\n");
+            System.out.println("\n🏆 " + gagnante.getName() + " a gagné ! 🏆\n");
         }
 
         afficherStatistiquesEquipes(gameManager);
@@ -160,7 +160,7 @@ public class ConsoleView {
         System.out.println("\n💥 ÉTAT DES WORMS APRÈS LA CHUTE :\n");
 
         for (int i = 0; i < 2; i++) {
-            System.out.println("🔹 " + gameManager.getTeam(i).getNom() + " :");
+            System.out.println("🔹 " + gameManager.getTeam(i).getName() + " :");
 
             Alien[] aliens = gameManager.getTeam(i).getWorms();
             for (int j = 0; j < aliens.length; j++) {

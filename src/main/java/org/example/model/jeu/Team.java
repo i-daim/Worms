@@ -8,23 +8,23 @@ import org.example.model.items.Inventory;
 import java.util.List;
 
 public class Team {
-    private final String nom;
+    private final String name;
     private final Alien[] aliens;
-    private int indexWormActif;
+    private int activeWormIndex;
     private final Inventory inventory = new Inventory();
 
 
-    public Team(String nom, int tailleEquipe) {
-        this.nom = nom;
-        this.aliens = new Alien[tailleEquipe];
-        this.indexWormActif = 0;
+    public Team(String name, int teamSize) {
+        this.name = name;
+        this.aliens = new Alien[teamSize];
+        this.activeWormIndex = 0;
     }
 
-    public String getNom() {
-        return nom;
+    public String getName() {
+        return name;
     }
 
-    public Inventory getInventaire() {
+    public Inventory getInventory() {
         return inventory;
     }
 
@@ -32,35 +32,35 @@ public class Team {
         return aliens;
     }
 
-    public int getIndexWormActif() {
-        return indexWormActif;
+    public int getActiveWormIndex() {
+        return activeWormIndex;
     }
 
-    public Alien getWormActif() {
-        if (indexWormActif < aliens.length && aliens[indexWormActif] != null) {
-            return aliens[indexWormActif];
+    public Alien getActiveWorm() {
+        if (activeWormIndex < aliens.length && aliens[activeWormIndex] != null) {
+            return aliens[activeWormIndex];
         }
         return null;
     }
 
-    public void initialiserEquipe(String mapName, int team) {
+    public void initializeTeam(String mapName, int team) {
         List<Position> spawns = SpawnPoints.getSpawns(mapName, team);
         for (int i = 0; i < aliens.length; i++) {
             aliens[i] = new Alien(this, spawns.get(i));
         }
     }
 
-    public void passerAuWormSuivant() {
-        int tentatives = 0;
+    public void skipToNextWorm() {
+        int attempts = 0;
         do {
-            indexWormActif = (indexWormActif + 1) % aliens.length;
-            tentatives++;
-        } while (tentatives < aliens.length
+            activeWormIndex = (activeWormIndex + 1) % aliens.length;
+            attempts++;
+        } while (attempts < aliens.length
                 &&
-                (aliens[indexWormActif] == null || !aliens[indexWormActif].isAlive()));
+                (aliens[activeWormIndex] == null || !aliens[activeWormIndex].isAlive()));
     }
 
-    public boolean estEliminee() {
+    public boolean isEliminated() {
         for (Alien w : aliens) {
             if (w != null && w.isAlive()) {
                 return false;
@@ -69,7 +69,7 @@ public class Team {
         return true;
     }
 
-    public int getNombreWormsVivants() {
+    public int getAliveWormsNumber() {
         int count = 0;
         for (Alien w : aliens) {
             if (w != null && w.isAlive()) {
@@ -80,17 +80,17 @@ public class Team {
     }
 
     public void resetIndex() {
-        indexWormActif = 0;
+        activeWormIndex = 0;
 
         // Trouver le premier worm vivant
-        while (indexWormActif < aliens.length
-                && (aliens[indexWormActif] == null || !aliens[indexWormActif].isAlive())) {
-            indexWormActif++;
+        while (activeWormIndex < aliens.length
+                && (aliens[activeWormIndex] == null || !aliens[activeWormIndex].isAlive())) {
+            activeWormIndex++;
         }
     }
 
     public boolean isActiveLastWorm() {
-        for (int i = indexWormActif + 1; i < aliens.length; i++) {
+        for (int i = activeWormIndex + 1; i < aliens.length; i++) {
             if (aliens[i] != null && aliens[i].isAlive()) {
                 return false;
             }
@@ -101,7 +101,7 @@ public class Team {
 
     @Override
     public String toString() {
-        return nom + " (" + getNombreWormsVivants() + "/" + aliens.length + " vivants)";
+        return name + " (" + getAliveWormsNumber() + "/" + aliens.length + " vivants)";
     }
 
 

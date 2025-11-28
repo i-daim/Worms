@@ -25,7 +25,7 @@ public class Inventory {
         return qte > 0 || qte == -1;
     }
     private void initialiserInventaireEquipe(Team team) {
-        Inventory inv = team.getInventaire();
+        Inventory inv = team.getInventory();
 
         inv.ajouterMunition(new StickyBomb("Bombe collante"), 50);
         inv.ajouterMunition(new Grenade("Grenade"), 50);

@@ -2,6 +2,7 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Projectile;
+import upc.model.physics.PhysicsEngine;
 
 import java.util.ArrayList;
 import java.util.List;

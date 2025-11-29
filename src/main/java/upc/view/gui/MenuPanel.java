@@ -1,5 +1,7 @@
 package upc.view.gui;
 
+import upc.view.Sound;
+
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -58,6 +60,8 @@ public class MenuPanel extends JPanel {
         this.add(Box.createVerticalGlue());
         this.add(buttonPanel);
         this.add(Box.createVerticalGlue());
+
+        Sound.playSound("menu");
     }
 
     @Override

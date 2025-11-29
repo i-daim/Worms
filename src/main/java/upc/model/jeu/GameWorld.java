@@ -53,13 +53,13 @@ public class GameWorld {
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);
-                physicsEngine.addWorm(a);
+                physicsEngine.addAlien(a);
             }
         }
         for (Alien a : gameManager.getTeam(1).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);
-                physicsEngine.addWorm(a);
+                physicsEngine.addAlien(a);
             }
         }
     }

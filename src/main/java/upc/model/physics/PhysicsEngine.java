@@ -24,7 +24,6 @@ public class PhysicsEngine {
     private final World<Body> world;
     private final Terrain terrain;
 
-    public static final double SCALE = 20.0;
     private final List<Projectile> activeProjectiles = new ArrayList<>();
     private Vector2 wind = new Vector2(0, 0); // Vent (x, y)
     private final double dt = 1.0 / 60.0;
@@ -188,7 +187,7 @@ public class PhysicsEngine {
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
 
-        double radius = 5.0 / SCALE;
+        double radius = Converter.toMeters(5);
         BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
         fixture.setFriction(0.3);
         fixture.setRestitution(0.3);
@@ -198,8 +197,8 @@ public class PhysicsEngine {
         body.setMass(MassType.NORMAL);
         body.setBullet(true);
 
-        double startX = projectile.getPosition().getX() / SCALE;
-        double startY = projectile.getPosition().getY() / SCALE;
+        double startX = Converter.toMeters(projectile.getPosition().getX());
+        double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
 
         double angleRad = Math.toRadians(angleDegrees);
@@ -243,9 +242,9 @@ public class PhysicsEngine {
             Position wormPos = alien.getPosition();
             double distance = wormPos.distance(explosionX, explosionY);
 
-            if (distance <= radius * SCALE) {
+            if (distance <= Converter.toPixels(radius)) {
                 // Dégâts diminuent avec la distance
-                double damageRatio = 1.0 - (distance / (radius * SCALE));
+                double damageRatio = 1.0 - (distance / Converter.toPixels(radius));
                 int finalDamage = (int) (damage * damageRatio);
 
                 if (finalDamage > 0) {
@@ -278,8 +277,8 @@ public class PhysicsEngine {
             proj.incrementFrame();
 
             Vector2 pos = body.getTransform().getTranslation();
-            int x = (int) (pos.x * SCALE);
-            int y = (int) (pos.y * SCALE);
+            int x = Converter.toPixels(pos.x);
+            int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
 
             if (

@@ -33,4 +33,8 @@ public class Sound {
     public void loop() {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
+
+    public static void playSound(String name) {
+        new Sound("/sounds/" + name + ".wav").play();
+    }
 }

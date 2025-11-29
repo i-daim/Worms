@@ -7,8 +7,8 @@ import upc.model.entites.Alien;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
 
+import java.util.List;
 import java.util.Map;
-
 
 public class PhysicsEngine {
     private final Terrain terrain;
@@ -21,6 +21,7 @@ public class PhysicsEngine {
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 60.0);
 
+////    CONSTRUCTEUR    ////
     public PhysicsEngine(Terrain terrain) {
         this.terrain = terrain;
         this.world = new World<>();
@@ -33,6 +34,7 @@ public class PhysicsEngine {
         terrainPhysics.createTerrainBodies(world, terrain.getCollisions());
     }
 
+////    UPDATE DES PHYSIQUES    ////
     public void update() {
         world.update(dt);
         updateAliens();
@@ -48,18 +50,8 @@ public class PhysicsEngine {
         projectilePhysics.updateProjectiles(terrain);
     }
 
-    public void setWind(double windX, double windY) {
-        this.wind = new Vector2(windX, windY);
-    }
 
-    public Vector2 getWind() {
-        return wind;
-    }
-
-
-    private void limitFallVelocities() {
-        alienPhysics.limitFallVelocities();
-    }
+////    FONCTIONS AUXILIAIRES    ////
 
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();
@@ -67,45 +59,56 @@ public class PhysicsEngine {
     }
 
 
-    public void addWorm(Alien alien) {
+////    FONCTIONS POUR ALIENS    ////
+    public void addAlien(Alien alien) {
         alienPhysics.addAlienBody(alien);
     }
 
-    public void removeWorm(Alien alien) {
+    public void removeAlien(Alien alien) {
         alienPhysics.removeAlien(alien);
     }
 
-    public void jumpWorm(Alien alien) {
+    public void jumpAlien(Alien alien) {
         alienPhysics.jumpAlien(alien);
     }
 
 
-    public void moveWorm(Alien alien, double direction) {
+    public void moveAlien(Alien alien, double direction) {
         alienPhysics.moveAlien(alien, direction);
     }
 
-    public World<Body> getWorld() {
-        return world;
-    }
-
-    public Body getWormBody(Alien alien) {
-        return alienPhysics.getAlienBody(alien);
-    }
-
+////    FONCTIONS POUR PROJECTILES    ////
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
 
-
-    private void explodeProjectile(Projectile proj) {
+    public void explodeProjectile(Projectile proj) {
         projectilePhysics.explodeProjectile(proj);
     }
 
-    public ProjectilePhysics getProjectilePhysics() {
-        return projectilePhysics;
+
+////    GETTERS & SETTERS    ////
+    public World<Body> getWorld() {
+        return world;
     }
 
     public Map<Alien, Body> getAlienBodies() {
         return alienPhysics.getAlienBodies();
+    }
+
+    public List<Projectile> getActiveProjectiles() {
+        return projectilePhysics.getActiveProjectiles();
+    }
+
+    public Body getAlienBody(Alien alien) {
+        return alienPhysics.getAlienBody(alien);
+    }
+
+    public Vector2 getWind() {
+        return wind;
+    }
+
+    public void setWind(double windX, double windY) {
+        this.wind = new Vector2(windX, windY);
     }
 }

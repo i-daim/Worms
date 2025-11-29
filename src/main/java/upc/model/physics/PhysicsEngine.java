@@ -23,28 +23,23 @@ import java.util.Map;
 public class PhysicsEngine {
     private final World<Body> world;
     private final Terrain terrain;
+    private final AlienPhysics alienPhysics;
 
+    private final Map<Alien, Body> wormBodies = new HashMap<>();
     private final List<Projectile> activeProjectiles = new ArrayList<>();
+
     private Vector2 wind = new Vector2(0, 0); // Vent (x, y)
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 60.0);
 
-
-    private final Map<Alien, Body> wormBodies = new HashMap<>();
-    private final Map<Alien, Boolean> wasInAir = new HashMap<>();
-    private final Map<Alien, Double> maxFallSpeed = new HashMap<>();
-
-    private static final double SAFE_FALL_SPEED = 15.0;
     private static final double MAX_FALL_SPEED = 20.0;
-    private static final int DMG_MULTIPLIER = 1;
 
-    private static final double WORM_WIDTH = Converter.toMeters(20);
-    private static final double WORM_HEIGHT = Converter.toMeters(37);
 
     public PhysicsEngine(Terrain terrain) {
         this.world = new World<>();
         this.world.setGravity(gravity);
         this.terrain = terrain;
+        this.alienPhysics = new AlienPhysics();
 
         TerrainPhysics terrainPhysics = new TerrainPhysics();
         terrainPhysics.createTerrainBodies(world, terrain.getCollisions());
@@ -62,21 +57,7 @@ public class PhysicsEngine {
             Alien alien = entry.getKey();
             Body body = entry.getValue();
 
-            if (!alien.isAlive()) {
-                continue;
-            }
-
-            checkFallDamage(alien, body);
-
-            Vector2 v = body.getTransform().getTranslation();
-            int pixelX = Converter.toPixels(v.x);
-            int pixelY = Converter.toPixels(v.y);
-            alien.setPosition(new Position(pixelX, pixelY));
-
-            if (body.getLinearVelocity().getMagnitude() < 0.1) {
-                body.setLinearVelocity(0, 0);
-                body.setAngularVelocity(0);
-            }
+            alienPhysics.updateAlien(alien, body);
         }
     }
 
@@ -98,30 +79,6 @@ public class PhysicsEngine {
         }
     }
 
-    private void checkFallDamage(Alien alien, Body body) {
-        Vector2 currentVel = body.getLinearVelocity();
-        double currentVelY = currentVel.y;
-        boolean isOnGround = isOnGround(body);
-
-        boolean wasAirborne = wasInAir.getOrDefault(alien, false);
-        double maxSpeed = maxFallSpeed.getOrDefault(alien, 0.0);
-
-        if (wasAirborne && isOnGround && maxSpeed > SAFE_FALL_SPEED) {
-            int degats = (int) ((maxSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
-            if (degats > 0) {
-                alien.receiveDmg(degats);
-            }
-            maxFallSpeed.put(alien, 0.0);
-        }
-
-        if (!isOnGround) {
-            double newMaxSpeed = Math.max(maxSpeed, Math.abs(currentVelY));
-            maxFallSpeed.put(alien, newMaxSpeed);
-        }
-
-        wasInAir.put(alien, !isOnGround);
-    }
-
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();
         return Math.abs(vel.y) < 3.0;
@@ -129,35 +86,13 @@ public class PhysicsEngine {
 
 
     public void addWorm(Alien alien) {
-        Body body = new Body();
-
-        BodyFixture fixture = new BodyFixture(Geometry.createRectangle(WORM_WIDTH, WORM_HEIGHT));
-        fixture.setFriction(0.9);
-        fixture.setRestitution(0.1);
-        fixture.setDensity(1.2);
-        body.addFixture(fixture);
-
-        body.setMass(MassType.NORMAL);
-        body.setLinearDamping(0.005);
-        body.setAngularDamping(0.8);
-
-        body.translate(
-                Converter.toMeters(alien.getPosition().getX()),
-                Converter.toMeters(alien.getPosition().getY())
-        );
-
-        body.setUserData(alien);
-
-        this.world.addBody(body);
+        Body body = alienPhysics.createAlienBody(alien, world);
         this.wormBodies.put(alien, body);
-        this.wasInAir.put(alien, false);
-        this.maxFallSpeed.put(alien, 0.0);
     }
 
     public void removeWorm(Alien alien) {
+        alienPhysics.removeAlien(alien);
         Body body = wormBodies.remove(alien);
-        wasInAir.remove(alien);
-        maxFallSpeed.remove(alien);
         if (body != null) {
             world.removeBody(body);
         }
@@ -165,21 +100,13 @@ public class PhysicsEngine {
 
     public void jumpWorm(Alien alien) {
         Body body = wormBodies.get(alien);
-        if (body != null && isOnGround(body)) {
-            body.applyImpulse(new Vector2(0, -45.0));
-            body.setAtRest(false);
-        }
+        alienPhysics.jumpAlien(body);
     }
 
 
     public void moveWorm(Alien alien, double direction) {
         Body body = wormBodies.get(alien);
-        if (body != null) {
-            double speed = 3.0 * direction;
-            double velY = body.getLinearVelocity().y;
-            body.setLinearVelocity(new Vector2(speed, velY));
-            body.setAtRest(false);
-        }
+        alienPhysics.moveAlien(body, direction);
     }
 
     public World<Body> getWorld() {

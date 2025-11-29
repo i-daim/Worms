@@ -9,6 +9,9 @@ import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
+import upc.model.jeu.Converter;
+import upc.model.jeu.Terrain;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -19,6 +22,7 @@ import java.util.Map;
 
 public class PhysicsEngine {
     private final World<Body> world;
+    private final Terrain terrain;
 
     public static final double SCALE = 20.0;
     private final List<Projectile> activeProjectiles = new ArrayList<>();
@@ -32,9 +36,7 @@ public class PhysicsEngine {
     private final Map<Alien, Boolean> wasInAir = new HashMap<>();
     private final Map<Alien, Double> maxFallSpeed = new HashMap<>();
 
-    private final Terrain terrain;
-
-    private static final double SAFE_FALL_SPEED = 15;
+    private static final double SAFE_FALL_SPEED = 15.0;
     private static final double MAX_FALL_SPEED = 20.0;
     private static final int DMG_MULTIPLIER = 1;
 
@@ -45,7 +47,9 @@ public class PhysicsEngine {
         this.world = new World<>();
         this.world.setGravity(gravity);
         this.terrain = terrain;
-        createTerrainBodies();
+
+        TerrainPhysics terrainPhysics = new TerrainPhysics();
+        terrainPhysics.createTerrainBodies(world, terrain.getCollisions());
     }
     public void setWind(double windX, double windY) {
         this.wind = new Vector2(windX, windY);
@@ -171,52 +175,6 @@ public class PhysicsEngine {
             body.setLinearVelocity(new Vector2(speed, velY));
             body.setAtRest(false);
         }
-    }
-
-    private void createTerrainBodies() {
-        boolean[][] collisions = terrain.getCollisions();
-        int height = collisions.length;
-        int width = collisions[0].length;
-
-        for (int y = 0; y < height; y++) {
-            int startX = -1;
-            for (int x = 0; x <= width; x++) {
-                boolean isCollision = (x < width) && collisions[y][x];
-
-                if (isCollision && startX == -1) {
-                    startX = x;
-                } else if (!isCollision && startX != -1) {
-                    createTerrainSegment(startX, y, x - startX, 1);
-                    startX = -1;
-                }
-            }
-        }
-    }
-
-    private void createTerrainSegment(int tileX, int tileY, int tileWidth, int tileHeight) {
-        Body terrainBody = new Body();
-
-        double pixelX = tileX * TerrainGenerator.TILE_SIZE;
-        double pixelY = tileY * TerrainGenerator.TILE_SIZE;
-        double pixelWidth = tileWidth * TerrainGenerator.TILE_SIZE;
-        double pixelHeight = tileHeight * TerrainGenerator.TILE_SIZE;
-
-        double pixelCenterX = pixelX + (pixelWidth / 2.0);
-        double pixelCenterY = pixelY + (pixelHeight / 2.0);
-
-        double meterCenterX = Converter.toMeters((int) pixelCenterX);
-        double meterCenterY = Converter.toMeters((int) pixelCenterY);
-        double meterWidth = Converter.toMeters((int) pixelWidth);
-        double meterHeight = Converter.toMeters((int) pixelHeight);
-
-        BodyFixture fixture = new BodyFixture(Geometry.createRectangle(meterWidth, meterHeight));
-        fixture.setFriction(0.8);
-        fixture.setRestitution(0.1);
-        terrainBody.addFixture(fixture);
-        terrainBody.translate(meterCenterX, meterCenterY);
-        terrainBody.setMass(MassType.INFINITE);
-
-        world.addBody(terrainBody);
     }
 
     public World<Body> getWorld() {

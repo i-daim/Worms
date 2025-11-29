@@ -15,6 +15,9 @@ import java.util.Map;
 
 public class AlienPhysics {
 
+    private final World<Body> world;
+
+    private final Map<Alien, Body> alienBodies = new HashMap<>();
     private final Map<Alien, Boolean> wasInAir = new HashMap<>();
     private final Map<Alien, Double> maxFallSpeed = new HashMap<>();
 
@@ -25,6 +28,9 @@ public class AlienPhysics {
     private static final double ALIEN_WIDTH = Converter.toMeters(20);
     private static final double ALIEN_HEIGHT = Converter.toMeters(37);
 
+    public AlienPhysics(PhysicsEngine physicsEngine) {
+        this.world = physicsEngine.getWorld();
+    }
 
 
     public void updateAlien(Alien alien, Body body) {

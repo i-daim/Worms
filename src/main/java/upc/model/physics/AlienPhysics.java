@@ -32,26 +32,30 @@ public class AlienPhysics {
         this.world = physicsEngine.getWorld();
     }
 
+    public void updateAliens() {
+        for (Map.Entry<Alien, Body> entry : alienBodies.entrySet()) {
+            Alien alien = entry.getKey();
+            Body body = entry.getValue();
 
-    public void updateAlien(Alien alien, Body body) {
-        if (!alien.isAlive()) {
-            return;
-        }
+            if (!alien.isAlive()) {
+                continue;
+            }
 
-        checkFallDamage(alien, body);
+            checkFallDamage(alien, body);
 
-        Vector2 v = body.getTransform().getTranslation();
-        int pixelX = Converter.toPixels(v.x);
-        int pixelY = Converter.toPixels(v.y);
-        alien.setPosition(new Position(pixelX, pixelY));
+            Vector2 v = body.getTransform().getTranslation();
+            int pixelX = Converter.toPixels(v.x);
+            int pixelY = Converter.toPixels(v.y);
+            alien.setPosition(new Position(pixelX, pixelY));
 
-        if (body.getLinearVelocity().getMagnitude() < 0.1) {
-            body.setLinearVelocity(0, 0);
-            body.setAngularVelocity(0);
+            if (body.getLinearVelocity().getMagnitude() < 0.1) {
+                body.setLinearVelocity(0, 0);
+                body.setAngularVelocity(0);
+            }
         }
     }
 
-    public Body createAlienBody(Alien alien, World<Body> world) {
+    public void addAlienBody(Alien alien) {
         Body body = new Body();
 
         BodyFixture fixture = new BodyFixture(
@@ -76,15 +80,17 @@ public class AlienPhysics {
         this.wasInAir.put(alien, false);
         this.maxFallSpeed.put(alien, 0.0);
 
-        return body;
+        alienBodies.put(alien, body);
     }
 
     public void removeAlien(Alien alien) {
         wasInAir.remove(alien);
         maxFallSpeed.remove(alien);
+        alienBodies.remove(alien);
     }
 
-    public void moveAlien(Body body, double direction) {
+    public void moveAlien(Alien alien, double direction) {
+        Body body = alienBodies.get(alien);
         if (body != null) {
             double speed = 3.0 * direction;
             double velY = body.getLinearVelocity().y;
@@ -93,7 +99,8 @@ public class AlienPhysics {
         }
     }
 
-    public void jumpAlien(Body body) {
+    public void jumpAlien(Alien alien) {
+        Body body = alienBodies.get(alien);
         if (body != null && isOnGround(body)) {
             body.applyImpulse(new Vector2(0, -45.0));
             body.setAtRest(false);
@@ -127,5 +134,22 @@ public class AlienPhysics {
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();
         return Math.abs(vel.y) < 3.0;
+    }
+
+    public void limitFallVelocities() {
+        for (Body body : alienBodies.values()) {
+            Vector2 vel = body.getLinearVelocity();
+            if (vel.y > MAX_FALL_SPEED) {
+                body.setLinearVelocity(vel.x, MAX_FALL_SPEED);
+            }
+        }
+    }
+
+    public Map<Alien, Body> getAlienBodies() {
+        return alienBodies;
+    }
+
+    public Body getAlienBody(Alien alien) {
+        return alienBodies.get(alien);
     }
 }

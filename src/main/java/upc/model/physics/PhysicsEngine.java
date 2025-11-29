@@ -31,7 +31,6 @@ public class PhysicsEngine {
 
 
     private final Map<Alien, Body> wormBodies = new HashMap<>();
-
     private final Map<Alien, Boolean> wasInAir = new HashMap<>();
     private final Map<Alien, Double> maxFallSpeed = new HashMap<>();
 
@@ -50,16 +49,15 @@ public class PhysicsEngine {
         TerrainPhysics terrainPhysics = new TerrainPhysics();
         terrainPhysics.createTerrainBodies(world, terrain.getCollisions());
     }
-    public void setWind(double windX, double windY) {
-        this.wind = new Vector2(windX, windY);
-    }
-    public Vector2 getWind() {
-        return wind;
-    }
-    public void update() {
-        limitFallVelocities();
-        world.update(dt);
 
+    public void update() {
+        world.update(dt);
+        limitFallVelocities();
+        updateAliens();
+        updateProjectiles();
+    }
+
+    public void updateAliens() {
         for (Map.Entry<Alien, Body> entry : wormBodies.entrySet()) {
             Alien alien = entry.getKey();
             Body body = entry.getValue();
@@ -80,8 +78,16 @@ public class PhysicsEngine {
                 body.setAngularVelocity(0);
             }
         }
-        updateProjectiles();
     }
+
+    public void setWind(double windX, double windY) {
+        this.wind = new Vector2(windX, windY);
+    }
+
+    public Vector2 getWind() {
+        return wind;
+    }
+
 
     private void limitFallVelocities() {
         for (Body body : wormBodies.values()) {

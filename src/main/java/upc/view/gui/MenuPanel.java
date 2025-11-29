@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -61,11 +62,13 @@ public class MenuPanel extends JPanel {
         this.add(buttonPanel);
         this.add(Box.createVerticalGlue());
 
-        Sound.playSound("menu");
+        Sound sound = new Sound("/sounds/menu.wav");
+        sound.setVolume(-10);
+        sound.play();
     }
 
     @Override
-    protected void paintComponent(java.awt.Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (background != null) {
             g.drawImage(background, 0, 0, getWidth(), getHeight(), this);

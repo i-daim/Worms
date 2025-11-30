@@ -46,6 +46,7 @@ public class AlienPhysics {
             }
 
             checkFallDamage(alien, body);
+            checkAirFriction(body);
 
             Vector2 v = body.getTransform().getTranslation();
             int pixelX = Converter.toPixels(v.x);
@@ -110,6 +111,14 @@ public class AlienPhysics {
         }
     }
 
+    private void checkAirFriction(Body body) {
+        if (!isOnGround(body)) {
+            body.setLinearDamping(0.5);
+        } else {
+            body.setLinearDamping(LINEAR_DAMPING);
+        }
+    }
+
     public void checkFallDamage(Alien alien, Body body) {
         Vector2 currentVel = body.getLinearVelocity();
         double currentVelY = currentVel.y;
@@ -136,7 +145,7 @@ public class AlienPhysics {
 
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();
-        return Math.abs(vel.y) < 3.0;
+        return Math.abs(vel.y) < 1.0;
     }
 
     public void limitFallVelocities() {

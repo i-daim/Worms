@@ -5,7 +5,6 @@ import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.world.World;
-import upc.model.jeu.Converter;
 import upc.model.jeu.Terrain;
 import upc.model.jeu.TerrainGenerator;
 

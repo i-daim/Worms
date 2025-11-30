@@ -9,7 +9,6 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.jeu.Converter;
 
 import java.util.HashMap;
 import java.util.Map;

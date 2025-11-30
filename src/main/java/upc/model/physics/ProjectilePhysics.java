@@ -9,7 +9,6 @@ import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
-import upc.model.jeu.Converter;
 import upc.model.jeu.Terrain;
 
 import java.util.ArrayList;

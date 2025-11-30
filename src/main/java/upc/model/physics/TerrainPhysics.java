@@ -23,6 +23,10 @@ public class TerrainPhysics {
         updateTerrain();
     }
 
+    /**
+     * Met à jour le terrain en supprimant l'ancien corps et le remplaçant
+     * par un nouveau avec les collisions actuelles
+     */
     public void updateTerrain() {
         if (terrainBody != null) {
             world.removeBody(terrainBody);
@@ -38,6 +42,9 @@ public class TerrainPhysics {
         }
     }
 
+    /**
+     * Crée le corps du terrain en ajoutant des fixtures horizontales par ligne.
+     */
     public void createTerrainBodies() {
         boolean[][] collisions = terrain.getCollisions();
         int height = collisions.length;
@@ -63,6 +70,9 @@ public class TerrainPhysics {
         }
     }
 
+    /**
+     * Crée une fixture rectangle pour une ligne de collisions
+     */
     private void createRectangleFixture(int tileX, int tileY, int tileWidth) {
         double width = Converter.toMeters(tileWidth * TerrainGenerator.TILE_SIZE);
         double height = Converter.toMeters(TerrainGenerator.TILE_SIZE);

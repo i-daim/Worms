@@ -2,6 +2,7 @@ package upc.model.physics;
 
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.geometry.Capsule;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
@@ -28,8 +29,8 @@ public class AlienPhysics {
     private static final double ALIEN_WIDTH = Converter.toMeters(20);
     private static final double ALIEN_HEIGHT = Converter.toMeters(37);
 
-    public AlienPhysics(PhysicsEngine physicsEngine) {
-        this.world = physicsEngine.getWorld();
+    public AlienPhysics(World<Body> world) {
+        this.world = world;
     }
 
     public void updateAliens() {
@@ -58,29 +59,28 @@ public class AlienPhysics {
     public void addAlienBody(Alien alien) {
         Body body = new Body();
 
-        BodyFixture fixture = new BodyFixture(
-                Geometry.createRectangle(ALIEN_WIDTH, ALIEN_HEIGHT));
-        fixture.setFriction(0.9);
-        fixture.setRestitution(0.1);
+        // Utilise la forme capsule au lieu du rectangle
+        Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);
+        BodyFixture fixture = new BodyFixture(capsuleShape);
+        fixture.setFriction(5);
+        fixture.setRestitution(0.0);
         fixture.setDensity(1.2);
         body.addFixture(fixture);
 
         body.setMass(MassType.NORMAL);
-        body.setLinearDamping(0.005);
-        body.setAngularDamping(0.8);
+        body.setLinearDamping(4);
+        body.setAngularDamping(10.0);
 
         body.translate(
                 Converter.toMeters(alien.getPosition().getX()),
                 Converter.toMeters(alien.getPosition().getY())
         );
-
         body.setUserData(alien);
 
-        world.addBody(body);
+        this.world.addBody(body);
+        this.alienBodies.put(alien, body);
         this.wasInAir.put(alien, false);
         this.maxFallSpeed.put(alien, 0.0);
-
-        alienBodies.put(alien, body);
     }
 
     public void removeAlien(Alien alien) {

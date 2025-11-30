@@ -8,8 +8,8 @@ import java.net.URL;
 
 public class Sound {
 
-    Clip clip;
-    URL soundURL;
+    private Clip clip;
+    private URL soundURL;
 
     public Sound(String path) {
         try {

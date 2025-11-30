@@ -14,6 +14,7 @@ public class PhysicsEngine {
     private final Terrain terrain;
     private final World<Body> world;
 
+    private final TerrainPhysics terrainPhysics;
     private final AlienPhysics alienPhysics;
     private final ProjectilePhysics projectilePhysics;
 
@@ -27,11 +28,11 @@ public class PhysicsEngine {
         this.world = new World<>();
         this.world.setGravity(gravity);
 
-        this.alienPhysics = new AlienPhysics(this);
+        this.alienPhysics = new AlienPhysics(world);
         this.projectilePhysics = new ProjectilePhysics(this);
+        this.terrainPhysics = new TerrainPhysics(world, terrain);
 
-        TerrainPhysics terrainPhysics = new TerrainPhysics();
-        terrainPhysics.createTerrainBodies(world, terrain.getCollisions());
+        terrainPhysics.updateTerrain();
     }
 
 ////    UPDATE DES PHYSIQUES    ////

@@ -25,6 +25,10 @@ public class AlienPhysics {
     private static final double MAX_FALL_SPEED = 20.0;
     private static final int DMG_MULTIPLIER = 1;
 
+    private static final double FRICTION = 0.0;
+    private static final double DENSITY = 1.2;
+    private static final double LINEAR_DAMPING = 4.0;
+
     private static final double ALIEN_WIDTH = Converter.toMeters(20);
     private static final double ALIEN_HEIGHT = Converter.toMeters(37);
 
@@ -61,13 +65,13 @@ public class AlienPhysics {
         // Utilise la forme capsule au lieu du rectangle
         Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);
         BodyFixture fixture = new BodyFixture(capsuleShape);
-        fixture.setFriction(5);
+        fixture.setFriction(FRICTION);
         fixture.setRestitution(0.0);
-        fixture.setDensity(1.2);
+        fixture.setDensity(DENSITY);
         body.addFixture(fixture);
 
         body.setMass(MassType.NORMAL);
-        body.setLinearDamping(4);
+        body.setLinearDamping(LINEAR_DAMPING);
         body.setAngularDamping(10.0);
 
         body.translate(

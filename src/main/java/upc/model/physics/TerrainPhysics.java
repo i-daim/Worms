@@ -77,8 +77,10 @@ public class TerrainPhysics {
         double width = Converter.toMeters(tileWidth * TerrainGenerator.TILE_SIZE);
         double height = Converter.toMeters(TerrainGenerator.TILE_SIZE);
 
-        double x = Converter.toMeters((int) ((tileX * TerrainGenerator.TILE_SIZE) + (width * Converter.SCALE / 2)));
-        double y = Converter.toMeters((int) ((tileY * TerrainGenerator.TILE_SIZE) + (height * Converter.SCALE / 2)));
+        double x = Converter.toMeters((int)
+                ((tileX * TerrainGenerator.TILE_SIZE) + (width * Converter.SCALE / 2)));
+        double y = Converter.toMeters((int)
+                ((tileY * TerrainGenerator.TILE_SIZE) + (height * Converter.SCALE / 2)));
 
         BodyFixture fixture = new BodyFixture(
                 Geometry.createRectangle(width, height));

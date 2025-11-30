@@ -6,55 +6,77 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.world.World;
 import upc.model.jeu.Converter;
+import upc.model.jeu.Terrain;
 import upc.model.jeu.TerrainGenerator;
 
 public class TerrainPhysics {
 
-    public void createTerrainBodies(World<Body> world, boolean[][] collisions) {
+    private final World<Body> world;
+    private final Terrain terrain;
+
+    private Body terrainBody;
+
+    public TerrainPhysics(World<Body> world, Terrain terrain) {
+        this.world = world;
+        this.terrain = terrain;
+
+        updateTerrain();
+    }
+
+    public void updateTerrain() {
+        if (terrainBody != null) {
+            world.removeBody(terrainBody);
+        }
+
+        terrainBody = new Body();
+        terrainBody.setMass(MassType.INFINITE);
+
+        createTerrainBodies();
+
+        if (terrainBody.getFixtureCount() > 0) {
+            world.addBody(terrainBody);
+        }
+    }
+
+    public void createTerrainBodies() {
+        boolean[][] collisions = terrain.getCollisions();
         int height = collisions.length;
         int width = collisions[0].length;
 
         for (int y = 0; y < height; y++) {
             int startX = -1;
+
             for (int x = 0; x <= width; x++) {
                 boolean isCollision = (x < width) && collisions[y][x];
 
-                if (isCollision && startX == -1) {
-                    startX = x;
-                } else if (!isCollision && startX != -1) {
-                    createTerrainSegment(world, startX, y, x - startX, 1);
-                    startX = -1;
+                if (isCollision) {
+                    if (startX == -1) {
+                        startX = x;
+                    }
+                } else {
+                    if (startX != -1) {
+                        createRectangleFixture(startX, y, x - startX);
+                        startX = -1;
+                    }
                 }
             }
         }
     }
 
-    private void createTerrainSegment(World<Body> world, int tileX, int tileY, int tileWidth, int tileHeight) {
-        Body body = new Body();
+    private void createRectangleFixture(int tileX, int tileY, int tileWidth) {
+        double width = Converter.toMeters(tileWidth * TerrainGenerator.TILE_SIZE);
+        double height = Converter.toMeters(TerrainGenerator.TILE_SIZE);
 
-        double pixelX = tileX * TerrainGenerator.TILE_SIZE;
-        double pixelY = tileY * TerrainGenerator.TILE_SIZE;
-        double pixelWidth = tileWidth * TerrainGenerator.TILE_SIZE;
-        double pixelHeight = tileHeight * TerrainGenerator.TILE_SIZE;
-
-        double pixelCenterX = pixelX + (pixelWidth / 2.0);
-        double pixelCenterY = pixelY + (pixelHeight / 2.0);
-
-        double meterCenterX = Converter.toMeters((int) pixelCenterX);
-        double meterCenterY = Converter.toMeters((int) pixelCenterY);
-        double meterWidth = Converter.toMeters((int) pixelWidth);
-        double meterHeight = Converter.toMeters((int) pixelHeight);
+        double x = Converter.toMeters((int) ((tileX * TerrainGenerator.TILE_SIZE) + (width * Converter.SCALE / 2)));
+        double y = Converter.toMeters((int) ((tileY * TerrainGenerator.TILE_SIZE) + (height * Converter.SCALE / 2)));
 
         BodyFixture fixture = new BodyFixture(
-                Geometry.createRectangle(meterWidth, meterHeight));
+                Geometry.createRectangle(width, height));
         fixture.setFriction(0.8);
-        fixture.setRestitution(0.1);
+        fixture.setRestitution(0.0);
 
-        body.addFixture(fixture);
-        body.translate(meterCenterX, meterCenterY);
-        body.setMass(MassType.INFINITE);
+        fixture.getShape().translate(x, y);
 
-        world.addBody(body);
+        terrainBody.addFixture(fixture);
     }
-
 }

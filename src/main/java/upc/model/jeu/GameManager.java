@@ -35,6 +35,7 @@ public class GameManager {
     }
 
     public void update(double elapsedTime) {
+        //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
         if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
             skipTurn();
             return;

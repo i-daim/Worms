@@ -35,6 +35,10 @@ public class GameManager {
     }
 
     public void update(double elapsedTime) {
+        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
+            skipTurn();
+            return;
+        }
         gameWorld.update(elapsedTime);
 
         checkGameOver();

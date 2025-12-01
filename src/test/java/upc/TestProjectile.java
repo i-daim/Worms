@@ -15,4 +15,12 @@ class ProjectileTest {
         assertEquals(1, p.getSpeed());
     }
 
+
+    @Test
+    void testGetWeapon() {
+        Projectile p = new Projectile(null, null, 0, 0);
+        assertNull(p.getWeapon());
+    }
+
+
 }

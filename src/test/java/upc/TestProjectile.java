@@ -47,5 +47,16 @@ class ProjectileTest {
         assertEquals(ProjectileState.FLYING, p.getState());
     }
 
+    @Test
+    void testSetState() {
+        Projectile p = new Projectile(null, null, 0, 0);
+
+        p.setState(ProjectileState.EXPLODED);
+        assertEquals(ProjectileState.EXPLODED, p.getState());
+
+        p.setState(ProjectileState.OUT_OF_BOUNDS);
+        assertEquals(ProjectileState.OUT_OF_BOUNDS, p.getState());
+    }
+
 
 }

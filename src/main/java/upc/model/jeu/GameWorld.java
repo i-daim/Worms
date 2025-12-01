@@ -2,6 +2,7 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Projectile;
+import upc.model.physics.PhysicsEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +53,13 @@ public class GameWorld {
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);
-                physicsEngine.addWorm(a);
+                physicsEngine.addAlien(a);
             }
         }
         for (Alien a : gameManager.getTeam(1).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);
-                physicsEngine.addWorm(a);
+                physicsEngine.addAlien(a);
             }
         }
     }

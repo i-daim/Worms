@@ -74,6 +74,7 @@ public class GameManager {
     }
 
     private void nextTurn() {
+        //Permet de passer à un vers actif à un autre
         getActiveTeam().skipToNextAlien();
 
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;

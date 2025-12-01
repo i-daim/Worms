@@ -28,5 +28,11 @@ class ProjectileTest {
         assertNull(p.getShooter());
     }
 
+    @Test
+    void testGetBody() {
+        Projectile p = new Projectile(null, null, 0, 0);
+        assertNull(p.getBody());
+    }
+
 
 }

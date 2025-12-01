@@ -74,13 +74,14 @@ public class GameManager {
     }
 
     private void nextTurn() {
+        getActiveTeam().skipToNextAlien();
+
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
             return;
         }
-        getActiveTeam().skipToNextAlien();
     }
 
     private int frameCounter = 0;

@@ -56,8 +56,13 @@ public class TestProjectile {
 
     @Test
     void testGetShooter() {
-        Projectile p = new Projectile(null, null, 0, 0);
-        assertNull(p.getShooter());
+        Team team = new Team("Gamma", 1);
+        Alien shooter = new Alien(team, new Position(50, 50));
+        Weapon weapon = new TestWeapon();
+        Projectile p = new Projectile(weapon, shooter, 50, 50);
+
+        assertEquals(shooter, p.getShooter());
+        assertEquals("Gamma", p.getShooter().getTeam().getName());
     }
 
     @Test

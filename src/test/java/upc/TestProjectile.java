@@ -125,10 +125,15 @@ public class TestProjectile {
 
     @Test
     void testIncrementFrame() {
-        Projectile p = new Projectile(null, null, 0, 0);
-        int initial = p.getFrameCount();
+        Team team = new Team("Iota", 1);
+        Alien shooter = new Alien(team, new Position(0, 0));
+        Projectile p = new Projectile(new TestWeapon(), shooter, 0, 0);
+
         p.incrementFrame();
-        assertEquals(initial + 1, p.getFrameCount());
+        p.incrementFrame();
+        p.incrementFrame();
+
+        assertEquals(3, p.getFrameCount());
     }
 
     @Test

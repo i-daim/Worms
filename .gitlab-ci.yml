@@ -28,12 +28,23 @@ before_script:
 
 stages:
   - build-and-test
+  - package
 
+# Exécute la compilation, les tests et la vérification de la syntaxe
 build-and-test-job:
   stage: build-and-test
   script:
-    - echo "Exécution du build (compile, checkstyle, test, package)..."
-    - mvn verify
+    - echo "Exécution de la vérification (compile, checkstyle, test)..."
+    - mvn compile test checkstyle:check
+
+
+# Fournit le fichier .jar compilé
+package-job:
+  stage: package
+  script:
+    - echo "Exécution du packaging..."
+    - mvn package
+
   artifacts:
     paths:
       - target/Worms.jar

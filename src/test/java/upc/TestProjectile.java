@@ -76,8 +76,12 @@ public class TestProjectile {
 
     @Test
     void testSetBody() {
-        Projectile p = new Projectile(null, null, 0, 0);
+        Team team = new Team("Epsilon", 1);
+        Alien shooter = new Alien(team, new Position(0, 0));
+        Projectile p = new Projectile(new TestWeapon(), shooter, 0, 0);
+
         p.setBody(null);
+
         assertNull(p.getBody());
     }
 

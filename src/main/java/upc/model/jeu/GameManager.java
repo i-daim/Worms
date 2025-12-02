@@ -35,6 +35,11 @@ public class GameManager {
     }
 
     public void update(double elapsedTime) {
+        //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
+        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
+            skipTurn();
+            return;
+        }
         gameWorld.update(elapsedTime);
 
         checkGameOver();
@@ -69,13 +74,15 @@ public class GameManager {
     }
 
     private void nextTurn() {
+        //Permet de passer à un vers actif à un autre
+        getActiveTeam().skipToNextAlien();
+
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
             return;
         }
-        getActiveTeam().skipToNextAlien();
     }
 
     private int frameCounter = 0;

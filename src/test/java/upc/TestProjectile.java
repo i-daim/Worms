@@ -1,5 +1,7 @@
 package upc;
 
+import upc.model.jeu.Team;
+import upc.model.entites.Position;
 import upc.model.items.Weapon;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameWorld;
@@ -27,11 +29,18 @@ public class TestProjectile {
 
     @Test
     void testConstructor() {
-        Weapon a = new Weapon("a", 15, 5);
-        Projectile p = new Projectile(null, null, 10, 20);
+        Team team = new Team("Alpha", 1);
+        Position pos = new Position(10, 20);
+        Alien shooter = new Alien(team, pos);
+        Weapon weapon = new TestWeapon();
+
+        Projectile p = new Projectile(weapon, shooter, 10, 20);
+
         assertNotNull(p);
-        assertEquals(ProjectileState.FLYING, p.getState());
+        assertEquals(10, p.getPosition().getX());
+        assertEquals(20, p.getPosition().getY());
         assertEquals(1, p.getSpeed());
+        assertEquals(ProjectileState.FLYING, p.getState());
     }
 
     @Test

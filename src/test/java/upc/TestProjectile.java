@@ -109,12 +109,17 @@ public class TestProjectile {
 
     @Test
     void testIsActive() {
-        Projectile p = new Projectile(null, null, 0, 0);
+        Team team = new Team("Theta", 1);
+        Alien shooter = new Alien(team, new Position(0, 0));
+        Projectile p = new Projectile(new TestWeapon(), shooter, 0, 0);
 
         p.setState(ProjectileState.FLYING);
         assertTrue(p.isActive());
 
         p.setState(ProjectileState.EXPLODED);
+        assertFalse(p.isActive());
+
+        p.setState(ProjectileState.OUT_OF_BOUNDS);
         assertFalse(p.isActive());
     }
 

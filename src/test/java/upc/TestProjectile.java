@@ -58,4 +58,15 @@ public class TestProjectile {
         assertEquals(ProjectileState.OUT_OF_BOUNDS, p.getState());
     }
 
+    @Test
+    void testIsActive() {
+        Projectile p = new Projectile(null, null, 0, 0);
+
+        p.setState(ProjectileState.FLYING);
+        assertTrue(p.isActive());
+
+        p.setState(ProjectileState.EXPLODED);
+        assertFalse(p.isActive());
+    }
+
 }

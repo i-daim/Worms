@@ -87,7 +87,10 @@ public class TestProjectile {
 
     @Test
     void testGetState() {
-        Projectile p = new Projectile(null, null, 0, 0);
+        Team team = new Team("Zeta", 1);
+        Alien shooter = new Alien(team, new Position(0, 0));
+        Projectile p = new Projectile(new TestWeapon(), shooter, 0, 0);
+
         assertEquals(ProjectileState.FLYING, p.getState());
     }
 

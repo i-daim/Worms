@@ -69,4 +69,12 @@ public class TestProjectile {
         assertFalse(p.isActive());
     }
 
+    @Test
+    void testIncrementFrame() {
+        Projectile p = new Projectile(null, null, 0, 0);
+        int initial = p.getFrameCount();
+        p.incrementFrame();
+        assertEquals(initial + 1, p.getFrameCount());
+    }
+
 }

@@ -41,6 +41,10 @@ public class TestProjectile {
         assertNull(p.getBody());
     }
 
-
+    @Test
+    void testGetState() {
+        Projectile p = new Projectile(null, null, 0, 0);
+        assertEquals(ProjectileState.FLYING, p.getState());
+    }
 
 }

@@ -1,5 +1,8 @@
 package upc;
 
+import upc.model.items.Weapon;
+import upc.model.entites.Alien;
+import upc.model.jeu.GameWorld;
 import upc.model.entites.Projectile;
 import org.junit.jupiter.api.Test;
 import upc.model.entites.Projectile.ProjectileState;
@@ -8,8 +11,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestProjectile {
 
+    // Classe interne nécessaire car Weapon est abstraite.
+    // Elle permet de créer une vraie instance d'arme pour les tests.
+    static class TestWeapon extends Weapon {
+        public TestWeapon() {
+            super("TestBazooka", 50, 100);
+        }
+        @Override
+        public double getInitialVelocity() { return 10.0; }
+        @Override
+        public boolean isAffectedByWind() { return true; }
+        @Override
+        public void utiliser(GameWorld gameWorld, Alien alienActif) { }
+    }
+
     @Test
     void testConstructor() {
+        Weapon a = new Weapon("a", 15, 5);
         Projectile p = new Projectile(null, null, 10, 20);
         assertNotNull(p);
         assertEquals(ProjectileState.FLYING, p.getState());

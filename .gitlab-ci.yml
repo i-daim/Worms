@@ -56,4 +56,9 @@ package-job:
       artifacts:
         expire_in: never
 
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+      artifacts:
+        expire_in: 1 week
+
     - when: never

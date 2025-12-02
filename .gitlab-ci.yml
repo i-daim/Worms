@@ -47,4 +47,4 @@ package-job:
 
   artifacts:
     paths:
-      - target/Worms.jar
+      - target/Glorb26-1.0.jar

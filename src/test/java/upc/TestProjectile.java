@@ -77,4 +77,10 @@ public class TestProjectile {
         assertEquals(initial + 1, p.getFrameCount());
     }
 
+    @Test
+    void testGetFrameCount() {
+        Projectile p = new Projectile(null, null, 0, 0);
+        assertEquals(0, p.getFrameCount());
+    }
+
 }

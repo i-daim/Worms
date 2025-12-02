@@ -45,8 +45,13 @@ public class TestProjectile {
 
     @Test
     void testGetWeapon() {
-        Projectile p = new Projectile(null, null, 0, 0);
-        assertNull(p.getWeapon());
+        Team team = new Team("Beta", 1);
+        Alien shooter = new Alien(team, new Position(0, 0));
+        Weapon weapon = new TestWeapon();
+        Projectile p = new Projectile(weapon, shooter, 0, 0);
+
+        assertEquals(weapon, p.getWeapon());
+        assertEquals("TestBazooka", p.getWeapon().getNom());
     }
 
     @Test

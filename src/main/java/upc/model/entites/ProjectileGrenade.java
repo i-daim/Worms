@@ -7,4 +7,7 @@ public class ProjectileGrenade extends Projectile {
         super(weapon, shooter, shooter.getPosition().getX(), shooter.getPosition().getY());
         this.timer = timerSeconds * 60;
     }
+    public void decrementTimer() {
+        if (timer > 0) timer--;
+    }
 }

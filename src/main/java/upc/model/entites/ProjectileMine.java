@@ -15,4 +15,7 @@ public class ProjectileMine extends Projectile {
             timer--;
         }
     }
+    public boolean isReadyToExplode() {
+        return timer <= 0;
+    }
 }

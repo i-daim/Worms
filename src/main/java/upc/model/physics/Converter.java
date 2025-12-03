@@ -1,4 +1,4 @@
-package upc.model.jeu;
+package upc.model.physics;
 
 public class Converter {
     public static final double SCALE = 20.0;

@@ -62,7 +62,7 @@ public class ControllerConsole {
                 break;
 
             case "sauter":
-                gameManager.getWorld().getPhysicsEngine().jumpWorm(gameManager.getActiveAlien());
+                gameManager.getWorld().getPhysicsEngine().jumpAlien(gameManager.getActiveAlien());
 
                 System.out.println("⏳ Le worm saute...");
                 for (int i = 0; i < 120; i++) {

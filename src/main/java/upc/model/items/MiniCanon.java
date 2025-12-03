@@ -2,7 +2,6 @@ package upc.model.items;
 import upc.model.entites.Alien;
 import upc.model.entites.Projectile;
 import upc.model.entites.ProjectileExplosifContact;
-import upc.model.entites.Position;
 
 public class MiniCanon extends Firearm {
     public static final int DEGATS = 5;

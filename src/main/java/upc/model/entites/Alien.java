@@ -68,6 +68,7 @@ public class Alien extends Entity {
     }
 
     public boolean moveRight(Terrain terrain) {
+        setDirection(1);
         Position newPosition = getPosition().deplacer(SPEED, 0);
         return move(newPosition, terrain);
     }
@@ -104,8 +105,7 @@ public class Alien extends Entity {
     public void setDirection(int direction) {
         if (direction > 0) {
             this.direction = 1;
-        }
-        else if (direction < 0) {
+        } else if (direction < 0) {
             this.direction = -1;
         }
     }

@@ -1,4 +1,8 @@
 package upc.model.items;
+import upc.model.entites.Alien;
+import upc.model.entites.Projectile;
+import upc.model.entites.ProjectileExplosifContact;
+import upc.model.entites.Position;
 
 public class MiniCanon extends Firearm {
     public static final int DEGATS = 5;
@@ -8,5 +12,8 @@ public class MiniCanon extends Firearm {
     public MiniCanon(String nom) {
         super(nom, DEGATS, RAYON, NBTIR);
     }
-
+    @Override
+    public Projectile createProjectile(Alien shooter) {
+        return new ProjectileExplosifContact(this, shooter);
+    }
 }

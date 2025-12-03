@@ -1,7 +1,7 @@
 package upc.model.items;
 import upc.model.entites.Projectile;
 import upc.model.entites.ProjectileGrenade;
-import upc.model.entites.Position;
+
 import upc.model.entites.Alien;
 public class Grenade extends Throwable {
     public static final int DEGATS = 45;

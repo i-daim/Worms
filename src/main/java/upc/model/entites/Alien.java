@@ -105,7 +105,9 @@ public class Alien extends Entity {
         if (direction > 0) {
             this.direction = 1;
         }
-        else if (direction < 0) this.direction = -1;
+        else if (direction < 0) {
+            this.direction = -1;
+        }
     }
 
     @Override

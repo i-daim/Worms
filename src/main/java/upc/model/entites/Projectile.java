@@ -9,10 +9,18 @@ public class Projectile extends Entity {
         EXPLODED,
         OUT_OF_BOUNDS
       }
+
+    public enum ProjectileType {
+        BULLET,
+        GRENADE,
+        ROCKET
+    }
+
     private final Weapon weapon;
     private final Alien shooter;
     private Body body;
     private ProjectileState state;
+    private boolean explosive;
     private int frameCount;
 
     public Projectile(Weapon weapon, Alien shooter, int startX, int startY) {

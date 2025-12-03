@@ -8,7 +8,9 @@ public class ProjectileGrenade extends Projectile {
         this.timer = timerSeconds * 60;
     }
     public void decrementTimer() {
-        if (timer > 0) timer--;
+        if (timer > 0) {
+            timer--;
+        }
     }
     public boolean isReadyToExplode() {
         return timer <= 0;

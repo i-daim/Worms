@@ -9,6 +9,7 @@ public class Alien extends Entity {
     private final Team team;
     private int healthPoints;
     private boolean alive;
+    private int direction = 1;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -96,6 +97,9 @@ public class Alien extends Entity {
                 && posX <= cameraX + GamePanel.DEFAULT_WIDTH + margin
                 && posY >= cameraY - margin
                 && posY <= cameraY + GamePanel.DEFAULT_HEIGHT + margin;
+    }
+    public int getDirection() {
+        return direction;
     }
 
     @Override

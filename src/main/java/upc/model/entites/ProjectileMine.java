@@ -10,4 +10,9 @@ public class ProjectileMine extends Projectile {
         this.timer = 5 * 60; // 5 secondes avant explosion (ou armement)
         this.armed = false;
     }
+    public void decrementTimer() {
+        if (timer > 0) {
+            timer--;
+        }
+    }
 }

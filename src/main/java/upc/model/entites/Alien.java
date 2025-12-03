@@ -101,6 +101,12 @@ public class Alien extends Entity {
     public int getDirection() {
         return direction;
     }
+    public void setDirection(int direction) {
+        if (direction > 0) {
+            this.direction = 1;
+        }
+        else if (direction < 0) this.direction = -1;
+    }
 
     @Override
     public String toString() {

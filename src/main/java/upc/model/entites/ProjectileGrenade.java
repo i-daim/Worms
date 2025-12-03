@@ -10,4 +10,7 @@ public class ProjectileGrenade extends Projectile {
     public void decrementTimer() {
         if (timer > 0) timer--;
     }
+    public boolean isReadyToExplode() {
+        return timer <= 0;
+    }
 }

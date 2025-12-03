@@ -1,8 +1,13 @@
-package upc.model.items;
+package upc.model.jeu;
 
 import java.util.HashMap;
 import java.util.Map;
-import upc.model.jeu.Team;
+
+import upc.model.items.Grenade;
+import upc.model.items.Mine;
+import upc.model.items.Shotgun;
+import upc.model.items.Usable;
+import upc.model.items.Uzi;
 
 public class Inventory {
     private final Map<Usable, Integer> stockMunitions;
@@ -27,12 +32,8 @@ public class Inventory {
     private void initialiserInventaireEquipe(Team team) {
         Inventory inv = team.getInventory();
 
-        inv.ajouterMunition(new StickyBomb("Bombe collante"), 50);
         inv.ajouterMunition(new Grenade("Grenade"), 50);
-        inv.ajouterMunition(new SainteGrenade("Sainte grenade"), 50);
         inv.ajouterMunition(new Mine("Mine"), 50);
-        inv.ajouterMunition(new MineAntichar("Mine anti-char"), 50);
-        inv.ajouterMunition(new PiqueVer("Pique vert"), 50);
         inv.ajouterMunition(new Shotgun("Shotgun"), 50);
         inv.ajouterMunition(new Uzi("Uzi"), 50);
     }

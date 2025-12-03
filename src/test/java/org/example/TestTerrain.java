@@ -88,7 +88,7 @@ public class TestTerrain {
         assertFalse(terrain.possibleMove(new Position(1, 1)), "Le mouvement à (1, 1) ne devrait pas être possible (collision).");
 
         // Mouvement hors limites
-        assertFalse(terrain.possibleMove(new Position(COL_WIDTH -1 , 0)), "Le mouvement aux limites maximales (X) devrait être impossible.");
+        assertFalse(terrain.possibleMove(new Position(COL_WIDTH , 0)), "Le mouvement aux limites maximales (X) devrait être impossible.");
         assertFalse(terrain.possibleMove(new Position(0, COL_HEIGHT)), "Le mouvement aux limites maximales (Y) devrait être impossible.");
         assertFalse(terrain.possibleMove(new Position(-1, 0)), "Le mouvement hors limites (X négatif) devrait être impossible.");
     }

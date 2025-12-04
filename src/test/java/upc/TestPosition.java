@@ -75,6 +75,21 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(5.0, p1.distanceAvec(p2), 0.001);
         }
 
+        @Test
+        public void testDistanceAvecCoordonnees(){
+            Position p = new Position(0, 0);
+
+            assertEquals(5.0, p.distance(3, 4), 0.001);
+        }
+
+        @Test
+        public void testDistanceAvecCoordonneesMemes(){
+            Position p = new Position(10, 20);
+
+            assertEquals(0.0, p.distance(10, 20), 0.001);
+        }
+
+
 
     }
 

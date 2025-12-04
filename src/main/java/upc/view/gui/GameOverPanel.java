@@ -72,6 +72,10 @@ public class GameOverPanel extends JPanel {
 
         quitButton.addActionListener(e -> System.exit(0));
 
+        centerPanel.add(quitButton);
+        centerPanel.add(Box.createVerticalGlue());
+
+
 
 
 

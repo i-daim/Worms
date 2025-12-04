@@ -165,5 +165,27 @@ public class TestAlien {
         assertEquals(5, alien.getSpeed());
     }
 
+    @Test
+    public void testToString() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        String result = alien.toString();
+        assertTrue(result.contains("PV=100"));
+        assertTrue(result.contains("Vivant=true"));
+    }
+
+    @Test
+    public void testToStringWhenDead() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+        alien.receiveDmg(100);
+
+        String result = alien.toString();
+        assertTrue(result.contains("PV=0"));
+        assertTrue(result.contains("Vivant=false"));
+    }
+
+
 
 }

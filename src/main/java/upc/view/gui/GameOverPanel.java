@@ -25,6 +25,10 @@ public class GameOverPanel extends JPanel {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 72));
         titleLabel.setForeground(new Color(255, 215, 0));
 
+        centerPanel.add(Box.createVerticalGlue());
+        centerPanel.add(titleLabel);
+
+
 
 
 

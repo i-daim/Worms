@@ -1,4 +1,6 @@
 package upc.controller;
+import upc.model.jeu.Team;
+
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
@@ -9,6 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 
 public class GameController {
 
@@ -166,8 +171,14 @@ public class GameController {
 
         gameManager.update(1.0 / 60.0);
 
+        if (gameManager.isOver()) {
+            showGameOver();
+            return;
+        }
+
         gamePanel.repaint();
     }
+
 
     public void stop() {
         running = false;

@@ -1,7 +1,6 @@
 package upc.model.entites;
 
 import org.dyn4j.dynamics.Body;
-import upc.model.items.Weapon;
 
 public class Projectile extends Entity {
 
@@ -18,17 +17,23 @@ public class Projectile extends Entity {
     }
 
     private final Alien shooter;
+    private final int damage;
+    private final int explosionRadius;
+    private final boolean explosive;
 
     private Body body;
     private State state;
-    private boolean explosive;
     private int frameCount;
 
 
 ////    CONSTRUCTOR    ////
-    public Projectile(Weapon weapon, Alien shooter, Position position, double speed) {
+    public Projectile(Alien shooter, Position position, int damage,
+                      int explosionRadius, boolean explosive, double speed) {
         super(position, speed);
         this.shooter = shooter;
+        this.damage = damage;
+        this.explosionRadius = explosionRadius;
+        this.explosive = explosive;
         this.state = State.FLYING;
      }
 

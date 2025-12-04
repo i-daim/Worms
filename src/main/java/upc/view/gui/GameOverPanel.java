@@ -33,6 +33,11 @@ public class GameOverPanel extends JPanel {
     public GameOverPanel(Team winningTeam) {
         centerPanel.add(titleLabel);
         centerPanel.add(Box.createVerticalStrut(30));
+        JLabel winnerLabel = new JLabel(winningTeam.getName() + " a gagné !");
+        winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(winnerLabel);
+
 
     }
 

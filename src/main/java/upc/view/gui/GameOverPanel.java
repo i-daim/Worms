@@ -66,6 +66,11 @@ public class GameOverPanel extends JPanel {
         quitButton.setPreferredSize(new Dimension(250, 60));
         quitButton.setMaximumSize(new Dimension(250, 60));
 
+        quitButton.setFocusPainted(false);
+        quitButton.setBackground(new Color(180, 50, 50));
+        quitButton.setForeground(Color.WHITE);
+
+
 
 
 

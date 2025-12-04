@@ -37,6 +37,7 @@ public class AlienPhysics {
 
     public AlienPhysics(World<Body> world) {
         this.world = world;
+        this.terrain = terrain;
     }
 
     public void updateAliens() {
@@ -56,7 +57,10 @@ public class AlienPhysics {
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
 
-            // On ajoute cette ligne pour verifier si l'alien est dans l'eau
+            int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
+            if (collisionY >= Terrain.getWaterLevel()) {
+                alien.receiveDmg(alien.getHealthPoints());
+            }
 
             checkWaterDeath(alien,pixelY);
 

@@ -32,4 +32,21 @@ public class TestInventory {
 
         assertEquals(15, inventory.getStockMunitions().get(grenade));
     }
+
+    @Test
+    public void testAjouterMunitionNegative() {
+        Grenade grenade = new Grenade("Grenade");
+        inventory.ajouterMunition(grenade, -5);
+
+        assertNull(inventory.getStockMunitions().get(grenade));
+    }
+
+    @Test
+    public void testAjouterMunitionZero() {
+        Grenade grenade = new Grenade("Grenade");
+        inventory.ajouterMunition(grenade, 0);
+
+        assertNull(inventory.getStockMunitions().get(grenade));
+    }
+
 }

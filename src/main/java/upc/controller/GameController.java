@@ -76,8 +76,10 @@ public class GameController {
                 }
                 break;
             case KeyEvent.VK_E:
-                Point worldPos = gamePanel.screenToWorld(mousePosition);
-                gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+                if (pressed) {
+                    Point worldPos = gamePanel.screenToWorld(mousePosition);
+                    gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+                }
             default:
                 break;
         }

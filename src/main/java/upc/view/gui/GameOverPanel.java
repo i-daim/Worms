@@ -17,6 +17,12 @@ public class GameOverPanel extends JPanel {
         centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
 
+        JLabel titleLabel = new JLabel("🎉 VICTOIRE ! 🎉");
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(titleLabel);
+
+
 
     }
 

@@ -59,6 +59,23 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(34, a.hashCode());
         }
 
+        @Test
+        public void testDistanceAvecMemePosition(){
+            Position p1 = new Position(10, 10);
+            Position p2 = new Position(10, 10);
+
+            assertEquals(0.0, p1.distanceAvec(p2), 0.001);
+        }
+
+        @Test
+        public void testDistanceAvecPositionsDifferentes(){
+            Position p1 = new Position(0, 0);
+            Position p2 = new Position(3, 4);
+
+            assertEquals(5.0, p1.distanceAvec(p2), 0.001);
+        }
+
+
     }
 
 

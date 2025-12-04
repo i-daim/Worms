@@ -1,4 +1,7 @@
 package upc.model.items;
+import upc.model.entites.Alien;
+import upc.model.entites.Projectile;
+import upc.model.entites.ProjectileBalle;
 
 public class Shotgun extends Firearm {
     public static final int DEGATS = 25;
@@ -8,5 +11,8 @@ public class Shotgun extends Firearm {
     public Shotgun(String nom) {
         super(nom, DEGATS, RAYON, NBTIR);
     }
-
+    @Override
+    public Projectile createProjectile(Alien shooter) {
+        return new ProjectileBalle(this, shooter);
+    }
 }

@@ -1,8 +1,12 @@
 package upc;
 
 import org.junit.jupiter.api.Test;
+import upc.model.entites.Alien;
+import upc.model.entites.Position;
+import upc.model.entites.Projectile;
 import upc.model.items.Grenade;
 import upc.model.items.Uzi;
+import upc.model.jeu.Team;
 
 import static org.junit.jupiter.api.Assertions.*;
 

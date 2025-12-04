@@ -209,6 +209,17 @@ public class TestAlien {
 
         assertFalse(alien.isVisible(400, 200));
     }
+    @Test
+    public void testReceiveDmgSuperieurAuxPV() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        alien.receiveDmg(150);
+
+        assertEquals(0, alien.getHealthPoints());
+        assertFalse(alien.isAlive());
+    }
+
 
 
 

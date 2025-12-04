@@ -74,5 +74,12 @@ public class TestInventory {
         assertTrue(inventory.estDisponible(uzi));
     }
 
+    @Test
+    public void testGetStockMunitionsVide() {
+        assertNotNull(inventory.getStockMunitions());
+        assertTrue(inventory.getStockMunitions().isEmpty());
+    }
+
+
 
 }

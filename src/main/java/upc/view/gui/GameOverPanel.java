@@ -40,6 +40,10 @@ public class GameOverPanel extends JPanel {
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 48));
         winnerLabel.setForeground(Color.WHITE);
 
+        centerPanel.add(winnerLabel);
+        centerPanel.add(Box.createVerticalStrut(20));
+
+
 
 
     }

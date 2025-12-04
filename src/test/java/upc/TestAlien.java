@@ -186,6 +186,15 @@ public class TestAlien {
         assertTrue(result.contains("Vivant=false"));
     }
 
+    @Test
+    public void testIsVisibleDansLaCamera() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(500, 300));
+
+        assertTrue(alien.isVisible(400, 200));
+    }
+
+
 
 
 }

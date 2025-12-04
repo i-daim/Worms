@@ -40,6 +40,7 @@ public class PhysicsEngine {
         world.update(dt);
         updateAliens();
         updateProjectiles();
+        updateTerrain();
     }
 
     public void updateAliens() {
@@ -49,6 +50,10 @@ public class PhysicsEngine {
 
     public void updateProjectiles() {
         projectilePhysics.updateProjectiles(terrain);
+    }
+
+    public void updateTerrain() {
+        terrainPhysics.updateTerrain();
     }
 
 

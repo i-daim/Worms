@@ -70,6 +70,9 @@ public class GameOverPanel extends JPanel {
         quitButton.setBackground(new Color(180, 50, 50));
         quitButton.setForeground(Color.WHITE);
 
+        quitButton.addActionListener(e -> System.exit(0));
+
+
 
 
 

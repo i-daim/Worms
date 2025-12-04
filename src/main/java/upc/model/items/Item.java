@@ -4,7 +4,7 @@ import upc.model.jeu.GameWorld;
 
 public interface Item {
 
-    public enum Type {
+    enum Type {
         SHOTGUN,
         UZI,
         BAZOOKA,
@@ -13,6 +13,4 @@ public interface Item {
     }
 
     void useItem(GameWorld gameWorld, Alien alienActif);
-
-    String getName();
 }

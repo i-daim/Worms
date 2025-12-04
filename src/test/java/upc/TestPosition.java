@@ -88,6 +88,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
             assertEquals(0.0, p.distance(10, 20), 0.001);
         }
+        @Test
+        public void testPositionsNegatives(){
+            Position p = new Position(-5, -10);
+
+            assertEquals(-5, p.getX());
+            assertEquals(-10, p.getY());
+        }
+
+        @Test
+        public void testDeplacerAvecNegatifs(){
+            Position p1 = new Position(10, 10);
+            Position p2 = p1.deplacer(-5, -3);
+
+            assertEquals(5, p2.getX());
+            assertEquals(7, p2.getY());
+        }
+
 
 
 

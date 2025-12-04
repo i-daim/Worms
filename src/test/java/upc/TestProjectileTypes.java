@@ -40,4 +40,19 @@ public class TestProjectileTypes {
 
         assertTrue(sticky.isReadyToExplode(), "La StickyBomb doit exploser après 3 secondes");
     }
+    @Test
+    public void testGrenadeTimer() {
+        // Création d'une Grenade (timer 3s par défaut dans ton code actuel)
+        Grenade weapon = new Grenade("Frag");
+        Projectile projectile = weapon.createProjectile(shooter);
+
+        assertTrue(projectile instanceof ProjectileGrenade);
+        ProjectileGrenade grenade = (ProjectileGrenade) projectile;
+
+        // On vide le timer
+        for (int i = 0; i < 180; i++) {
+            grenade.decrementTimer();
+        }
+        assertTrue(grenade.isReadyToExplode(), "La grenade doit exploser après son temps imparti");
+    }
 }

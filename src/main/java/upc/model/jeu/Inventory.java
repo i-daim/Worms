@@ -32,9 +32,9 @@ public class Inventory {
     private void initialiserInventaireEquipe(Team team) {
         Inventory inv = team.getInventory();
 
-        inv.ajouterMunition(new Grenade("Grenade"), 50);
-        inv.ajouterMunition(new Mine("Mine"), 50);
-        inv.ajouterMunition(new Shotgun("Shotgun"), 50);
-        inv.ajouterMunition(new Uzi("Uzi"), 50);
+        inv.ajouterMunition(new Grenade(), 50);
+        inv.ajouterMunition(new Mine(), 50);
+        inv.ajouterMunition(new Shotgun(), 50);
+        inv.ajouterMunition(new Uzi(), 50);
     }
 }

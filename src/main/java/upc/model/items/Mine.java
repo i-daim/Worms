@@ -11,9 +11,13 @@ public class Mine extends Weapon {
     public static final int ACTIVATION_RADIUS = 3;
 
     public Mine() {
-        super("Mine", DEGATS, RAYON);
         super("Mine", DAMAGE, 1);
     }
+
+    public void useItem(GameWorld gameWorld, Alien shooter) {
+        Trap mine = new Trap(shooter.getPosition(), 0, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
+
+        gameWorld.addTrap(mine);
     }
 
 }

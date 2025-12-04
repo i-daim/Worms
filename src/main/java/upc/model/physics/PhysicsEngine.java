@@ -112,4 +112,8 @@ public class PhysicsEngine {
     public void setWind(double windX, double windY) {
         this.wind = new Vector2(windX, windY);
     }
+
+    public TerrainPhysics getTerrainPhysics() {
+        return terrainPhysics;
+    }
 }

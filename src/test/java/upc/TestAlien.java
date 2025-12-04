@@ -245,6 +245,17 @@ public class TestAlien {
         assertFalse(alien.isAlive());
     }
 
+    @Test
+    public void testGetPosition() {
+        Team team = new Team("Team Test", 1);
+        Position pos = new Position(100, 200);
+        Alien alien = new Alien(team, pos);
+
+        assertEquals(100, alien.getPosition().getX());
+        assertEquals(200, alien.getPosition().getY());
+    }
+
+
 
 
 

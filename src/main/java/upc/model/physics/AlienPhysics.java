@@ -18,6 +18,7 @@ import java.util.Map;
 public class AlienPhysics {
 
     private final World<Body> world;
+    private final Terrain terrain;
 
     private final Map<Alien, Body> alienBodies = new HashMap<>();
     private final Map<Alien, Boolean> wasInAir = new HashMap<>();

@@ -25,10 +25,10 @@ public class Projectile extends Entity {
     private boolean explosive;
     private int frameCount;
 
-    public Projectile(Weapon weapon, Alien shooter, int startX, int startY) {
-        super(startX, startY, 1);
 
 ////    CONSTRUCTOR    ////
+    public Projectile(Weapon weapon, Alien shooter, Position position, double speed) {
+        super(position, speed);
         this.weapon = weapon;
         this.shooter = shooter;
         this.state = State.FLYING;

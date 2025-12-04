@@ -233,6 +233,19 @@ public class TestAlien {
         assertTrue(alien.isAlive());
     }
 
+    @Test
+    public void testReceiveDmgQuandDejaMort() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        alien.receiveDmg(100);
+        alien.receiveDmg(50);
+
+        assertEquals(0, alien.getHealthPoints());
+        assertFalse(alien.isAlive());
+    }
+
+
 
 
 

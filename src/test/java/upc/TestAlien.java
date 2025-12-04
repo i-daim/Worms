@@ -193,6 +193,23 @@ public class TestAlien {
 
         assertTrue(alien.isVisible(400, 200));
     }
+    @Test
+    public void testIsVisibleHorsCameraGauche() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertFalse(alien.isVisible(1000, 500));
+    }
+
+    @Test
+    public void testIsVisibleQuandMort() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(500, 300));
+        alien.receiveDmg(100);
+
+        assertFalse(alien.isVisible(400, 200));
+    }
+
 
 
 

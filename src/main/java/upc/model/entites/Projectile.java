@@ -42,14 +42,23 @@ public class Projectile extends Entity {
     public Alien getShooter() {
         return shooter;
     }
-    public Body getBody() {
-        return body;
+    public int getDamage() {
+        return damage;
+    }
+    public int getExplosionRadius() {
+        return explosionRadius;
+    }
+    public boolean isExplosive() {
+        return explosive;
     }
     public boolean isActive() {
         return state == State.FLYING;
     }
     public State getState() {
         return state;
+    }
+    public Body getBody() {
+        return body;
     }
 
 ////    SETTERS    ////

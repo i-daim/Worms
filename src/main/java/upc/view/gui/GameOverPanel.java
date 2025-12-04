@@ -50,6 +50,10 @@ public class GameOverPanel extends JPanel {
 
         centerPanel.add(statsLabel);
 
+        statsLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+        statsLabel.setForeground(new Color(200, 200, 200));
+
+
 
 
 

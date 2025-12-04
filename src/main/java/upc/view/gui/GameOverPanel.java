@@ -2,8 +2,18 @@ package upc.view.gui;
 
 import upc.model.jeu.Team;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Dimension;
+
 
 public class GameOverPanel extends JPanel {
 

@@ -157,4 +157,13 @@ public class TestAlien {
         assertEquals("Team Test", alien.getTeam().getName());
     }
 
+    @Test
+    public void testGetSpeed() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertEquals(5, alien.getSpeed());
+    }
+
+
 }

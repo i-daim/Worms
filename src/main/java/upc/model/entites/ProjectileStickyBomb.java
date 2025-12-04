@@ -21,4 +21,7 @@ public class ProjectileStickyBomb extends Projectile {
     public boolean isStuck() {
         return stuck;
     }
+    public void setStuck(boolean stuck) {
+        this.stuck = stuck;
+    }
 }

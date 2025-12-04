@@ -9,6 +9,7 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
+import upc.model.jeu.Terrain;
 import upc.model.jeu.TerrainGenerator;
 
 import java.util.HashMap;
@@ -64,9 +65,16 @@ public class AlienPhysics {
             }
         }
     }
+
+    // Methode qui va verifier la mort d'un Alien dans l'eau
     private void checkWaterDeath(Alien alien, int pixelY) {
         // on va convertir les pixels en coordonnés de collision
         int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
+
+        //ici on va verifier si un Alien à dépassé le niveau d'eau
+        if (collisionY >= Terrain.getWaterLevel()) {
+            // Tuer l'alien instantanément
+            alien.receiveDmg(alien.getHealthPoints());
     }
 
     public void addAlienBody(Alien alien) {

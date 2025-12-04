@@ -1,4 +1,7 @@
 package upc.model.items;
+import upc.model.entites.Alien;
+import upc.model.entites.Projectile;
+import upc.model.entites.ProjectileStickyBomb;
 
 
 public class StickyBomb extends Throwable {
@@ -7,5 +10,9 @@ public class StickyBomb extends Throwable {
 
     public StickyBomb(String nom) {
         super(nom, DEGATS, RAYON);
+    }
+    @Override
+    public Projectile createProjectile(Alien shooter) {
+        return new ProjectileStickyBomb(this, shooter);
     }
 }

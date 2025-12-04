@@ -10,4 +10,9 @@ public class ProjectileStickyBomb extends Projectile {
         this.timer = 3 * 60; // 3 secondes avant explosion
         this.stuck = false;
     }
+    public void decrementTimer() {
+        if (timer > 0) {
+            timer--;
+        }
+    }
 }

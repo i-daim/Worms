@@ -19,14 +19,14 @@ public class TerrainPhysics {
         this.world = world;
         this.terrain = terrain;
 
-        updateTerrain();
+        rebuildTerrain();
     }
 
     /**
      * Met à jour le terrain en supprimant l'ancien corps et le remplaçant
      * par un nouveau avec les collisions actuelles
      */
-    public void updateTerrain() {
+    public void rebuildTerrain() {
         if (terrainBody != null) {
             world.removeBody(terrainBody);
         }

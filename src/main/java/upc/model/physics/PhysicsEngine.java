@@ -32,7 +32,7 @@ public class PhysicsEngine {
         this.projectilePhysics = new ProjectilePhysics(this);
         this.terrainPhysics = new TerrainPhysics(world, terrain);
 
-        terrainPhysics.updateTerrain();
+        terrainPhysics.rebuildTerrain();
     }
 
 ////    UPDATE DES PHYSIQUES    ////

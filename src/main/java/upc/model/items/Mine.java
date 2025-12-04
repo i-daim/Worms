@@ -15,7 +15,7 @@ public class Mine extends Weapon {
     }
 
     public void useItem(GameWorld gameWorld, Alien shooter) {
-        Trap mine = new Trap(shooter.getPosition(), 0, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
+        Trap mine = new Trap(shooter.getPosition(), DAMAGE, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
 
         gameWorld.addTrap(mine);
     }

@@ -15,6 +15,8 @@ public class TerrainPhysics {
 
     private Body terrainBody;
 
+    private boolean modified = false;
+
     public TerrainPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
         this.terrain = terrain;
@@ -89,5 +91,10 @@ public class TerrainPhysics {
         fixture.getShape().translate(x, y);
 
         terrainBody.addFixture(fixture);
+    }
+
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
 }

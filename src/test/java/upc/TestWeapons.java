@@ -22,4 +22,5 @@ public class TestWeapons {
         assertEquals(45, grenade.getDegats());
         assertEquals(5, grenade.getRayonExplosion());
     }
+
 }

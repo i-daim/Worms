@@ -55,4 +55,23 @@ public class TestProjectileTypes {
         }
         assertTrue(grenade.isReadyToExplode(), "La grenade doit exploser après son temps imparti");
     }
+    @Test
+    public void testMineArming() {
+        // Test pour la mine (si tu as implémenté le timer d'armement)
+        Mine weapon = new Mine("TNT");
+        Projectile projectile = weapon.createProjectile(shooter);
+
+        assertTrue(projectile instanceof ProjectileMine);
+        ProjectileMine mine = (ProjectileMine) projectile;
+
+        // Si ta mine a un timer avant explosion (ex: 5s)
+        assertFalse(mine.isReadyToExplode());
+
+        // On avance le temps (5s * 60 = 300 frames)
+        for (int i = 0; i < 300; i++) {
+            mine.decrementTimer();
+        }
+        assertTrue(mine.isReadyToExplode(), "La mine doit pèter après 5 secondes");
+    }
+
 }

@@ -53,6 +53,16 @@ public class GameOverPanel extends JPanel {
         statsLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         statsLabel.setForeground(new Color(200, 200, 200));
 
+        centerPanel.add(statsLabel);
+        centerPanel.add(Box.createVerticalStrut(50));
+
+        JButton quitButton = new JButton("Quitter le jeu");
+        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(quitButton);
+
+
+
 
 
 

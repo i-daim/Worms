@@ -220,6 +220,20 @@ public class TestAlien {
         assertFalse(alien.isAlive());
     }
 
+    @Test
+    public void testReceiveDmgMultiples() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        alien.receiveDmg(20);
+        alien.receiveDmg(30);
+        alien.receiveDmg(40);
+
+        assertEquals(10, alien.getHealthPoints());
+        assertTrue(alien.isAlive());
+    }
+
+
 
 
 

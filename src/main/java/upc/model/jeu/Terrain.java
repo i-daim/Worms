@@ -94,13 +94,10 @@ public class Terrain {
     public boolean possibleMove(Position pos) {
         int posX = pos.getX();
         int posY = pos.getY();
-
-        if (posX < 0 || posX >= getCollisionsWidth() || posY < 0 || posY >= getCollisionsHeight()) {
+        if (posX > getCollisionsWidth() ||  posX < 0
+                || posY > getCollisionsHeight() || posY < 0) {
             return false;
         }
-
         return !collisions[posY][posX];
     }
-
-
 }

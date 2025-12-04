@@ -1,5 +1,7 @@
 package upc.view.gui;
 
+import upc.view.Sound;
+
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -17,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 
 public class MenuPanel extends JPanel {
+
+    private final Sound menuMusic = new Sound("/sounds/menu.wav");
 
     private Image background;
     private final JButton newGame = createGameButton("New Game");
@@ -45,10 +49,13 @@ public class MenuPanel extends JPanel {
         this.add(quitGame);
 
         this.add(Box.createVerticalGlue());
+
+        menuMusic.setVolume(-10);
+        menuMusic.loop();
     }
 
     @Override
-    protected void paintComponent(java.awt.Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (background != null) {
             g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
@@ -110,5 +117,9 @@ public class MenuPanel extends JPanel {
 
     public void addQuitterListener(ActionListener listener) {
         quitGame.addActionListener(listener);
+    }
+
+    public void stopMusic() {
+        menuMusic.stop();
     }
 }

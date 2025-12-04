@@ -14,6 +14,10 @@ public class GameOverPanel extends JPanel {
 
         add(centerPanel, BorderLayout.CENTER);
 
+        centerPanel.setOpaque(false);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
+
+
     }
 
 

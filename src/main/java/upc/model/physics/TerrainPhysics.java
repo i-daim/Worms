@@ -27,6 +27,7 @@ public class TerrainPhysics {
     public void updateTerrain() {
         if(modified) {
             rebuildTerrain();
+            modified = false;
         }
     }
 

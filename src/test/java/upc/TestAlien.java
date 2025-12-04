@@ -147,4 +147,14 @@ public class TestAlien {
 
         assertTrue(team.isEliminated());
     }
+
+    @Test
+    public void testGetTeam() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertEquals(team, alien.getTeam());
+        assertEquals("Team Test", alien.getTeam().getName());
+    }
+
 }

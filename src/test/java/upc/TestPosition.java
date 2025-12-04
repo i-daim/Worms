@@ -105,6 +105,24 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(7, p2.getY());
         }
 
+        @Test
+        public void testPositionZero(){
+            Position p = new Position(0, 0);
+
+            assertEquals(0, p.getX());
+            assertEquals(0, p.getY());
+        }
+
+        @Test
+        public void testDeplacerZero(){
+            Position p1 = new Position(5, 5);
+            Position p2 = p1.deplacer(0, 0);
+
+            assertEquals(5, p2.getX());
+            assertEquals(5, p2.getY());
+        }
+
+
 
 
 

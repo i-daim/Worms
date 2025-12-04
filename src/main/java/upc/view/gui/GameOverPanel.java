@@ -31,6 +31,10 @@ public class GameOverPanel extends JPanel {
 
     }
     public GameOverPanel(Team winningTeam) {
+        centerPanel.add(titleLabel);
+        centerPanel.add(Box.createVerticalStrut(30));
+
+    }
 
 
 }

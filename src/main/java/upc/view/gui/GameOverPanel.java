@@ -61,6 +61,9 @@ public class GameOverPanel extends JPanel {
 
         centerPanel.add(quitButton);
 
+        quitButton.setFont(new Font("Arial", Font.BOLD, 24));
+
+
 
 
 

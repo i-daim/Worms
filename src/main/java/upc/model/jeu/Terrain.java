@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import static upc.model.jeu.TerrainGenerator.TILE_SIZE;
 
 public class Terrain {
-    private static final int WATER_LEVEL = 7;
+    private static final int WATER_LEVEL = 170;
 
     private final boolean[][] collisions;
     private final BufferedImage image;

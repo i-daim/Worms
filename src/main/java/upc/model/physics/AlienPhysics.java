@@ -9,6 +9,8 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
+import upc.model.jeu.Terrain;
+import upc.model.jeu.TerrainGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.Map;
 public class AlienPhysics {
 
     private final World<Body> world;
+    private final Terrain terrain;
 
     private final Map<Alien, Body> alienBodies = new HashMap<>();
     private final Map<Alien, Boolean> wasInAir = new HashMap<>();
@@ -32,8 +35,9 @@ public class AlienPhysics {
     private static final double ALIEN_WIDTH = Converter.toMeters(20);
     private static final double ALIEN_HEIGHT = Converter.toMeters(37);
 
-    public AlienPhysics(World<Body> world) {
+    public AlienPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
+        this.terrain = terrain;
     }
 
     public void updateAliens() {
@@ -53,6 +57,11 @@ public class AlienPhysics {
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
 
+            int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
+            if (collisionY >= Terrain.getWaterLevel()) {
+                alien.receiveDmg(alien.getHealthPoints());
+            }
+
             if (body.getLinearVelocity().getMagnitude() < 0.1) {
                 body.setLinearVelocity(0, 0);
                 body.setAngularVelocity(0);
@@ -63,7 +72,6 @@ public class AlienPhysics {
     public void addAlienBody(Alien alien) {
         Body body = new Body();
 
-        // Utilise la forme capsule au lieu du rectangle
         Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);
         BodyFixture fixture = new BodyFixture(capsuleShape);
         fixture.setFriction(FRICTION);

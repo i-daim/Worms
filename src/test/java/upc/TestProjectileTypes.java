@@ -73,5 +73,12 @@ public class TestProjectileTypes {
         }
         assertTrue(mine.isReadyToExplode(), "La mine doit pèter après 5 secondes");
     }
+    @Test
+    public void testBalleType() {
+        // Vérifie juste que le Uzi crée bien une Balle
+        Uzi uzi = new Uzi("Uzi 9mm");
+        Projectile projectile = uzi.createProjectile(shooter);
+        assertTrue(projectile instanceof ProjectileBalle, "Le Uzi doit tirer des ProjectileBalle");
+    }
 
 }

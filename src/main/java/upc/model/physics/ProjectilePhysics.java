@@ -125,7 +125,6 @@ public class ProjectilePhysics {
                     sticky.setStuck(true);
                     body.setLinearVelocity(0, 0);
                     body.setGravityScale(0);
-                    // Elle ne bouge plus
                     body.setMassType(MassType.FIXED_LINEAR_VELOCITY);
                 }
 

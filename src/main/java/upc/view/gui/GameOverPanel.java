@@ -1,4 +1,5 @@
 package upc.view.gui;
+import upc.model.jeu.Team;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,11 +29,8 @@ public class GameOverPanel extends JPanel {
         centerPanel.add(Box.createVerticalGlue());
         centerPanel.add(titleLabel);
 
-
-
-
-
     }
+    public GameOverPanel(Team winningTeam) {
 
 
 }

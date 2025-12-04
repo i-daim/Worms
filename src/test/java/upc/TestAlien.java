@@ -255,6 +255,16 @@ public class TestAlien {
         assertEquals(200, alien.getPosition().getY());
     }
 
+    @Test
+    public void testHealthPointsInitial() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertEquals(100, alien.getHealthPoints());
+        assertTrue(alien.isAlive());
+    }
+
+
 
 
 

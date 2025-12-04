@@ -43,6 +43,14 @@ public class GameOverPanel extends JPanel {
         centerPanel.add(winnerLabel);
         centerPanel.add(Box.createVerticalStrut(20));
 
+        JLabel statsLabel = new JLabel(
+                winningTeam.getAliveAliensNumber() + " worms survivants"
+        );
+        statsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(statsLabel);
+
+
 
 
 

@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 
 public class MenuPanel extends JPanel {
+    private final JButton settingsButton = createGameButton("Settings");
+
 
     private Image background;
     private final JButton newGame = createGameButton("New Game");
@@ -41,7 +43,9 @@ public class MenuPanel extends JPanel {
         this.add(newGame);
         this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
         this.add(loadGame);
-        this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
+        this.add(Box.createVerticalStrut(20));// Ajout un espace entre les boutons
+        this.add(settingsButton);
+        this.add(Box.createVerticalStrut(20)); // Ajout du Nouveau bouton
         this.add(quitGame);
 
         this.add(Box.createVerticalGlue());
@@ -111,4 +115,8 @@ public class MenuPanel extends JPanel {
     public void addQuitterListener(ActionListener listener) {
         quitGame.addActionListener(listener);
     }
+    public void addSettingsListener(ActionListener listener) {
+        settingsButton.addActionListener(listener);
+    }
+
 }

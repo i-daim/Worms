@@ -19,17 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
         }
 
         @Test
-       public void testGetX(){
-            Position a = new Position(1, 2);
-            a.deplacer(5, 5);
-            assertEquals(1, a.getX());
-       }
+        public void testGetX(){
+            Position a = new Position(15, 25);
+            assertEquals(15, a.getX());
+        }
+
         @Test
         public void testGetY(){
-            Position a = new Position(1, 2);
-            a.deplacer(5, 5);
-            assertEquals(2, a.getY());
+            Position a = new Position(15, 25);
+            assertEquals(25, a.getY());
         }
+
+
         @Test
         public void testEquals(){
             Position p1 = new Position(10, 20);

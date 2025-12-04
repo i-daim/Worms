@@ -42,7 +42,7 @@ public class GameWorld {
             }
         }
         getTerrain().makeHole(x, y, radius);
-        getPhysicsEngine().getTerrainPhysics().rebuildTerrain();
+        getPhysicsEngine().getTerrainPhysics().setModified(true);
     }
 
     public Terrain getTerrain() {

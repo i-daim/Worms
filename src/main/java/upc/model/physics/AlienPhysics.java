@@ -53,6 +53,10 @@ public class AlienPhysics {
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
 
+            // On ajoute cette ligne pour verifier si l'alien est dans l'eau
+
+            checkWaterDeath(alien,pixelY);
+
             if (body.getLinearVelocity().getMagnitude() < 0.1) {
                 body.setLinearVelocity(0, 0);
                 body.setAngularVelocity(0);

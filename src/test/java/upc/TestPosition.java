@@ -122,6 +122,17 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(5, p2.getY());
         }
 
+        @Test
+        public void testHashCodeConsistency(){
+            Position p1 = new Position(10, 20);
+            Position p2 = new Position(10, 20);
+            Position p3 = new Position(5, 20);
+
+            assertEquals(p1.hashCode(), p2.hashCode());
+            assertNotEquals(p1.hashCode(), p3.hashCode());
+        }
+
+
 
 
 

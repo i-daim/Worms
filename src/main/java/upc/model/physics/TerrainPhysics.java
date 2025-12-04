@@ -24,6 +24,12 @@ public class TerrainPhysics {
         rebuildTerrain();
     }
 
+    public void updateTerrain() {
+        if(modified) {
+            rebuildTerrain();
+        }
+    }
+
     /**
      * Met à jour le terrain en supprimant l'ancien corps et le remplaçant
      * par un nouveau avec les collisions actuelles

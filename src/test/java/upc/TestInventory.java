@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import upc.model.items.Grenade;
 import upc.model.items.Inventory;
+import upc.model.items.Uzi;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,5 +50,29 @@ public class TestInventory {
 
         assertNull(inventory.getStockMunitions().get(grenade));
     }
+
+    @Test
+    public void testEstDisponibleAvecStock() {
+        Grenade grenade = new Grenade("Grenade");
+        inventory.ajouterMunition(grenade, 10);
+
+        assertTrue(inventory.estDisponible(grenade));
+    }
+
+    @Test
+    public void testEstDisponibleSansStock() {
+        Grenade grenade = new Grenade("Grenade");
+
+        assertFalse(inventory.estDisponible(grenade));
+    }
+
+    @Test
+    public void testEstDisponibleIllimite() {
+        Uzi uzi = new Uzi("Uzi");
+        inventory.getStockMunitions().put(uzi, -1);
+
+        assertTrue(inventory.estDisponible(uzi));
+    }
+
 
 }

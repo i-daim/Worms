@@ -18,4 +18,7 @@ public class ProjectileStickyBomb extends Projectile {
     public boolean isReadyToExplode() {
         return timer <= 0;
     }
+    public boolean isStuck() {
+        return stuck;
+    }
 }

@@ -10,6 +10,7 @@ import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
+import upc.model.entites.ProjectileStickyBomb;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +40,11 @@ public class ProjectilePhysics {
         fixture.setFriction(0.3);
         fixture.setRestitution(0.3);
         fixture.setDensity(1.5);
+
+        if (projectile instanceof ProjectileStickyBomb) {
+            fixture.setRestitution(0.0);
+        }
+
 
         body.addFixture(fixture);
         body.setMass(MassType.NORMAL);

@@ -23,7 +23,7 @@ public class MenuController {
 
             new GameController(gamePanel, gameManager);
 
-            menuPanel.backgroundSound.stop();
+            menuPanel.stopMusic();
 
             mainFrame.setContentPane(gamePanel);
             mainFrame.revalidate();

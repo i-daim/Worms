@@ -26,8 +26,7 @@ public class GamePanel extends JPanel {
 
     private final AnimationManager animationManager = new AnimationManager();
 
-    public Sound gameMusic = new Sound("/sounds/game_music.wav");
-
+    private final Sound gameMusic = new Sound("/sounds/game_music.wav");
 
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -132,7 +131,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-
     public double getZoomX() {
         return Math.max(1.0, (double) getWidth() / DEFAULT_WIDTH);
     }
@@ -157,5 +155,9 @@ public class GamePanel extends JPanel {
 
     public Terrain getTerrain() {
         return terrain;
+    }
+
+    public void stopMusic() {
+        gameMusic.stop();
     }
 }

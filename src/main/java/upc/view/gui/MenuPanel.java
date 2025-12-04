@@ -20,7 +20,7 @@ import java.awt.Font;
 
 public class MenuPanel extends JPanel {
 
-    public Sound backgroundSound = new Sound("/sounds/menu.wav");
+    private final Sound menuMusic = new Sound("/sounds/menu.wav");
 
     private Image background;
     private final JButton newGame = createGameButton("New Game");
@@ -50,8 +50,8 @@ public class MenuPanel extends JPanel {
 
         this.add(Box.createVerticalGlue());
 
-        backgroundSound.setVolume(-10);
-        backgroundSound.loop();
+        menuMusic.setVolume(-10);
+        menuMusic.loop();
     }
 
     @Override
@@ -117,5 +117,9 @@ public class MenuPanel extends JPanel {
 
     public void addQuitterListener(ActionListener listener) {
         quitGame.addActionListener(listener);
+    }
+
+    public void stopMusic() {
+        menuMusic.stop();
     }
 }

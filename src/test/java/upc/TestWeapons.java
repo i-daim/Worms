@@ -39,5 +39,21 @@ public class TestWeapons {
         assertEquals(10, uzi.getRayonExplosion());
     }
 
+    @Test
+    public void testCreateProjectile() {
+        Team team = new Team("Test Team", 1);
+        Alien alien = new Alien(team, new Position(100, 200));
+        Grenade grenade = new Grenade("Grenade");
+
+        Projectile projectile = grenade.createProjectile(alien);
+
+        assertNotNull(projectile);
+        assertEquals(100, projectile.getPosition().getX());
+        assertEquals(200, projectile.getPosition().getY());
+        assertEquals(grenade, projectile.getWeapon());
+        assertEquals(alien, projectile.getShooter());
+    }
+
+
 
 }

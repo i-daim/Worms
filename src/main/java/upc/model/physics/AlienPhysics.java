@@ -9,6 +9,7 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
+import upc.model.jeu.TerrainGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +63,10 @@ public class AlienPhysics {
                 body.setAngularVelocity(0);
             }
         }
+    }
+    private void checkWaterDeath(Alien alien, int pixelY) {
+        // on va convertir les pixels en coordonnés de collision
+        int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
     }
 
     public void addAlienBody(Alien alien) {

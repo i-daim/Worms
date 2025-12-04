@@ -35,6 +35,16 @@ public class GameWorld {
         return aliens;
     }
 
+    public void explode(int x, int y, int radius, int damage) {
+        for (Alien a : aliensInRadius(x, y, radius)) {
+            if (a != null && a.isAlive()) {
+                a.receiveDmg(damage);
+            }
+        }
+        getTerrain().makeHole(x, y, radius);
+        getPhysicsEngine().getTerrainPhysics().updateTerrain();
+    }
+
     public Terrain getTerrain() {
         return gameManager.getTerrain();
     }

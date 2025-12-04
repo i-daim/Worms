@@ -17,7 +17,6 @@ public class Projectile extends Entity {
         OUT_OF_BOUNDS
     }
 
-    private final Weapon weapon;
     private final Alien shooter;
 
     private Body body;
@@ -29,16 +28,12 @@ public class Projectile extends Entity {
 ////    CONSTRUCTOR    ////
     public Projectile(Weapon weapon, Alien shooter, Position position, double speed) {
         super(position, speed);
-        this.weapon = weapon;
         this.shooter = shooter;
         this.state = State.FLYING;
      }
 
 
 ////    GETTERS    ////
-    public Weapon getWeapon() {
-        return weapon;
-    }
     public Alien getShooter() {
         return shooter;
     }

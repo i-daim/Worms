@@ -3,6 +3,7 @@ package upc.view.gui;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
+import upc.view.Sound;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -25,11 +26,15 @@ public class GamePanel extends JPanel {
 
     private final AnimationManager animationManager = new AnimationManager();
 
+    public Sound gameMusic = new Sound("/sounds/game_music.wav");
+
+
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
         this.terrain = gameManager.getTerrain();
         this.hudPanel = new HUDPanel(gameManager);
         this.setDoubleBuffered(true);
+        gameMusic.loop();
     }
 
     @Override

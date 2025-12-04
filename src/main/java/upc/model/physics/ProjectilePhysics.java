@@ -89,6 +89,20 @@ public class ProjectilePhysics {
         while (iterator.hasNext()) {
             Projectile proj = iterator.next();
             Body body = proj.getBody();
+            if (proj instanceof ProjectileStickyBomb) {
+                ProjectileStickyBomb sticky = (ProjectileStickyBomb) proj;
+
+                if (!sticky.isStuck() && body.getLinearVelocity().getMagnitude() < 2.0 && proj.getFrameCount() > 5) {
+                    sticky.setStuck(true);
+                    body.setLinearVelocity(0, 0);
+                    body.setGravityScale(0);
+                    body.setMassType(MassType.FIXED_LINEAR_VELOCITY);
+                }
+
+                sticky.decrementTimer();
+                if (sticky.isReadyToExplode()) {
+                }
+            }
 
             if (body == null) {
                 iterator.remove();

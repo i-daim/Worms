@@ -63,6 +63,10 @@ public class GameOverPanel extends JPanel {
 
         quitButton.setFont(new Font("Arial", Font.BOLD, 24));
 
+        quitButton.setPreferredSize(new Dimension(250, 60));
+        quitButton.setMaximumSize(new Dimension(250, 60));
+
+
 
 
 

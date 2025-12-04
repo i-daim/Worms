@@ -2,7 +2,7 @@ package upc.model.entites;
 
 public abstract class Entity {
     private Position position;
-    private int speed;
+    private double speed;
 
 //// CONSTRUCTORS ////
     public Entity(Position position, double speed) {
@@ -15,7 +15,7 @@ public abstract class Entity {
         return position;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
@@ -24,7 +24,7 @@ public abstract class Entity {
         this.position = position;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 }

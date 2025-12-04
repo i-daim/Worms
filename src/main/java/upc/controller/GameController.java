@@ -4,6 +4,7 @@ import upc.model.jeu.Team;
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 
 import java.awt.Point;
@@ -190,4 +191,21 @@ public class GameController {
             }
         }
     }
+
+    private void showGameOver() {
+        stop();
+        gamePanel.stopMusic();
+        Team winner = gameManager.getWinningTeam();
+
+        SwingUtilities.invokeLater(() -> {
+            GameOverPanel gameOverPanel = new GameOverPanel(winner);
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(gamePanel);
+            if (frame != null) {
+                frame.setContentPane(gameOverPanel);
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+    }
+
 }

@@ -37,6 +37,9 @@ public class GameOverPanel extends JPanel {
         winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         centerPanel.add(winnerLabel);
+        winnerLabel.setFont(new Font("Arial", Font.BOLD, 48));
+        winnerLabel.setForeground(Color.WHITE);
+
 
 
     }

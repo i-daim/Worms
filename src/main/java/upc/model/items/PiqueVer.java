@@ -1,4 +1,7 @@
 package upc.model.items;
+import upc.model.entites.Alien;
+import upc.model.entites.Projectile;
+import upc.model.entites.ProjectileMelee;
 
 public class PiqueVer extends Firearm {
     public static final int DEGATS = 20;
@@ -7,5 +10,9 @@ public class PiqueVer extends Firearm {
 
     public  PiqueVer(String nom) {
         super(nom, DEGATS, RAYON, NBTIR);
+    }
+    @Override
+    public Projectile createProjectile(Alien shooter) {
+        return new ProjectileMelee(this, shooter);
     }
 }

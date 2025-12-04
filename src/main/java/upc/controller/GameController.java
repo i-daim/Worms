@@ -77,7 +77,7 @@ public class GameController {
                 break;
             case KeyEvent.VK_E:
                 Point worldPos = gamePanel.screenToWorld(mousePosition);
-                gameManager.getTerrain().makeHole(worldPos.x, worldPos.y, 25);
+                gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
             default:
                 break;
         }

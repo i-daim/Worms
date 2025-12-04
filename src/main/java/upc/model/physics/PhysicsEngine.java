@@ -28,7 +28,7 @@ public class PhysicsEngine {
         this.world = new World<>();
         this.world.setGravity(gravity);
 
-        this.alienPhysics = new AlienPhysics(world);
+        this.alienPhysics = new AlienPhysics(world, terrain);
         this.projectilePhysics = new ProjectilePhysics(this);
         this.terrainPhysics = new TerrainPhysics(world, terrain);
 

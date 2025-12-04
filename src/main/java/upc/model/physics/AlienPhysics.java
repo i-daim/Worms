@@ -35,7 +35,7 @@ public class AlienPhysics {
     private static final double ALIEN_WIDTH = Converter.toMeters(20);
     private static final double ALIEN_HEIGHT = Converter.toMeters(37);
 
-    public AlienPhysics(World<Body> world) {
+    public AlienPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
         this.terrain = terrain;
     }
@@ -62,8 +62,6 @@ public class AlienPhysics {
                 alien.receiveDmg(alien.getHealthPoints());
             }
 
-            checkWaterDeath(alien,pixelY);
-
             if (body.getLinearVelocity().getMagnitude() < 0.1) {
                 body.setLinearVelocity(0, 0);
                 body.setAngularVelocity(0);
@@ -71,21 +69,9 @@ public class AlienPhysics {
         }
     }
 
-    // Methode qui va verifier la mort d'un Alien dans l'eau
-    private void checkWaterDeath(Alien alien, int pixelY) {
-        // on va convertir les pixels en coordonnés de collision
-        int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
-
-        //ici on va verifier si un Alien à dépassé le niveau d'eau
-        if (collisionY >= Terrain.getWaterLevel()) {
-            // Tuer l'alien instantanément
-            alien.receiveDmg(alien.getHealthPoints());
-    }
-
     public void addAlienBody(Alien alien) {
         Body body = new Body();
 
-        // Utilise la forme capsule au lieu du rectangle
         Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);
         BodyFixture fixture = new BodyFixture(capsuleShape);
         fixture.setFriction(FRICTION);

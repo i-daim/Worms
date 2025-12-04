@@ -4,31 +4,38 @@ import org.dyn4j.dynamics.Body;
 import upc.model.items.Weapon;
 
 public class Projectile extends Entity {
-    public enum ProjectileState {
-        FLYING,
-        EXPLODED,
-        OUT_OF_BOUNDS
-      }
 
-    public enum ProjectileType {
+    public enum Type {
         BULLET,
         GRENADE,
         ROCKET
     }
 
+    public enum State {
+        FLYING,
+        EXPLODED,
+        OUT_OF_BOUNDS
+    }
+
     private final Weapon weapon;
     private final Alien shooter;
+
     private Body body;
-    private ProjectileState state;
+    private State state;
     private boolean explosive;
     private int frameCount;
 
     public Projectile(Weapon weapon, Alien shooter, int startX, int startY) {
         super(startX, startY, 1);
+
+////    CONSTRUCTOR    ////
         this.weapon = weapon;
         this.shooter = shooter;
-        this.state = ProjectileState.FLYING;
+        this.state = State.FLYING;
      }
+
+
+////    GETTERS    ////
     public Weapon getWeapon() {
         return weapon;
     }
@@ -38,17 +45,19 @@ public class Projectile extends Entity {
     public Body getBody() {
         return body;
     }
+    public boolean isActive() {
+        return state == State.FLYING;
+    }
+    public State getState() {
+        return state;
+    }
+
+////    SETTERS    ////
     public void setBody(Body body) {
         this.body = body;
     }
-    public ProjectileState getState() {
-        return state;
-    }
-    public void setState(ProjectileState state) {
+    public void setState(State state) {
         this.state = state;
-    }
-    public boolean isActive() {
-        return state == ProjectileState.FLYING;
     }
     public void incrementFrame() {
         frameCount++;

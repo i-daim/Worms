@@ -1,7 +1,10 @@
 package upc.controller;
+import upc.model.jeu.Team;
+
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 
 import java.awt.Point;
@@ -9,6 +12,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 
 public class GameController {
 
@@ -166,8 +172,14 @@ public class GameController {
 
         gameManager.update(1.0 / 60.0);
 
+        if (gameManager.isOver()) {
+            showGameOver();
+            return;
+        }
+
         gamePanel.repaint();
     }
+
 
     public void stop() {
         running = false;
@@ -179,4 +191,21 @@ public class GameController {
             }
         }
     }
+
+    private void showGameOver() {
+        stop();
+        gamePanel.stopMusic();
+        Team winner = gameManager.getWinningTeam();
+
+        SwingUtilities.invokeLater(() -> {
+            GameOverPanel gameOverPanel = new GameOverPanel(winner);
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(gamePanel);
+            if (frame != null) {
+                frame.setContentPane(gameOverPanel);
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+    }
+
 }

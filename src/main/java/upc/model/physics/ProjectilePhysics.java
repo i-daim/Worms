@@ -11,6 +11,7 @@ import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
 import upc.model.entites.ProjectileGrenade;
+import upc.model.entites.ProjectileBalle;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,7 +45,17 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        }
+        }else if (projectile instanceof ProjectileBalle) {
+            // BALLE (Uzi/Shotgun) : Pas de rebond, très légère, trajectoire tendue
+            double radius = Converter.toMeters(2); // Tout petit
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(0.0);
+            fixture.setRestitution(0.0);   // S'écrase, ne rebondit pas
+            fixture.setDensity(0.5);       // Légère
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
+            body.setBullet(true);
+
         return body;
 
     }

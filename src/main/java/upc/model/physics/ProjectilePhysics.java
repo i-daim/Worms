@@ -10,10 +10,11 @@ import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
-import upc.model.entites.ProjectileBalle;
+import upc.model.entites.Bullet;
 import upc.model.entites.ProjectileMine;
 import upc.model.entites.ProjectileGrenade;
 import upc.model.entites.ProjectileBazooka;
+import upc.model.entites.Throwable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,7 +38,7 @@ public class ProjectilePhysics {
 
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
-        if (projectile instanceof ProjectileGrenade) {
+        if (projectile instanceof Throwable) {
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(1.0);
@@ -46,7 +47,7 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        } else if (projectile instanceof ProjectileBalle) {
+        } else if (projectile instanceof Bullet) {
 
             double radius = Converter.toMeters(2);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));

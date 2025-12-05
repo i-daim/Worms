@@ -1,9 +1,6 @@
 package upc.model.items;
-import upc.model.entites.ProjectileMine;
-import upc.model.entites.Projectile;
 import upc.model.entites.Alien;
 
-import upc.model.entites.Alien;
 import upc.model.entites.Trap;
 import upc.model.jeu.GameWorld;
 
@@ -21,9 +18,5 @@ public class Mine extends Weapon {
         Trap mine = new Trap(shooter.getPosition(), DAMAGE, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
 
         gameWorld.addTrap(mine);
-    }
-    @Override
-    public Projectile createProjectile(Alien shooter) {
-        return new ProjectileMine(this, shooter);
     }
 }

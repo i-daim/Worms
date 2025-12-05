@@ -55,16 +55,24 @@ public class ProjectilePhysics {
             body.setMass(MassType.NORMAL);
             body.setBullet(true);
         } else if (projectile instanceof ProjectileMine) {
-            // MINE : Forme rectangulaire, se pose, très lourde
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
-            fixture.setFriction(5.0);      // Très rugueux, ne doit pas glisser
-            fixture.setRestitution(0.0);   // Pas de rebond
-            fixture.setDensity(10.0);      // Très lourd pour ne pas être poussé facilement
+            fixture.setFriction(5.0);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(10.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
+        }else {
+            double radius = Converter.toMeters(5);
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(0.3);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(1.5);
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
+            body.setBullet(true);
         }
 
 

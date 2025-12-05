@@ -104,6 +104,8 @@ public class AlienPhysics {
     public void removeAlien(Alien alien) {
         wasInAir.remove(alien);
         maxFallSpeed.remove(alien);
+        hasJumped.remove(alien);
+        previousVelocities.remove(alien);
         alienBodies.remove(alien);
     }
 

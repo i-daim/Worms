@@ -16,8 +16,10 @@ public class TestWeapons {
     @Test
     public void testGrenadeConstantes() {
         Grenade grenade = new Grenade();
+        assertEquals("Grenade", grenade.getName());
         assertEquals(45, grenade.getDamage());
-        // et éventuellement tester le rayon via un getter si tu en as un
+        assertEquals(30,grenade.getNbOfShots());
+        assertEquals(80,grenade.getPuissanceTir());
     }
 
     @Test

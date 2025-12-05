@@ -5,6 +5,7 @@ import upc.model.items.Grenade;
 import upc.model.items.Uzi;
 import upc.model.items.Shotgun;
 import upc.model.items.Mine;
+import upc.model.items.Bazooka;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,5 +54,14 @@ public class TestWeapons {
         assertEquals(45, mine.getDamage());
         assertEquals(1, mine.getNbOfShots());
         assertEquals(15, mine.getPuissanceTir());
+    }
+    @Test
+    public void testBazookaConstructeur() {
+        Bazooka bazooka = new Bazooka();
+
+        assertEquals("Bazooka", bazooka.getName());
+        assertEquals(45, bazooka.getDamage());
+        assertEquals(3, bazooka.getNbOfShots());
+        assertEquals(70, bazooka.getPuissanceTir());
     }
 }

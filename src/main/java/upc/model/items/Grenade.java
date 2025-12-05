@@ -1,11 +1,14 @@
 package upc.model.items;
+import upc.model.entites.Alien;
 
-public class Grenade extends Throwable {
-    public static final int DEGATS = 45;
-    public static final int RAYON = 5;
+import upc.model.jeu.GameWorld;
 
-    public Grenade(String nom) {
-        super(nom, DEGATS, RAYON);
+public class Grenade extends Weapon {
+    public Grenade() {
+        super("Grenade", 50, 3, 50);
     }
 
+    public void useItem(GameWorld gameWorld, Alien shooter) {
+
+    }
 }

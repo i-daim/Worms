@@ -29,7 +29,7 @@ public class Alien extends Entity {
 
     // Constructeur
     public Alien(Team team, Position position) {
-        super(position.getX(), position.getY(), SPEED);
+        super(position, SPEED);
         this.healthPoints = INITIAL_HP;
         this.team = team;
         this.alive = true;

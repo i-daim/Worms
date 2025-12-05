@@ -1,12 +1,14 @@
 package upc.model.items;
+import upc.model.entites.Alien;
 
-public class Shotgun extends Firearm {
-    public static final int DEGATS = 25;
-    public static final int RAYON = 5;
-    public static final int NBTIR = 2;
+import upc.model.jeu.GameWorld;
 
-    public Shotgun(String nom) {
-        super(nom, DEGATS, RAYON, NBTIR);
+public class Shotgun extends Weapon {
+    public Shotgun() {
+        super("Shotgun", 35, 8, 60);
     }
 
+    public void useItem(GameWorld gameWorld, Alien shooter) {
+
+    }
 }

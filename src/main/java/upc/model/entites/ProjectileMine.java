@@ -6,9 +6,16 @@ public class ProjectileMine extends Projectile {
     private boolean armed;
 
     public ProjectileMine(Weapon weapon, Alien shooter) {
-        super(weapon, shooter, shooter.getPosition().getX(), shooter.getPosition().getY());
-        this.timer = 5 * 60; // 5 secondes avant explosion (ou armement)
-        this.armed = false;
+        super(
+                shooter,
+                shooter.getPosition(),
+                weapon.getDamage(),
+                60,
+                true,
+                weapon.getPuissanceTir(),
+                weapon
+        );
+        this.timer = 5 * 60;
     }
     public void decrementTimer() {
         if (timer > 0) {

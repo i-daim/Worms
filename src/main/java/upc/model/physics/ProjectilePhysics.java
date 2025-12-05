@@ -74,6 +74,9 @@ public class ProjectilePhysics {
             body.setMass(MassType.NORMAL);
             body.setBullet(true);
         }
+        double startX = Converter.toMeters(projectile.getPosition().getX());
+        double startY = Converter.toMeters(projectile.getPosition().getY());
+        body.translate(startX, startY);
 
 
         return body;

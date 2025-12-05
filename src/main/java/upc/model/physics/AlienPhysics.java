@@ -68,6 +68,8 @@ public class AlienPhysics {
                 body.setLinearVelocity(0, 0);
                 body.setAngularVelocity(0);
             }
+
+            previousVelocities.put(alien, body.getLinearVelocity().y);
         }
     }
 

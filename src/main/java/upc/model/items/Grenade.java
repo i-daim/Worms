@@ -3,7 +3,6 @@ import upc.model.entites.Projectile;
 import upc.model.entites.ProjectileGrenade;
 import upc.model.entites.Alien;
 
-import upc.model.entites.Alien;
 import upc.model.jeu.GameWorld;
 
 public class Grenade extends Weapon {
@@ -17,9 +16,4 @@ public class Grenade extends Weapon {
     public void useItem(GameWorld gameWorld, Alien shooter) {
 
     }
-    @Override
-    public Projectile createProjectile(Alien shooter) {
-        return new ProjectileGrenade(this, shooter, 3);
-    }
-
 }

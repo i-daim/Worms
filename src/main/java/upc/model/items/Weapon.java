@@ -5,11 +5,13 @@ public abstract class Weapon implements Item {
     private String name;
     private int damage;
     private int nbOfShots;
+    protected int puissanceTir;
 
     public Weapon(String name, int damage, int nbOfShots) {
         this.name = name;
         this.damage = damage;
         this.nbOfShots = nbOfShots;
+        this.puissanceTir = puissanceTir;
     }
 
 ////    GETTERS    ////
@@ -21,5 +23,8 @@ public abstract class Weapon implements Item {
     }
     public int getNbOfShots() {
         return nbOfShots;
+    }
+    public int getPuissanceTir() {
+        return puissanceTir;
     }
 }

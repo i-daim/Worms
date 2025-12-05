@@ -71,7 +71,7 @@ public class ProjectilePhysics {
         } else {
             // DEFAUT (Roquette) : Cercle standard, explose au contact
             double radius = Converter.toMeters(5);
-            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius)); 
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);
             fixture.setRestitution(0.0);
             fixture.setDensity(1.5);

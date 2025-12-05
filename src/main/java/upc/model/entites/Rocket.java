@@ -1,8 +1,8 @@
 package upc.model.entites;
 import upc.model.items.Weapon;
 
-public class ProjectileBazooka extends Projectile {
-    public ProjectileBazooka(Weapon weapon, Alien shooter) {
+public class Rocket extends Projectile {
+    public Rocket(Weapon weapon, Alien shooter) {
         super(
                 shooter,
                 shooter.getPosition(),

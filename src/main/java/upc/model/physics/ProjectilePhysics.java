@@ -12,9 +12,8 @@ import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
 import upc.model.entites.Bullet;
 import upc.model.entites.ProjectileMine;
-import upc.model.entites.ProjectileGrenade;
-import upc.model.entites.ProjectileBazooka;
 import upc.model.entites.Throwable;
+import upc.model.entites.Rocket;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,7 +68,7 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        } else if (projectile instanceof ProjectileBazooka) {
+        } else if (projectile instanceof Rocket) {
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);

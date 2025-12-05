@@ -72,6 +72,7 @@ public class GameController {
             case KeyEvent.VK_SPACE:
             case KeyEvent.VK_UP:
                 if (pressed) {
+                    activeAlien.setState(Alien.State.JUMP);
                     gameManager.getWorld().getPhysicsEngine().jumpAlien(activeAlien);
                 }
                 break;
@@ -156,10 +157,13 @@ public class GameController {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             if (leftPressed && !rightPressed) {
+                activeAlien.setState(Alien.State.WALK_LEFT);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, -1.0);
             } else if (rightPressed && !leftPressed) {
+                activeAlien.setState(Alien.State.WALK_RIGHT);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 1.0);
             } else {
+                activeAlien.setState(Alien.State.IDLE);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 0);
             }
         }

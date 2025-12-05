@@ -63,7 +63,7 @@ public class HUDPanel extends JPanel {
         int barWidth = 30;
         int barHeight = 5;
         int barX = posX - barWidth / 2;
-        int barY = posY - 15;
+        int barY = posY - 25;
 
         g2.setColor(Color.BLACK);
         g2.fillRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2);
@@ -79,8 +79,8 @@ public class HUDPanel extends JPanel {
         // Inidicateur en triangle si le worm est actif
         if (active) {
             g2.setColor(Color.RED);
-            int[] xPoints = {posX, posX - 4, posX + 4};
-            int[] yPoints = {barY - 10, barY - 15, barY - 15};
+            int[] xPoints = {posX, posX - 6, posX + 6};
+            int[] yPoints = {barY - 5, barY - 12, barY - 12};
             g2.fillPolygon(xPoints, yPoints, 3);
         }
     }

@@ -128,18 +128,16 @@ public class GamePanel extends JPanel {
 
     public void drawAlien(Graphics2D g2, Alien alien, int type) {
         Animation animation;
+        boolean direction = alien.getDirection();
         switch (alien.getState()) {
-            case WALK_RIGHT:
-                animation = AnimationManager.getSprite(type, "walk_right");
-                break;
-            case WALK_LEFT:
-                animation = AnimationManager.getSprite(type, "walk_left");
+            case WALK:
+                animation = AnimationManager.getSprite(type, "walk", direction);
                 break;
             case JUMP:
-                animation = AnimationManager.getSprite(type, "jump");
+                animation = AnimationManager.getSprite(type, "jump", direction);
                 break;
             default:
-                animation = AnimationManager.getSprite(type, "idle");
+                animation = AnimationManager.getSprite(type, "idle", direction);
                 break;
         }
 

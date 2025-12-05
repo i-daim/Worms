@@ -40,6 +40,14 @@ public class Projectile extends Entity {
         this.weapon = weapon;
 
     }
+    public Projectile(Alien shooter,
+                      Position position,
+                      int damage,
+                      int explosionRadius,
+                      boolean explosive,
+                      double speed) {
+        this(shooter, position, damage, explosionRadius, explosive, speed, null);
+    }
 
 
     /// /    GETTERS    ////

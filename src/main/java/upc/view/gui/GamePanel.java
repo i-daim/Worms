@@ -132,12 +132,30 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public double getZoomX() {
-        return Math.max(1.0, (double) getWidth() / DEFAULT_WIDTH);
-    }
+    public void drawAlien(Graphics2D g2, Alien alien, int type) {
+        Animation animation;
+        switch (alien.getState()) {
+            case WALK_RIGHT:
+                animation = AnimationManager.getSprite(type, "walk_right");
+                break;
+            case WALK_LEFT:
+                animation = AnimationManager.getSprite(type, "walk_left");
+                break;
+            case JUMP:
+                animation = AnimationManager.getSprite(type, "jump");
+                break;
+            default:
+                animation = AnimationManager.getSprite(type, "idle");
+                break;
+        }
 
-    public double getZoomY() {
-        return Math.max(1.0, (double) getHeight() / DEFAULT_HEIGHT);
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
+
+        int drawX = posX - 10;
+        int drawY = posY - 18;
+
+        drawAnimation(g2, animation, drawX, drawY, 100);
     }
 
 

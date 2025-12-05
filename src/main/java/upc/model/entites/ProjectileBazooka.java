@@ -9,7 +9,7 @@ public class ProjectileBazooka extends Projectile {
                 weapon.getDamage(),
                 45,
                 true,
-                weapon.getPuissanceTir(),
+                weapon.getSpeed(),
                 weapon
         );
     }

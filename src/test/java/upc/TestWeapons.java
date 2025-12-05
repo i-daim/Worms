@@ -19,7 +19,7 @@ public class TestWeapons {
         assertEquals("Uzi", uzi.getName());
         assertEquals(10, uzi.getDamage());
         assertEquals(30, uzi.getNbOfShots());
-        assertEquals(80, uzi.getPuissanceTir());
+        assertEquals(80, uzi.getSpeed());
     }
     @Test
     public void testGrenadeConstructeur() {
@@ -28,7 +28,7 @@ public class TestWeapons {
         assertEquals("Grenade", grenade.getName());
         assertEquals(50, grenade.getDamage());
         assertEquals(3, grenade.getNbOfShots());
-        assertEquals(50, grenade.getPuissanceTir());
+        assertEquals(50, grenade.getSpeed());
     }
     @Test
     public void testShotgunConstructeur() {
@@ -37,7 +37,7 @@ public class TestWeapons {
         assertEquals("Shotgun", shotgun.getName());
         assertEquals(35, shotgun.getDamage());
         assertEquals(8, shotgun.getNbOfShots());
-        assertEquals(60, shotgun.getPuissanceTir());
+        assertEquals(60, shotgun.getSpeed());
     }
     @Test
     public void testMineConstantes() {
@@ -53,7 +53,7 @@ public class TestWeapons {
         assertEquals("Mine", mine.getName());
         assertEquals(45, mine.getDamage());
         assertEquals(1, mine.getNbOfShots());
-        assertEquals(15, mine.getPuissanceTir());
+        assertEquals(15, mine.getSpeed());
     }
     @Test
     public void testBazookaConstructeur() {
@@ -62,6 +62,6 @@ public class TestWeapons {
         assertEquals("Bazooka", bazooka.getName());
         assertEquals(45, bazooka.getDamage());
         assertEquals(3, bazooka.getNbOfShots());
-        assertEquals(70, bazooka.getPuissanceTir());
+        assertEquals(70, bazooka.getSpeed());
     }
 }

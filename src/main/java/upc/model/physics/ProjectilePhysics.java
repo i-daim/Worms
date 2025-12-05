@@ -38,34 +38,33 @@ public class ProjectilePhysics {
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
         if (projectile instanceof ProjectileGrenade) {
-            // GRENADE : Rebondit, roule, soumise à la gravité normale
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
-            fixture.setFriction(1.0);      // Friction élevée pour rouler
-            fixture.setRestitution(0.5);   // Rebondit à 50% de sa vitesse
-            fixture.setDensity(2.0);       // Assez dense
+            fixture.setFriction(1.0);
+            fixture.setRestitution(0.5);
+            fixture.setDensity(2.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
         } else if (projectile instanceof ProjectileBalle) {
-            // BALLE (Uzi/Shotgun) : Pas de rebond, très légère, trajectoire tendue
-            double radius = Converter.toMeters(2); // Tout petit
+
+            double radius = Converter.toMeters(2);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.0);
-            fixture.setRestitution(0.0);   // S'écrase, ne rebondit pas
-            fixture.setDensity(0.5);       // Légère
+            fixture.setRestitution(0.0);
+            fixture.setDensity(0.5);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
-            body.setBullet(true);          // CCD pour éviter de traverser les murs à haute vitesse
+            body.setBullet(true);
 
         } else if (projectile instanceof ProjectileMine) {
             // MINE : Forme rectangulaire, se pose, très lourde
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
-            fixture.setFriction(5.0);      // Très rugueux, ne doit pas glisser
-            fixture.setRestitution(0.0);   // Pas de rebond
-            fixture.setDensity(10.0);      // Très lourd pour ne pas être poussé facilement
+            fixture.setFriction(5.0);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(10.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
@@ -74,7 +73,7 @@ public class ProjectilePhysics {
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);
             fixture.setRestitution(0.0);
-            fixture.setDensity(2.5);      // un peu plus lourd
+            fixture.setDensity(2.5);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
             body.setBullet(true);
@@ -86,14 +85,14 @@ public class ProjectilePhysics {
         body.translate(startX, startY);
 
         double angleRad = Math.toRadians(angleDegrees);
-        double baseVelocity = projectile.getWeapon().getPuissanceTir();
+        double baseVelocity = projectile.getWeapon().getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
         double vx = velocityMagnitude * Math.cos(angleRad);
         double vy = -velocityMagnitude * Math.sin(angleRad);
 
         body.setLinearVelocity(vx, vy);
-        body.setUserData(projectile); // Lien vers l'objet logique
+        body.setUserData(projectile);
 
         projectile.setBody(body);
         world.addBody(body);

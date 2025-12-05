@@ -11,7 +11,7 @@ public class ProjectileGrenade extends Projectile {
                 weapon.getDamage(),
                 50,
                 true,
-                weapon.getPuissanceTir(),
+                weapon.getSpeed(),
                 weapon
         );
         this.timer = timerSeconds * 60;

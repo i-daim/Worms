@@ -12,7 +12,7 @@ public class ProjectileMine extends Projectile {
                 weapon.getDamage(),
                 60,
                 true,
-                weapon.getPuissanceTir(),
+                weapon.getSpeed(),
                 weapon
         );
         this.timer = 5 * 60;

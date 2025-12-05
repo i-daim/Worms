@@ -19,8 +19,7 @@ public class Alien extends Entity {
     // Etat de l'alien (pour la partie graphique)
     public enum State {
         IDLE,
-        WALK_RIGHT,
-        WALK_LEFT,
+        WALK,
         JUMP
     }
 
@@ -78,13 +77,15 @@ public class Alien extends Entity {
 
     public boolean moveRight(Terrain terrain) {
         Position newPosition = getPosition().deplacer(SPEED, 0);
-        setState(State.WALK_RIGHT);
+        setState(State.WALK);
+        direction = true;
         return move(newPosition, terrain);
     }
 
     public boolean moveLeft(Terrain terrain) {
         Position newPosition = getPosition().deplacer(-SPEED, 0);
-        setState(State.WALK_LEFT);
+        setState(State.WALK);
+        direction = false;
         return move(newPosition, terrain);
     }
 

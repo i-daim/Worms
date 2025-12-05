@@ -10,6 +10,10 @@ import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
+import upc.model.entites.ProjectileBalle;
+import upc.model.entites.ProjectileMine;
+import upc.model.entites.ProjectileGrenade;
+import upc.model.entites.ProjectileBazooka;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,23 +37,55 @@ public class ProjectilePhysics {
 
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
+        if (projectile instanceof ProjectileGrenade) {
+            double radius = Converter.toMeters(5);
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(1.0);
+            fixture.setRestitution(0.5);
+            fixture.setDensity(2.0);
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
 
-        double radius = Converter.toMeters(5);
-        BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
-        fixture.setFriction(0.3);
-        fixture.setRestitution(0.3);
-        fixture.setDensity(1.5);
+        } else if (projectile instanceof ProjectileBalle) {
 
-        body.addFixture(fixture);
-        body.setMass(MassType.NORMAL);
-        body.setBullet(true);
+            double radius = Converter.toMeters(2);
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(0.0);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(0.5);
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
+            body.setBullet(true);
+
+        } else if (projectile instanceof ProjectileMine) {
+            // MINE : Forme rectangulaire, se pose, très lourde
+            double width = Converter.toMeters(10);
+            double height = Converter.toMeters(5);
+            BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
+            fixture.setFriction(5.0);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(10.0);
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
+
+        } else if (projectile instanceof ProjectileBazooka) {
+            double radius = Converter.toMeters(5);
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(0.3);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(2.5);
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
+            body.setBullet(true);
+        }
+
 
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
 
         double angleRad = Math.toRadians(angleDegrees);
-        double baseVelocity = projectile.getSpeed();
+        double baseVelocity = projectile.getWeapon().getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
         double vx = velocityMagnitude * Math.cos(angleRad);
@@ -63,6 +99,7 @@ public class ProjectilePhysics {
         activeProjectiles.add(projectile);
 
         return body;
+
     }
 
     private void applyWindToProjectiles() {

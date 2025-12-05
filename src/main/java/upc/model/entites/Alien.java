@@ -9,6 +9,7 @@ public class Alien extends Entity {
     private final Team team;
     private int healthPoints;
     private boolean alive;
+    private int direction = 1;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -67,11 +68,13 @@ public class Alien extends Entity {
     }
 
     public boolean moveRight(Terrain terrain) {
+        setDirection(1);
         Position newPosition = getPosition().deplacer(SPEED, 0);
         return move(newPosition, terrain);
     }
 
     public boolean moveLeft(Terrain terrain) {
+        setDirection(-1);
         Position newPosition = getPosition().deplacer(-SPEED, 0);
         return move(newPosition, terrain);
     }
@@ -96,6 +99,16 @@ public class Alien extends Entity {
                 && posX <= cameraX + GamePanel.DEFAULT_WIDTH + margin
                 && posY >= cameraY - margin
                 && posY <= cameraY + GamePanel.DEFAULT_HEIGHT + margin;
+    }
+    public int getDirection() {
+        return direction;
+    }
+    public void setDirection(int direction) {
+        if (direction > 0) {
+            this.direction = 1;
+        } else if (direction < 0) {
+            this.direction = -1;
+        }
     }
 
     @Override

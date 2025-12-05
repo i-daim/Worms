@@ -10,9 +10,6 @@ import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
-import upc.model.entites.ProjectileStickyBomb;
-import upc.model.entites.ProjectileGrenade;
-import upc.model.entites.ProjectileMelee;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,11 +40,6 @@ public class ProjectilePhysics {
         fixture.setRestitution(0.3);
         fixture.setDensity(1.5);
 
-        if (projectile instanceof ProjectileStickyBomb) {
-            fixture.setRestitution(0.0);
-        }
-
-
         body.addFixture(fixture);
         body.setMass(MassType.NORMAL);
         body.setBullet(true);
@@ -57,7 +49,7 @@ public class ProjectilePhysics {
         body.translate(startX, startY);
 
         double angleRad = Math.toRadians(angleDegrees);
-        double baseVelocity = projectile.getWeapon().getInitialVelocity();
+        double baseVelocity = projectile.getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
         double vx = velocityMagnitude * Math.cos(angleRad);
@@ -75,7 +67,7 @@ public class ProjectilePhysics {
 
     private void applyWindToProjectiles() {
         for (Projectile proj : activeProjectiles) {
-            if (proj.isActive() && proj.getWeapon().isAffectedByWind()) {
+            if (proj.isActive()) {
                 Body body = proj.getBody();
                 if (body != null) {
                     Vector2 windForce = wind.product(0.5); // 50% de la force du vent
@@ -87,6 +79,7 @@ public class ProjectilePhysics {
 
     public void updateProjectiles(Terrain terrain) {
         Iterator<Projectile> iterator = activeProjectiles.iterator();
+
         while (iterator.hasNext()) {
             Projectile proj = iterator.next();
             Body body = proj.getBody();
@@ -103,67 +96,31 @@ public class ProjectilePhysics {
             int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
 
-            if (y > terrain.getCollisionsHeight() + 100
-                    || x < -50
-                    || x > terrain.getCollisionsWidth() + 50) {
-
-                proj.setState(Projectile.ProjectileState.OUT_OF_BOUNDS);
+            if (
+                    y > terrain.getCollisionsHeight() + 100
+                            || x < -50
+                            || x > terrain.getCollisionsWidth() + 50
+            ) {
+                proj.setState(Projectile.State.OUT_OF_BOUNDS);
                 world.removeBody(body);
                 iterator.remove();
                 continue;
             }
 
-            boolean exploded = false;
-
-            if (proj instanceof ProjectileStickyBomb) {
-                ProjectileStickyBomb sticky = (ProjectileStickyBomb) proj;
-
-                if (!sticky.isStuck()
-                        && body.getLinearVelocity().getMagnitude() < 2.0
-                        && proj.getFrameCount() > 5) {
-
-                    sticky.setStuck(true);
-                    body.setLinearVelocity(0, 0);
-                    body.setGravityScale(0);
-                    body.setMassType(MassType.FIXED_LINEAR_VELOCITY);
-                }
-
-                sticky.decrementTimer();
-                if (sticky.isReadyToExplode()) {
-                    exploded = true;
-                }
-
-            } else if (proj instanceof ProjectileGrenade) {
-                ProjectileGrenade grenade = (ProjectileGrenade) proj;
-                grenade.decrementTimer();
-                if (grenade.isReadyToExplode()) {
-                    exploded = true;
-                }
-
-            } else if (proj instanceof ProjectileMelee) {
-                exploded = true;
-
-            } else {
-                if (body.getLinearVelocity().getMagnitude() < 1.0 && proj.getFrameCount() > 10) {
-                    exploded = true;
-                }
-            }
-
-            if (exploded) {
-                proj.setState(Projectile.ProjectileState.EXPLODED);
+            if (body.getLinearVelocity().getMagnitude() < 1.0 && proj.getFrameCount() > 10) {
+                proj.setState(Projectile.State.EXPLODED);
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
             }
         }
-
     }
 
     public void explodeProjectile(Projectile proj) {
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
-        int radius = proj.getWeapon().getRayonExplosion();
-        int damage = proj.getWeapon().getDegats();
+        int radius = proj.getExplosionRadius();
+        int damage = proj.getDamage();
 
         // Infliger dégâts aux worms proches
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {

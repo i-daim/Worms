@@ -1,18 +1,17 @@
 package upc.model.items;
-import upc.model.entites.Projectile;
-import upc.model.entites.ProjectileBalle;
-import upc.model.entites.Alien;
 
-public class Uzi extends Firearm {
+import upc.model.entites.Alien;
+import upc.model.jeu.GameWorld;
+
+public class Uzi extends Weapon {
     public static final int DEGATS = 2;
-    public static final int RAYON = 10;
     public static final int NBTIR = 25;
 
-    public Uzi(String nom) {
-        super(nom, DEGATS, RAYON, NBTIR);
+    public Uzi() {
+        super("Uzi", DEGATS, NBTIR);
     }
-    @Override
-    public Projectile createProjectile(Alien shooter) {
-        return new ProjectileBalle(this, shooter);
+
+    public void useItem(GameWorld gameWorld, Alien shooter) {
+
     }
 }

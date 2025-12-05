@@ -2,6 +2,7 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Projectile;
+import upc.model.entites.Trap;
 import upc.model.physics.PhysicsEngine;
 
 import java.util.ArrayList;
@@ -10,12 +11,17 @@ import java.util.List;
 public class GameWorld {
     private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
+
     private final ArrayList<Alien> activeAliens;
+    private final ArrayList<Trap> activeTraps;
 
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
         this.physicsEngine = new PhysicsEngine(terrain);
+
         this.activeAliens = new ArrayList<>();
+        this.activeTraps = new ArrayList<>();
+
 
         initializePhysics();
     }
@@ -33,6 +39,16 @@ public class GameWorld {
             }
         }
         return aliens;
+    }
+
+    public void explode(int x, int y, int radius, int damage) {
+        for (Alien a : aliensInRadius(x, y, radius)) {
+            if (a != null && a.isAlive()) {
+                a.receiveDmg(damage);
+            }
+        }
+        getTerrain().makeHole(x, y, radius);
+        getPhysicsEngine().getTerrainPhysics().setModified(true);
     }
 
     public Terrain getTerrain() {
@@ -64,6 +80,14 @@ public class GameWorld {
         }
     }
 
+    public void addTrap(Trap trap) {
+        activeTraps.add(trap);
+    }
+    public void removeTrap(Trap trap) {
+        activeTraps.remove(trap);
+    }
+
+
     public PhysicsEngine getPhysicsEngine() {
         return physicsEngine;
 
@@ -72,4 +96,7 @@ public class GameWorld {
         return physicsEngine.getActiveProjectiles();
     }
 
+    public ArrayList<Trap> getActiveTraps() {
+        return activeTraps;
+    }
 }

@@ -9,6 +9,8 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
+import upc.model.jeu.Terrain;
+import upc.model.jeu.TerrainGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +18,13 @@ import java.util.Map;
 public class AlienPhysics {
 
     private final World<Body> world;
+    private final Terrain terrain;
 
     private final Map<Alien, Body> alienBodies = new HashMap<>();
     private final Map<Alien, Boolean> wasInAir = new HashMap<>();
     private final Map<Alien, Double> maxFallSpeed = new HashMap<>();
+    private final Map<Alien, Boolean> hasJumped = new HashMap<>();
+    private final Map<Alien, Double> previousVelocities = new HashMap<>();
 
     private static final double SAFE_FALL_SPEED = 15.0;
     private static final double MAX_FALL_SPEED = 20.0;
@@ -32,8 +37,9 @@ public class AlienPhysics {
     private static final double ALIEN_WIDTH = Converter.toMeters(20);
     private static final double ALIEN_HEIGHT = Converter.toMeters(37);
 
-    public AlienPhysics(World<Body> world) {
+    public AlienPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
+        this.terrain = terrain;
     }
 
     public void updateAliens() {
@@ -53,17 +59,23 @@ public class AlienPhysics {
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
 
+            int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
+            if (collisionY >= Terrain.getWaterLevel()) {
+                alien.receiveDmg(alien.getHealthPoints());
+            }
+
             if (body.getLinearVelocity().getMagnitude() < 0.1) {
                 body.setLinearVelocity(0, 0);
                 body.setAngularVelocity(0);
             }
+
+            previousVelocities.put(alien, body.getLinearVelocity().y);
         }
     }
 
     public void addAlienBody(Alien alien) {
         Body body = new Body();
 
-        // Utilise la forme capsule au lieu du rectangle
         Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);
         BodyFixture fixture = new BodyFixture(capsuleShape);
         fixture.setFriction(FRICTION);
@@ -85,11 +97,15 @@ public class AlienPhysics {
         this.alienBodies.put(alien, body);
         this.wasInAir.put(alien, false);
         this.maxFallSpeed.put(alien, 0.0);
+        this.hasJumped.put(alien, false);
+        this.previousVelocities.put(alien, 0.0);
     }
 
     public void removeAlien(Alien alien) {
         wasInAir.remove(alien);
         maxFallSpeed.remove(alien);
+        hasJumped.remove(alien);
+        previousVelocities.remove(alien);
         alienBodies.remove(alien);
     }
 
@@ -105,9 +121,10 @@ public class AlienPhysics {
 
     public void jumpAlien(Alien alien) {
         Body body = alienBodies.get(alien);
-        if (body != null && isOnGround(body)) {
+        if (body != null && isOnGround(body) && !hasJumped.getOrDefault(alien, false)) {
             body.applyImpulse(new Vector2(0, -45.0));
             body.setAtRest(false);
+            hasJumped.put(alien, true);
         }
     }
 
@@ -126,13 +143,17 @@ public class AlienPhysics {
 
         boolean wasAirborne = wasInAir.getOrDefault(alien, false);
         double maxSpeed = maxFallSpeed.getOrDefault(alien, 0.0);
+        double prevVelY = previousVelocities.getOrDefault(alien, 0.0);
 
-        if (wasAirborne && isOnGround && maxSpeed > SAFE_FALL_SPEED) {
-            int degats = (int) ((maxSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
-            if (degats > 0) {
-                alien.receiveDmg(degats);
+        if (wasAirborne && isOnGround && prevVelY > 0) {
+            if (maxSpeed > SAFE_FALL_SPEED) {
+                int degats = (int) ((maxSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
+                if (degats > 0) {
+                    alien.receiveDmg(degats);
+                }
             }
             maxFallSpeed.put(alien, 0.0);
+            hasJumped.put(alien, false);
         }
 
         if (!isOnGround) {
@@ -142,6 +163,7 @@ public class AlienPhysics {
 
         wasInAir.put(alien, !isOnGround);
     }
+
 
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();

@@ -32,7 +32,7 @@ public class PhysicsEngine {
         this.projectilePhysics = new ProjectilePhysics(this);
         this.terrainPhysics = new TerrainPhysics(world, terrain);
 
-        terrainPhysics.updateTerrain();
+        terrainPhysics.rebuildTerrain();
     }
 
 ////    UPDATE DES PHYSIQUES    ////
@@ -40,6 +40,7 @@ public class PhysicsEngine {
         world.update(dt);
         updateAliens();
         updateProjectiles();
+        updateTerrain();
     }
 
     public void updateAliens() {
@@ -49,6 +50,10 @@ public class PhysicsEngine {
 
     public void updateProjectiles() {
         projectilePhysics.updateProjectiles(terrain);
+    }
+
+    public void updateTerrain() {
+        terrainPhysics.updateTerrain();
     }
 
 
@@ -111,5 +116,9 @@ public class PhysicsEngine {
 
     public void setWind(double windX, double windY) {
         this.wind = new Vector2(windX, windY);
+    }
+
+    public TerrainPhysics getTerrainPhysics() {
+        return terrainPhysics;
     }
 }

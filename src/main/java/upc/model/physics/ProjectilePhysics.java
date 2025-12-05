@@ -10,6 +10,7 @@ import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
+import upc.model.entites.ProjectileGrenade;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,36 +34,19 @@ public class ProjectilePhysics {
 
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
+        if (projectile instanceof ProjectileGrenade) {
+            // GRENADE : Rebondit, roule, soumise à la gravité normale
+            double radius = Converter.toMeters(5);
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(1.0);      // Friction élevée pour rouler
+            fixture.setRestitution(0.5);   // Rebondit à 50% de sa vitesse
+            fixture.setDensity(2.0);       // Assez dense
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
 
-        double radius = Converter.toMeters(5);
-        BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
-        fixture.setFriction(0.3);
-        fixture.setRestitution(0.3);
-        fixture.setDensity(1.5);
-
-        body.addFixture(fixture);
-        body.setMass(MassType.NORMAL);
-        body.setBullet(true);
-
-        double startX = Converter.toMeters(projectile.getPosition().getX());
-        double startY = Converter.toMeters(projectile.getPosition().getY());
-        body.translate(startX, startY);
-
-        double angleRad = Math.toRadians(angleDegrees);
-        double baseVelocity = projectile.getSpeed();
-        double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
-
-        double vx = velocityMagnitude * Math.cos(angleRad);
-        double vy = -velocityMagnitude * Math.sin(angleRad);
-
-        body.setLinearVelocity(vx, vy);
-        body.setUserData(projectile);
-
-        projectile.setBody(body);
-        world.addBody(body);
-        activeProjectiles.add(projectile);
-
+        }
         return body;
+
     }
 
     private void applyWindToProjectiles() {

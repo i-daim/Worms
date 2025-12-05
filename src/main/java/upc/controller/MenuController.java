@@ -17,11 +17,10 @@ public class MenuController {
         addListeners();
     }
 
-    public void addListeners() {
+    private void addListeners() {
         menuPanel.addNewGameListener(e -> {
             GameManager gameManager = new GameManager("liberty");
             GamePanel gamePanel = new GamePanel(gameManager);
-
             new GameController(gamePanel, gameManager);
 
             menuPanel.stopMusic();
@@ -32,11 +31,12 @@ public class MenuController {
 
             gamePanel.requestFocusInWindow();
         });
-
         menuPanel.addLoadGameListener(e -> {
+            System.out.println("Load Game non implémenté pour le moment.");
+        });
+        menuPanel.addSettingsListener(e -> {
             SettingsPanel settingsPanel = new SettingsPanel();
 
-            // Retour au menu
             settingsPanel.getBackButton().addActionListener(ev -> {
                 mainFrame.setContentPane(menuPanel);
                 mainFrame.revalidate();
@@ -47,7 +47,6 @@ public class MenuController {
             mainFrame.revalidate();
             mainFrame.repaint();
         });
-
         menuPanel.addQuitterListener(e -> System.exit(0));
     }
 }

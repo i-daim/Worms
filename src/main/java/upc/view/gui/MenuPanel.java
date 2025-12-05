@@ -43,12 +43,12 @@ public class MenuPanel extends JPanel {
         this.add(Box.createVerticalGlue());
 
         this.add(newGame);
-        this.add(Box.createVerticalStrut(20)); 
+        this.add(Box.createVerticalStrut(20));
         this.add(loadGame);
-        this.add(Box.createVerticalStrut(20)); 
+        this.add(Box.createVerticalStrut(20));
         this.add(settingsButton);
         this.add(Box.createVerticalStrut(20));
-        this.add(quitGame); 
+        this.add(quitGame);
         this.add(Box.createVerticalStrut(20));
 
         this.add(Box.createVerticalGlue());

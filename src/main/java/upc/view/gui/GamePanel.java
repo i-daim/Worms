@@ -17,6 +17,7 @@ public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
     public static final int DEFAULT_HEIGHT = 720;
+    public static final double ZOOM = 2;
 
     private final GameManager gameManager;
     private final Terrain terrain;
@@ -47,7 +48,7 @@ public class GamePanel extends JPanel {
                 RenderingHints.VALUE_RENDER_SPEED);
 
         // Zoom + ajustement de la caméra
-        g2.scale(getZoomX(), getZoomY());
+        g2.scale(ZOOM, ZOOM);
         g2.translate(-cameraX, -cameraY);
 
         // Affichage du background
@@ -77,7 +78,7 @@ public class GamePanel extends JPanel {
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
-        g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
+        g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
 
         // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setSize(getWidth(), 100);
@@ -87,8 +88,8 @@ public class GamePanel extends JPanel {
     }
 
     public Point screenToWorld(Point screenPoint) {
-        double worldX = (screenPoint.x / getZoomX()) + cameraX;
-        double worldY = (screenPoint.y / getZoomY()) + cameraY;
+        double worldX = (screenPoint.x / ZOOM) + cameraX;
+        double worldY = (screenPoint.y / ZOOM) + cameraY;
         return new Point((int) worldX, (int) worldY);
     }
 
@@ -138,6 +139,7 @@ public class GamePanel extends JPanel {
     public double getZoomY() {
         return Math.max(1.0, (double) getHeight() / DEFAULT_HEIGHT);
     }
+
 
     public void setCamera(int x, int y) {
         cameraX = x;

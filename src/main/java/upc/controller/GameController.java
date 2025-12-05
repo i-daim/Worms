@@ -117,15 +117,15 @@ public class GameController {
     private void handleCameraScroll(Point mousePos) {
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
-        int limit = 50;
+        int limit = (int) (50 * GamePanel.ZOOM);
 
         int camX = gamePanel.getCameraX();
         int camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
 
-        double zoomX = gamePanel.getZoomX();
-        double zoomY = gamePanel.getZoomY();
+        double zoomX = GamePanel.ZOOM;
+        double zoomY = GamePanel.ZOOM;
 
         if (mousePos.x > width - limit) {
             camX += CAMERA_SPEED;

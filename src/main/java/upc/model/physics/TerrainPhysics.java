@@ -15,18 +15,27 @@ public class TerrainPhysics {
 
     private Body terrainBody;
 
+    private boolean modified = false;
+
     public TerrainPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
         this.terrain = terrain;
 
-        updateTerrain();
+        rebuildTerrain();
+    }
+
+    public void updateTerrain() {
+        if (modified) {
+            rebuildTerrain();
+            modified = false;
+        }
     }
 
     /**
      * Met à jour le terrain en supprimant l'ancien corps et le remplaçant
      * par un nouveau avec les collisions actuelles
      */
-    public void updateTerrain() {
+    public void rebuildTerrain() {
         if (terrainBody != null) {
             world.removeBody(terrainBody);
         }
@@ -89,5 +98,10 @@ public class TerrainPhysics {
         fixture.getShape().translate(x, y);
 
         terrainBody.addFixture(fixture);
+    }
+
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
 }

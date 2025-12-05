@@ -30,17 +30,19 @@ public class AnimationManager {
         return animations.get(name);
     }
 
-    public static Animation getSprite(int type, String name) {
+    public static Animation getSprite(int type, String name, boolean direction) {
+        String fullName = name + (direction? "_right" : "_left");
+
         if (type == 0) {
-            if (!zlerps.containsKey(name)) {
-                return zlerps.get("idle");
+            if (!zlerps.containsKey(fullName)) {
+                return zlerps.get("idle_right");
             }
-            return zlerps.get(name);
+            return zlerps.get(fullName);
         } else {
-            if (!glorbs.containsKey(name)) {
-                return glorbs.get("idle");
+            if (!glorbs.containsKey(fullName)) {
+                return glorbs.get("idle_right");
             }
-            return glorbs.get(name);
+            return glorbs.get(fullName);
         }
     }
 }

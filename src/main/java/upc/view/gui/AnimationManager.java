@@ -28,11 +28,17 @@ public class AnimationManager {
         return animations.get(name);
     }
 
-    public static Animation getZlerp(String name) {
-        return zlerps.get(name);
-    }
-
-    public static Animation getGlorb(String name) {
-        return glorbs.get(name);
+    public static Animation getSprite(int type, String name) {
+        if (type == 0) {
+            if (!zlerps.containsKey(name)) {
+                return zlerps.get("idle");
+            }
+            return zlerps.get(name);
+        } else {
+            if (!glorbs.containsKey(name)) {
+                return glorbs.get("idle");
+            }
+            return glorbs.get(name);
+        }
     }
 }

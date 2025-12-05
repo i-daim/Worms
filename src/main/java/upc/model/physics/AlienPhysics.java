@@ -121,9 +121,10 @@ public class AlienPhysics {
 
     public void jumpAlien(Alien alien) {
         Body body = alienBodies.get(alien);
-        if (body != null && isOnGround(body)) {
+        if (body != null && isOnGround(body) && !hasJumped.getOrDefault(alien, false)) {
             body.applyImpulse(new Vector2(0, -45.0));
             body.setAtRest(false);
+            hasJumped.put(alien, true);
         }
     }
 

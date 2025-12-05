@@ -18,7 +18,7 @@ public class AnimationManager {
         zlerps.put("jump", new Animation("characters/zlerp/jump", 4, false));
 
         glorbs.put("idle_right", new Animation("characters/glorb/idle", 1, false));
-        glorbs.put("idle_left", new Animation("characters/glorb/idle", 1,true));
+        glorbs.put("idle_left", new Animation("characters/glorb/idle", 1, true));
 
         // Animations monde //
         animations.put("water", new Animation("animations/water/water", 8, false));
@@ -31,7 +31,7 @@ public class AnimationManager {
     }
 
     public static Animation getSprite(int type, String name, boolean direction) {
-        String fullName = name + (direction? "_right" : "_left");
+        String fullName = name + (direction ? "_right" : "_left");
 
         if (type == 0) {
             if (!zlerps.containsKey(fullName)) {

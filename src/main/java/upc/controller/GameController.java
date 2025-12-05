@@ -157,10 +157,12 @@ public class GameController {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             if (leftPressed && !rightPressed) {
-                activeAlien.setState(Alien.State.WALK_LEFT);
+                activeAlien.setState(Alien.State.WALK);
+                activeAlien.setDirection(false);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, -1.0);
             } else if (rightPressed && !leftPressed) {
-                activeAlien.setState(Alien.State.WALK_RIGHT);
+                activeAlien.setState(Alien.State.WALK);
+                activeAlien.setDirection(true);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 1.0);
             } else {
                 activeAlien.setState(Alien.State.IDLE);

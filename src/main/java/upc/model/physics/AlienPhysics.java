@@ -23,13 +23,12 @@ public class AlienPhysics {
     private final Map<Alien, Body> alienBodies = new HashMap<>();
     private final Map<Alien, Boolean> wasInAir = new HashMap<>();
     private final Map<Alien, Double> maxFallSpeed = new HashMap<>();
+    private final Map<Alien, Boolean> hasJumped = new HashMap<>();
+    private final Map<Alien, Double> previousVelocities = new HashMap<>();
 
     private static final double SAFE_FALL_SPEED = 15.0;
     private static final double MAX_FALL_SPEED = 20.0;
     private static final int DMG_MULTIPLIER = 1;
-
-    private final Map<Alien, Boolean> hasJumped = new HashMap<>();
-    private final Map<Alien, Double> previousVelocities = new HashMap<>();
 
     private static final double FRICTION = 0.0;
     private static final double DENSITY = 1.2;

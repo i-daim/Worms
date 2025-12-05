@@ -30,8 +30,12 @@ public class TestWeapons {
 
     @Test
     public void testUziConstantes() {
-        assertEquals(2, Uzi.DEGATS);
-        assertEquals(25, Uzi.NBTIR);
+        Uzi uzi = new Uzi();
+
+        assertEquals("Uzi", uzi.getName());
+        assertEquals(10, uzi.getDamage());
+        assertEquals(30, uzi.getNbOfShots());
+        assertEquals(80, uzi.getPuissanceTir());
     }
 
     @Test

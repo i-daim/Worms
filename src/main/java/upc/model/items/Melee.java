@@ -3,16 +3,18 @@ package upc.model.items;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameWorld;
 
-public abstract class Melee extends Weapon implements Usable {
-    //chaque arme de corps à corps provoque le déplacement d'un ver touché
+public abstract class Melee extends Weapon implements Item {
+
     private int deplacement;
 
+    private static final int NB_OF_HITS = 1;
+
     public Melee(String nom, int degats, int rayon, int deplacement) {
-        super(nom, degats, rayon);
+        super(nom, degats, NB_OF_HITS);
         this.deplacement = deplacement;
     }
 
     @Override
-    public void utiliser(GameWorld gameWorld, Alien alienActif) {
+    public void useItem(GameWorld gameWorld, Alien alienActif) {
     }
 }

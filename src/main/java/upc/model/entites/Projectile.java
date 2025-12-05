@@ -1,46 +1,72 @@
 package upc.model.entites;
 
 import org.dyn4j.dynamics.Body;
-import upc.model.items.Weapon;
 
 public class Projectile extends Entity {
-    public enum ProjectileState {
+
+    public enum Type {
+        BULLET,
+        GRENADE,
+        ROCKET
+    }
+
+    public enum State {
         FLYING,
         EXPLODED,
         OUT_OF_BOUNDS
-      }
-    private final Weapon weapon;
+    }
+
     private final Alien shooter;
+    private final int damage;
+    private final int explosionRadius;
+    private final boolean explosive;
+
     private Body body;
-    private ProjectileState state;
+    private State state;
     private int frameCount;
 
-    public Projectile(Weapon weapon, Alien shooter, int startX, int startY) {
-        super(startX, startY, 1);
-        this.weapon = weapon;
+
+////    CONSTRUCTOR    ////
+    public Projectile(Alien shooter, Position position, int damage,
+                      int explosionRadius, boolean explosive, double speed) {
+        super(position, speed);
         this.shooter = shooter;
-        this.state = ProjectileState.FLYING;
+        this.damage = damage;
+        this.explosionRadius = explosionRadius;
+        this.explosive = explosive;
+        this.state = State.FLYING;
      }
-    public Weapon getWeapon() {
-        return weapon;
-    }
+
+
+////    GETTERS    ////
     public Alien getShooter() {
         return shooter;
+    }
+    public int getDamage() {
+        return damage;
+    }
+    public int getExplosionRadius() {
+        return explosionRadius;
+    }
+    public boolean isExplosive() {
+        return explosive;
+    }
+    public boolean isActive() {
+        return state == State.FLYING;
+    }
+    public State getState() {
+        return state;
     }
     public Body getBody() {
         return body;
     }
+
+////    SETTERS    ////
     public void setBody(Body body) {
         this.body = body;
     }
-    public ProjectileState getState() {
-        return state;
-    }
-    public void setState(ProjectileState state) {
+    public void setState(State state) {
         this.state = state;
-    }
-    public boolean isActive() {
-        return state == ProjectileState.FLYING;
     }
     public void incrementFrame() {
         frameCount++;

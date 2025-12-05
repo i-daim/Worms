@@ -1,37 +1,25 @@
 package upc.model.items;
 
-import upc.model.entites.Alien;
-import upc.model.entites.Projectile;
+public abstract class Weapon implements Item {
 
-public abstract class Weapon implements Usable {
-    private String nom;
-    private int degats;
-    private int rayonExplosion;
+    private String name;
+    private int damage;
+    private int nbOfShots;
 
-    public Weapon(String nom, int degats, int rayonExplosion) {
-        this.nom = nom;
-        this.degats = degats;
-        this.rayonExplosion = rayonExplosion;
+    public Weapon(String name, int damage, int nbOfShots) {
+        this.name = name;
+        this.damage = damage;
+        this.nbOfShots = nbOfShots;
     }
 
-    public String getNom() {
-        return nom;
+////    GETTERS    ////
+    public String getName() {
+        return name;
     }
-    public int getDegats() {
-        return degats;
+    public int getDamage() {
+        return damage;
     }
-    public int getRayonExplosion() {
-        return rayonExplosion;
+    public int getNbOfShots() {
+        return nbOfShots;
     }
-
-    public abstract double getInitialVelocity();
-    public abstract boolean isAffectedByWind();
-    public Projectile createProjectile(Alien shooter) {
-        int x = shooter.getPosition().getX();
-        int y = shooter.getPosition().getY();
-        return new Projectile(this, shooter, x, y);
-    }
-
-
-
 }

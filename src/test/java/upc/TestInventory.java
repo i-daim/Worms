@@ -2,9 +2,9 @@ package upc;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import upc.model.items.Grenade;
-import upc.model.items.Inventory;
-import upc.model.items.Uzi;
+
+import upc.model.jeu.Inventory;
+import upc.model.items.Item.Type;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,58 +20,50 @@ public class TestInventory {
 
     @Test
     public void testAjouterMunitionSimple() {
-        Grenade grenade = new Grenade("Grenade");
-        inventory.ajouterMunition(grenade, 10);
+        inventory.ajouterMunition(Type.GRENADE, 10);
 
-        assertEquals(10, inventory.getStockMunitions().get(grenade));
+        assertEquals(10, inventory.getStockMunitions().get(Type.GRENADE));
     }
 
     @Test
     public void testAjouterMunitionPlusieurs() {
-        Grenade grenade = new Grenade("Grenade");
-        inventory.ajouterMunition(grenade, 10);
-        inventory.ajouterMunition(grenade, 5);
+        inventory.ajouterMunition(Type.GRENADE, 10);
+        inventory.ajouterMunition(Type.GRENADE, 5);
 
-        assertEquals(15, inventory.getStockMunitions().get(grenade));
+        assertEquals(15, inventory.getStockMunitions().get(Type.GRENADE));
     }
 
     @Test
     public void testAjouterMunitionNegative() {
-        Grenade grenade = new Grenade("Grenade");
-        inventory.ajouterMunition(grenade, -5);
+        inventory.ajouterMunition(Type.GRENADE, -5);
 
-        assertNull(inventory.getStockMunitions().get(grenade));
+        assertNull(inventory.getStockMunitions().get(Type.GRENADE));
     }
 
     @Test
     public void testAjouterMunitionZero() {
-        Grenade grenade = new Grenade("Grenade");
-        inventory.ajouterMunition(grenade, 0);
+        inventory.ajouterMunition(Type.GRENADE, 0);
 
-        assertNull(inventory.getStockMunitions().get(grenade));
+        assertNull(inventory.getStockMunitions().get(Type.GRENADE));
     }
 
     @Test
     public void testEstDisponibleAvecStock() {
-        Grenade grenade = new Grenade("Grenade");
-        inventory.ajouterMunition(grenade, 10);
+        inventory.ajouterMunition(Type.GRENADE, 10);
 
-        assertTrue(inventory.estDisponible(grenade));
+        assertTrue(inventory.estDisponible(Type.GRENADE));
     }
 
     @Test
     public void testEstDisponibleSansStock() {
-        Grenade grenade = new Grenade("Grenade");
-
-        assertFalse(inventory.estDisponible(grenade));
+        assertFalse(inventory.estDisponible(Type.GRENADE));
     }
 
     @Test
     public void testEstDisponibleIllimite() {
-        Uzi uzi = new Uzi("Uzi");
-        inventory.getStockMunitions().put(uzi, -1);
+        inventory.getStockMunitions().put(Type.UZI, -1);
 
-        assertTrue(inventory.estDisponible(uzi));
+        assertTrue(inventory.estDisponible(Type.UZI));
     }
 
     @Test

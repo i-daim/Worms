@@ -68,7 +68,7 @@ public class GamePanel extends JPanel {
         g2.drawImage(terrainImage, 0, 0, this);
 
         // Affichage des entites
-        drawWorms(g2);
+        drawAliens(g2);
 
         // Affichage de l'eau
         drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
@@ -94,23 +94,17 @@ public class GamePanel extends JPanel {
     }
 
 
-    public void drawWorms(Graphics2D g2) {
+    public void drawAliens(Graphics2D g2) {
         for (Alien w : gameManager.getWorld().getActiveWorms()) {
             if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
                 int posX = w.getPosition().getX();
                 int posY = w.getPosition().getY();
 
                 if (w.getTeam() == gameManager.getTeam(0)) {
-                    BufferedImage sprite = AnimationManager.getZlerp("idle").getFrames().get(0);
-                    int drawX = posX - sprite.getWidth() / 2;
-                    int drawY = posY - sprite.getHeight() / 2;
-                    g2.drawImage(sprite, drawX, drawY, this);
+                    drawAlien(g2, w, 0);
                 } else {
                     // Pour quand on aura des animations séparées pour la 2e équipe
-                    BufferedImage sprite = AnimationManager.getGlorb("idle").getFrames().get(0);
-                    int drawX = posX - sprite.getWidth() / 2;
-                    int drawY = posY - sprite.getHeight() / 2;
-                    g2.drawImage(sprite, drawX, drawY, this);
+                    drawAlien(g2, w, 1);
                 }
             }
         }

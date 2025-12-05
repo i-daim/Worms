@@ -5,9 +5,9 @@ public abstract class Weapon implements Item {
     private String name;
     private int damage;
     private int nbOfShots;
-    protected int puissanceTir;
+    private int puissanceTir;
 
-    public Weapon(String name, int damage, int nbOfShots) {
+    public Weapon(String name, int damage, int nbOfShots, int puissanceTir) {
         this.name = name;
         this.damage = damage;
         this.nbOfShots = nbOfShots;

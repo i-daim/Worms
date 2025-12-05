@@ -7,11 +7,8 @@ import upc.model.entites.Alien;
 import upc.model.jeu.GameWorld;
 
 public class Shotgun extends Weapon {
-    public static final int DEGATS = 25;
-    public static final int NBTIR = 2;
-
     public Shotgun() {
-        super("Shotgun", DEGATS, NBTIR);
+        super("Shotgun", 35, 8,60);
     }
 
     public void useItem(GameWorld gameWorld, Alien shooter) {

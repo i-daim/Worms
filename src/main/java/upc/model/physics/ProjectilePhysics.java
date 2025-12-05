@@ -49,7 +49,7 @@ public class ProjectilePhysics {
         body.translate(startX, startY);
 
         double angleRad = Math.toRadians(angleDegrees);
-        double baseVelocity = projectile.getWeapon().getInitialVelocity();
+        double baseVelocity = projectile.getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
         double vx = velocityMagnitude * Math.cos(angleRad);
@@ -67,7 +67,7 @@ public class ProjectilePhysics {
 
     private void applyWindToProjectiles() {
         for (Projectile proj : activeProjectiles) {
-            if (proj.isActive() && proj.getWeapon().isAffectedByWind()) {
+            if (proj.isActive()) {
                 Body body = proj.getBody();
                 if (body != null) {
                     Vector2 windForce = wind.product(0.5); // 50% de la force du vent
@@ -101,14 +101,14 @@ public class ProjectilePhysics {
                             || x < -50
                             || x > terrain.getCollisionsWidth() + 50
             ) {
-                proj.setState(Projectile.ProjectileState.OUT_OF_BOUNDS);
+                proj.setState(Projectile.State.OUT_OF_BOUNDS);
                 world.removeBody(body);
                 iterator.remove();
                 continue;
             }
 
             if (body.getLinearVelocity().getMagnitude() < 1.0 && proj.getFrameCount() > 10) {
-                proj.setState(Projectile.ProjectileState.EXPLODED);
+                proj.setState(Projectile.State.EXPLODED);
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
@@ -119,8 +119,8 @@ public class ProjectilePhysics {
     public void explodeProjectile(Projectile proj) {
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
-        int radius = proj.getWeapon().getRayonExplosion();
-        int damage = proj.getWeapon().getDegats();
+        int radius = proj.getExplosionRadius();
+        int damage = proj.getDamage();
 
         // Infliger dégâts aux worms proches
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {

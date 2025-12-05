@@ -3,7 +3,6 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.items.Inventory;
 
 import java.util.List;
 

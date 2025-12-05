@@ -143,13 +143,17 @@ public class AlienPhysics {
 
         boolean wasAirborne = wasInAir.getOrDefault(alien, false);
         double maxSpeed = maxFallSpeed.getOrDefault(alien, 0.0);
+        double prevVelY = previousVelocities.getOrDefault(alien, 0.0);
 
-        if (wasAirborne && isOnGround && maxSpeed > SAFE_FALL_SPEED) {
-            int degats = (int) ((maxSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
-            if (degats > 0) {
-                alien.receiveDmg(degats);
+        if (wasAirborne && isOnGround && prevVelY > 0) {
+            if (maxSpeed > SAFE_FALL_SPEED) {
+                int degats = (int) ((maxSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
+                if (degats > 0) {
+                    alien.receiveDmg(degats);
+                }
             }
             maxFallSpeed.put(alien, 0.0);
+            hasJumped.put(alien, false);
         }
 
         if (!isOnGround) {
@@ -159,6 +163,7 @@ public class AlienPhysics {
 
         wasInAir.put(alien, !isOnGround);
     }
+
 
     private boolean isOnGround(Body body) {
         Vector2 vel = body.getLinearVelocity();

@@ -85,7 +85,7 @@ public class ProjectilePhysics {
         body.translate(startX, startY);
 
         double angleRad = Math.toRadians(angleDegrees);
-        double baseVelocity = projectile.getWeapon().getInitialVelocity();
+        double baseVelocity = projectile.getWeapon().getPuissanceTir();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
         double vx = velocityMagnitude * Math.cos(angleRad);

@@ -50,7 +50,6 @@ public class MenuPanel extends JPanel {
         this.add(Box.createVerticalStrut(20));
         this.add(quitGame);
         this.add(Box.createVerticalStrut(20));
-
         this.add(Box.createVerticalGlue());
 
         menuMusic.setVolume(-10);

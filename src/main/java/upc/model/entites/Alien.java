@@ -9,6 +9,7 @@ public class Alien extends Entity {
     private final Team team;
     private int healthPoints;
     private boolean alive;
+    private boolean direction;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -34,6 +35,7 @@ public class Alien extends Entity {
         this.team = team;
         this.alive = true;
         this.state = State.IDLE;
+        this.direction = true;
     }
 
     public int getHealthPoints() {
@@ -115,5 +117,13 @@ public class Alien extends Entity {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public boolean getDirection() {
+        return direction;
+    }
+
+    public void setDirection(boolean direction) {
+        this.direction = direction;
     }
 }

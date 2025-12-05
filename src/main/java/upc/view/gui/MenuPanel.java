@@ -43,10 +43,9 @@ public class MenuPanel extends JPanel {
         this.add(newGame);
         this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
         this.add(loadGame);
-        this.add(Box.createVerticalStrut(20));// Ajout un espace entre les boutons
+        this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
         this.add(settingsButton);
-        this.add(Box.createVerticalStrut(20)); // Ajout du Nouveau bouton
-        this.add(quitGame);
+        this.add(Box.createVerticalStrut(20));
 
         this.add(Box.createVerticalGlue());
     }

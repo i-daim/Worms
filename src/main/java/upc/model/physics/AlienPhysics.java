@@ -97,6 +97,8 @@ public class AlienPhysics {
         this.alienBodies.put(alien, body);
         this.wasInAir.put(alien, false);
         this.maxFallSpeed.put(alien, 0.0);
+        this.hasJumped.put(alien, false);
+        this.previousVelocities.put(alien, 0.0);
     }
 
     public void removeAlien(Alien alien) {

@@ -14,7 +14,7 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
-    private static final int CAMERA_SPEED = 15;
+    private static final int CAMERA_SPEED = 10;
     private Point mousePosition = new Point(0, 0);
 
     private boolean leftPressed = false;

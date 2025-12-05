@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import upc.model.items.Grenade;
 import upc.model.items.Uzi;
 import upc.model.items.Shotgun;
+import upc.model.items.Mine;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,5 +37,21 @@ public class TestWeapons {
         assertEquals(35, shotgun.getDamage());
         assertEquals(8, shotgun.getNbOfShots());
         assertEquals(60, shotgun.getPuissanceTir());
+    }
+    @Test
+    public void testMineConstantes() {
+        assertEquals(45, Mine.DAMAGE);
+        assertEquals(3, Mine.EXPLOSION_RADIUS);
+        assertEquals(3, Mine.ACTIVATION_RADIUS);
+    }
+
+    @Test
+    public void testMineConstructeur() {
+        Mine mine = new Mine();
+
+        assertEquals("Mine", mine.getName());
+        assertEquals(45, mine.getDamage());
+        assertEquals(1, mine.getNbOfShots());
+        assertEquals(15, mine.getPuissanceTir());
     }
 }

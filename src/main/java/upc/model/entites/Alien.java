@@ -15,6 +15,17 @@ public class Alien extends Entity {
     private static final int JUMP = -20;
     private static final int INITIAL_HP = 100;
 
+    // Etat de l'alien (pour la partie graphique)
+    public enum State {
+        IDLE,
+        WALK_RIGHT,
+        WALK_LEFT,
+        JUMP
+    }
+
+    private State state;
+
+
 
     // Constructeur
     public Alien(Team team, Position position) {
@@ -22,6 +33,7 @@ public class Alien extends Entity {
         this.healthPoints = INITIAL_HP;
         this.team = team;
         this.alive = true;
+        this.state = State.IDLE;
     }
 
     public int getHealthPoints() {
@@ -40,11 +52,9 @@ public class Alien extends Entity {
         if (!alive) {
             return;
         }
-
         if (damage < 0) {
             damage = 0;
         }
-
         healthPoints -= damage;
 
         if (healthPoints <= 0) {
@@ -57,28 +67,29 @@ public class Alien extends Entity {
         if (!alive) {
             return false;
         }
-
         if (terrain.possibleMove(newPosition)) {
             setPosition(newPosition);
             return true;
         }
-
         return false;
     }
 
     public boolean moveRight(Terrain terrain) {
         Position newPosition = getPosition().deplacer(SPEED, 0);
+        setState(State.WALK_RIGHT);
         return move(newPosition, terrain);
     }
 
     public boolean moveLeft(Terrain terrain) {
         Position newPosition = getPosition().deplacer(-SPEED, 0);
+        setState(State.WALK_LEFT);
         return move(newPosition, terrain);
     }
 
 
     public boolean jump(Terrain terrain) {
         Position newPosition = getPosition().deplacer(0, JUMP);
+        setState(State.JUMP);
         return move(newPosition, terrain);
     }
 
@@ -98,9 +109,11 @@ public class Alien extends Entity {
                 && posY <= cameraY + GamePanel.DEFAULT_HEIGHT + margin;
     }
 
-    @Override
-    public String toString() {
-        return "Worm[PV=" + healthPoints + ", Vivant=" + alive + "]";
+    public State getState() {
+        return state;
     }
 
+    public void setState(State state) {
+        this.state = state;
+    }
 }

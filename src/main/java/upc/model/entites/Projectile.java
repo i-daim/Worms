@@ -25,17 +25,20 @@ public class Projectile extends Entity {
     private Body body;
     private State state;
     private int frameCount;
+    private final Weapon weapon;
 
 
     /// /    CONSTRUCTOR    ////
     public Projectile(Alien shooter, Position position, int damage,
-                      int explosionRadius, boolean explosive, double speed) {
+                      int explosionRadius, boolean explosive, double speed,   Weapon weapon) {
         super(position, speed);
         this.shooter = shooter;
         this.damage = damage;
         this.explosionRadius = explosionRadius;
         this.explosive = explosive;
         this.state = State.FLYING;
+        this.weapon = weapon;
+
     }
 
 
@@ -71,6 +74,7 @@ public class Projectile extends Entity {
     public Weapon getWeapon() {
         return weapon;
     }
+
 
 
     /// /    SETTERS    ////

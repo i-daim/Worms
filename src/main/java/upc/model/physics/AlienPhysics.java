@@ -28,6 +28,9 @@ public class AlienPhysics {
     private static final double MAX_FALL_SPEED = 20.0;
     private static final int DMG_MULTIPLIER = 1;
 
+    private final Map<Alien, Boolean> hasJumped = new HashMap<>();
+    private final Map<Alien, Double> previousVelocities = new HashMap<>();
+
     private static final double FRICTION = 0.0;
     private static final double DENSITY = 1.2;
     private static final double LINEAR_DAMPING = 4.0;

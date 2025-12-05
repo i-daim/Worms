@@ -1,7 +1,14 @@
 package upc.view.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Box;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 
 public class SettingsPanel extends JPanel {
 

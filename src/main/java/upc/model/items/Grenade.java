@@ -1,6 +1,4 @@
 package upc.model.items;
-import upc.model.entites.Projectile;
-import upc.model.entites.ProjectileGrenade;
 import upc.model.entites.Alien;
 
 import upc.model.jeu.GameWorld;

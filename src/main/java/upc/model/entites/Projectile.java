@@ -1,6 +1,7 @@
 package upc.model.entites;
 
 import org.dyn4j.dynamics.Body;
+import upc.model.items.Weapon;
 
 public class Projectile extends Entity {
 
@@ -26,7 +27,7 @@ public class Projectile extends Entity {
     private int frameCount;
 
 
-////    CONSTRUCTOR    ////
+    /// /    CONSTRUCTOR    ////
     public Projectile(Alien shooter, Position position, int damage,
                       int explosionRadius, boolean explosive, double speed) {
         super(position, speed);
@@ -35,54 +36,68 @@ public class Projectile extends Entity {
         this.explosionRadius = explosionRadius;
         this.explosive = explosive;
         this.state = State.FLYING;
-     }
+    }
 
 
-////    GETTERS    ////
+    /// /    GETTERS    ////
     public Alien getShooter() {
         return shooter;
     }
+
     public int getDamage() {
         return damage;
     }
+
     public int getExplosionRadius() {
         return explosionRadius;
     }
+
     public boolean isExplosive() {
         return explosive;
     }
+
     public boolean isActive() {
         return state == State.FLYING;
     }
+
     public State getState() {
         return state;
     }
+
     public Body getBody() {
         return body;
     }
 
-////    SETTERS    ////
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+
+    /// /    SETTERS    ////
     public void setBody(Body body) {
         this.body = body;
     }
+
     public void setState(State state) {
         this.state = state;
     }
+
     public void incrementFrame() {
         frameCount++;
     }
+
     public int getFrameCount() {
         return frameCount;
     }
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -17,8 +17,4 @@ public class Shotgun extends Weapon {
     public void useItem(GameWorld gameWorld, Alien shooter) {
 
     }
-    @Override
-    public Projectile createProjectile(Alien shooter) {
-        return new ProjectileBalle(this, shooter);
-    }
 }

@@ -10,9 +10,9 @@ import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
-import upc.model.entites.ProjectileGrenade;
 import upc.model.entites.ProjectileBalle;
 import upc.model.entites.ProjectileMine;
+import upc.model.entites.ProjectileGrenade;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,34 +37,39 @@ public class ProjectilePhysics {
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
         if (projectile instanceof ProjectileGrenade) {
+            // GRENADE : Rebondit, roule, soumise à la gravité normale
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
-            fixture.setFriction(1.0);
-            fixture.setRestitution(0.5);
-            fixture.setDensity(2.0);
+            fixture.setFriction(1.0);      // Friction élevée pour rouler
+            fixture.setRestitution(0.5);   // Rebondit à 50% de sa vitesse
+            fixture.setDensity(2.0);       // Assez dense
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        }else if (projectile instanceof ProjectileBalle) {
-            double radius = Converter.toMeters(2);
+        } else if (projectile instanceof ProjectileBalle) {
+            // BALLE (Uzi/Shotgun) : Pas de rebond, très légère, trajectoire tendue
+            double radius = Converter.toMeters(2); // Tout petit
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.0);
-            fixture.setRestitution(0.0);
-            fixture.setDensity(0.5);
+            fixture.setRestitution(0.0);   // S'écrase, ne rebondit pas
+            fixture.setDensity(0.5);       // Légère
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
-            body.setBullet(true);
+            body.setBullet(true);          // CCD pour éviter de traverser les murs à haute vitesse
+
         } else if (projectile instanceof ProjectileMine) {
+            // MINE : Forme rectangulaire, se pose, très lourde
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
-            fixture.setFriction(5.0);
-            fixture.setRestitution(0.0);
-            fixture.setDensity(10.0);
+            fixture.setFriction(5.0);      // Très rugueux, ne doit pas glisser
+            fixture.setRestitution(0.0);   // Pas de rebond
+            fixture.setDensity(10.0);      // Très lourd pour ne pas être poussé facilement
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        }else {
+        } else {
+            // DEFAUT (Roquette) : Cercle standard, explose au contact
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);
@@ -72,12 +77,26 @@ public class ProjectilePhysics {
             fixture.setDensity(1.5);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
-            body.setBullet(true);
+            body.setBullet(true); // Pour éviter de traverser les murs
         }
+
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
 
+        double angleRad = Math.toRadians(angleDegrees);
+        double baseVelocity = projectile.getWeapon().getInitialVelocity();
+        double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
+
+        double vx = velocityMagnitude * Math.cos(angleRad);
+        double vy = -velocityMagnitude * Math.sin(angleRad);
+
+        body.setLinearVelocity(vx, vy);
+        body.setUserData(projectile); // Lien vers l'objet logique
+
+        projectile.setBody(body);
+        world.addBody(body);
+        activeProjectiles.add(projectile);
 
         return body;
 

@@ -13,6 +13,7 @@ import upc.model.jeu.Terrain;
 import upc.model.entites.ProjectileBalle;
 import upc.model.entites.ProjectileMine;
 import upc.model.entites.ProjectileGrenade;
+import upc.model.entites.ProjectileBazooka;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -68,17 +69,17 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        } else {
-            // DEFAUT (Roquette) : Cercle standard, explose au contact
+        } else if (projectile instanceof ProjectileBazooka) {
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);
             fixture.setRestitution(0.0);
-            fixture.setDensity(1.5);
+            fixture.setDensity(2.5);      // un peu plus lourd
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
-            body.setBullet(true); // Pour éviter de traverser les murs
+            body.setBullet(true);
         }
+
 
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());

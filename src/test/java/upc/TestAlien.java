@@ -147,4 +147,130 @@ public class TestAlien {
 
         assertTrue(team.isEliminated());
     }
+
+    @Test
+    public void testGetTeam() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertEquals(team, alien.getTeam());
+        assertEquals("Team Test", alien.getTeam().getName());
+    }
+
+    @Test
+    public void testGetSpeed() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertEquals(5, alien.getSpeed());
+    }
+
+    @Test
+    public void testToString() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        String result = alien.toString();
+        assertTrue(result.contains("PV=100"));
+        assertTrue(result.contains("Vivant=true"));
+    }
+
+    @Test
+    public void testToStringWhenDead() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+        alien.receiveDmg(100);
+
+        String result = alien.toString();
+        assertTrue(result.contains("PV=0"));
+        assertTrue(result.contains("Vivant=false"));
+    }
+
+    @Test
+    public void testIsVisibleDansLaCamera() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(500, 300));
+
+        assertTrue(alien.isVisible(400, 200));
+    }
+    @Test
+    public void testIsVisibleHorsCameraGauche() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertFalse(alien.isVisible(1000, 500));
+    }
+
+    @Test
+    public void testIsVisibleQuandMort() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(500, 300));
+        alien.receiveDmg(100);
+
+        assertFalse(alien.isVisible(400, 200));
+    }
+    @Test
+    public void testReceiveDmgSuperieurAuxPV() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        alien.receiveDmg(150);
+
+        assertEquals(0, alien.getHealthPoints());
+        assertFalse(alien.isAlive());
+    }
+
+    @Test
+    public void testReceiveDmgMultiples() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        alien.receiveDmg(20);
+        alien.receiveDmg(30);
+        alien.receiveDmg(40);
+
+        assertEquals(10, alien.getHealthPoints());
+        assertTrue(alien.isAlive());
+    }
+
+    @Test
+    public void testReceiveDmgQuandDejaMort() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        alien.receiveDmg(100);
+        alien.receiveDmg(50);
+
+        assertEquals(0, alien.getHealthPoints());
+        assertFalse(alien.isAlive());
+    }
+
+    @Test
+    public void testGetPosition() {
+        Team team = new Team("Team Test", 1);
+        Position pos = new Position(100, 200);
+        Alien alien = new Alien(team, pos);
+
+        assertEquals(100, alien.getPosition().getX());
+        assertEquals(200, alien.getPosition().getY());
+    }
+
+    @Test
+    public void testHealthPointsInitial() {
+        Team team = new Team("Team Test", 1);
+        Alien alien = new Alien(team, new Position(50, 50));
+
+        assertEquals(100, alien.getHealthPoints());
+        assertTrue(alien.isAlive());
+    }
+
+
+
+
+
+
+
+
+
+
 }

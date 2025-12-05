@@ -22,7 +22,7 @@ public class SpawnPoints {
         // Equipe 2
         LIBERTY_SPAWNS.put(1, Arrays.asList(
                 new Position(480, 280),  // Barres electriques
-                new Position(1000, 180), // Livre de statue
+                new Position(800, 90),   // Tête de statue
                 new Position(1580, 280)  // Tank (droite)
         ));
     }

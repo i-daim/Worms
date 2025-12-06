@@ -253,28 +253,41 @@ public class LanternaView {
         int count = 1;
         boolean noneAlive = true;
 
+        //Pour passe d'un alien à alien
         for (Alien alien : aliens) {
+
+            //Vérifie si l'alien est vivant et présent
             if (alien != null && alien.isAlive()) {
                 noneAlive = false;
                 Position pos = alien.getPosition();
+
+                //Vérifie si c'est l'alien actif
                 String indicateur = (alien == alienActif) ? "► " : "  ";
 
+                //Affiche stats de l'alien
                 drawString(x, y,indicateur +  " :Alien #" +
                         count + "  | Position: " +
                         pos + " | PV: " +
                         alien.getHealthPoints() + "/100 " +
                         printHealthBar(alien.getHealthPoints()));
 
+                //Pour afficher sur une plusieurs lignes les uns au-dessus des autres
                 y++;
+
+                //Itération des aliens
                 count++;
             }
         }
 
+        //Vérifie si tous les aliens d'une équipe sont morts
         if (noneAlive) {
+
+            //Affiche l'information
             drawString(x, y,"  ⚰️  Tous les aliens sont morts");
             y++;
         }
 
+        //Renvoie la colonne d'écriture pour printAliensStats
         return y;
     }
 

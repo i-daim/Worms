@@ -44,11 +44,11 @@ public class Inventory {
 
 
 ////    Modification des munitions    ////
-    public void addAmmo(Item.Type w, int qty) {
-        if (qty <= 0) {
+    public void addAmmo(Item.Type weapon, int qty) {
+        if (qty <= 0 || getAmmo(weapon) < 0) {
             return;
         }
-        ammoStock.put(w, ammoStock.getOrDefault(w, 0) + qty);
+        ammoStock.put(weapon, getAmmo(weapon) + qty);
     }
 
     public void useAmmo(Item.Type w, int qty) {

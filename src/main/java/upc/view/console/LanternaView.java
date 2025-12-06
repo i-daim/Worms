@@ -168,21 +168,37 @@ public class LanternaView {
     //Methode permettant d'afficher les stats de l'alien active
     private void printActiveAlienStats(GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
-        Position pos = alien.getPosition();
 
         if (alien != null) {
 
+            Position pos = alien.getPosition();
+
             //Affiche les stats les uns au-dessus des autres
             drawString(pos.getX(), pos.getY(),"🐛 Alien actif (" + gameManager.getActiveTeam().getName() + "):");
-            drawString(pos.getX(), pos.getY() + 1 , "Position: %s");
+            drawString(pos.getX(), pos.getY() + 1 , "Position: " + alien.getPosition());
             drawString(pos.getX(), pos.getY() + 2, "PV: " + alien.getHealthPoints() + " /100");
-            printHealthBar(alien.getHealthPoints());
+            drawString(pos.getX(), pos.getY() + 3, printHealthBar(alien.getHealthPoints()));
 
         } else {
-            drawString(pos.getX(), pos.getY(),"\n⚠️  Aucun alien actif");
+            drawString(0, 0,"\n⚠️  Aucun alien actif");
         }
 
         this.refresh();
+    }
+
+    private String printHealthBar(int pv) {
+        int barres = pv / 10;
+        String healthBar = "[";
+
+        for (int i = 0; i < 10; i++) {
+            if (i < barres) {
+                healthBar += ("█");
+            } else {
+                healthBar += "░";
+            }
+        }
+        healthBar += "]";
+        return healthBar;
     }
 
 }

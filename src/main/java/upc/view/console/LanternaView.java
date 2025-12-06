@@ -37,12 +37,26 @@ public class LanternaView {
         }
 
     }
-
+    //Méthode permettant de vider l'écran (avant de redessiner)
     public void clear() { this.screen.clear(); }
 
+    //Méthode permettant d'afficher tout ce qui a été dessiné
     public void refresh() {
+
+        //Gestion des exceptions car Java oblige à gérer toutes les exceptions checked en lien avec refresh()
         try {
+
             this.screen.refresh();
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void drawString(int x, int y, String string) {
+        try {
+            graphics.putString(x, y, string);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

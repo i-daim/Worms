@@ -20,7 +20,7 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
-    private static final int CAMERA_SPEED = 15;
+    private static final int CAMERA_SPEED = 10;
     private Point mousePosition = new Point(0, 0);
 
     private boolean leftPressed = false;
@@ -78,6 +78,7 @@ public class GameController {
             case KeyEvent.VK_SPACE:
             case KeyEvent.VK_UP:
                 if (pressed) {
+                    activeAlien.setState(Alien.State.JUMP);
                     gameManager.getWorld().getPhysicsEngine().jumpAlien(activeAlien);
                 }
                 break;
@@ -125,15 +126,15 @@ public class GameController {
     private void handleCameraScroll(Point mousePos) {
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
-        int limit = 50;
+        int limit = (int) (50 * GamePanel.ZOOM);
 
         int camX = gamePanel.getCameraX();
         int camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
 
-        double zoomX = gamePanel.getZoomX();
-        double zoomY = gamePanel.getZoomY();
+        double zoomX = GamePanel.ZOOM;
+        double zoomY = GamePanel.ZOOM;
 
         if (mousePos.x > width - limit) {
             camX += CAMERA_SPEED;
@@ -164,10 +165,15 @@ public class GameController {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             if (leftPressed && !rightPressed) {
+                activeAlien.setState(Alien.State.WALK);
+                activeAlien.setDirection(false);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, -1.0);
             } else if (rightPressed && !leftPressed) {
+                activeAlien.setState(Alien.State.WALK);
+                activeAlien.setDirection(true);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 1.0);
             } else {
+                activeAlien.setState(Alien.State.IDLE);
                 gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 0);
             }
         }

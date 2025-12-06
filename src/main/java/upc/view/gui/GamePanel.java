@@ -17,6 +17,7 @@ public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
     public static final int DEFAULT_HEIGHT = 720;
+    public static final double ZOOM = 2;
 
     private final GameManager gameManager;
     private final Terrain terrain;
@@ -47,7 +48,7 @@ public class GamePanel extends JPanel {
                 RenderingHints.VALUE_RENDER_SPEED);
 
         // Zoom + ajustement de la caméra
-        g2.scale(getZoomX(), getZoomY());
+        g2.scale(ZOOM, ZOOM);
         g2.translate(-cameraX, -cameraY);
 
         // Affichage du background
@@ -67,7 +68,7 @@ public class GamePanel extends JPanel {
         g2.drawImage(terrainImage, 0, 0, this);
 
         // Affichage des entites
-        drawWorms(g2);
+        drawAliens(g2);
 
         // Affichage de l'eau
         drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
@@ -77,7 +78,7 @@ public class GamePanel extends JPanel {
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
-        g2.scale(1.0 / getZoomX(), 1.0 / getZoomY());
+        g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
 
         // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setSize(getWidth(), 100);
@@ -87,29 +88,23 @@ public class GamePanel extends JPanel {
     }
 
     public Point screenToWorld(Point screenPoint) {
-        double worldX = (screenPoint.x / getZoomX()) + cameraX;
-        double worldY = (screenPoint.y / getZoomY()) + cameraY;
+        double worldX = (screenPoint.x / ZOOM) + cameraX;
+        double worldY = (screenPoint.y / ZOOM) + cameraY;
         return new Point((int) worldX, (int) worldY);
     }
 
 
-    public void drawWorms(Graphics2D g2) {
+    public void drawAliens(Graphics2D g2) {
         for (Alien w : gameManager.getWorld().getActiveWorms()) {
             if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
                 int posX = w.getPosition().getX();
                 int posY = w.getPosition().getY();
 
                 if (w.getTeam() == gameManager.getTeam(0)) {
-                    BufferedImage sprite = AnimationManager.getZlerp("idle").getFrames().get(0);
-                    int drawX = posX - sprite.getWidth() / 2;
-                    int drawY = posY - sprite.getHeight() / 2;
-                    g2.drawImage(sprite, drawX, drawY, this);
+                    drawAlien(g2, w, 0);
                 } else {
                     // Pour quand on aura des animations séparées pour la 2e équipe
-                    BufferedImage sprite = AnimationManager.getGlorb("idle").getFrames().get(0);
-                    int drawX = posX - sprite.getWidth() / 2;
-                    int drawY = posY - sprite.getHeight() / 2;
-                    g2.drawImage(sprite, drawX, drawY, this);
+                    drawAlien(g2, w, 1);
                 }
             }
         }
@@ -131,13 +126,30 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public double getZoomX() {
-        return Math.max(1.0, (double) getWidth() / DEFAULT_WIDTH);
+    public void drawAlien(Graphics2D g2, Alien alien, int type) {
+        Animation animation;
+        boolean direction = alien.getDirection();
+        switch (alien.getState()) {
+            case WALK:
+                animation = AnimationManager.getSprite(type, "walk", direction);
+                break;
+            case JUMP:
+                animation = AnimationManager.getSprite(type, "jump", direction);
+                break;
+            default:
+                animation = AnimationManager.getSprite(type, "idle", direction);
+                break;
+        }
+
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
+
+        int drawX = posX - 10;
+        int drawY = posY - 18;
+
+        drawAnimation(g2, animation, drawX, drawY, 100);
     }
 
-    public double getZoomY() {
-        return Math.max(1.0, (double) getHeight() / DEFAULT_HEIGHT);
-    }
 
     public void setCamera(int x, int y) {
         cameraX = x;

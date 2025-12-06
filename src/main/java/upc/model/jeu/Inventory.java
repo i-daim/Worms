@@ -3,7 +3,12 @@ package upc.model.jeu;
 import java.util.HashMap;
 import java.util.Map;
 
+import upc.model.items.Bazooka;
+import upc.model.items.Grenade;
 import upc.model.items.Item;
+import upc.model.items.Mine;
+import upc.model.items.Shotgun;
+import upc.model.items.Uzi;
 import upc.model.items.Weapon;
 
 public class Inventory {
@@ -14,6 +19,7 @@ public class Inventory {
         this.weaponStock = new HashMap<>();
         this.ammoStock = new HashMap<>();
 
+        initializeWeapons();
         initializeAmmo();
     }
     public void addAmmo(Item.Type w, int qty) {
@@ -36,5 +42,13 @@ public class Inventory {
         addAmmo(Item.Type.UZI, 50);
         addAmmo(Item.Type.GRENADE, 50);
         addAmmo(Item.Type.BAZOOKA, 50);
+    }
+
+    private void initializeWeapons() {
+        weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
+        weaponStock.put(Item.Type.UZI, new Uzi());
+        weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
+        weaponStock.put(Item.Type.GRENADE, new Grenade());
+        weaponStock.put(Item.Type.MINE, new Mine());
     }
 }

@@ -43,7 +43,11 @@ public class LanternaView {
 
     }
     //Méthode permettant de vider l'écran (avant de redessiner)
-    public void clear() { this.screen.clear(); }
+    public void clear() {
+
+        this.screen.clear();
+
+    }
 
     //Méthode permettant d'afficher tout ce qui a été dessiné
     public void refresh() {
@@ -76,7 +80,7 @@ public class LanternaView {
     }
 
     //Méthode permettant de lire la touche pressée par l'utilisateur et renvoie le string correspondt à la touche
-    public String readKey(){
+    public String readKey() {
 
         //Gestion des exceptions
         try {

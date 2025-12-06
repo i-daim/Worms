@@ -171,7 +171,7 @@ public class LanternaView {
         if (alien != null) {
 
             //Affiche les stats les uns au-dessus des autres
-            drawString(x, y,"🐛 Alien actif ("
+            drawString(x, y, "🐛 Alien actif ("
                     + gameManager.getActiveTeam().getName() + "):");
             y++;
 
@@ -274,8 +274,8 @@ public class LanternaView {
                 //Affiche stats de l'alien
                 drawString(x, y, indicateur +  " :Alien #"
                         + count + "  | Position: "
-                        + pos + " | PV: " +
-                        alien.getHealthPoints() + "/100 "
+                        + pos + " | PV: "
+                        + alien.getHealthPoints() + "/100 "
                         + printHealthBar(alien.getHealthPoints()));
 
                 //Pour afficher sur une plusieurs lignes les uns au-dessus des autres

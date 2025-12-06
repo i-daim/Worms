@@ -354,7 +354,8 @@ public class LanternaView {
         this.clear();
         printAliensStats(gameManager);
 
-        //Envoie le message de déplacement à la nouvelle position de l'alien si non colision/hors limites
+        //Envoie le message de déplacement à la nouvelle position de l'alien
+        // si non colision/hors limites
         if (success) {
             drawString(pos.getX(), pos.getY(), "✅ Déplacement à " + direction + " réussi");
 

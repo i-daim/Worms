@@ -29,6 +29,13 @@ public class Inventory {
         ammoStock.put(w, ammoStock.getOrDefault(w, 0) + qty);
     }
 
+    public void useAmmo(Item.Type w, int qty) {
+        if (qty <= 0) {
+            return;
+        }
+        ammoStock.put(w, Math.max(getAmmo(w) - qty, 0));
+    }
+
     public Map<Item.Type, Integer> getAmmoStock() {
         return ammoStock;
     }
@@ -54,6 +61,10 @@ public class Inventory {
 
     public Weapon getWeapon(Item.Type w) {
         return weaponStock.get(w);
+    }
+
+    public int getAmmo(Item.Type w) {
+        return ammoStock.getOrDefault(w, 0);
     }
 
 }

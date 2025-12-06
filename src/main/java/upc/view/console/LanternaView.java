@@ -389,4 +389,38 @@ public class LanternaView {
         this.refresh();
     }
 
+    public void printAttackResult(Alien target, int x, int y, Team activeTeam) {
+
+        if (target == null) {
+            drawString(x, y, "❌ Aucun alien à la position (" + x + ", " + y + ")");
+            this.refresh();
+            return;
+        }
+
+        boolean isAlly = (target.getTeam() == activeTeam);
+        boolean alienDead = !target.isAlive();
+
+        if (isAlly) {
+            if (alienDead) {
+                drawString(x, y, "💀 TIR AMI FATAL ! Vous avez tué votre propre alien !");
+
+            } else {
+                drawString(x, y, "⚠️  TIR AMI ! Votre alien a été touché (PV restants: "
+                        + target.getHealthPoints() + ")");
+
+            }
+        } else {
+            if (alienDead) {
+                drawString(x, y, "💀 Alien ennemi éliminé !");
+
+            } else {
+                drawString(x, y, "💥 Alien ennemi touché ! Il lui reste "
+                        + target.getHealthPoints() + " PV");
+
+            }
+        }
+
+        this.refresh();
+    }
+
 }

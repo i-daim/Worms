@@ -4,8 +4,6 @@ import upc.model.jeu.GameWorld;
 
 public class Bazooka extends Weapon {
     public Bazooka() {
-        // name, damage, nbOfShots, puissanceTir
-        // valeurs à ajuster si tu veux un autre équilibre
         super("Bazooka", 45, 3, 70);
     }
     @Override

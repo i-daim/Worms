@@ -25,7 +25,7 @@ public class Trap extends Projectile {
         int posY = getPosition().getY();
 
         for (Alien w : gameWorld.aliensInRadius(posX, posY, activationRadius)) {
-            if (w != getShooter()) {
+            if (w.isAlive() && w != getShooter()) {
                 gameWorld.explode(posX, posY, getExplosionRadius(), getDamage());
                 setActive(false);
             }

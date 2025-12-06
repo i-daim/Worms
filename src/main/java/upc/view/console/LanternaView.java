@@ -141,18 +141,27 @@ public class LanternaView {
         this.refresh();
     }
 
+    //Méthode permettant d'envoyer le bon caractère à la position donnée
     private String symbolForTile(int x, int y, GameManager gameManager) {
         Alien w = gameManager.getAlienAtPosition(x, y);
         Terrain terrain = gameManager.getTerrain();
+
+        //Renvoie w pour un alien vivant à cette position
         if (w != null && w.isAlive()) {
             return "W";
         }
+
+        //Renvoie ~ pour de l'eau avec collision
         if (terrain.isWater(y) && terrain.isCollision(x, y)) {
             return "~";
         }
+
+        //Renvoie X pour une collision sans eau
         if (terrain.isCollision(x, y)) {
             return "X";
         }
+
+        //Renvoie un espace pour une case vide
         return " ";
     }
 

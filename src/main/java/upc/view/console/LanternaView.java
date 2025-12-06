@@ -203,4 +203,23 @@ public class LanternaView {
         return healthBar;
     }
 
+    public void printAliensStats(GameManager gameManager) {
+        drawString(,, "═".repeat(60));
+        drawString(,,"🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
+        drawString(,,"═".repeat(60));
+
+        Team teamActive = gameManager.getActiveTeam();
+        Team teamEnnemie = gameManager.getEnnemyTeam();
+
+        drawString(,,"💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
+        drawString(,,"─".repeat(60));
+        printAliensTeam(teamActive, gameManager.getActiveAlien());
+
+        drawString(,,"💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
+        drawString(,,"─".repeat(60));
+        printAliensTeam(teamEnnemie, null);
+
+        drawString(,,"═".repeat(60));
+    }
+
 }

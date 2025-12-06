@@ -165,5 +165,20 @@ public class LanternaView {
         return " ";
     }
 
+    private void printActiveAlienStats(GameManager gameManager) {
+        Alien alien = gameManager.getActiveAlien();
+        Position pos = alien.getPosition();
+
+        if (alien != null) {
+            drawString(pos.getX(), pos.getY(),"🐛 Alien actif (" + gameManager.getActiveTeam().getName() + "):");
+            drawString(pos.getX(), pos.getY() + 1 , "Position: %s");
+            drawString(pos.getX(), pos.getY() + 2, "PV: " + alien.getHealthPoints() + " /100");
+            printHealthBar(alien.getHealthPoints());
+        } else {
+            drawString(pos.getX(), pos.getY(),"\n⚠️  Aucun alien actif");
+        }
+
+        this.refresh();
+    }
 
 }

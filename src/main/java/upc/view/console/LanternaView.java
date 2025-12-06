@@ -180,12 +180,14 @@ public class LanternaView {
             drawString(pos.getX(), pos.getY() + 3, printHealthBar(alien.getHealthPoints()));
 
         } else {
+            //Si l'alien choisi est nul
             drawString(0, 0,"\n⚠️  Aucun alien actif");
         }
 
         this.refresh();
     }
 
+    //Méthode permettant la représentation de la barre de vie d'un alien
     private String printHealthBar(int pv) {
         int barres = pv / 10;
         String healthBar = "[";

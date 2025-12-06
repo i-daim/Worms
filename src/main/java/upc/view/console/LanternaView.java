@@ -194,7 +194,7 @@ public class LanternaView {
 
         for (int i = 0; i < 10; i++) {
             if (i < barres) {
-                healthBar += ("█");
+                healthBar += "█";
             } else {
                 healthBar += "░";
             }
@@ -203,13 +203,15 @@ public class LanternaView {
         return healthBar;
     }
 
-    //Méthode permettant les stats des équipes
+    //Méthode permettant d'afficher les stats des équipes
     public void printAliensStats(GameManager gameManager) {
 
+        //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
         int x = 2;
         int y = 2;
 
-        //Coordonnées à rentrer selon où on veut les placer sur le terrain
+        //Affiche l'état des aliens
+        //y++ pour les empiler en colonne
         drawString(x, y, "═".repeat(60));
         y++;
         drawString(x, y,"🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
@@ -220,22 +222,27 @@ public class LanternaView {
         Team teamActive = gameManager.getActiveTeam();
         Team teamEnnemie = gameManager.getEnnemyTeam();
 
+        //Affiche le nom de l'équipe alliée
         drawString(x, y,"💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
         y++;
         drawString(x, y,"─".repeat(60));
         y++;
 
+        //Renvoie la coordonnée de la colonne d'affichage + affiche les stats des aliens alliés
         y = printAliensTeam(teamActive, gameManager.getActiveAlien(), x, y);
 
+        //Affiche le nom de l'équipe ennemie
         drawString(x, y,"💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
         y++;
         drawString(x, y,"─".repeat(60));
         y++;
 
-         y = printAliensTeam(teamEnnemie, null, x, y);
+        //Renvoie la coordonnée de la colonne d'affichage + affiche les stats des aliens ennemis
+        y = printAliensTeam(teamEnnemie, null, x, y);
 
         drawString(x, y,"═".repeat(60));
 
+        //Affiche le rendu
         this.refresh();
     }
 

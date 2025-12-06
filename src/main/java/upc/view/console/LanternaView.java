@@ -227,4 +227,27 @@ public class LanternaView {
         this.refresh();
     }
 
+    private void printAliensTeam(Team team, Alien alienActif) {
+        Alien[] aliens = team.getAliens();
+        int count = 1;
+        boolean noneAlive = true;
+
+        for (Alien alien : aliens) {
+            if (alien != null && alien.isAlive()) {
+                noneAlive = false;
+                Position pos = alien.getPosition();
+                String indicateur = (alien == alienActif) ? "► " : "  ";
+
+                drawString(,,indicateur +  " :Alien #" + count + "  | Position: " + pos + " | PV: " + alien.getHealthPoints() + "/100 ");
+                printHealthBar(alien.getHealthPoints());
+                count++;
+            }
+        }
+
+        if (noneAlive) {
+            drawString(,,"  ⚰️  Tous les aliens sont morts");
+        }
+
+    }
+
 }

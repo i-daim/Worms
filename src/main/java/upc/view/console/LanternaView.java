@@ -203,7 +203,10 @@ public class LanternaView {
         return healthBar;
     }
 
+    //Méthode permettant les stats des équipes
     public void printAliensStats(GameManager gameManager) {
+
+        //Coordonnées à rentrer selon où on veut les placer sur le terrain
         drawString(,, "═".repeat(60));
         drawString(,,"🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
         drawString(,,"═".repeat(60));
@@ -220,6 +223,8 @@ public class LanternaView {
         printAliensTeam(teamEnnemie, null);
 
         drawString(,,"═".repeat(60));
+
+        this.refresh();
     }
 
 }

@@ -163,12 +163,15 @@ public class ProjectilePhysics {
     }
 
     public void explodeProjectile(Projectile proj) {
+        ///Cette fonction gère l’explosion d’un projectile en appliquant des dégâts et un recul aux aliens proches du centre de l’explosion
+        ///Elle récupère la position, le rayon et les dégâts de l’explosion, parcourt tous les aliens vivants
+        ///Et pour ceux dans le rayon, calcule des dégâts qui diminuent avec la distance
+        ///Puis applique un « knockback » (impulsion) sur leur corps physique pour les pousser loin du centre
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
         int damage = proj.getDamage();
 
-        // Infliger dégâts aux worms proches
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
             if (!alien.isAlive()) {
                 continue;
@@ -178,7 +181,6 @@ public class ProjectilePhysics {
             double distance = wormPos.distance(explosionX, explosionY);
 
             if (distance <= Converter.toPixels(radius)) {
-                // Dégâts diminuent avec la distance
                 double damageRatio = 1.0 - (distance / Converter.toPixels(radius));
                 int finalDamage = (int) (damage * damageRatio);
 
@@ -186,7 +188,6 @@ public class ProjectilePhysics {
                     alien.receiveDmg(finalDamage);
                 }
 
-                // Onde de choc (pousse les worms)
                 Body wormBody = physicsEngine.getAlienBodies().get(alien);
                 if (wormBody != null && distance > 0) {
                     double knockbackForce = 50.0 * damageRatio;

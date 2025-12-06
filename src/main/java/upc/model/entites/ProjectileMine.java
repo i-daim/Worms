@@ -1,28 +1,43 @@
 package upc.model.entites;
 import upc.model.items.Weapon;
+import upc.model.jeu.GameWorld;
 
 public class ProjectileMine extends Projectile {
-    private int timer;
-    private boolean armed;
 
-    public ProjectileMine(Weapon weapon, Alien shooter) {
-        super(
-                shooter,
-                shooter.getPosition(),
-                weapon.getDamage(),
-                60,
-                true,
-                weapon.getSpeed(),
-                weapon
-        );
-        this.timer = 5 * 60;
+    private boolean active = true;
+    private final int activationRadius;
+
+    public ProjectileMine(Weapon weapon, Alien shooter, int activationRadius, int explosionRadius) {
+        super(shooter, shooter.getPosition(), weapon.getDamage(),
+                explosionRadius, false, weapon.getSpeed(), weapon);
+
+        this.activationRadius = activationRadius;
     }
-    public void decrementTimer() {
-        if (timer > 0) {
-            timer--;
+
+
+    //Méthode pour voir si un vers se situe dans la zone d'activation et provoque son explosion
+    public void activation(GameWorld gameWorld) {
+        if (!isActive()) { //si le piège a déjà explosé on ne peut plus la réutilisé
+            return;
+        }
+        int posX = getPosition().getX();
+        int posY = getPosition().getY();
+
+        for (Alien w : gameWorld.aliensInRadius(posX, posY, activationRadius)) {
+            if (w != getShooter()) {
+                gameWorld.explode(posX, posY, getExplosionRadius(), getDamage());
+                setActive(false);
+            }
         }
     }
-    public boolean isReadyToExplode() {
-        return timer <= 0;
+
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
+

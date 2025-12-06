@@ -1,13 +1,17 @@
 package upc.view.console;
 
 import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.input.KeyStroke;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
+
+import javax.swing.*;
 
 public class LanternaView {
     //attribut permettant la réprésentation du terminal et de le styliser
@@ -66,6 +70,28 @@ public class LanternaView {
 
             throw new RuntimeException(e);
 
+        }
+    }
+
+    public String readKey(){
+        try {
+            KeyStroke key = screen.readInput();
+            if (key.getKeyType() == KeyType.ArrowLeft) {
+                return "LEFT";
+            }
+            if (key.getKeyType() == KeyType.ArrowRight) {
+                return "RIGHT";
+            }
+            if (key.getKeyType() == KeyType.ArrowUp) {
+                return "UP";
+            }
+            if (key.getKeyType() == KeyType.ArrowDown) {
+                return "DOWN";
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -73,23 +73,41 @@ public class LanternaView {
         }
     }
 
+    //Méthode permettant de lire la touche pressée par l'utilisateur et renvoie le string correspondt à la touche
     public String readKey(){
+
+        //Gestion des exceptions
         try {
+
+            //Permet de récupérer la touche pressée
             KeyStroke key = screen.readInput();
+
+            //Conditions qui renvoient le type de touche pressé
+            //Si la touche pressée est <- alors renvoie LEFT
             if (key.getKeyType() == KeyType.ArrowLeft) {
                 return "LEFT";
             }
+
+            //Si la touche pressée est -> alors renvoie RIGHT
             if (key.getKeyType() == KeyType.ArrowRight) {
                 return "RIGHT";
             }
+
+            //Si la touche pressée est flèche du haut alors renvoie UP
             if (key.getKeyType() == KeyType.ArrowUp) {
                 return "UP";
             }
+
+            //Si la touche pressée est flèche du bas alors renvoie DOWN
             if (key.getKeyType() == KeyType.ArrowDown) {
                 return "DOWN";
-            } else {
+            }
+
+            //Sinon renvoie rien
+            else {
                 return null;
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

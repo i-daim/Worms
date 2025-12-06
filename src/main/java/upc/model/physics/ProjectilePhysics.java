@@ -8,12 +8,12 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.entites.Projectile;
+import upc.model.entites.projectiles.Projectile;
 import upc.model.jeu.Terrain;
-import upc.model.entites.ProjectileBalle;
-import upc.model.entites.ProjectileMine;
-import upc.model.entites.ProjectileGrenade;
-import upc.model.entites.ProjectileBazooka;
+import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
+import upc.model.entites.projectiles.Throwable;
+import upc.model.entites.projectiles.Rocket;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,7 +37,7 @@ public class ProjectilePhysics {
 
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
-        if (projectile instanceof ProjectileGrenade) {
+        if (projectile instanceof Throwable) {
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(1.0);
@@ -46,7 +46,7 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        } else if (projectile instanceof ProjectileBalle) {
+        } else if (projectile instanceof Bullet) {
 
             double radius = Converter.toMeters(2);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
@@ -57,7 +57,7 @@ public class ProjectilePhysics {
             body.setMass(MassType.NORMAL);
             body.setBullet(true);
 
-        } else if (projectile instanceof ProjectileMine) {
+        } else if (projectile instanceof Trap) {
             // MINE : Forme rectangulaire, se pose, très lourde
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);
@@ -68,7 +68,7 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        } else if (projectile instanceof ProjectileBazooka) {
+        } else if (projectile instanceof Rocket) {
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);

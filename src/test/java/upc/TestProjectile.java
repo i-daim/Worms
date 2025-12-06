@@ -2,12 +2,10 @@ package upc;
 
 import upc.model.jeu.Team;
 import upc.model.entites.Position;
-import upc.model.items.Weapon;
 import upc.model.entites.Alien;
-import upc.model.jeu.GameWorld;
-import upc.model.entites.Projectile;
+import upc.model.entites.projectiles.Projectile;
 import org.junit.jupiter.api.Test;
-import upc.model.entites.Projectile.State;
+import upc.model.entites.projectiles.Projectile.State;
 import static org.junit.jupiter.api.Assertions.*;
 
 

@@ -51,11 +51,11 @@ public class Inventory {
         ammoStock.put(weapon, getAmmo(weapon) + qty);
     }
 
-    public void useAmmo(Item.Type w, int qty) {
-        if (qty <= 0) {
+    public void useAmmo(Item.Type weapon, int qty) {
+        if (qty <= 0 || getAmmo(weapon) < 0) {
             return;
         }
-        ammoStock.put(w, Math.max(getAmmo(w) - qty, 0));
+        ammoStock.put(weapon, Math.max(getAmmo(weapon) - qty, 0));
     }
 
 

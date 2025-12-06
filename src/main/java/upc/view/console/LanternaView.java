@@ -445,4 +445,30 @@ public class LanternaView {
         this.refresh();
     }
 
+    public void printGameOver(GameManager gameManager) {
+        this.clear();
+
+        int x = 0;
+        int y = 0;
+
+        drawString(x, y, "=".repeat(60));
+        y++;
+        drawString(x, y, "🎉 PARTIE TERMINÉE ! 🎉");
+        y++;
+        drawString(x, y, "=".repeat(60));
+        y++;
+
+        Team gagnante = gameManager.getWinningTeam();
+
+        if (gagnante != null) {
+            drawString(x, y, "🏆 " + gagnante.getName() + " a gagné ! 🏆");
+            y++;
+        }
+
+        y = printTeamStats(gameManager, x, y);
+        drawString( x, y, "=".repeat(60));
+
+        this.refresh();
+    }
+
 }

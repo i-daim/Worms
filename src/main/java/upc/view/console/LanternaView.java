@@ -190,6 +190,7 @@ public class LanternaView {
             y++;
         }
 
+        //Renvoie la colonne d'affichage pour printGameState()
         return y;
     }
 
@@ -325,17 +326,21 @@ public class LanternaView {
         this.refresh();
     }
 
+    //Méthode permettant les stats d'une équipe
     private int printTeamStats(GameManager gameManager, int x, int y) {
         drawString(x, y, "🏆 État des équipes:");
 
         Team[] teams = gameManager.getTeams();
 
         for (int i = 0; i < teams.length; i++) {
+
+            //affiche les stats de chaque alien d'une équipe
             String indicateur = (i == gameManager.getActiveTeamIndex()) ? "►" : " ";
             drawString(x, y, indicateur + "  " + teams[i].toString());
             y++;
         }
 
+        //Renvoie la colonne d'affichage pour printGameState()
         return y;
     }
 }

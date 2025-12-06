@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import upc.model.items.Item;
+import upc.model.items.Weapon;
 
 public class Inventory {
-    private final Map<Item.Type, Integer> ammoStock;
+    private final HashMap<Item.Type, Weapon> weaponStock;
+    private final HashMap<Item.Type, Integer> ammoStock;
 
     public Inventory() {
+        this.weaponStock = new HashMap<>();
         this.ammoStock = new HashMap<>();
 
         initializeAmmo();

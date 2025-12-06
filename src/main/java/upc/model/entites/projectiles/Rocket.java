@@ -1,4 +1,5 @@
-package upc.model.entites;
+package upc.model.entites.projectiles;
+import upc.model.entites.Alien;
 import upc.model.items.Weapon;
 
 public class Rocket extends Projectile {

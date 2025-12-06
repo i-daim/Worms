@@ -1,6 +1,9 @@
-package upc.model.entites;
+package upc.model.entites.projectiles;
 
 import org.dyn4j.dynamics.Body;
+import upc.model.entites.Alien;
+import upc.model.entites.Entity;
+import upc.model.entites.Position;
 import upc.model.items.Weapon;
 
 public class Projectile extends Entity {
@@ -30,7 +33,7 @@ public class Projectile extends Entity {
 
     /// /    CONSTRUCTOR    ////
     public Projectile(Alien shooter, Position position, int damage,
-                      int explosionRadius, boolean explosive, double speed,   Weapon weapon) {
+                      int explosionRadius, boolean explosive, double speed, Weapon weapon) {
         super(position, speed);
         this.shooter = shooter;
         this.damage = damage;

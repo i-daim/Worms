@@ -344,19 +344,26 @@ public class LanternaView {
         return y;
     }
 
+    //Méthode permmettant d'afficher le message de déplacement d'un alien
     public void printMovementResult(boolean success, String direction, GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
         Position pos = alien.getPosition();
 
+        //Vide puis redessine le terraine et les aliens
+        //Pour prendre en compte leur déplacement
         this.clear();
         printAliensStats(gameManager);
 
+        //Envoie le message de déplacement à la nouvelle position de l'alien si non colision/hors limites
         if (success) {
             drawString(pos.getX(), pos.getY(), "✅ Déplacement à " + direction + " réussi");
+
         } else {
-            drawString(pos.getX(), pos.getY(), "❌ Déplacement impossible (collision ou hors limites)");
+            drawString(pos.getX(), pos.getY(), "❌ Déplacement impossible "
+                    + "(collision ou hors limites)");
         }
 
+        //Affiche le rendu
         this.refresh();
     }
 

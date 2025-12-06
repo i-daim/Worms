@@ -16,13 +16,14 @@ public class TestInventory {
     @BeforeEach
     public void setUp() {
         inventory = new Inventory();
+        // PS: Toutes les munitions sont initialisées à 50
     }
 
     @Test
-    public void testAddAmmoSimple() {
+    public void testAjouterMunitionSimple() {
         inventory.addAmmo(Type.GRENADE, 10);
 
-        assertEquals(10, inventory.getAmmoStock().get(Type.GRENADE));
+        assertEquals(60, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
@@ -30,21 +31,21 @@ public class TestInventory {
         inventory.addAmmo(Type.GRENADE, 10);
         inventory.addAmmo(Type.GRENADE, 5);
 
-        assertEquals(15, inventory.getAmmoStock().get(Type.GRENADE));
+        assertEquals(65, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
     public void testAddAmmoNegative() {
         inventory.addAmmo(Type.GRENADE, -5);
 
-        assertNull(inventory.getAmmoStock().get(Type.GRENADE));
+        assertEquals(50, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
     public void testAddAmmoZero() {
         inventory.addAmmo(Type.GRENADE, 0);
 
-        assertNull(inventory.getAmmoStock().get(Type.GRENADE));
+        assertEquals(50, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
@@ -56,6 +57,8 @@ public class TestInventory {
 
     @Test
     public void testIsAvailableSansStock() {
+        inventory.useAmmo(Type.GRENADE, 50);
+
         assertFalse(inventory.isAvailable(Type.GRENADE));
     }
 
@@ -67,9 +70,9 @@ public class TestInventory {
     }
 
     @Test
-    public void testGetStockMunitionsVide() {
+    public void testGetAmmoStock() {
         assertNotNull(inventory.getAmmoStock());
-        assertTrue(inventory.getAmmoStock().isEmpty());
+        assertFalse(inventory.getAmmoStock().isEmpty());
     }
 
 

@@ -33,7 +33,8 @@ public class LanternaView {
             //Ouvre l'écran et passe en mode Lanterna
             screen.startScreen();
 
-            //Crée le graphics en lien avec le terminal(screen) pour dessiner des chaînes ou caractères
+            //Crée le graphics en lien avec le terminal(screen)
+            // pour dessiner des chaînes ou caractères
             this.graphics = this.screen.newTextGraphics();
 
         } catch (Exception e) {
@@ -47,7 +48,8 @@ public class LanternaView {
     //Méthode permettant d'afficher tout ce qui a été dessiné
     public void refresh() {
 
-        //Gestion des exceptions car Java oblige à gérer toutes les exceptions checked en lien avec refresh()
+        //Gestion des exceptions
+        // car Java oblige à gérer toutes les exceptions checked en lien avec refresh()
         try {
 
             this.screen.refresh();
@@ -101,10 +103,8 @@ public class LanternaView {
             //Si la touche pressée est flèche du bas alors renvoie DOWN
             if (key.getKeyType() == KeyType.ArrowDown) {
                 return "DOWN";
-            }
-
-            //Sinon renvoie rien
-            else {
+            } else {
+                //Sinon renvoie rien
                 return null;
             }
 
@@ -119,9 +119,9 @@ public class LanternaView {
         int height = Math.min(terrain.getCollisionsHeight(), 25);
         int width = Math.min(terrain.getCollisionsWidth(), 60);
 
-        for( int y = 0; y < height; y++ ) {
-            for( int x = 0; x < width; x++ ) {
-                drawString(x, y, symbolForTile(x,y,gameManager));
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                drawString(x, y, symbolForTile(x, y, gameManager));
             }
         }
 
@@ -131,13 +131,13 @@ public class LanternaView {
     private String symbolForTile(int x, int y, GameManager gameManager) {
         Alien w = gameManager.getAlienAtPosition(x, y);
         Terrain terrain = gameManager.getTerrain();
-        if ( w != null && w.isAlive() ) {
+        if (w != null && w.isAlive()) {
             return "W";
         }
-        if (terrain.isWater(y) && terrain.isCollision(x,y)){
+        if (terrain.isWater(y) && terrain.isCollision(x, y)) {
             return "~";
         }
-        if (terrain.isCollision(x,y)){
+        if (terrain.isCollision(x, y)) {
             return "X";
         }
         return " ";

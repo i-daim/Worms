@@ -297,7 +297,10 @@ public class LanternaView {
         return y;
     }
 
+    //Méthode permettant de les stats d'une équipe + stats de l'alien actif
     public void printGameState(GameManager gameManager) {
+
+        //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
         int x = 2;
         int y = 1;
 
@@ -310,12 +313,15 @@ public class LanternaView {
         drawString(x, y, "─".repeat(60));
         y++;
 
+        //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'équipe
         y = printTeamStats(gameManager, x, y);
 
+        //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'alien aciif
         y = printActiveAlienStats(gameManager, x, y);
 
         drawString(x, y, "─".repeat(60));
 
+        //Affiche le rendu
         this.refresh();
     }
 

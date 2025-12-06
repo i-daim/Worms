@@ -128,4 +128,18 @@ public class LanternaView {
         this.refresh();
     }
 
+    private String symbolForTile(int x, int y, GameManager gameManager) {
+        Alien w = gameManager.getAlienAtPosition(x, y);
+        Terrain terrain = gameManager.getTerrain();
+        if ( w != null && w.isAlive() ) {
+            return "W";
+        }
+        if (terrain.isWater(y) && terrain.isCollision(x,y)){
+            return "~";
+        }
+        if (terrain.isCollision(x,y)){
+            return "X";
+        }
+        return " ";
+    }
 }

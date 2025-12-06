@@ -343,4 +343,21 @@ public class LanternaView {
         //Renvoie la colonne d'affichage pour printGameState()
         return y;
     }
+
+    public void printMovementResult(boolean success, String direction, GameManager gameManager) {
+        Alien alien = gameManager.getActiveAlien();
+        Position pos = alien.getPosition();
+
+        this.clear();
+        printAliensStats(gameManager);
+
+        if (success) {
+            drawString(pos.getX(), pos.getY(), "✅ Déplacement à " + direction + " réussi");
+        } else {
+            drawString(pos.getX(), pos.getY(), "❌ Déplacement impossible (collision ou hors limites)");
+        }
+
+        this.refresh();
+    }
+
 }

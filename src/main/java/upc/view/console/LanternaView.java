@@ -117,18 +117,27 @@ public class LanternaView {
         }
     }
 
+    //Méthode permettant l'affichage du terrain de dans le terminal
     public void printTerrain(GameManager gameManager) {
         Terrain terrain = gameManager.getTerrain();
 
+        //Permet d'avoir les dimensions du terrain
         int height = Math.min(terrain.getCollisionsHeight(), 25);
         int width = Math.min(terrain.getCollisionsWidth(), 60);
 
+        //Vide l'écran
+        this.clear();
+
+        //Parcourt chaque case du terrain
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+
+                //Dessine chaque case avec le symbole correspondant
                 drawString(x, y, symbolForTile(x, y, gameManager));
             }
         }
 
+        //Affiche le rendu
         this.refresh();
     }
 
@@ -146,4 +155,6 @@ public class LanternaView {
         }
         return " ";
     }
+
+
 }

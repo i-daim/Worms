@@ -112,4 +112,20 @@ public class LanternaView {
             throw new RuntimeException(e);
         }
     }
+
+    public void printTerrain(GameManager gameManager) {
+        Terrain terrain = gameManager.getTerrain();
+
+        int height = Math.min(terrain.getCollisionsHeight(), 25);
+        int width = Math.min(terrain.getCollisionsWidth(), 60);
+
+        for( int y = 0; y < height; y++ ) {
+            for( int x = 0; x < width; x++ ) {
+                drawString(x, y, symbolForTile(x,y,gameManager));
+            }
+        }
+
+        this.refresh();
+    }
+
 }

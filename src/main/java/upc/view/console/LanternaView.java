@@ -445,12 +445,17 @@ public class LanternaView {
         this.refresh();
     }
 
+    //Méthode permettant d'afficher le message de fin de partie et l'équipe gagnante
     public void printGameOver(GameManager gameManager) {
+
+        //Vide l'écran car on affiche seulement le message
         this.clear();
 
+        //Coordonnée d'affichage par défaut
         int x = 0;
         int y = 0;
 
+        //Affiche le message de fin de partie
         drawString(x, y, "=".repeat(60));
         y++;
         drawString(x, y, "🎉 PARTIE TERMINÉE ! 🎉");
@@ -460,14 +465,19 @@ public class LanternaView {
 
         Team gagnante = gameManager.getWinningTeam();
 
+        //Vérifie qu'il y est une équipe gagnante
         if (gagnante != null) {
+
+            //Affiche l'équipe gagnante
             drawString(x, y, "🏆 " + gagnante.getName() + " a gagné ! 🏆");
             y++;
         }
 
+        //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'équipe
         y = printTeamStats(gameManager, x, y);
         drawString( x, y, "=".repeat(60));
 
+        //Affiche le rendu
         this.refresh();
     }
 

@@ -36,6 +36,10 @@ public class ProjectilePhysics {
 
 
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
+        ////Cette fonction crée le corps physique d’un projectile,
+        /// lui donne une forme et des propriétés selon son type, le place à la position de départ,
+        /// et lui applique une vitesse calculée avec l’angle et la puissance,
+        /// puis l’ajoute au monde et le relie à l’objet Projectile
         Body body = new Body();
         if (projectile instanceof Throwable) {
             double radius = Converter.toMeters(5);

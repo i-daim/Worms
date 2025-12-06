@@ -367,13 +367,17 @@ public class LanternaView {
         this.refresh();
     }
 
+    //Méthode permmettant d'afficher le message de déplacement d'un alien(saut)
     public void printJumpResult(boolean success, GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
         Position pos = alien.getPosition();
 
+        //Vide puis redessine le terraine et les aliens
+        //Pour prendre en compte leur déplacement
         this.clear();
         printAliensStats(gameManager);
 
+        //Envoie le message de déplacement(saut) à la nouvelle position de l'alien si possible
         if (success) {
             drawString(pos.getX(), pos.getY(), "✅ L'alien a sauté !");
 
@@ -381,6 +385,7 @@ public class LanternaView {
             drawString(pos.getX(), pos.getY(), "❌ Saut impossible");
         }
 
+        //Affiche le rendu
         this.refresh();
     }
 

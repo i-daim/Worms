@@ -6,33 +6,33 @@ import java.util.Map;
 import upc.model.items.Item;
 
 public class Inventory {
-    private final Map<Item.Type, Integer> stockMunitions;
+    private final Map<Item.Type, Integer> ammoStock;
 
     public Inventory() {
-        this.stockMunitions = new HashMap<>();
+        this.ammoStock = new HashMap<>();
 
     }
-    public void ajouterMunition(Item.Type w, int nombre) {
-        if (nombre <= 0) {
+    public void addAmmo(Item.Type w, int qty) {
+        if (qty <= 0) {
             return;
         }
-        stockMunitions.put(w, stockMunitions.getOrDefault(w, 0) + nombre);
+        ammoStock.put(w, ammoStock.getOrDefault(w, 0) + qty);
     }
 
-    public Map<Item.Type, Integer> getStockMunitions() {
-        return stockMunitions;
+    public Map<Item.Type, Integer> getAmmoStock() {
+        return ammoStock;
     }
-    public boolean estDisponible(Item.Type w) {
-        int amount = stockMunitions.getOrDefault(w, 0);
+    public boolean isAvailable(Item.Type w) {
+        int amount = ammoStock.getOrDefault(w, 0);
         return amount > 0 || amount == -1;
     }
-    private void initialiserInventaireEquipe(Team team) {
+    private void initializeAmmo(Team team) {
         Inventory inv = team.getInventory();
 
-        inv.ajouterMunition(Item.Type.SHOTGUN, 50);
-        inv.ajouterMunition(Item.Type.MINE, 50);
-        inv.ajouterMunition(Item.Type.UZI, 50);
-        inv.ajouterMunition(Item.Type.GRENADE, 50);
-        inv.ajouterMunition(Item.Type.BAZOOKA, 50);
+        inv.addAmmo(Item.Type.SHOTGUN, 50);
+        inv.addAmmo(Item.Type.MINE, 50);
+        inv.addAmmo(Item.Type.UZI, 50);
+        inv.addAmmo(Item.Type.GRENADE, 50);
+        inv.addAmmo(Item.Type.BAZOOKA, 50);
     }
 }

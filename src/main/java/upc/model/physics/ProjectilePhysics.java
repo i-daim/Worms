@@ -36,10 +36,10 @@ public class ProjectilePhysics {
 
 
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
-        ////Cette fonction crée le corps physique d’un projectile,
-        /// lui donne une forme et des propriétés selon son type, le place à la position de départ,
-        /// et lui applique une vitesse calculée avec l’angle et la puissance,
-        /// puis l’ajoute au monde et le relie à l’objet Projectile
+        ////Cette fonction crée le corps physique d’un projectile
+        /// Lui donne une forme et des propriétés selon son type, le place à la position de départ
+        /// Et lui applique une vitesse calculée avec l’angle et la puissance
+        /// Puis l’ajoute au monde et le relie à l’objet Projectile
         Body body = new Body();
         if (projectile instanceof Throwable) {
             double radius = Converter.toMeters(5);
@@ -119,6 +119,11 @@ public class ProjectilePhysics {
     }
 
     public void updateProjectiles(Terrain terrain) {
+        ///Cette fonction met à jour tous les projectiles actifs à chaque frame en synchronisant leur position Java avec la position physique
+        ///Puis décide s’ils doivent être supprimés ou exploser
+        ///Elle enlève ceux qui sortent des limites du terrain
+        ///Et fait exploser ceux qui se sont presque arrêtés (vitesse très faible après un certain nombre de frames)
+        ///En retirant à chaque fois le corps du monde physique et le projectile de la liste active.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
 
         while (iterator.hasNext()) {

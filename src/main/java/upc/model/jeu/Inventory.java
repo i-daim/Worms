@@ -51,4 +51,9 @@ public class Inventory {
         weaponStock.put(Item.Type.GRENADE, new Grenade());
         weaponStock.put(Item.Type.MINE, new Mine());
     }
+
+    public Weapon getWeapon(Item.Type w) {
+        return weaponStock.get(w);
+    }
+
 }

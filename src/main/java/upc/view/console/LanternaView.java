@@ -170,8 +170,6 @@ public class LanternaView {
 
         if (alien != null) {
 
-            Position pos = alien.getPosition();
-
             //Affiche les stats les uns au-dessus des autres
             drawString(x, y,"🐛 Alien actif ("
                     + gameManager.getActiveTeam().getName() + "):");
@@ -319,5 +317,19 @@ public class LanternaView {
         drawString(x, y, "─".repeat(60));
 
         this.refresh();
+    }
+
+    private int printTeamStats(GameManager gameManager, int x, int y) {
+        drawString(x, y, "🏆 État des équipes:");
+
+        Team[] teams = gameManager.getTeams();
+
+        for (int i = 0; i < teams.length; i++) {
+            String indicateur = (i == gameManager.getActiveTeamIndex()) ? "►" : " ";
+            drawString(x, y, indicateur + "  " + teams[i].toString());
+            y++;
+        }
+
+        return y;
     }
 }

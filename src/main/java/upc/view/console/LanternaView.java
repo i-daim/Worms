@@ -37,4 +37,8 @@ public class LanternaView {
         }
 
     }
+
+    public void clear() { this.screen.clear(); }
+
+    public void refresh() { this.screen.refresh(); }
 }

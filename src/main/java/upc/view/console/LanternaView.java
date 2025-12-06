@@ -389,37 +389,58 @@ public class LanternaView {
         this.refresh();
     }
 
+    //Méthode permettant d'afficher le message après une attaque
     public void printAttackResult(Alien target, int x, int y, Team activeTeam) {
 
+        //Vérifie si la cible n'existe pas alors :
         if (target == null) {
             drawString(x, y, "❌ Aucun alien à la position (" + x + ", " + y + ")");
+
+            //affiche le rendu
             this.refresh();
+
+            //Met fin à la méthode
             return;
         }
 
+        //Boolean si oui ou non la cible appartient à l'équipe active
         boolean isAlly = (target.getTeam() == activeTeam);
+
+        //Boolean si oui ou non la cible est vivante
         boolean alienDead = !target.isAlive();
 
+        //Vérifie si la cible appartient à l'équique active
         if (isAlly) {
+
+            //Si la cible appartient à l'équipe active et est morte alors :
             if (alienDead) {
                 drawString(x, y, "💀 TIR AMI FATAL ! Vous avez tué votre propre alien !");
 
             } else {
+
+                //Si la cible survit alors :
                 drawString(x, y, "⚠️  TIR AMI ! Votre alien a été touché (PV restants: "
                         + target.getHealthPoints() + ")");
 
             }
+
+        //Si la cible n'appartient pas à l'équique active
         } else {
+
+            //Si la cible n'appartient pas à l'équipe active et est morte alors :
             if (alienDead) {
                 drawString(x, y, "💀 Alien ennemi éliminé !");
 
             } else {
+
+                //Si la cible survit alors :
                 drawString(x, y, "💥 Alien ennemi touché ! Il lui reste "
                         + target.getHealthPoints() + " PV");
 
             }
         }
 
+        //Affiche le rendu
         this.refresh();
     }
 

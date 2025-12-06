@@ -2,12 +2,12 @@ package upc.model.entites;
 import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
 
-public class ProjectileMine extends Projectile {
+public class Trap extends Projectile {
 
     private boolean active = true;
     private final int activationRadius;
 
-    public ProjectileMine(Weapon weapon, Alien shooter, int activationRadius, int explosionRadius) {
+    public Trap(Weapon weapon, Alien shooter, int activationRadius, int explosionRadius) {
         super(shooter, shooter.getPosition(), weapon.getDamage(),
                 explosionRadius, false, weapon.getSpeed(), weapon);
 

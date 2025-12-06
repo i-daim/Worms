@@ -1,7 +1,7 @@
 package upc.model.items;
 import upc.model.entites.Alien;
 
-import upc.model.entites.ProjectileMine;
+import upc.model.entites.Trap;
 import upc.model.jeu.GameWorld;
 
 public class Mine extends Weapon {
@@ -15,6 +15,6 @@ public class Mine extends Weapon {
     }
 
     public void useItem(GameWorld gameWorld, Alien shooter) {
-        ProjectileMine mine = new ProjectileMine(this, shooter, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
+        Trap mine = new Trap(this, shooter, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
     }
 }

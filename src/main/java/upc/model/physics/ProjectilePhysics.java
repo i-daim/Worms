@@ -11,7 +11,7 @@ import upc.model.entites.Position;
 import upc.model.entites.Projectile;
 import upc.model.jeu.Terrain;
 import upc.model.entites.Bullet;
-import upc.model.entites.ProjectileMine;
+import upc.model.entites.Trap;
 import upc.model.entites.Throwable;
 import upc.model.entites.Rocket;
 
@@ -57,7 +57,7 @@ public class ProjectilePhysics {
             body.setMass(MassType.NORMAL);
             body.setBullet(true);
 
-        } else if (projectile instanceof ProjectileMine) {
+        } else if (projectile instanceof Trap) {
             // MINE : Forme rectangulaire, se pose, très lourde
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);

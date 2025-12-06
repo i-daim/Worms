@@ -227,7 +227,9 @@ public class LanternaView {
         this.refresh();
     }
 
+    //Méthode permettant d'afficher les stats de chaque alien d'une équipe
     private void printAliensTeam(Team team, Alien alienActif) {
+
         Alien[] aliens = team.getAliens();
         int count = 1;
         boolean noneAlive = true;

@@ -11,8 +11,6 @@ import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 
-import javax.swing.*;
-
 public class LanternaView {
     //attribut permettant la réprésentation du terminal et de le styliser
     private Screen screen;
@@ -167,7 +165,7 @@ public class LanternaView {
     }
 
     //Methode permettant d'afficher les stats de l'alien active
-    private void printActiveAlienStats(GameManager gameManager) {
+    private int printActiveAlienStats(GameManager gameManager, int x, int y) {
         Alien alien = gameManager.getActiveAlien();
 
         if (alien != null) {
@@ -175,21 +173,26 @@ public class LanternaView {
             Position pos = alien.getPosition();
 
             //Affiche les stats les uns au-dessus des autres
-            drawString(pos.getX(), pos.getY(),"🐛 Alien actif ("
+            drawString(x, y,"🐛 Alien actif ("
                     + gameManager.getActiveTeam().getName() + "):");
+            y++;
 
-            drawString(pos.getX(), pos.getY() + 1 , "Position: " + alien.getPosition());
+            drawString(x, y, "Position: " + alien.getPosition());
+            y++;
 
-            drawString(pos.getX(), pos.getY() + 2, "PV: " + alien.getHealthPoints() + " /100");
+            drawString(x, y, "PV: " + alien.getHealthPoints() + " /100");
+            y++;
 
-            drawString(pos.getX(), pos.getY() + 3, printHealthBar(alien.getHealthPoints()));
+            drawString(x, y, printHealthBar(alien.getHealthPoints()));
+            y++;
 
         } else {
             //Si l'alien choisi est nul
-            drawString(0, 0, "\n⚠️  Aucun alien actif");
+            drawString(x, y, "\n⚠️  Aucun alien actif");
+            y++;
         }
 
-        this.refresh();
+        return y;
     }
 
     //Méthode permettant la représentation de la barre de vie d'un alien
@@ -296,4 +299,25 @@ public class LanternaView {
         return y;
     }
 
+    public void printGameState(GameManager gameManager) {
+        int x = 2;
+        int y = 1;
+
+        drawString(x, y, "─".repeat(60));
+        y++;
+
+        drawString(x, y, "📊 " + gameManager.toString());
+        y++;
+
+        drawString(x, y, "─".repeat(60));
+        y++;
+
+        y = printTeamStats(gameManager, x, y);
+
+        y = printActiveAlienStats(gameManager, x, y);
+
+        drawString(x, y, "─".repeat(60));
+
+        this.refresh();
+    }
 }

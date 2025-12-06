@@ -11,6 +11,7 @@ public class Inventory {
     public Inventory() {
         this.ammoStock = new HashMap<>();
 
+        initializeAmmo();
     }
     public void addAmmo(Item.Type w, int qty) {
         if (qty <= 0) {

@@ -26,13 +26,11 @@ public class Inventory {
         int amount = ammoStock.getOrDefault(w, 0);
         return amount > 0 || amount == -1;
     }
-    private void initializeAmmo(Team team) {
-        Inventory inv = team.getInventory();
-
-        inv.addAmmo(Item.Type.SHOTGUN, 50);
-        inv.addAmmo(Item.Type.MINE, 50);
-        inv.addAmmo(Item.Type.UZI, 50);
-        inv.addAmmo(Item.Type.GRENADE, 50);
-        inv.addAmmo(Item.Type.BAZOOKA, 50);
+    private void initializeAmmo() {
+        addAmmo(Item.Type.SHOTGUN, 50);
+        addAmmo(Item.Type.MINE, 50);
+        addAmmo(Item.Type.UZI, 50);
+        addAmmo(Item.Type.GRENADE, 50);
+        addAmmo(Item.Type.BAZOOKA, 50);
     }
 }

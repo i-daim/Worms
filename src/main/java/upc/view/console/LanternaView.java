@@ -18,7 +18,7 @@ public class LanternaView {
     //attribut permettant l'écriture du texte, des caractères avec coordonnées et couleur
     private TextGraphics graphics;
 
-    //Constructeur
+    /*Constructeur*/
     public LanternaView() {
         //Gestion des exceptions
         try {
@@ -40,14 +40,14 @@ public class LanternaView {
         }
 
     }
-    //Méthode permettant de vider l'écran (avant de redessiner)
+    /*Méthode permettant de vider l'écran (avant de redessiner)*/
     public void clear() {
 
         this.screen.clear();
 
     }
 
-    //Méthode permettant d'afficher tout ce qui a été dessiné
+    /*Méthode permettant d'afficher tout ce qui a été dessiné*/
     public void refresh() {
 
         //Gestion des exceptions
@@ -62,7 +62,7 @@ public class LanternaView {
         }
     }
 
-    //Méthode permettant d'écrire un texte à une position donnée
+    /*Méthode permettant d'écrire un texte à une position donnée*/
     public void drawString(int x, int y, String string) {
 
         //Gestion des exceptions
@@ -77,8 +77,8 @@ public class LanternaView {
         }
     }
 
-    //Méthode permettant de lire la touche pressée par l'utilisateur
-    // Et renvoie le string correspondant à la touche
+    /*Méthode permettant de lire la touche pressée par l'utilisateur
+     Et renvoie le string correspondant à la touche*/
     public String readKey() {
 
         //Gestion des exceptions
@@ -116,7 +116,7 @@ public class LanternaView {
         }
     }
 
-    //Méthode permettant l'affichage du terrain de dans le terminal
+    /*Méthode permettant l'affichage du terrain de dans le terminal*/
     public void printTerrain(GameManager gameManager) {
         Terrain terrain = gameManager.getTerrain();
 
@@ -140,7 +140,7 @@ public class LanternaView {
         this.refresh();
     }
 
-    //Méthode permettant d'envoyer le bon caractère à la position donnée
+    /*Méthode permettant d'envoyer le bon caractère à la position donnée */
     private String symbolForTile(int x, int y, GameManager gameManager) {
         Alien w = gameManager.getAlienAtPosition(x, y);
         Terrain terrain = gameManager.getTerrain();
@@ -164,7 +164,7 @@ public class LanternaView {
         return " ";
     }
 
-    //Methode permettant d'afficher les stats de l'alien active
+    /*Methode permettant d'afficher les stats de l'alien active*/
     private int printActiveAlienStats(GameManager gameManager, int x, int y) {
         Alien alien = gameManager.getActiveAlien();
 
@@ -194,7 +194,7 @@ public class LanternaView {
         return y;
     }
 
-    //Méthode permettant la représentation de la barre de vie d'un alien
+    /*Méthode permettant la représentation de la barre de vie d'un alien*/
     private String printHealthBar(int pv) {
         int barres = pv / 10;
         String healthBar = "[";
@@ -210,7 +210,7 @@ public class LanternaView {
         return healthBar;
     }
 
-    //Méthode permettant d'afficher les stats des équipes
+    /*Méthode permettant d'afficher les stats des équipes*/
     public void printAliensStats(GameManager gameManager) {
 
         //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
@@ -253,7 +253,7 @@ public class LanternaView {
         this.refresh();
     }
 
-    //Méthode permettant d'afficher les stats de chaque alien d'une équipe
+    /*Méthode permettant d'afficher les stats de chaque alien d'une équipe*/
     private int printAliensTeam(Team team, Alien alienActif, int x, int y) {
 
         Alien[] aliens = team.getAliens();
@@ -298,7 +298,7 @@ public class LanternaView {
         return y;
     }
 
-    //Méthode permettant de les stats d'une équipe + stats de l'alien actif
+    /*Méthode permettant de les stats d'une équipe + stats de l'alien actif*/
     public void printGameState(GameManager gameManager) {
 
         //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
@@ -326,7 +326,7 @@ public class LanternaView {
         this.refresh();
     }
 
-    //Méthode permettant les stats d'une équipe
+    /*Méthode permettant les stats d'une équipe*/
     private int printTeamStats(GameManager gameManager, int x, int y) {
         drawString(x, y, "🏆 État des équipes:");
 
@@ -344,7 +344,7 @@ public class LanternaView {
         return y;
     }
 
-    //Méthode permmettant d'afficher le message de déplacement d'un alien
+    /*Méthode permmettant d'afficher le message de déplacement d'un alien*/
     public void printMovementResult(boolean success, String direction, GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
         Position pos = alien.getPosition();
@@ -368,7 +368,7 @@ public class LanternaView {
         this.refresh();
     }
 
-    //Méthode permmettant d'afficher le message de déplacement d'un alien(saut)
+    /*Méthode permmettant d'afficher le message de déplacement d'un alien(saut)*/
     public void printJumpResult(boolean success, GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
         Position pos = alien.getPosition();
@@ -390,7 +390,7 @@ public class LanternaView {
         this.refresh();
     }
 
-    //Méthode permettant d'afficher le message après une attaque
+    /*Méthode permettant d'afficher le message après une attaque*/
     public void printAttackResult(Alien target, int x, int y, Team activeTeam) {
 
         //Vérifie si la cible n'existe pas alors :
@@ -445,7 +445,7 @@ public class LanternaView {
         this.refresh();
     }
 
-    //Méthode permettant d'afficher le message de fin de partie et l'équipe gagnante
+    /*Méthode permettant d'afficher le message de fin de partie et l'équipe gagnante*/
     public void printGameOver(GameManager gameManager) {
 
         //Vide l'écran car on affiche seulement le message

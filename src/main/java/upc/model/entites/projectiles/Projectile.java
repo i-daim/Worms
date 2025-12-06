@@ -1,6 +1,10 @@
-package upc.model.entites;
+package upc.model.entites.projectiles;
 
 import org.dyn4j.dynamics.Body;
+import upc.model.entites.Alien;
+import upc.model.entites.Entity;
+import upc.model.entites.Position;
+import upc.model.items.Weapon;
 
 public class Projectile extends Entity {
 
@@ -24,65 +28,91 @@ public class Projectile extends Entity {
     private Body body;
     private State state;
     private int frameCount;
+    private final Weapon weapon;
 
 
-////    CONSTRUCTOR    ////
+    /// /    CONSTRUCTOR    ////
     public Projectile(Alien shooter, Position position, int damage,
-                      int explosionRadius, boolean explosive, double speed) {
+                      int explosionRadius, boolean explosive, double speed, Weapon weapon) {
         super(position, speed);
         this.shooter = shooter;
         this.damage = damage;
         this.explosionRadius = explosionRadius;
         this.explosive = explosive;
         this.state = State.FLYING;
-     }
+        this.weapon = weapon;
+
+    }
+    public Projectile(Alien shooter,
+                      Position position,
+                      int damage,
+                      int explosionRadius,
+                      boolean explosive,
+                      double speed) {
+        this(shooter, position, damage, explosionRadius, explosive, speed, null);
+    }
 
 
-////    GETTERS    ////
+    /// /    GETTERS    ////
     public Alien getShooter() {
         return shooter;
     }
+
     public int getDamage() {
         return damage;
     }
+
     public int getExplosionRadius() {
         return explosionRadius;
     }
+
     public boolean isExplosive() {
         return explosive;
     }
+
     public boolean isActive() {
         return state == State.FLYING;
     }
+
     public State getState() {
         return state;
     }
+
     public Body getBody() {
         return body;
     }
 
-////    SETTERS    ////
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+
+
+    /// /    SETTERS    ////
     public void setBody(Body body) {
         this.body = body;
     }
+
     public void setState(State state) {
         this.state = state;
     }
+
     public void incrementFrame() {
         frameCount++;
     }
+
     public int getFrameCount() {
         return frameCount;
     }
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -206,29 +206,41 @@ public class LanternaView {
     //Méthode permettant les stats des équipes
     public void printAliensStats(GameManager gameManager) {
 
+        int x = 2;
+        int y = 2;
+
         //Coordonnées à rentrer selon où on veut les placer sur le terrain
-        drawString(,, "═".repeat(60));
-        drawString(,,"🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
-        drawString(,,"═".repeat(60));
+        drawString(x, y, "═".repeat(60));
+        y++;
+        drawString(x, y,"🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
+        y++;
+        drawString(x, y,"═".repeat(60));
+        y++;
 
         Team teamActive = gameManager.getActiveTeam();
         Team teamEnnemie = gameManager.getEnnemyTeam();
 
-        drawString(,,"💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
-        drawString(,,"─".repeat(60));
-        printAliensTeam(teamActive, gameManager.getActiveAlien());
+        drawString(x, y,"💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
+        y++;
+        drawString(x, y,"─".repeat(60));
+        y++;
 
-        drawString(,,"💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
-        drawString(,,"─".repeat(60));
-        printAliensTeam(teamEnnemie, null);
+        y = printAliensTeam(teamActive, gameManager.getActiveAlien(), x, y);
 
-        drawString(,,"═".repeat(60));
+        drawString(x, y,"💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
+        y++;
+        drawString(x, y,"─".repeat(60));
+        y++;
+
+         y = printAliensTeam(teamEnnemie, null, x, y);
+
+        drawString(x, y,"═".repeat(60));
 
         this.refresh();
     }
 
     //Méthode permettant d'afficher les stats de chaque alien d'une équipe
-    private void printAliensTeam(Team team, Alien alienActif) {
+    private int printAliensTeam(Team team, Alien alienActif, int x, int y) {
 
         Alien[] aliens = team.getAliens();
         int count = 1;
@@ -240,16 +252,23 @@ public class LanternaView {
                 Position pos = alien.getPosition();
                 String indicateur = (alien == alienActif) ? "► " : "  ";
 
-                drawString(,,indicateur +  " :Alien #" + count + "  | Position: " + pos + " | PV: " + alien.getHealthPoints() + "/100 ");
-                printHealthBar(alien.getHealthPoints());
+                drawString(x, y,indicateur +  " :Alien #" +
+                        count + "  | Position: " +
+                        pos + " | PV: " +
+                        alien.getHealthPoints() + "/100 " +
+                        printHealthBar(alien.getHealthPoints()));
+
+                y++;
                 count++;
             }
         }
 
         if (noneAlive) {
-            drawString(,,"  ⚰️  Tous les aliens sont morts");
+            drawString(x, y,"  ⚰️  Tous les aliens sont morts");
+            y++;
         }
 
+        return y;
     }
 
 }

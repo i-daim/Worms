@@ -54,11 +54,18 @@ public class LanternaView {
         }
     }
 
+    //Méthode permettant d'écrire un texte à une position donnée
     public void drawString(int x, int y, String string) {
+
+        //Gestion des exceptions
         try {
+            //Permet de dessiner à une position donnée
             graphics.putString(x, y, string);
+
         } catch (Exception e) {
+
             throw new RuntimeException(e);
+
         }
     }
 }

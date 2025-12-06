@@ -119,10 +119,12 @@ public class ProjectilePhysics {
     }
 
     public void updateProjectiles(Terrain terrain) {
-        ///Cette fonction met à jour tous les projectiles actifs à chaque frame en synchronisant leur position Java avec la position physique
+        ///Cette fonction met à jour tous les projectiles actifs à chaque frame en synchronisant
+        ///leur position Java avec la position physique
         ///Puis décide s’ils doivent être supprimés ou exploser
         ///Elle enlève ceux qui sortent des limites du terrain
-        ///Et fait exploser ceux qui se sont presque arrêtés (vitesse très faible après un certain nombre de frames)
+        ///Et fait exploser ceux qui se sont presque arrêtés (vitesse très faible après un
+        ///certain nombre de frames)
         ///En retirant à chaque fois le corps du monde physique et le projectile de la liste active.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
 
@@ -163,10 +165,13 @@ public class ProjectilePhysics {
     }
 
     public void explodeProjectile(Projectile proj) {
-        ///Cette fonction gère l’explosion d’un projectile en appliquant des dégâts et un recul aux aliens proches du centre de l’explosion
-        ///Elle récupère la position, le rayon et les dégâts de l’explosion, parcourt tous les aliens vivants
+        ///Cette fonction gère l’explosion d’un projectile en appliquant des dégâts
+        ///et un recul aux aliens proches du centre de l’explosion
+        ///Elle récupère la position, le rayon et les dégâts de l’explosion,
+        ///parcourt tous les aliens vivants
         ///Et pour ceux dans le rayon, calcule des dégâts qui diminuent avec la distance
-        ///Puis applique un « knockback » (impulsion) sur leur corps physique pour les pousser loin du centre
+        ///Puis applique un « knockback » (impulsion) sur leur corps physique
+        ///pour les pousser loin du centre
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();

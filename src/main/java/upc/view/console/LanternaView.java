@@ -367,4 +367,21 @@ public class LanternaView {
         this.refresh();
     }
 
+    public void printJumpResult(boolean success, GameManager gameManager) {
+        Alien alien = gameManager.getActiveAlien();
+        Position pos = alien.getPosition();
+
+        this.clear();
+        printAliensStats(gameManager);
+
+        if (success) {
+            drawString(pos.getX(), pos.getY(), "✅ L'alien a sauté !");
+
+        } else {
+            drawString(pos.getX(), pos.getY(), "❌ Saut impossible");
+        }
+
+        this.refresh();
+    }
+
 }

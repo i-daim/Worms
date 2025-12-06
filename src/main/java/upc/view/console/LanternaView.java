@@ -79,7 +79,8 @@ public class LanternaView {
         }
     }
 
-    //Méthode permettant de lire la touche pressée par l'utilisateur et renvoie le string correspondt à la touche
+    //Méthode permettant de lire la touche pressée par l'utilisateur
+    // Et renvoie le string correspondant à la touche
     public String readKey() {
 
         //Gestion des exceptions
@@ -174,14 +175,18 @@ public class LanternaView {
             Position pos = alien.getPosition();
 
             //Affiche les stats les uns au-dessus des autres
-            drawString(pos.getX(), pos.getY(),"🐛 Alien actif (" + gameManager.getActiveTeam().getName() + "):");
+            drawString(pos.getX(), pos.getY(),"🐛 Alien actif ("
+                    + gameManager.getActiveTeam().getName() + "):");
+
             drawString(pos.getX(), pos.getY() + 1 , "Position: " + alien.getPosition());
+
             drawString(pos.getX(), pos.getY() + 2, "PV: " + alien.getHealthPoints() + " /100");
+
             drawString(pos.getX(), pos.getY() + 3, printHealthBar(alien.getHealthPoints()));
 
         } else {
             //Si l'alien choisi est nul
-            drawString(0, 0,"\n⚠️  Aucun alien actif");
+            drawString(0, 0, "\n⚠️  Aucun alien actif");
         }
 
         this.refresh();
@@ -214,33 +219,33 @@ public class LanternaView {
         //y++ pour les empiler en colonne
         drawString(x, y, "═".repeat(60));
         y++;
-        drawString(x, y,"🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
+        drawString(x, y, "🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
         y++;
-        drawString(x, y,"═".repeat(60));
+        drawString(x, y, "═".repeat(60));
         y++;
 
         Team teamActive = gameManager.getActiveTeam();
         Team teamEnnemie = gameManager.getEnnemyTeam();
 
         //Affiche le nom de l'équipe alliée
-        drawString(x, y,"💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
+        drawString(x, y, "💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
         y++;
-        drawString(x, y,"─".repeat(60));
+        drawString(x, y, "─".repeat(60));
         y++;
 
         //Renvoie la coordonnée de la colonne d'affichage + affiche les stats des aliens alliés
         y = printAliensTeam(teamActive, gameManager.getActiveAlien(), x, y);
 
         //Affiche le nom de l'équipe ennemie
-        drawString(x, y,"💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
+        drawString(x, y, "💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
         y++;
-        drawString(x, y,"─".repeat(60));
+        drawString(x, y, "─".repeat(60));
         y++;
 
         //Renvoie la coordonnée de la colonne d'affichage + affiche les stats des aliens ennemis
         y = printAliensTeam(teamEnnemie, null, x, y);
 
-        drawString(x, y,"═".repeat(60));
+        drawString(x, y, "═".repeat(60));
 
         //Affiche le rendu
         this.refresh();
@@ -265,11 +270,11 @@ public class LanternaView {
                 String indicateur = (alien == alienActif) ? "► " : "  ";
 
                 //Affiche stats de l'alien
-                drawString(x, y,indicateur +  " :Alien #" +
-                        count + "  | Position: " +
-                        pos + " | PV: " +
-                        alien.getHealthPoints() + "/100 " +
-                        printHealthBar(alien.getHealthPoints()));
+                drawString(x, y, indicateur +  " :Alien #"
+                        + count + "  | Position: "
+                        + pos + " | PV: " +
+                        alien.getHealthPoints() + "/100 "
+                        + printHealthBar(alien.getHealthPoints()));
 
                 //Pour afficher sur une plusieurs lignes les uns au-dessus des autres
                 y++;
@@ -283,7 +288,7 @@ public class LanternaView {
         if (noneAlive) {
 
             //Affiche l'information
-            drawString(x, y,"  ⚰️  Tous les aliens sont morts");
+            drawString(x, y, "  ⚰️  Tous les aliens sont morts");
             y++;
         }
 

@@ -2,8 +2,6 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.entites.Projectile;
-import upc.model.items.Weapon;
 
 public class GameManager {
     public static final int ROUND_TIME = 60;
@@ -19,7 +17,7 @@ public class GameManager {
     private boolean gameOver;
     private boolean actionDone;
 
-    private String mapName;
+    private final String mapName;
 
     public GameManager(String mapName) {
         this.mapName = mapName;
@@ -212,28 +210,5 @@ public class GameManager {
 
     public boolean isActionDone() {
         return actionDone;
-    }
-
-    public Projectile fireWeapon(Weapon weapon, int angleDegrees, int powerPercent) {
-        if (actionDone || powerPercent < 0 || powerPercent > 100) {
-            return null;
-        }
-
-        Alien shooter = getActiveAlien();
-        if (shooter == null || !shooter.isAlive()) {
-            return null;
-        }
-
-        Projectile proj = weapon.createProjectile(shooter);
-        gameWorld.getPhysicsEngine().addProjectile(proj, angleDegrees, powerPercent);
-
-        actionDone = true;
-        return proj;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Tour %d | %s | Temps: %ds",
-                currentRound, getActiveTeam().getName(), timeLeft);
     }
 }

@@ -1,7 +1,7 @@
 package upc.model.jeu;
 
 import upc.model.entites.Alien;
-import upc.model.entites.Projectile;
+import upc.model.entites.projectiles.Projectile;
 import upc.model.physics.PhysicsEngine;
 
 import java.util.ArrayList;
@@ -10,11 +10,13 @@ import java.util.List;
 public class GameWorld {
     private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
+
     private final ArrayList<Alien> activeAliens;
 
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
         this.physicsEngine = new PhysicsEngine(terrain);
+
         this.activeAliens = new ArrayList<>();
 
         initializePhysics();
@@ -81,5 +83,4 @@ public class GameWorld {
     public List<Projectile> getActiveProjectiles() {
         return physicsEngine.getActiveProjectiles();
     }
-
 }

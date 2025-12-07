@@ -11,11 +11,17 @@ public class AnimationManager {
 
     public AnimationManager() {
         // Animations joueur //
-        zlerps.put("idle", new Animation("characters/zlerp/idle", 1));
-        glorbs.put("idle", new Animation("characters/glorb/idle", 1));
+        zlerps.put("idle_right", new Animation("characters/zlerp/idle", 1, false));
+        zlerps.put("idle_left", new Animation("characters/zlerp/idle", 1, true));
+        zlerps.put("walk_right", new Animation("characters/zlerp/walk", 6, false));
+        zlerps.put("walk_left", new Animation("characters/zlerp/walk", 6, true));
+        zlerps.put("jump", new Animation("characters/zlerp/jump", 4, false));
+
+        glorbs.put("idle_right", new Animation("characters/glorb/idle", 1, false));
+        glorbs.put("idle_left", new Animation("characters/glorb/idle", 1, true));
 
         // Animations monde //
-        animations.put("water", new Animation("animations/water/water", 8));
+        animations.put("water", new Animation("animations/water/water", 8, false));
         //animations.put("explosion", new Animation("explosion", 4));
 
     }
@@ -24,11 +30,19 @@ public class AnimationManager {
         return animations.get(name);
     }
 
-    public static Animation getZlerp(String name) {
-        return zlerps.get(name);
-    }
+    public static Animation getSprite(int type, String name, boolean direction) {
+        String fullName = name + (direction ? "_right" : "_left");
 
-    public static Animation getGlorb(String name) {
-        return glorbs.get(name);
+        if (type == 0) {
+            if (!zlerps.containsKey(fullName)) {
+                return zlerps.get("idle_right");
+            }
+            return zlerps.get(fullName);
+        } else {
+            if (!glorbs.containsKey(fullName)) {
+                return glorbs.get("idle_right");
+            }
+            return glorbs.get(fullName);
+        }
     }
 }

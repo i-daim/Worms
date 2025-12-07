@@ -1,12 +1,14 @@
 package upc.model.items;
 
-public class Uzi extends Firearm {
-    public static final int DEGATS = 2;
-    public static final int RAYON = 10;
-    public static final int NBTIR = 25;
+import upc.model.entites.Alien;
+import upc.model.jeu.GameWorld;
 
-    public Uzi(String nom) {
-        super(nom, DEGATS, RAYON, NBTIR);
+public class Uzi extends Weapon {
+    public Uzi() {
+        super("Uzi", 10, 30, 80);
     }
 
+    public void useItem(GameWorld gameWorld, Alien shooter) {
+
+    }
 }

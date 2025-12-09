@@ -150,6 +150,24 @@ public class GamePanel extends JPanel {
         drawAnimation(g2, animation, drawX, drawY, 100);
     }
 
+    public void centralizeCamera(Alien alien) {
+        if (alien == null) {
+            return;
+        }
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
+
+        int viewX = posX - (int)(getWidth() / (2 * ZOOM));
+        int viewY = posY - (int)(getHeight() / (2 * ZOOM));
+
+        int maxX = (int) (terrain.getWidth() - getWidth() / ZOOM);
+        int maxY = (int) (terrain.getHeight() - getHeight() / ZOOM);
+
+        int camX = Math.max(0, Math.min(viewX, maxX));
+        int camY = Math.max(0, Math.min(viewY, maxY));
+        setCamera(camX, camY);
+    }
+
 
     public void setCamera(int x, int y) {
         cameraX = x;

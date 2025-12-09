@@ -26,8 +26,6 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
-    private final AnimationManager animationManager = new AnimationManager();
-
     private final Sound gameMusic = new Sound("/sounds/game_music.wav");
 
     public GamePanel(GameManager gameManager) {
@@ -60,9 +58,9 @@ public class GamePanel extends JPanel {
 
         // Affichage de l'eau (arrière plan)
         int waterY = DEFAULT_HEIGHT
-                - animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
+                - AnimationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
 
-        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY, 100);
+        drawAnimation(g2, AnimationManager.getAnimation("water"), 0, waterY, 100);
 
         // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
@@ -72,7 +70,7 @@ public class GamePanel extends JPanel {
         drawAliens(g2);
 
         // Affichage de l'eau
-        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
+        drawAnimation(g2, AnimationManager.getAnimation("water"), 0, waterY + 30, 100);
 
         // Affichage des barres de vie
         hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);

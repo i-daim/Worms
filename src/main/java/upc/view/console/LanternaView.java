@@ -512,4 +512,11 @@ public class LanternaView {
         this.refresh();
     }
 
+    public void printTurnSkipped() {
+        drawString(0, 0, "⏭️  Tour passé" );
+        refresh();
+    }
+
+
+
 }

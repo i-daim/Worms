@@ -557,6 +557,10 @@ public class LanternaView {
     }
 
 
+    public void requestCommand(String direction) {
+        drawString(0, 0, "\n💬 > " + direction);
+        this.refresh();
+    }
 
 
 

@@ -49,6 +49,8 @@ public class GameManager {
         }
         gameWorld.update(elapsedTime);
 
+        updateAnimations();
+
         checkGameOver();
 
         countTimeLeft();
@@ -142,6 +144,13 @@ public class GameManager {
             }
         }
         return null;
+    }
+
+    private void updateAnimations() {
+        activeAnimations.removeIf(active -> {
+            active.update();
+            return active.isDone();
+        });
     }
 
     public void addActiveAnimation(String name, int posX, int posY) {

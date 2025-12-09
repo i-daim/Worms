@@ -477,7 +477,7 @@ public class LanternaView {
 
         //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'équipe
         y = printTeamStats(gameManager, x, y);
-        drawString( x, y, "=".repeat(60));
+        drawString(x, y, "=".repeat(60));
 
         //Affiche le rendu
         this.refresh();
@@ -515,7 +515,7 @@ public class LanternaView {
     }
 
     public void printTurnSkipped() {
-        drawString(0, 0, "⏭️  Tour passé" );
+        drawString(0, 0, "⏭️  Tour passé");
         refresh();
     }
 

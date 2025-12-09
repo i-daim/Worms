@@ -528,6 +528,11 @@ public class LanternaView {
         refresh();
     }
 
+    public void printMessage(String message) {
+        drawString(2, 2, message);
+        refresh();
+    }
+
 
 
 

@@ -481,18 +481,25 @@ public class LanternaView {
         this.refresh();
     }
 
+    /*Méthode permettant d'afficher le message des aliens après la chute (avec leurs stats) */
     public void printStateAfterFall(GameManager gameManager) {
+
+        //Coordonnées par défaut d'affichage
         int x = 0;
         int y = 0;
 
         drawString(x, y, "💥 ÉTAT DES ALIENS APRÈS LA CHUTE :");
 
         for (int i = 0; i < 2; i++) {
+
+            //Affiche le noms des équipes
             drawString(x, y, "🔹 " + gameManager.getTeam(i).getName() + " :");
 
             Alien[] aliens = gameManager.getTeam(i).getAliens();
             for (int j = 0; j < aliens.length; j++) {
                 Alien a = aliens[j];
+
+                //Affiche les aliens vivants + leurs stats
                 if (a != null && a.isAlive()) {
                     drawString(x, y, "   → Alien #" + (j + 1) + " : PV = "
                             + a.getHealthPoints() + "/100");
@@ -500,6 +507,8 @@ public class LanternaView {
                 y++;
             }
         }
+
+        //Affiche leur rendu
         this.refresh();
     }
 

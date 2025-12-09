@@ -517,6 +517,13 @@ public class LanternaView {
         refresh();
     }
 
+    public void printGameAbandoned() {
+        this.clear();
+        drawString(2, 2, "❌ Partie abandonnée.");
+        refresh();
+    }
+
+
 
 
 }

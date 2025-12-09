@@ -15,6 +15,17 @@ public class ActiveAnimation {
         this.frameTime = frameTime;
         this.startTime = System.currentTimeMillis();
         this.loop = loop;
+    public void update() {
+        long timeIndex =  System.currentTimeMillis() / frameTime;
+
+        frameIndex = (int) (timeIndex % animation.getFrames().size());
+
+        int animationLength = animation.getFrames().size() * frameTime;
+        if(!loop && timeIndex > startTime + animationLength) {
+            done = true;
+        }
+    }
+
     public int getFrameIndex() {
         return frameIndex;
     }

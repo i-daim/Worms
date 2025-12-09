@@ -8,13 +8,19 @@ public class ActiveAnimation {
     private int frameIndex;
     private boolean loop;
 
+    private int posX;
+    private int posY;
+
     private boolean done;
 
-    public ActiveAnimation(Animation animation, int frameTime, boolean loop) {
+    public ActiveAnimation(Animation animation, int frameTime, boolean loop,
+                           int posX, int posY) {
         this.animation = animation;
         this.frameTime = frameTime;
         this.startTime = System.currentTimeMillis();
         this.loop = loop;
+        this.posX = posX;
+        this.posY = posY;
     public void update() {
         long timeIndex =  System.currentTimeMillis() / frameTime;
 
@@ -36,5 +42,13 @@ public class ActiveAnimation {
 
     public boolean isDone() {
         return done;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
     }
 }

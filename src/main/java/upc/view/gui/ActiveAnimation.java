@@ -13,6 +13,15 @@ public class ActiveAnimation {
 
     private boolean done;
 
+    /**
+     * Constructeur pour créer une animation active.
+     * Permet d'enregistrer la date de création de l'animation, pour pouvoir l'arrêter si l'animation ne se boucle pas.
+     * Enregistre aussi l'index du frame à afficher pour faciliter l'utilisation dans le GamePanel.
+     *
+     * @param animation L'animation à afficher
+     * @param frameTime La durée d'affichage de chaque frame (en ms)
+     * @param loop Détermine si l'animation sera affichée en boucle
+     */
     public ActiveAnimation(Animation animation, int frameTime, boolean loop,
                            int posX, int posY) {
         this.animation = animation;
@@ -21,6 +30,12 @@ public class ActiveAnimation {
         this.loop = loop;
         this.posX = posX;
         this.posY = posY;
+    }
+
+    /**
+     * Met à jour l'index du frame à afficher.
+     * Met fin à l'animation si la durée d'affichage est dépassée.
+     */
     public void update() {
         long timeIndex =  System.currentTimeMillis() / frameTime;
 

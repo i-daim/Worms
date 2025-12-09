@@ -5,10 +5,25 @@ public class ActiveAnimation {
     private final Animation animation;
     private final int frameTime;
     private final long startTime;
+    private int frameIndex;
+    private boolean loop;
 
-    public ActiveAnimation(Animation animation, int frameTime) {
+    private boolean done;
+
+    public ActiveAnimation(Animation animation, int frameTime, boolean loop) {
         this.animation = animation;
         this.frameTime = frameTime;
         this.startTime = System.currentTimeMillis();
+        this.loop = loop;
+    public int getFrameIndex() {
+        return frameIndex;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

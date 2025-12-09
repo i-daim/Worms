@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
-    private ArrayList<ActiveAnimation> activeAnimations;
+    private List<ActiveAnimation> activeAnimations;
 
     private final Sound gameMusic = new Sound("/sounds/game_music.wav");
 
@@ -66,8 +66,7 @@ public class GamePanel extends JPanel {
         drawAnimation(g2, waterAnim, 0, waterY, 0, 100, true);
 
         // Affichage du terrain
-        BufferedImage terrainImage = terrain.getImage();
-        g2.drawImage(terrainImage, 0, 0, this);
+        g2.drawImage(terrain.getImage(), 0, 0, this);
 
         // Affichage des entites
         drawAliens(g2);
@@ -157,7 +156,7 @@ public class GamePanel extends JPanel {
         int drawX = posX - 10;
         int drawY = posY - 18;
 
-        drawAnimation(g2, animation, drawX, drawY, 100);
+        drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
     }
 
 

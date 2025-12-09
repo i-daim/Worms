@@ -26,12 +26,16 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
+    private ArrayList<ActiveAnimation> activeAnimations;
+
     private final Sound gameMusic = new Sound("/sounds/game_music.wav");
 
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
         this.terrain = gameManager.getTerrain();
         this.hudPanel = new HUDPanel(gameManager);
+
+        activeAnimations = gameManager.getActiveAnimations();
         this.setDoubleBuffered(true);
         gameMusic.loop();
     }
@@ -76,16 +80,7 @@ public class GamePanel extends JPanel {
         hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
 
         // Affichage des animations du jeu
-        ArrayList<ActiveAnimation> activeAnimations = gameManager.getActiveAnimations();
-        for (ActiveAnimation active : activeAnimations) {
-            active.update();
-            if (active.isDone()) {
-                activeAnimations.remove(active);
-            } else {
-                g2.drawImage(
-                        active.getCurrentFrame(), active.getDrawX(), active.getDrawY(), this);
-            }
-        }
+        drawActiveAnimations(g2);
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
@@ -130,6 +125,18 @@ public class GamePanel extends JPanel {
             BufferedImage currentFrame = frames.get(frameIndex);
 
             g2.drawImage(currentFrame, drawX, drawY, this);
+        }
+    }
+
+    public void drawActiveAnimations(Graphics2D g2) {
+        for (ActiveAnimation active : activeAnimations) {
+            active.update();
+            if (active.isDone()) {
+                activeAnimations.remove(active);
+            } else {
+                g2.drawImage(active.getCurrentFrame(),
+                        active.getDrawX(), active.getDrawY(), this);
+            }
         }
     }
 

@@ -17,7 +17,8 @@ public class ActiveAnimation {
 
     /**
      * Constructeur pour créer une animation active.
-     * Permet d'enregistrer la date de création de l'animation, pour pouvoir l'arrêter si l'animation ne se boucle pas.
+     * Permet d'enregistrer la date de création de l'animation,
+     * pour pouvoir l'arrêter si l'animation ne se boucle pas.
      * Enregistre aussi l'index du frame à afficher pour faciliter l'utilisation dans le GamePanel.
      *
      * @param animation L'animation à afficher
@@ -41,7 +42,7 @@ public class ActiveAnimation {
     public void update() {
         long elapsedTime = System.currentTimeMillis() - startTime;
         frameIndex = (int) ((elapsedTime / frameTime) % animation.getFrames().size());
- 
+
         if (!loop && elapsedTime >= (long) animation.getFrames().size() * frameTime) {
              done = true;
         }

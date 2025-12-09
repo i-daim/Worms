@@ -12,6 +12,7 @@ import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class LanternaView {
     //attribut permettant la réprésentation du terminal et de le styliser
@@ -563,6 +564,18 @@ public class LanternaView {
         this.refresh();
     }
 
+    public int requestInteger(String message) {
+        drawString(0, 0, message);
+        this.refresh();
 
-
+        Scanner scanner = new Scanner(System.in);
+        while (!scanner.hasNextInt()) {
+            scanner.next();
+            drawString(0, 1,"⚠️  Veuillez entrer un nombre valide: ");
+            this.refresh();
+        }
+        int value = scanner.nextInt();
+        scanner.nextLine();
+        return value;
+    }
 }

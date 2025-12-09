@@ -557,6 +557,7 @@ public class LanternaView {
     }
 
 
+    /*Méthode permettant d'afficher la direction saisie par le joueur*/
     public void requestCommand(String direction) {
         drawString(0, 0, "\n💬 > " + direction);
         this.refresh();

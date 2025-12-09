@@ -59,11 +59,10 @@ public class ActiveAnimation {
         return done;
     }
 
-    public int getPosX() {
-        return posX;
+    public int getDrawX() {
+        return posX - getCurrentFrame().getWidth() / 2;
     }
-
-    public int getPosY() {
-        return posY;
+    public int getDrawY() {
+        return posY - getCurrentFrame().getHeight() / 2;
     }
 }

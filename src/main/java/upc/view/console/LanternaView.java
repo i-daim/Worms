@@ -535,13 +535,22 @@ public class LanternaView {
         refresh();
     }
 
+    /*Méthode permettant de d'afficher le message de fin de partie + fermeture du terminal*/
     public void close() {
+        //Gestion des exceptions
         try {
+            //vide le terminal
             this.clear();
+
+            //affiche le message de fin
             drawString(0, 0, "👋 Merci d'avoir joué !");
+
+            //affiche le rendu
             this.refresh();
 
+            //Permet la fermeture du terminal
             screen.close();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

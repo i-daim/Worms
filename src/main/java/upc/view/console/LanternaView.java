@@ -482,18 +482,22 @@ public class LanternaView {
     }
 
     public void printStateAfterFall(GameManager gameManager) {
-        drawString(, , "💥 ÉTAT DES ALIENS APRÈS LA CHUTE :");
+        int x = 0;
+        int y = 0;
+
+        drawString(x, y, "💥 ÉTAT DES ALIENS APRÈS LA CHUTE :");
 
         for (int i = 0; i < 2; i++) {
-            drawString(, , "🔹 " + gameManager.getTeam(i).getName() + " :");
+            drawString(x, y, "🔹 " + gameManager.getTeam(i).getName() + " :");
 
             Alien[] aliens = gameManager.getTeam(i).getAliens();
             for (int j = 0; j < aliens.length; j++) {
                 Alien a = aliens[j];
                 if (a != null && a.isAlive()) {
-                    drawString(, , "   → Alien #" + (j + 1) + " : PV = "
+                    drawString(x, y, "   → Alien #" + (j + 1) + " : PV = "
                             + a.getHealthPoints() + "/100");
                 }
+                y++;
             }
         }
         this.refresh();

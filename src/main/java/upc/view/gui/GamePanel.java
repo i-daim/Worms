@@ -106,16 +106,12 @@ public class GamePanel extends JPanel {
 
 
     public void drawAliens(Graphics2D g2) {
-        for (Alien w : gameManager.getWorld().getActiveWorms()) {
-            if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
-                int posX = w.getPosition().getX();
-                int posY = w.getPosition().getY();
-
-                if (w.getTeam() == gameManager.getTeam(0)) {
-                    drawAlien(g2, w, 0);
+        for (Alien alien : gameManager.getWorld().getActiveWorms()) {
+            if (alien != null && alien.isAlive() && alien.isVisible(cameraX, cameraY)) {
+                if (alien.getTeam() == gameManager.getTeam(0)) {
+                    drawAlien(g2, alien, 0);
                 } else {
-                    // Pour quand on aura des animations séparées pour la 2e équipe
-                    drawAlien(g2, w, 1);
+                    drawAlien(g2, alien, 1);
                 }
             }
         }

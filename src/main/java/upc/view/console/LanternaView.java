@@ -523,6 +523,14 @@ public class LanternaView {
         refresh();
     }
 
+    public void printUnknownCommand() {
+        drawString(2, 2, "❌ Commande inconnue ! Tapez 'info' pour l'aide.");
+        refresh();
+    }
+
+
+
+
 
 
 

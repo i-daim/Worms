@@ -114,6 +114,12 @@ public class GamePanel extends JPanel {
 
     private void drawAnimation(Graphics2D g2, Animation animation,
                                int drawX, int drawY, int speedMs) {
+    public void drawActiveAnimations(Graphics2D g2) {
+        for (ActiveAnimation active : activeAnimations) {
+            drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
+                    active.getStartTime(), active.getFrameTime(), false);
+        }
+    }
 
         if (animation != null && !animation.getFrames().isEmpty()) {
             List<BufferedImage> frames = animation.getFrames();
@@ -125,18 +131,6 @@ public class GamePanel extends JPanel {
             BufferedImage currentFrame = frames.get(frameIndex);
 
             g2.drawImage(currentFrame, drawX, drawY, this);
-        }
-    }
-
-    public void drawActiveAnimations(Graphics2D g2) {
-        for (ActiveAnimation active : activeAnimations) {
-            active.update();
-            if (active.isDone()) {
-                activeAnimations.remove(active);
-            } else {
-                g2.drawImage(active.getCurrentFrame(),
-                        active.getDrawX(), active.getDrawY(), this);
-            }
         }
     }
 

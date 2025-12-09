@@ -6,7 +6,8 @@ import upc.view.gui.ActiveAnimation;
 import upc.view.gui.Animation;
 import upc.view.gui.AnimationManager;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager {
     public static final int ROUND_TIME = 60;
@@ -24,7 +25,7 @@ public class GameManager {
 
     private final String mapName;
 
-    private final ArrayList<ActiveAnimation> activeAnimations;
+    private final List<ActiveAnimation> activeAnimations;
 
     public GameManager(String mapName) {
         this.mapName = mapName;
@@ -36,7 +37,7 @@ public class GameManager {
 
         this.gameWorld = new GameWorld(this, this.terrain);
 
-        this.activeAnimations = new ArrayList<>();
+        this.activeAnimations = new CopyOnWriteArrayList<>();
 
         initializeGame();
     }
@@ -90,7 +91,6 @@ public class GameManager {
 
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
-            return;
         }
     }
 
@@ -236,7 +236,7 @@ public class GameManager {
         return actionDone;
     }
 
-    public ArrayList<ActiveAnimation> getActiveAnimations() {
+    public List<ActiveAnimation> getActiveAnimations() {
         return activeAnimations;
     }
 }

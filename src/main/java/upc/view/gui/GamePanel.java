@@ -61,10 +61,9 @@ public class GamePanel extends JPanel {
         }
 
         // Affichage de l'eau (arrière plan)
-        int waterY = DEFAULT_HEIGHT
-                - AnimationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
-
-        drawAnimation(g2, AnimationManager.getAnimation("water"), 0, waterY, 100);
+        int waterY = terrain.getHeight() - (Terrain.WATER_LEVEL);
+        Animation waterAnim = AnimationManager.getAnimation("water");
+        drawAnimation(g2, waterAnim, 0, waterY, 0, 100, true);
 
         // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
@@ -73,8 +72,8 @@ public class GamePanel extends JPanel {
         // Affichage des entites
         drawAliens(g2);
 
-        // Affichage de l'eau
-        drawAnimation(g2, AnimationManager.getAnimation("water"), 0, waterY + 30, 100);
+        // Affichage de l'eau (avant-plan)
+        drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
         // Affichage des barres de vie
         hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
@@ -112,8 +111,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void drawAnimation(Graphics2D g2, Animation animation,
-                               int drawX, int drawY, int speedMs) {
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
@@ -121,17 +118,22 @@ public class GamePanel extends JPanel {
         }
     }
 
-        if (animation != null && !animation.getFrames().isEmpty()) {
-            List<BufferedImage> frames = animation.getFrames();
-
-            long timeIndex = System.currentTimeMillis() / speedMs;
-
-            int frameIndex = (int) (timeIndex % frames.size());
-
-            BufferedImage currentFrame = frames.get(frameIndex);
-
-            g2.drawImage(currentFrame, drawX, drawY, this);
+    private void drawAnimation(Graphics2D g2, Animation anim, int x, int y,
+                               long startTime, int speedMs, boolean loop) {
+        if (anim == null || anim.getFrames().isEmpty()) {
+            return;
         }
+
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        int animSize = anim.getFrames().size();
+
+        int frameIndex = (int) (elapsedTime / speedMs);
+
+        frameIndex = loop?
+                frameIndex % animSize:
+                Math.min(frameIndex, animSize - 1);
+
+        g2.drawImage(anim.getFrames().get(frameIndex), x, y, this);
     }
 
     public void drawAlien(Graphics2D g2, Alien alien, int type) {

@@ -22,7 +22,7 @@ public class AnimationManager {
 
         // Animations monde //
         animations.put("water", new Animation("animations/water/water", 8, false));
-        //animations.put("explosion", new Animation("explosion", 4));
+        animations.put("explosion", new Animation("animations/explosion/explosion", 7, false));
 
     }
 

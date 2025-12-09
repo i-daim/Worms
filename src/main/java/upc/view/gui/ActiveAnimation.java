@@ -47,6 +47,10 @@ public class ActiveAnimation {
         }
     }
 
+    public BufferedImage getCurrentFrame() {
+        return animation.getFrames().get(frameIndex);
+    }
+
     public int getFrameIndex() {
         return frameIndex;
     }

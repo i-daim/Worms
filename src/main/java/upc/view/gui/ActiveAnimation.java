@@ -1,5 +1,7 @@
 package upc.view.gui;
 
+import java.awt.image.BufferedImage;
+
 public class ActiveAnimation {
 
     private final Animation animation;
@@ -37,13 +39,11 @@ public class ActiveAnimation {
      * Met fin à l'animation si la durée d'affichage est dépassée.
      */
     public void update() {
-        long timeIndex =  System.currentTimeMillis() / frameTime;
-
-        frameIndex = (int) (timeIndex % animation.getFrames().size());
-
-        int animationLength = animation.getFrames().size() * frameTime;
-        if(!loop && timeIndex > startTime + animationLength) {
-            done = true;
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        frameIndex = (int) ((elapsedTime / frameTime) % animation.getFrames().size());
+ 
+        if (!loop && elapsedTime >= (long) animation.getFrames().size() * frameTime) {
+             done = true;
         }
     }
 

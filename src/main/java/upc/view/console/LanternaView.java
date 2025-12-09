@@ -11,6 +11,8 @@ import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 
+import java.io.IOException;
+
 public class LanternaView {
     //attribut permettant la réprésentation du terminal et de le styliser
     private Screen screen;
@@ -533,7 +535,17 @@ public class LanternaView {
         refresh();
     }
 
+    public void close() {
+        try {
+            this.clear();
+            drawString(0, 0, "👋 Merci d'avoir joué !");
+            this.refresh();
 
+            screen.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

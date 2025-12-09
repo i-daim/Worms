@@ -164,6 +164,7 @@ public class GameController {
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
+            gamePanel.centralizeCamera(activeAlien);
             if (leftPressed && !rightPressed) {
                 activeAlien.setState(Alien.State.WALK);
                 activeAlien.setDirection(false);

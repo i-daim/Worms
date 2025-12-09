@@ -52,6 +52,16 @@ public class ActiveAnimation {
         return animation.getFrames().get(frameIndex);
     }
 
+
+////    GETTERS    ////
+    public int getFrameTime() {
+        return frameTime;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
     public int getFrameIndex() {
         return frameIndex;
     }
@@ -67,6 +77,7 @@ public class ActiveAnimation {
     public int getDrawX() {
         return posX - getCurrentFrame().getWidth() / 2;
     }
+
     public int getDrawY() {
         return posY - getCurrentFrame().getHeight() / 2;
     }

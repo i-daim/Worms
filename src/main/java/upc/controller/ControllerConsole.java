@@ -3,20 +3,20 @@ package upc.controller;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.view.console.ConsoleView;
+import upc.view.console.LanternaView;
 
 public class ControllerConsole {
     private final GameManager gameManager;
-    private final ConsoleView vue;
+    private final LanternaView vue;
     private boolean enCours;
 
     public ControllerConsole() {
         this.gameManager = new GameManager("");
-        this.vue = new ConsoleView();
+        this.vue = new LanternaView();
         this.enCours = true;
     }
 
     public void start() {
-        vue.printWelcome();
         vue.printTerrain(gameManager);
 
         // Faire tomber les worms
@@ -31,8 +31,8 @@ public class ControllerConsole {
 
         while (enCours && !gameManager.isOver()) {
             vue.printGameState(gameManager);
-            String command = vue.requestCommand();
-            traiterCommande(command);
+            String command = vue.readKey();
+            traiterCommande(command, gameManager);
         }
 
         if (gameManager.isOver()) {
@@ -42,11 +42,11 @@ public class ControllerConsole {
         vue.close();
     }
 
-    private void traiterCommande(String command) {
+    private void traiterCommande(String command, GameManager gameManager) {
         switch (command) {
             case "gauche":
                 boolean reussiteG = gameManager.getActiveAlien().moveLeft(gameManager.getTerrain());
-                vue.printMovementResult(reussiteG, "gauche");
+                vue.printMovementResult(reussiteG, "gauche", gameManager);
                 if (reussiteG) {
                     gameManager.skipTurn();
                 }
@@ -55,7 +55,7 @@ public class ControllerConsole {
             case "droite":
                 boolean reussiteD =
                         gameManager.getActiveAlien().moveRight(gameManager.getTerrain());
-                vue.printMovementResult(reussiteD, "droite");
+                vue.printMovementResult(reussiteD, "droite", gameManager);
                 if (reussiteD) {
                     gameManager.skipTurn();
                 }
@@ -69,7 +69,7 @@ public class ControllerConsole {
                     gameManager.update(1.0 / 60.0);
                 }
 
-                vue.printJumpResult(true);
+                vue.printJumpResult(true, gameManager);
                 gameManager.skipTurn();
                 break;
 

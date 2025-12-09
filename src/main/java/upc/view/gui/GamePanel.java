@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GamePanel extends JPanel {
@@ -75,6 +76,18 @@ public class GamePanel extends JPanel {
 
         // Affichage des barres de vie
         hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
+
+        // Affichage des animations du jeu
+        ArrayList<ActiveAnimation> activeAnimations = gameManager.getActiveAnimations();
+        for (ActiveAnimation active : activeAnimations) {
+            active.update();
+            if (active.isDone()) {
+                activeAnimations.remove(active);
+            } else {
+                g2.drawImage(
+                        active.getCurrentFrame(), active.getDrawX(), active.getDrawY(), this);
+            }
+        }
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);

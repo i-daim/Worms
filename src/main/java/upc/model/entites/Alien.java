@@ -1,11 +1,13 @@
 package upc.model.entites;
 
+import upc.model.jeu.GameWorld;
 import upc.model.jeu.Team;
-import upc.model.jeu.Terrain;
+import upc.model.physics.AlienPhysics;
 import upc.view.gui.GamePanel;
 
 public class Alien extends Entity {
     // Attributs
+    private final AlienPhysics alienPhysics;
     private final Team team;
     private int healthPoints;
     private boolean alive;
@@ -28,9 +30,10 @@ public class Alien extends Entity {
 
 
     // Constructeur
-    public Alien(Team team, Position position) {
+    public Alien(GameWorld gameWorld, Team team, Position position) {
         super(position, SPEED);
         this.healthPoints = INITIAL_HP;
+        this.alienPhysics = gameWorld.getPhysicsEngine().getAlienPhysics();
         this.team = team;
         this.alive = true;
         this.state = State.IDLE;

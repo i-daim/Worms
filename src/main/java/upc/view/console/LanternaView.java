@@ -94,27 +94,18 @@ public class LanternaView {
             //Si la touche pressée est <- alors renvoie LEFT
             if (key.getKeyType() == KeyType.ArrowLeft) {
                 return "gauche";
-            }
+            } else if (key.getKeyType() == KeyType.ArrowRight) {
 
-            //Si la touche pressée est -> alors renvoie RIGHT
-            else if (key.getKeyType() == KeyType.ArrowRight) {
+                //Si la touche pressée est -> alors renvoie RIGHT
                 return "droite";
-            }
-
-            //Si la touche pressée est flèche du haut alors renvoie UP
-            else if (key.getKeyType() == KeyType.ArrowUp) {
+            } else if (key.getKeyType() == KeyType.ArrowUp) {
+                //Si la touche pressée est flèche du haut alors renvoie UP
                 return "sauter";
-            }
-
-            else if (key.getKeyType() == KeyType.Escape) {
+            } else if (key.getKeyType() == KeyType.Escape) {
                 return "passer";
-            }
-
-            else if (key.getKeyType() == KeyType.Backspace) {
+            } else if (key.getKeyType() == KeyType.Backspace) {
                 return "passer";
-            }
-
-            else {
+            } else {
                 //Sinon renvoie rien
                 return null;
             }
@@ -578,7 +569,7 @@ public class LanternaView {
         Scanner scanner = new Scanner(System.in);
         while (!scanner.hasNextInt()) {
             scanner.next();
-            drawString(0, 47,"⚠️  Veuillez entrer un nombre valide: ");
+            drawString(0, 47, "⚠️  Veuillez entrer un nombre valide: ");
             this.refresh();
         }
         int value = scanner.nextInt();

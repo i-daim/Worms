@@ -585,7 +585,8 @@ public class LanternaView {
     }
 
     public void printUnknownCommand() {
-        drawString(2, 2, "❌ Commande inconnue ! Tapez 'info' pour l'aide.");
+        this.clear();
+        drawString(2, 2, "❌ Commande inconnue ! Appuyer sur i pour l'aide.");
         refresh();
     }
 

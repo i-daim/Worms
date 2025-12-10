@@ -616,27 +616,6 @@ public class LanternaView {
     }
 
 
-    /*Méthode permettant d'afficher la direction saisie par le joueur*/
-    public void requestCommand(String direction) {
-        drawString(0, 0, "\n💬 > " + direction);
-        this.refresh();
-    }
-
-    public int requestInteger(String message) {
-        drawString(0, 46, message);
-        this.refresh();
-
-        Scanner scanner = new Scanner(System.in);
-        while (!scanner.hasNextInt()) {
-            scanner.next();
-            drawString(0, 47, "⚠️  Veuillez entrer un nombre valide: ");
-            this.refresh();
-        }
-        int value = scanner.nextInt();
-        scanner.nextLine();
-        return value;
-    }
-
     public int chooseDamage() {
         int degat = 20;
         while (true) {
@@ -658,6 +637,32 @@ public class LanternaView {
                 degat = degat + 5;
             } else if (key.getKeyType() == KeyType.Character && key.getCharacter() == ' ') {
                 return degat;
+            }
+
+        }
+    }
+
+    public int chooseX() {
+        int x = 1;
+        while (true) {
+            clear();
+            drawString(2, 2, "🎯 Coordonnée X de la cible : " + x);
+            drawString(2, 4, "<- -> pour changer, Espace pour valider");
+            refresh();
+
+            KeyStroke key = null;
+            try {
+                key = screen.readInput();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (key.getKeyType() == KeyType.ArrowLeft) {
+                x = x - 1;
+            } else if (key.getKeyType() == KeyType.ArrowRight) {
+                x = x + 1;
+            } else if (key.getKeyType() == KeyType.Character && key.getCharacter() == ' ') {
+                return x;
             }
 
         }

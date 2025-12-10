@@ -6,14 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Dimension;
-import java.awt.RenderingHints;
 import java.awt.Font;
 
 public class SettingsPanel extends JPanel {

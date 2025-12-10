@@ -133,6 +133,9 @@ public class LanternaView {
                     //Si la touche pressée est espace du haut alors renvoie passer
                     return "passer";
 
+                } else {
+                    //Sinon renvoie rien
+                    return null;
                 }
 
             } else {

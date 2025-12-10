@@ -25,7 +25,7 @@ public class SettingsPanel extends JPanel {
 
         try {
             background = new ImageIcon(
-                    getClass().getResource("/menu/background_settings.png")
+                    getClass().getResource("/menu/settings_background.png")
             ).getImage();
         } catch (Exception e) {
             System.err.println("Erreur... impossible de charger l'image ");
@@ -35,15 +35,18 @@ public class SettingsPanel extends JPanel {
 
         JLabel title = new JLabel("Settings");
         title.setFont(new Font("Arial", Font.BOLD, 28));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        title.setAlignmentY(Component.TOP_ALIGNMENT);
         title.setForeground(Color.WHITE);
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton = MenuPanel.createGameButton("Back");
+        backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        backButton.setAlignmentY(Component.TOP_ALIGNMENT);
 
-        this.add(Box.createVerticalGlue());
+        this.add(Box.createHorizontalStrut(30));
         this.add(title);
         this.add(Box.createVerticalStrut(30));
         this.add(backButton);
+        this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalGlue());
     }
 

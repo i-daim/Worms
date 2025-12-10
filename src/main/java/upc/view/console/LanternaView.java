@@ -12,7 +12,6 @@ import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class LanternaView {
     //attribut permettant la réprésentation du terminal et de le styliser
@@ -587,11 +586,6 @@ public class LanternaView {
     public void printUnknownCommand() {
         this.clear();
         drawString(2, 2, "❌ Commande inconnue ! Appuyer sur i pour l'aide.");
-        refresh();
-    }
-
-    public void printMessage(String message) {
-        drawString(2, 2, message);
         refresh();
     }
 

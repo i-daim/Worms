@@ -1,7 +1,9 @@
 package upc.model.entites;
 
 import upc.model.items.Item;
+import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
+import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
 import upc.view.gui.GamePanel;
@@ -14,7 +16,9 @@ public class Alien extends Entity {
     private int healthPoints;
     private boolean alive;
     private boolean direction;
-    private Item equippedItem;
+
+    private Inventory inventory;
+    private Item.Type equippedItem;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -35,7 +39,10 @@ public class Alien extends Entity {
         this.healthPoints = INITIAL_HP;
         this.world = gameWorld;
         this.alienPhysics = world.getPhysicsEngine().getAlienPhysics();
+
         this.team = team;
+        this.inventory = team.getInventory();
+
         this.alive = true;
         this.state = State.IDLE;
         this.direction = true;
@@ -67,7 +74,12 @@ public class Alien extends Entity {
 
 ////    Autres Méthodes    ////
     public void useEquippedItem() {
-        equippedItem.useItem(world, this);
+        if (!inventory.isAvailable(equippedItem)) {
+            return;
+        }
+        Weapon weapon = inventory.getWeapon(equippedItem);
+        weapon.useItem(world, this);
+        inventory.useAmmo(equippedItem, weapon.getNbOfShots());
     }
 
     public void receiveDmg(int damage) {
@@ -111,10 +123,10 @@ public class Alien extends Entity {
     }
 
     public Item getEquippedItem() {
-        return equippedItem;
+        return inventory.getWeapon(equippedItem);
     }
 
-    public void setEquippedItem(Item item) {
+    public void setEquippedItem(Item.Type item) {
         equippedItem = item;
     }
 

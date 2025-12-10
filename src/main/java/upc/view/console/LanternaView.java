@@ -140,7 +140,7 @@ public class LanternaView {
             for (int x = 0; x < width; x++) {
 
                 //Dessine chaque case avec le symbole correspondant
-                drawString(x, y, symbolForTile(x, y, gameManager));
+                drawString(x, y + 3, symbolForTile(x, y, gameManager));
             }
         }
 
@@ -323,10 +323,10 @@ public class LanternaView {
         y++;
 
         //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'équipe
-        y = printTeamStats(gameManager, x, y);
+        y = printTeamStats(gameManager, x, 26);
 
         //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'alien aciif
-        y = printActiveAlienStats(gameManager, x, y);
+        y = printActiveAlienStats(gameManager, x, 26);
 
         drawString(x, y, "─".repeat(60));
 
@@ -355,7 +355,6 @@ public class LanternaView {
     /*Méthode permmettant d'afficher le message de déplacement d'un alien*/
     public void printMovementResult(boolean success, String direction, GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
-        Position pos = alien.getPosition();
 
         //Vide puis redessine le terraine et les aliens
         //Pour prendre en compte leur déplacement
@@ -365,10 +364,10 @@ public class LanternaView {
         //Envoie le message de déplacement à la nouvelle position de l'alien
         // si non colision/hors limites
         if (success) {
-            drawString(pos.getX(), pos.getY(), "✅ Déplacement à " + direction + " réussi");
+            drawString(0, 41, "✅ Déplacement à " + direction + " réussi");
 
         } else {
-            drawString(pos.getX(), pos.getY(), "❌ Déplacement impossible "
+            drawString(0, 41, "❌ Déplacement impossible "
                     + "(collision ou hors limites)");
         }
 
@@ -573,13 +572,13 @@ public class LanternaView {
     }
 
     public int requestInteger(String message) {
-        drawString(0, 0, message);
+        drawString(0, 46, message);
         this.refresh();
 
         Scanner scanner = new Scanner(System.in);
         while (!scanner.hasNextInt()) {
             scanner.next();
-            drawString(0, 1,"⚠️  Veuillez entrer un nombre valide: ");
+            drawString(0, 47,"⚠️  Veuillez entrer un nombre valide: ");
             this.refresh();
         }
         int value = scanner.nextInt();

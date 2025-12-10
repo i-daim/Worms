@@ -667,4 +667,30 @@ public class LanternaView {
 
         }
     }
+
+    public int chooseY() {
+        int y = 1;
+        while (true) {
+            clear();
+            drawString(2, 2, "🎯 Coordonnée Y de la cible : " + y);
+            drawString(2, 4, "<- -> pour changer, Espace pour valider");
+            refresh();
+
+            KeyStroke key = null;
+            try {
+                key = screen.readInput();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (key.getKeyType() == KeyType.ArrowLeft) {
+                y = y - 1;
+            } else if (key.getKeyType() == KeyType.ArrowRight) {
+                y = y + 1;
+            } else if (key.getKeyType() == KeyType.Character && key.getCharacter() == ' ') {
+                return y;
+            }
+
+        }
+    }
 }

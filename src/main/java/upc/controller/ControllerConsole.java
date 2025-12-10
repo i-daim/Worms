@@ -2,7 +2,6 @@ package upc.controller;
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
-import upc.view.console.ConsoleView;
 import upc.view.console.LanternaView;
 
 public class ControllerConsole {
@@ -22,9 +21,9 @@ public class ControllerConsole {
         // Faire tomber les worms
         System.out.println("\n⏳ Les worms tombent...\n");
 
-        for (int i = 0; i < 180; i++) {
-            gameManager.update(1.0 / 60.0);
-        }
+        //for (int i = 0; i < 180; i++) {
+            //gameManager.update(1.0 / 60.0);
+        //}
 
         // Afficher l'état après la chute
         vue.printStateAfterFall(gameManager);

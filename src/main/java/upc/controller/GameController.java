@@ -8,9 +8,6 @@ import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -18,13 +15,13 @@ import javax.swing.SwingUtilities;
 
 public class GameController {
 
+    private final KeyboardHandler keyHandler = new KeyboardHandler();
+    private final MouseHandler mouseHandler = new MouseHandler();
+
     private final GamePanel gamePanel;
     private final GameManager gameManager;
     private static final int CAMERA_SPEED = 10;
     private Point mousePosition = new Point(0, 0);
-
-    private boolean leftPressed = false;
-    private boolean rightPressed = false;
 
     private volatile boolean running = true;
     private Thread gameThread;
@@ -38,25 +35,8 @@ public class GameController {
     }
 
     private void addListeners() {
-        gamePanel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                mousePosition = e.getPoint();
-            }
-        });
-
-        gamePanel.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleKeyPress(e.getKeyCode(), true);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                handleKeyPress(e.getKeyCode(), false);
-            }
-        });
-
+        gamePanel.addKeyListener(keyHandler);
+        gamePanel.addMouseMotionListener(mouseHandler);
         gamePanel.setFocusable(true);
     }
 

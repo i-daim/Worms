@@ -16,6 +16,7 @@ public class ControllerConsole {
     }
 
     public void start() {
+        vue.printWelcome();
         vue.printTerrain(gameManager);
 
         // Faire tomber les worms

@@ -1,5 +1,6 @@
 package upc.view.console;
 
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -76,6 +77,15 @@ public class LanternaView {
 
             throw new RuntimeException(e);
 
+        }
+    }
+
+    public void drawColored(int x, int y, String string, TextColor color) {
+        try {
+            graphics.setForegroundColor(color);
+            graphics.putString(x, y, string);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -189,9 +199,14 @@ public class LanternaView {
         //Parcourt chaque case du terrain
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-
-                //Dessine chaque case avec le symbole correspondant
-                drawString(x, y + 5, symbolForTile(x, y, gameManager));
+                if (symbolForTile(x, y, gameManager).equals("W")){
+                    drawColored(x, y + 5, symbolForTile(x, y, gameManager), TextColor.ANSI.RED);
+                    this.refresh();
+                } else {
+                    graphics.setForegroundColor(TextColor.ANSI.WHITE);
+                    //Dessine chaque case avec le symbole correspondant
+                    drawString(x, y + 5, symbolForTile(x, y, gameManager));
+                }
             }
         }
 

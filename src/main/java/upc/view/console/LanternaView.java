@@ -117,21 +117,22 @@ public class LanternaView {
                 //Si la touche pressée est m alors renvoie map
                 if ( c == 'm'){
                     return "map";
-                }
 
-                //Si la touche pressée est c du haut alors renvoie aliens
-                if ( c == 'a'){
+                } else if ( c == 'a'){
+
+                    //Si la touche pressée est c du haut alors renvoie aliens
                     return "aliens";
-                }
 
-                //Si la touche pressée est d du haut alors renvoie attaquer
-                if ( c == 'd'){
+                } else if ( c == 'd'){
+
+                    //Si la touche pressée est d du haut alors renvoie attaquer
                     return "attaquer";
-                }
 
-                //Si la touche pressée est espace du haut alors renvoie passer
-                if ( c == ' '){
+                }else if ( c == ' '){
+
+                    //Si la touche pressée est espace du haut alors renvoie passer
                     return "passer";
+
                 }
 
             } else {

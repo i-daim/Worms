@@ -66,11 +66,7 @@ public class Alien extends Entity {
         if (!alive) {
             return;
         }
-        if (damage < 0) {
-            damage = 0;
-        }
-        healthPoints -= damage;
-
+        healthPoints -= Math.min(0, damage);
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;
@@ -86,10 +82,10 @@ public class Alien extends Entity {
 
         int margin = 200;
 
-        return posX >= cameraX - margin
-                && posX <= cameraX + GamePanel.DEFAULT_WIDTH + margin
-                && posY >= cameraY - margin
-                && posY <= cameraY + GamePanel.DEFAULT_HEIGHT + margin;
+        return posX >= (cameraX - margin)
+                && posX <= (cameraX + GamePanel.DEFAULT_WIDTH + margin)
+                && posY >= (cameraY - margin)
+                && posY <= (cameraY + GamePanel.DEFAULT_HEIGHT + margin);
     }
 
 

@@ -273,8 +273,8 @@ public class LanternaView {
     public void printAliensStats(GameManager gameManager) {
 
         //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
-        int x = 2;
-        int y = 2;
+        int x = 1;
+        int y = 1;
 
         //Affiche l'état des aliens
         //y++ pour les empiler en colonne
@@ -364,14 +364,14 @@ public class LanternaView {
         int x = 5;
         int y = 4;
 
-        drawString(x, y + 1, "─".repeat(60));
-        y++;
+        //drawString(x, y + 1, "─".repeat(60));
+        //y++;
 
-        drawString(x, y + 1, "📊 " + gameManager.toString());
-        y++;
+        //drawString(x, y + 1, "📊 " + gameManager.toString());
+        //y++;
 
-        drawString(x, y + 1, "─".repeat(60));
-        y++;
+        //drawString(x, y + 1, "─".repeat(60));
+        //y++;
 
         //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'équipe
         y = printTeamStats(gameManager, x, 26);
@@ -635,5 +635,31 @@ public class LanternaView {
         int value = scanner.nextInt();
         scanner.nextLine();
         return value;
+    }
+
+    public int chooseDamage() {
+        int degat = 20;
+        while (true) {
+            clear();
+            drawString(2, 2, "💥 Combien de dégâts ? : " + degat);
+            drawString(2, 4, "<- -> pour changer, Espace pour valider");
+            refresh();
+
+            KeyStroke key = null;
+            try {
+                key = screen.readInput();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (key.getKeyType() == KeyType.ArrowLeft) {
+                degat = degat - 5;
+            } else if (key.getKeyType() == KeyType.ArrowRight) {
+                degat = degat + 5;
+            } else if (key.getKeyType() == KeyType.Character && key.getCharacter() == ' ') {
+                return degat;
+            }
+
+        }
     }
 }

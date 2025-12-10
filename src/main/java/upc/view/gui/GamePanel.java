@@ -11,7 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GamePanel extends JPanel {
@@ -128,9 +127,9 @@ public class GamePanel extends JPanel {
 
         int frameIndex = (int) (elapsedTime / speedMs);
 
-        frameIndex = loop?
-                frameIndex % animSize:
-                Math.min(frameIndex, animSize - 1);
+        frameIndex = loop
+                ? frameIndex % animSize
+                : Math.min(frameIndex, animSize - 1);
 
         g2.drawImage(anim.getFrames().get(frameIndex), x, y, this);
     }

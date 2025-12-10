@@ -191,13 +191,15 @@ public class ProjectilePhysics {
      * @param proj Le projectile qui vient d'exploser.
      */
     public void explodeProjectile(Projectile proj) {
-
+        //Récupère les coordonnées du centre de l'explosion
+        // (position actuelle du projectile en pixels)
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
         int damage = proj.getDamage();
 
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
+            // Ignore les aliens déjà morts (pas besoin de les blesser ou de les propulser)
             if (!alien.isAlive()) {
                 continue;
             }
@@ -206,6 +208,7 @@ public class ProjectilePhysics {
             double distance = wormPos.distance(explosionX, explosionY);
 
             if (distance <= Converter.toPixels(radius)) {
+                // Calcul de l'atténuation des dégâts (Falloff linéaire)
                 double damageRatio = 1.0 - (distance / Converter.toPixels(radius));
                 int finalDamage = (int) (damage * damageRatio);
 
@@ -218,6 +221,7 @@ public class ProjectilePhysics {
                     double knockbackForce = 50.0 * damageRatio;
                     double dx = (wormPos.getX() - explosionX) / distance;
                     double dy = (wormPos.getY() - explosionY) / distance;
+                    // Applique une impulsion immédiate au corps physique pour le projeter en l'air
                     wormBody.applyImpulse(new Vector2(dx * knockbackForce, dy * knockbackForce));
                 }
             }

@@ -157,8 +157,8 @@ public class GamePanel extends JPanel {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
-        int viewX = posX - (int)(getWidth() / (2 * ZOOM));
-        int viewY = posY - (int)(getHeight() / (2 * ZOOM));
+        int viewX = posX - (int) (getWidth() / (2 * ZOOM));
+        int viewY = posY - (int) (getHeight() / (2 * ZOOM));
 
         int maxX = (int) (terrain.getWidth() - getWidth() / ZOOM);
         int maxY = (int) (terrain.getHeight() - getHeight() / ZOOM);

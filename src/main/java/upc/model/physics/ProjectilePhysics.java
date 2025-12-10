@@ -34,13 +34,18 @@ public class ProjectilePhysics {
         this.activeProjectiles = new ArrayList<>();
     }
 
-
+    /**
+     * Crée et configure un corps physique pour un projectile,
+     * puis l'ajoute au monde physique et à la liste des projectiles actifs.
+     *
+     * @param projectile    le projectile à lancer
+     * @param angleDegrees  l'angle de tir en degrés (0° vers la droite, 90° vers le haut)
+     * @param powerPercent  la puissance du tir en pourcentage (0 à 100)
+     * @return le corps physique (Body) associé au projectile
+     */
     public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
-        ////Cette fonction crée le corps physique d’un projectile
-        /// Lui donne une forme et des propriétés selon son type, le place à la position de départ
-        /// Et lui applique une vitesse calculée avec l’angle et la puissance
-        /// Puis l’ajoute au monde et le relie à l’objet Projectile
         Body body = new Body();
+        // Cas 1 : projectile « Throwable » (grenades, etc.)
         if (projectile instanceof Throwable) {
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
@@ -51,7 +56,7 @@ public class ProjectilePhysics {
             body.setMass(MassType.NORMAL);
 
         } else if (projectile instanceof Bullet) {
-
+            // Cas 2 : projectile de type Bullet (balle, tir rapide)
             double radius = Converter.toMeters(2);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.0);
@@ -62,7 +67,7 @@ public class ProjectilePhysics {
             body.setBullet(true);
 
         } else if (projectile instanceof Trap) {
-            // MINE : Forme rectangulaire, se pose, très lourde
+            // Cas 3 : projectile de type Trap (mine, piège posé au sol)
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
@@ -73,6 +78,7 @@ public class ProjectilePhysics {
             body.setMass(MassType.NORMAL);
 
         } else if (projectile instanceof Rocket) {
+            // Cas 4 : projectile de type Rocket (roquette)
             double radius = Converter.toMeters(5);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);
@@ -119,13 +125,6 @@ public class ProjectilePhysics {
     }
 
     public void updateProjectiles(Terrain terrain) {
-        ///Cette fonction met à jour tous les projectiles actifs à chaque frame en synchronisant
-        ///leur position Java avec la position physique
-        ///Puis décide s’ils doivent être supprimés ou exploser
-        ///Elle enlève ceux qui sortent des limites du terrain
-        ///Et fait exploser ceux qui se sont presque arrêtés (vitesse très faible après un
-        ///certain nombre de frames)
-        ///En retirant à chaque fois le corps du monde physique et le projectile de la liste active.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
 
         while (iterator.hasNext()) {

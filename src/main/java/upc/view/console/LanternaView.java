@@ -93,32 +93,45 @@ public class LanternaView {
             //Conditions qui renvoient le type de touche pressé
             if (key.getKeyType() == KeyType.ArrowLeft) {
 
-                //Si la touche pressée est <- alors renvoie LEFT
+                //Si la touche pressée est <- alors renvoie gauche
                 return "gauche";
 
             } else if (key.getKeyType() == KeyType.ArrowRight) {
 
-                //Si la touche pressée est -> alors renvoie RIGHT
+                //Si la touche pressée est -> alors renvoie droite
                 return "droite";
 
             } else if (key.getKeyType() == KeyType.ArrowUp) {
 
-                //Si la touche pressée est flèche du haut alors renvoie UP
+                //Si la touche pressée est flèche du haut alors renvoie sauter
                 return "sauter";
 
             } else if (key.getKeyType() == KeyType.Escape) {
+
+                //Si la touche pressée est echap alors renvoie exit
                 return "exit";
 
             } else if (key.getKeyType() == KeyType.Character) {
                 char c = key.getCharacter();
+
+                //Si la touche pressée est m alors renvoie map
                 if ( c == 'm'){
                     return "map";
                 }
+
+                //Si la touche pressée est c du haut alors renvoie aliens
                 if ( c == 'a'){
                     return "aliens";
                 }
+
+                //Si la touche pressée est d du haut alors renvoie attaquer
                 if ( c == 'd'){
                     return "attaquer";
+                }
+
+                //Si la touche pressée est espace du haut alors renvoie passer
+                if ( c == ' '){
+                    return "passer";
                 }
 
             } else {

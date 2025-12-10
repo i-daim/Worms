@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 
 public class MenuPanel extends JPanel {
+    private final JButton settingsButton = createGameButton("Settings");
 
     private final Sound menuMusic = new Sound("/sounds/menu.wav");
 
@@ -26,7 +27,6 @@ public class MenuPanel extends JPanel {
     private final JButton newGame = createGameButton("New Game");
     private final JButton loadGame = createGameButton("Load Game");
     private final JButton quitGame = createGameButton("Quit");
-
 
     public MenuPanel() {
         // Chargement de l'image d'arrière plan
@@ -43,11 +43,13 @@ public class MenuPanel extends JPanel {
         this.add(Box.createVerticalGlue());
 
         this.add(newGame);
-        this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
+        this.add(Box.createVerticalStrut(20));
         this.add(loadGame);
-        this.add(Box.createVerticalStrut(20)); // Ajout un espace entre les boutons
+        this.add(Box.createVerticalStrut(20));
+        this.add(settingsButton);
+        this.add(Box.createVerticalStrut(20));
         this.add(quitGame);
-
+        this.add(Box.createVerticalStrut(20));
         this.add(Box.createVerticalGlue());
 
         menuMusic.setVolume(-10);
@@ -106,7 +108,6 @@ public class MenuPanel extends JPanel {
         return btn;
     }
 
-
     public void addNewGameListener(ActionListener listener) {
         newGame.addActionListener(listener);
     }
@@ -117,6 +118,10 @@ public class MenuPanel extends JPanel {
 
     public void addQuitterListener(ActionListener listener) {
         quitGame.addActionListener(listener);
+    }
+
+    public void addSettingsListener(ActionListener listener) {
+        settingsButton.addActionListener(listener);
     }
 
     public void stopMusic() {

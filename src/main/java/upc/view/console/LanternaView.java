@@ -154,6 +154,11 @@ public class LanternaView {
                     //Si la touche pressée est espace du haut alors renvoie passer
                     return "passer";
 
+                } else if (c == 'i') {
+
+                    //Si la touche pressée est i du haut alors renvoie passer
+                    return "info";
+
                 } else {
                     //Sinon renvoie rien
                     return null;
@@ -410,10 +415,10 @@ public class LanternaView {
         //Envoie le message de déplacement à la nouvelle position de l'alien
         // si non colision/hors limites
         if (success) {
-            drawString(0, 41, "✅ Déplacement à " + direction + " réussi");
+            drawString(0, 0, "✅ Déplacement à " + direction + " réussi");
 
         } else {
-            drawString(0, 41, "❌ Déplacement impossible "
+            drawString(0, 0, "❌ Déplacement impossible "
                     + "(collision ou hors limites)");
         }
 

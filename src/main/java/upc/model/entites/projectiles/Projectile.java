@@ -29,6 +29,7 @@ public class Projectile extends Entity {
     private State state;
     private int frameCount;
     private final Weapon weapon;
+    private double angle;
 
 
     /// /    CONSTRUCTOR    ////
@@ -41,6 +42,8 @@ public class Projectile extends Entity {
         this.explosive = explosive;
         this.state = State.FLYING;
         this.weapon = weapon;
+        this.angle = shooter.getAimAngle();
+
 
     }
     public Projectile(Alien shooter,
@@ -85,6 +88,10 @@ public class Projectile extends Entity {
     public Weapon getWeapon() {
         return weapon;
     }
+    public double getAngle() {
+        return angle;
+    }
+
 
 
 

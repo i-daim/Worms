@@ -10,6 +10,7 @@ public class Alien extends Entity {
     private int healthPoints;
     private boolean alive;
     private boolean direction;
+    private double aimAngle;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -35,6 +36,7 @@ public class Alien extends Entity {
         this.alive = true;
         this.state = State.IDLE;
         this.direction = true;
+        this.aimAngle = 0;
     }
 
     public int getHealthPoints() {
@@ -48,6 +50,14 @@ public class Alien extends Entity {
     public Team getTeam() {
         return team;
     }
+    public double getAimAngle() {
+        return aimAngle;
+    }
+
+    public void setAimAngle(double angle) {
+        this.aimAngle = Math.max(-80, Math.min(80, angle));
+    }
+
 
     public void receiveDmg(int damage) {
         if (!alive) {

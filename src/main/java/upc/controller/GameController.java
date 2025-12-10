@@ -76,10 +76,19 @@ public class GameController {
                 rightPressed = pressed;
                 break;
             case KeyEvent.VK_SPACE:
-            case KeyEvent.VK_UP:
                 if (pressed) {
                     activeAlien.setState(Alien.State.JUMP);
                     gameManager.getWorld().getPhysicsEngine().jumpAlien(activeAlien);
+                }
+                break;
+            case KeyEvent.VK_UP:
+                if (pressed) {
+                    activeAlien.setAimAngle(activeAlien.getAimAngle() + 2);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                if (pressed) {
+                    activeAlien.setAimAngle(activeAlien.getAimAngle() - 2);
                 }
                 break;
             case KeyEvent.VK_E:
@@ -91,6 +100,8 @@ public class GameController {
                 break;
         }
     }
+
+
 
     private void startGameLoop() {
         gameThread = new Thread(() -> {

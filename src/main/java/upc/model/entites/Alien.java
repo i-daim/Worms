@@ -67,36 +67,24 @@ public class Alien extends Entity {
         }
     }
 
-    public boolean move(Position newPosition, Terrain terrain) {
-        if (!alive) {
-            return false;
-        }
-        if (terrain.possibleMove(newPosition)) {
-            setPosition(newPosition);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean moveRight(Terrain terrain) {
-        Position newPosition = getPosition().deplacer(SPEED, 0);
+    public void moveRight() {
+        alienPhysics.moveAlien(this, 1);
         setState(State.WALK);
         direction = true;
-        return move(newPosition, terrain);
     }
 
-    public boolean moveLeft(Terrain terrain) {
-        Position newPosition = getPosition().deplacer(-SPEED, 0);
+    public void moveLeft() {
+        alienPhysics.moveAlien(this, -1);
         setState(State.WALK);
         direction = false;
-        return move(newPosition, terrain);
     }
 
 
-    public boolean jump(Terrain terrain) {
-        Position newPosition = getPosition().deplacer(0, JUMP);
+    public void jump() {
+        alienPhysics.jumpAlien(this);
         setState(State.JUMP);
         return move(newPosition, terrain);
+    }
     }
 
     public boolean isVisible(int cameraX, int cameraY) {

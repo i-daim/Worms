@@ -123,10 +123,22 @@ public class ProjectilePhysics {
             }
         }
     }
-
+    /**
+     * Met à jour l'état de tous les projectiles actifs à chaque frame.
+     * <p>
+     * Cette méthode effectue plusieurs tâches essentielles :
+     * <ul>
+     *     <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
+     *     <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
+     *     <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son explosion.</li>
+     *     <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts ou sortis.</li>
+     * </ul>
+     *
+     * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
+     */
     public void updateProjectiles(Terrain terrain) {
+        // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
-
         while (iterator.hasNext()) {
             Projectile proj = iterator.next();
             Body body = proj.getBody();
@@ -164,13 +176,7 @@ public class ProjectilePhysics {
     }
 
     public void explodeProjectile(Projectile proj) {
-        ///Cette fonction gère l’explosion d’un projectile en appliquant des dégâts
-        ///et un recul aux aliens proches du centre de l’explosion
-        ///Elle récupère la position, le rayon et les dégâts de l’explosion,
-        ///parcourt tous les aliens vivants
-        ///Et pour ceux dans le rayon, calcule des dégâts qui diminuent avec la distance
-        ///Puis applique un « knockback » (impulsion) sur leur corps physique
-        ///pour les pousser loin du centre
+
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();

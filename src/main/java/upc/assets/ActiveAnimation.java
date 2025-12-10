@@ -1,4 +1,4 @@
-package upc.view.gui;
+package upc.assets;
 
 import java.awt.image.BufferedImage;
 

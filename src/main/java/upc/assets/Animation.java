@@ -1,4 +1,4 @@
-package upc.view.gui;
+package upc.assets;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;

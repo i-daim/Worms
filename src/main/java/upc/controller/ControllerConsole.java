@@ -92,6 +92,10 @@ public class ControllerConsole {
                 vue.printTurnSkipped();
                 break;
 
+            case "info" :
+                vue.printWelcome();
+                break;
+
             case "aliens":
                 vue.printAliensStats(gameManager);
                 break;

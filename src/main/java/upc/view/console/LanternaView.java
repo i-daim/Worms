@@ -81,6 +81,7 @@ public class LanternaView {
     }
 
     public void printWelcome() {
+        this.clear();
         int x = 0;
         int y = 0;
         drawString(x, y, "================================="); y++;
@@ -194,6 +195,8 @@ public class LanternaView {
                 drawString(x, y + 5, symbolForTile(x, y, gameManager));
             }
         }
+
+        drawString(0, height + 10, "Pour plus d'info appuie sur la touche i");
 
         //Affiche le rendu
         this.refresh();

@@ -73,12 +73,14 @@ public class ControllerConsole {
                 break;
 
             case "attaquer":
-                int damage = vue.requestInteger("💥 Combien de dégâts ? ");
-                int x = vue.requestInteger("🎯 Coordonnée X de la cible : ");
-                int y = vue.requestInteger("🎯 Coordonnée Y de la cible : ");
+                int damage = vue.chooseDamage();
+                int x = vue.chooseX();
+                int y = vue.chooseY();
 
                 Alien target = gameManager.attackPosition(x, y, damage);
                 vue.printAttackResult(target, x, y, gameManager.getActiveTeam());
+                gameManager.skipTurn();
+                vue.printTurnSkipped();
 
                 if (target != null) {
                     gameManager.skipTurn();
@@ -100,6 +102,7 @@ public class ControllerConsole {
 
             case "map":
                 vue.printTerrain(gameManager);
+                vue.printGameState(gameManager);
                 break;
 
             case "exit":

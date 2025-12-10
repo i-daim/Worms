@@ -83,19 +83,20 @@ public class LanternaView {
     public void printWelcome() {
         int x = 0;
         int y = 0;
-        drawString(x, y, "=================================");y++;
-        drawString(x, y, "  Bienvenue dans Worms Game!    ");y++;
-        drawString(x, y, "=================================");y++;
-        drawString(x, y, "Commandes disponibles:");y++;
+        drawString(x, y, "================================="); y++;
+        drawString(x, y, "  Bienvenue dans Worms Game!    "); y++;
+        drawString(x, y, "================================="); y++;
+        drawString(x, y, "Commandes disponibles:"); y++;
         drawString(x, y, "Avec flèches directionnelles :"); y++;
-        drawString(x, y, "  gauche  - Déplacer l'alien à gauche avec");y++;
-        drawString(x, y, "  droite  - Déplacer l'alien à droite");y++;
-        drawString(x, y, "  sauter  - Faire sauter l'alien");y++;
-        drawString(x, y, "  dégâts  - Infliger des dégâts à l'équipe ennemie avec la touche d");y++;
-        drawString(x, y, "  passer  - Passer son tour avec la touche espace");y++;
-        drawString(x, y, "  aliens  - Afficher tous les aliens vivants avec la touche a");y++;
-        drawString(x, y, "  map     - Afficher la carte du terrain avec la touche m");y++;
-        drawString(x, y, "  exit    - Quitter la partie avec la touche echap");y++;
+        drawString(x, y, "  gauche  - Déplacer l'alien à gauche avec"); y++;
+        drawString(x, y, "  droite  - Déplacer l'alien à droite"); y++;
+        drawString(x, y, "  sauter  - Faire sauter l'alien"); y++;
+        drawString(x, y, "  dégâts  - Infliger des dégâts à l'équipe ennemie avec "
+                + "la touche d"); y++;
+        drawString(x, y, "  passer  - Passer son tour avec la touche espace"); y++;
+        drawString(x, y, "  aliens  - Afficher tous les aliens vivants avec la touche a"); y++;
+        drawString(x, y, "  map     - Afficher la carte du terrain avec la touche m"); y++;
+        drawString(x, y, "  exit    - Quitter la partie avec la touche echap"); y++;
         drawString(x, y, "=================================");
         this.refresh();
     }
@@ -135,20 +136,20 @@ public class LanternaView {
                 char c = key.getCharacter();
 
                 //Si la touche pressée est m alors renvoie map
-                if ( c == 'm'){
+                if (c == 'm') {
                     return "map";
 
-                } else if ( c == 'a'){
+                } else if (c == 'a') {
 
                     //Si la touche pressée est c du haut alors renvoie aliens
                     return "aliens";
 
-                } else if ( c == 'd'){
+                } else if (c == 'd') {
 
                     //Si la touche pressée est d du haut alors renvoie attaquer
                     return "attaquer";
 
-                }else if ( c == ' '){
+                } else if (c == ' ') {
 
                     //Si la touche pressée est espace du haut alors renvoie passer
                     return "passer";

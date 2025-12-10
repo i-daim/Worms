@@ -93,23 +93,28 @@ public class LanternaView {
             //Conditions qui renvoient le type de touche pressé
             //Si la touche pressée est <- alors renvoie LEFT
             if (key.getKeyType() == KeyType.ArrowLeft) {
-                return "LEFT";
+                return "gauche";
             }
 
             //Si la touche pressée est -> alors renvoie RIGHT
-            if (key.getKeyType() == KeyType.ArrowRight) {
-                return "RIGHT";
+            else if (key.getKeyType() == KeyType.ArrowRight) {
+                return "droite";
             }
 
             //Si la touche pressée est flèche du haut alors renvoie UP
-            if (key.getKeyType() == KeyType.ArrowUp) {
-                return "UP";
+            else if (key.getKeyType() == KeyType.ArrowUp) {
+                return "sauter";
             }
 
-            //Si la touche pressée est flèche du bas alors renvoie DOWN
-            if (key.getKeyType() == KeyType.ArrowDown) {
-                return "DOWN";
-            } else {
+            else if (key.getKeyType() == KeyType.Escape) {
+                return "passer";
+            }
+
+            else if (key.getKeyType() == KeyType.Backspace) {
+                return "passer";
+            }
+
+            else {
                 //Sinon renvoie rien
                 return null;
             }
@@ -549,10 +554,13 @@ public class LanternaView {
             //affiche le rendu
             this.refresh();
 
-            //Permet la fermeture du terminal
-            screen.close();
+            Thread.sleep(2000);
+            screen.stopScreen();
 
-        } catch (IOException e) {
+            //Permet la fermeture du terminal
+            //screen.close();
+
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

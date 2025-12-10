@@ -191,7 +191,7 @@ public class LanternaView {
             for (int x = 0; x < width; x++) {
 
                 //Dessine chaque case avec le symbole correspondant
-                drawString(x, y + 3, symbolForTile(x, y, gameManager));
+                drawString(x, y + 5, symbolForTile(x, y, gameManager));
             }
         }
 
@@ -361,16 +361,16 @@ public class LanternaView {
     public void printGameState(GameManager gameManager) {
 
         //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
-        int x = 2;
-        int y = 1;
+        int x = 5;
+        int y = 4;
 
-        drawString(x, y, "─".repeat(60));
+        drawString(x, y + 1, "─".repeat(60));
         y++;
 
-        drawString(x, y, "📊 " + gameManager.toString());
+        drawString(x, y + 1, "📊 " + gameManager.toString());
         y++;
 
-        drawString(x, y, "─".repeat(60));
+        drawString(x, y + 1, "─".repeat(60));
         y++;
 
         //Renvoie la coordonnée de la colonne d'affichage + affiche les stats de l'équipe

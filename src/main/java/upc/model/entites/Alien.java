@@ -15,7 +15,6 @@ public class Alien extends Entity {
 
     // Champs statiques
     private static final int SPEED = 5;
-    private static final int JUMP = -20;
     private static final int INITIAL_HP = 100;
 
     // Etat de l'alien (pour la partie graphique)
@@ -83,8 +82,11 @@ public class Alien extends Entity {
     public void jump() {
         alienPhysics.jumpAlien(this);
         setState(State.JUMP);
-        return move(newPosition, terrain);
     }
+
+    public void idle() {
+        alienPhysics.moveAlien(this, 0);
+        setState(State.IDLE);
     }
 
     public boolean isVisible(int cameraX, int cameraY) {

@@ -63,10 +63,10 @@ public class ControllerConsole {
             case "sauter":
                 gameManager.getWorld().getPhysicsEngine().jumpAlien(gameManager.getActiveAlien());
 
-                System.out.println("⏳ Le worm saute...");
-                for (int i = 0; i < 120; i++) {
-                    gameManager.update(1.0 / 60.0);
-                }
+                //System.out.println("⏳ Le worm saute...");
+                //for (int i = 0; i < 120; i++) {
+                //    gameManager.update(1.0 / 60.0);
+                //}
 
                 vue.printJumpResult(true, gameManager);
                 gameManager.skipTurn();

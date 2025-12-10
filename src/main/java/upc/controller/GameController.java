@@ -20,12 +20,13 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
+
     private static final int CAMERA_SPEED = 10;
-    private Point mousePosition = new Point(0, 0);
 
     private volatile boolean running = true;
     private Thread gameThread;
 
+    // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
@@ -40,30 +41,8 @@ public class GameController {
         gamePanel.setFocusable(true);
     }
 
-    private void handleControls() {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null || !activeAlien.isAlive()) {
-            return;
-        }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
-            activeAlien.jump();
-        }
-
-        if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
-            activeAlien.moveLeft();
-        } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            activeAlien.moveRight();
-        } else {
-            activeAlien.idle();
-        }
-
-        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
-            Point worldPos = gamePanel.screenToWorld(mousePosition);
-            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
-        }
-    }
-
+////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -93,6 +72,53 @@ public class GameController {
         });
         gameThread.setDaemon(true);
         gameThread.start();
+    }
+
+    private void update() {
+        // Gestion de la caméra à travers mouseHandler
+        handleCameraScroll(mouseHandler.getPosition());
+        // Gestion des touches clavier
+        handleControls();
+
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien != null && activeAlien.isAlive()) {
+            gamePanel.centralizeCamera(activeAlien);
+        }
+
+        gameManager.update(1.0 / 60.0);
+
+        if (gameManager.isOver()) {
+            showGameOver();
+            return;
+        }
+
+        gamePanel.repaint();
+    }
+
+
+////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    private void handleControls() {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien == null || !activeAlien.isAlive()) {
+            return;
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+            activeAlien.jump();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
+            activeAlien.moveLeft();
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            activeAlien.moveRight();
+        } else {
+            activeAlien.idle();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
+            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        }
     }
 
     private void handleCameraScroll(Point mousePos) {
@@ -126,28 +152,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    private void update() {
-        // Gestion de la caméra à travers mouseHandler
-        handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier
-        handleControls();
-
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            gamePanel.centralizeCamera(activeAlien);
-        }
-
-        gameManager.update(1.0 / 60.0);
-
-        if (gameManager.isOver()) {
-            showGameOver();
-            return;
-        }
-
-        gamePanel.repaint();
-    }
-
-
+////    ARRET DU JEU    ////
     public void stop() {
         running = false;
         if (gameThread != null) {

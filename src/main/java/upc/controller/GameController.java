@@ -127,20 +127,14 @@ public class GameController {
     }
 
     private void update() {
-        if (mousePosition != null) {
-            handleCameraScroll(mousePosition);
-        }
+        // Gestion de la caméra à travers mouseHandler
+        handleCameraScroll(mouseHandler.getPosition());
+        // Gestion des touches clavier
+        handleControls();
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             gamePanel.centralizeCamera(activeAlien);
-            if (leftPressed && !rightPressed) {
-                activeAlien.moveLeft();
-            } else if (rightPressed && !leftPressed) {
-                activeAlien.moveRight();
-            } else {
-                activeAlien.idle();
-            }
         }
 
         gameManager.update(1.0 / 60.0);

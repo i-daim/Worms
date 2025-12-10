@@ -40,35 +40,27 @@ public class GameController {
         gamePanel.setFocusable(true);
     }
 
-    private void handleKeyPress(int keyCode, boolean pressed) {
+    private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
 
-        switch (keyCode) {
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_Q:
-                leftPressed = pressed;
-                break;
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_D:
-                rightPressed = pressed;
-                break;
-            case KeyEvent.VK_SPACE:
-            case KeyEvent.VK_UP:
-                if (pressed) {
-                    activeAlien.setState(Alien.State.JUMP);
-                    gameManager.getWorld().getPhysicsEngine().jumpAlien(activeAlien);
-                }
-                break;
-            case KeyEvent.VK_E:
-                if (pressed) {
-                    Point worldPos = gamePanel.screenToWorld(mousePosition);
-                    gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
-                }
-            default:
-                break;
+        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+            activeAlien.jump();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
+            activeAlien.moveLeft();
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            activeAlien.moveRight();
+        } else {
+            activeAlien.idle();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+            Point worldPos = gamePanel.screenToWorld(mousePosition);
+            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
         }
     }
 

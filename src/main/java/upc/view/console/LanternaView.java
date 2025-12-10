@@ -613,10 +613,15 @@ public class LanternaView {
         }
     }
 
-
+    /*Méthode permmettant à l'utilisateur de choisir les dégats provoqués*/
     public int chooseDamage() {
+        //Dégat par défaut
         int degat = 20;
+
+
         while (true) {
+
+            //Affiche dans un terminal vide
             clear();
             drawString(2, 2, "💥 Combien de dégâts ? : " + degat);
             drawString(2, 4, "<- -> pour changer, Espace pour valider");
@@ -629,20 +634,31 @@ public class LanternaView {
                 throw new RuntimeException(e);
             }
 
+            //<- baisse les dégats de -5
             if (key.getKeyType() == KeyType.ArrowLeft) {
                 degat = degat - 5;
+
             } else if (key.getKeyType() == KeyType.ArrowRight) {
+
+                //-> augmente les dégats de +5
                 degat = degat + 5;
+
             } else if (key.getKeyType() == KeyType.Character && key.getCharacter() == ' ') {
+                //Espace permet de sélectionner les dégats
                 return degat;
             }
 
         }
     }
 
+    /*Méthode permmettant à l'utilisateur de choisir la coordonnée en x*/
     public int chooseX() {
+        //Coordonnée x par défaut
         int x = 1;
+
         while (true) {
+
+            //Affiche dans un terminal vide
             clear();
             drawString(2, 2, "🎯 Coordonnée X de la cible : " + x);
             drawString(2, 4, "<- -> pour changer, Espace pour valider");
@@ -655,20 +671,32 @@ public class LanternaView {
                 throw new RuntimeException(e);
             }
 
+            //<- baisse la coordonnée de -1
             if (key.getKeyType() == KeyType.ArrowLeft) {
                 x = x - 1;
+
             } else if (key.getKeyType() == KeyType.ArrowRight) {
+
+                //-> augmente la coordonnée de +1
                 x = x + 1;
+
             } else if (key.getKeyType() == KeyType.Character && key.getCharacter() == ' ') {
+                //Espace permet de sélectionner la coordonnée x
                 return x;
             }
 
         }
     }
 
+    /*Méthode permmettant à l'utilisateur de choisir la coordonnée en y*/
     public int chooseY() {
+
+        //Coordonnée y par défaut
         int y = 1;
+
         while (true) {
+
+            //Affiche dans un terminal vide
             clear();
             drawString(2, 2, "🎯 Coordonnée Y de la cible : " + y);
             drawString(2, 4, "<- -> pour changer, Espace pour valider");
@@ -681,11 +709,16 @@ public class LanternaView {
                 throw new RuntimeException(e);
             }
 
+            //<- baisse la coordonnée de -1
             if (key.getKeyType() == KeyType.ArrowLeft) {
                 y = y - 1;
+
             } else if (key.getKeyType() == KeyType.ArrowRight) {
+                //-> augmente la coordonnée de +1
                 y = y + 1;
+
             } else if (key.getKeyType() == KeyType.Character && key.getCharacter() == ' ') {
+                //Espace permet de sélectionner la coordonnée y
                 return y;
             }
 

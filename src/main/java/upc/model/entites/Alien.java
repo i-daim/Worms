@@ -23,9 +23,7 @@ public class Alien extends Entity {
         WALK,
         JUMP
     }
-
     private State state;
-
 
 
     // Constructeur
@@ -39,18 +37,31 @@ public class Alien extends Entity {
         this.direction = true;
     }
 
-    public int getHealthPoints() {
-        return healthPoints;
+////    Mouvements de l'alien    ////
+    public void moveRight() {
+        alienPhysics.moveAlien(this, 1);
+        setState(State.WALK);
+        direction = true;
     }
 
-    public boolean isAlive() {
-        return alive;
+    public void moveLeft() {
+        alienPhysics.moveAlien(this, -1);
+        setState(State.WALK);
+        direction = false;
     }
 
-    public Team getTeam() {
-        return team;
+    public void jump() {
+        alienPhysics.jumpAlien(this);
+        setState(State.JUMP);
     }
 
+    public void idle() {
+        alienPhysics.moveAlien(this, 0);
+        setState(State.IDLE);
+    }
+
+
+////    Autres Méthodes    ////
     public void receiveDmg(int damage) {
         if (!alive) {
             return;
@@ -66,34 +77,10 @@ public class Alien extends Entity {
         }
     }
 
-    public void moveRight() {
-        alienPhysics.moveAlien(this, 1);
-        setState(State.WALK);
-        direction = true;
-    }
-
-    public void moveLeft() {
-        alienPhysics.moveAlien(this, -1);
-        setState(State.WALK);
-        direction = false;
-    }
-
-
-    public void jump() {
-        alienPhysics.jumpAlien(this);
-        setState(State.JUMP);
-    }
-
-    public void idle() {
-        alienPhysics.moveAlien(this, 0);
-        setState(State.IDLE);
-    }
-
     public boolean isVisible(int cameraX, int cameraY) {
         if (!alive) {
             return false;
         }
-
         int posX = getPosition().getX();
         int posY = getPosition().getY();
 
@@ -103,6 +90,20 @@ public class Alien extends Entity {
                 && posX <= cameraX + GamePanel.DEFAULT_WIDTH + margin
                 && posY >= cameraY - margin
                 && posY <= cameraY + GamePanel.DEFAULT_HEIGHT + margin;
+    }
+
+
+////    GETTERS & SETTERS    ////
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public Team getTeam() {
+        return team;
     }
 
     public State getState() {

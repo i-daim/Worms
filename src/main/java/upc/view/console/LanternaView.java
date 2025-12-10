@@ -80,9 +80,15 @@ public class LanternaView {
         }
     }
 
+    /*Méthode permettant d'écrire un texte à une position donnée dans une couleur prédéfini*/
     public void drawColored(int x, int y, String string, TextColor color) {
+
+        //Gestion des exceptions
         try {
+            //Permet de modifier la couleur de l'affichage
             graphics.setForegroundColor(color);
+
+            //Permet de dessiner à une position donnée
             graphics.putString(x, y, string);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -199,10 +205,13 @@ public class LanternaView {
         //Parcourt chaque case du terrain
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+
+                //Permet d'écrire seulement les aliens W d'une certaine couleur
                 if (symbolForTile(x, y, gameManager).equals("W")){
                     drawColored(x, y + 5, symbolForTile(x, y, gameManager), TextColor.ANSI.RED);
-                    this.refresh();
                 } else {
+
+                    //Permet de remettre à la couleur d'origine de l'affichage
                     graphics.setForegroundColor(TextColor.ANSI.WHITE);
                     //Dessine chaque case avec le symbole correspondant
                     drawString(x, y + 5, symbolForTile(x, y, gameManager));

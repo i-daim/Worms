@@ -2,6 +2,12 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
+import upc.view.gui.ActiveAnimation;
+import upc.view.gui.Animation;
+import upc.view.gui.AnimationManager;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager {
     public static final int ROUND_TIME = 60;
@@ -19,6 +25,8 @@ public class GameManager {
 
     private final String mapName;
 
+    private final List<ActiveAnimation> activeAnimations;
+
     public GameManager(String mapName) {
         this.mapName = mapName;
         this.terrain = TerrainGenerator.createTerrain(mapName);
@@ -28,6 +36,8 @@ public class GameManager {
         this.teams[1] = new Team("Glorbs", TEAM_SIZE);
 
         this.gameWorld = new GameWorld(this, this.terrain);
+
+        this.activeAnimations = new CopyOnWriteArrayList<>();
 
         initializeGame();
     }
@@ -39,6 +49,8 @@ public class GameManager {
             return;
         }
         gameWorld.update(elapsedTime);
+
+        updateAnimations();
 
         checkGameOver();
 
@@ -79,7 +91,6 @@ public class GameManager {
 
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
-            return;
         }
     }
 
@@ -133,6 +144,19 @@ public class GameManager {
             }
         }
         return null;
+    }
+
+    private void updateAnimations() {
+        activeAnimations.removeIf(active -> {
+            active.update();
+            return active.isDone();
+        });
+    }
+
+    public void addActiveAnimation(String name, int posX, int posY) {
+        Animation animation = AnimationManager.getAnimation(name);
+        ActiveAnimation active = new ActiveAnimation(animation, 50, false, posX, posY);
+        activeAnimations.add(active);
     }
 
 
@@ -210,5 +234,9 @@ public class GameManager {
 
     public boolean isActionDone() {
         return actionDone;
+    }
+
+    public List<ActiveAnimation> getActiveAnimations() {
+        return activeAnimations;
     }
 }

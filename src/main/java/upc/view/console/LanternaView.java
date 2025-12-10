@@ -219,7 +219,12 @@ public class LanternaView {
             }
         }
 
+        drawString(0, height + 6, "─".repeat(60));
+        drawString(0, height + 7, "Vous avez sous vos yeuxx le terrain du jeu");
+        drawString(0, height + 8, "W représente les aliens");
+        drawString(0, height + 9, "X représente le terrain en lui-même");
         drawString(0, height + 10, "Pour plus d'info appuie sur la touche i");
+        drawString(0, height + 11, "─".repeat(60));
 
         //Affiche le rendu
         this.refresh();

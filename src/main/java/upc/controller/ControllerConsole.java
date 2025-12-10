@@ -110,8 +110,11 @@ public class ControllerConsole {
                 vue.printGameAbandoned();
                 break;
 
-            default:
+            case null:
                 vue.printUnknownCommand();
+                break;
+
+            default:
                 break;
         }
     }

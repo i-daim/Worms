@@ -1,5 +1,6 @@
 package upc.model.entites;
 
+import upc.model.items.Item;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
@@ -7,11 +8,13 @@ import upc.view.gui.GamePanel;
 
 public class Alien extends Entity {
     // Attributs
+    private final GameWorld world;
     private final AlienPhysics alienPhysics;
     private final Team team;
     private int healthPoints;
     private boolean alive;
     private boolean direction;
+    private Item equippedItem;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -30,7 +33,8 @@ public class Alien extends Entity {
     public Alien(GameWorld gameWorld, Team team, Position position) {
         super(position, SPEED);
         this.healthPoints = INITIAL_HP;
-        this.alienPhysics = gameWorld.getPhysicsEngine().getAlienPhysics();
+        this.world = gameWorld;
+        this.alienPhysics = world.getPhysicsEngine().getAlienPhysics();
         this.team = team;
         this.alive = true;
         this.state = State.IDLE;
@@ -62,6 +66,10 @@ public class Alien extends Entity {
 
 
 ////    Autres Méthodes    ////
+    public void useEquippedItem() {
+        equippedItem.useItem(world, this);
+    }
+
     public void receiveDmg(int damage) {
         if (!alive) {
             return;
@@ -100,6 +108,14 @@ public class Alien extends Entity {
 
     public Team getTeam() {
         return team;
+    }
+
+    public Item getEquippedItem() {
+        return equippedItem;
+    }
+
+    public void setEquippedItem(Item item) {
+        equippedItem = item;
     }
 
     public State getState() {

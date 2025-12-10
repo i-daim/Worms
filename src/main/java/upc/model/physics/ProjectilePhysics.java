@@ -192,7 +192,7 @@ public class ProjectilePhysics {
      */
     public void explodeProjectile(Projectile proj) {
         //Récupère les coordonnées du centre de l'explosion
-        // (position actuelle du projectile en pixels)
+        // (position actuelle du/des projectiles en pixels)
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();

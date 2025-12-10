@@ -80,6 +80,26 @@ public class LanternaView {
         }
     }
 
+    public void printWelcome() {
+        int x = 0;
+        int y = 0;
+        drawString(x, y, "=================================");y++;
+        drawString(x, y, "  Bienvenue dans Worms Game!    ");y++;
+        drawString(x, y, "=================================");y++;
+        drawString(x, y, "Commandes disponibles:");y++;
+        drawString(x, y, "Avec flèches directionnelles :"); y++;
+        drawString(x, y, "  gauche  - Déplacer l'alien à gauche avec");y++;
+        drawString(x, y, "  droite  - Déplacer l'alien à droite");y++;
+        drawString(x, y, "  sauter  - Faire sauter l'alien");y++;
+        drawString(x, y, "  dégâts  - Infliger des dégâts à l'équipe ennemie avec la touche d");y++;
+        drawString(x, y, "  passer  - Passer son tour avec la touche espace");y++;
+        drawString(x, y, "  aliens  - Afficher tous les aliens vivants avec la touche a");y++;
+        drawString(x, y, "  map     - Afficher la carte du terrain avec la touche m");y++;
+        drawString(x, y, "  exit    - Quitter la partie avec la touche echap");y++;
+        drawString(x, y, "=================================");
+        this.refresh();
+    }
+
     /*Méthode permettant de lire la touche pressée par l'utilisateur
      Et renvoie le string correspondant à la touche*/
     public String readKey() {

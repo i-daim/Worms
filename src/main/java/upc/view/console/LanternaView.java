@@ -91,21 +91,38 @@ public class LanternaView {
             KeyStroke key = screen.readInput();
 
             //Conditions qui renvoient le type de touche pressé
-            //Si la touche pressée est <- alors renvoie LEFT
             if (key.getKeyType() == KeyType.ArrowLeft) {
+
+                //Si la touche pressée est <- alors renvoie LEFT
                 return "gauche";
+
             } else if (key.getKeyType() == KeyType.ArrowRight) {
 
                 //Si la touche pressée est -> alors renvoie RIGHT
                 return "droite";
+
             } else if (key.getKeyType() == KeyType.ArrowUp) {
+
                 //Si la touche pressée est flèche du haut alors renvoie UP
                 return "sauter";
+
             } else if (key.getKeyType() == KeyType.Escape) {
-                return "passer";
-            } else if (key.getKeyType() == KeyType.Backspace) {
-                return "passer";
+                return "exit";
+
+            } else if (key.getKeyType() == KeyType.Character) {
+                char c = key.getCharacter();
+                if ( c == 'm'){
+                    return "map";
+                }
+                if ( c == 'a'){
+                    return "aliens";
+                }
+                if ( c == 'd'){
+                    return "attaquer";
+                }
+
             } else {
+
                 //Sinon renvoie rien
                 return null;
             }

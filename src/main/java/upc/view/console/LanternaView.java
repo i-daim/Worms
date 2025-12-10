@@ -207,7 +207,7 @@ public class LanternaView {
             for (int x = 0; x < width; x++) {
 
                 //Permet d'écrire seulement les aliens W d'une certaine couleur
-                if (symbolForTile(x, y, gameManager).equals("W")){
+                if (symbolForTile(x, y, gameManager).equals("W")) {
                     drawColored(x, y + 5, symbolForTile(x, y, gameManager), TextColor.ANSI.RED);
                 } else {
 

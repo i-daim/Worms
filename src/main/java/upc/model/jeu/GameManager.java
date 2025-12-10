@@ -46,8 +46,8 @@ public class GameManager {
     }
 
     private void initializeGame() {
-        teams[0].initializeTeam(mapName, 0);
-        teams[1].initializeTeam(mapName, 1);
+        teams[0].initializeTeam(gameWorld, mapName, 0);
+        teams[1].initializeTeam(gameWorld, mapName, 1);
 
         gameWorld.initializePhysics();
 

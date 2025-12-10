@@ -74,7 +74,7 @@ public class Alien extends Entity {
         if (!alive) {
             return;
         }
-        healthPoints -= Math.min(0, damage);
+        healthPoints -= Math.max(0, damage);
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;

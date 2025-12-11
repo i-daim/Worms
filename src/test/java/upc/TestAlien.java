@@ -241,6 +241,15 @@
 //        assertEquals(100, alien.getHealthPoints());
 //        assertTrue(alien.isAlive());
 //    }
+//    @Test
+//    public void testAiming() {
+//    Alien alien = new Alien(null, null);
+//    assertEquals(0, alien.getAimAngle(), "Angle par défaut")
+//    alien.setAimAngle(45);
+//    alien.setShootPower(80);
+//    assertEquals(45, alien.getAimAngle());
+//    assertEquals(80, alien.getShootPower());
+//}
 //
 //
 //

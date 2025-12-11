@@ -104,7 +104,7 @@ public class TestWeapons {
     @Test
     public void testUziCreateProjectile() {
         Uzi uzi = new Uzi();
-        Projectile p = uzi.createProjectile(null, new Position(0,0), 0, 0);
+        Projectile p = uzi.createProjectile(dummyShooter, new Position(0,0), 0, 0);
         assertTrue(p instanceof Bullet, "L'Uzi doit créer une Bullet");
     }
     @Test

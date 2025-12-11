@@ -124,14 +124,9 @@ public class Alien extends Entity {
     public Team getTeam() {
         return team;
     }
-    public double getAimAngle() {
+    public int getAimAngle() {
         return aimAngle;
     }
-
-    public void setAimAngle(double angle) {
-        this.aimAngle = Math.max(-80, Math.min(80, angle));
-    }
-
 
     public Item getEquippedItem() {
         return inventory.getWeapon(equippedItem);
@@ -155,10 +150,6 @@ public class Alien extends Entity {
 
     public void setDirection(boolean direction) {
         this.direction = direction;
-    }
-
-    public int getAimAngle() {
-    return aimAngle;
     }
 
     public int getShootPower() {

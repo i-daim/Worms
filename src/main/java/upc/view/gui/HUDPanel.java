@@ -5,6 +5,7 @@ import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 
 import javax.swing.JPanel;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,6 +13,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 
 public class HUDPanel extends JPanel {
 
@@ -65,6 +67,8 @@ public class HUDPanel extends JPanel {
     }
 
     private void drawAlienAim(Graphics2D g2, Alien alien) {
+        AffineTransform originalTransform = g2.getTransform();
+
         int centerX = alien.getPosition().getX();
         int centerY = alien.getPosition().getY();
         g2.translate(centerX, centerY);
@@ -91,6 +95,8 @@ public class HUDPanel extends JPanel {
         int[] xPoints = {arrowX, arrowX + 5, arrowX};
         int[] yPoints = {-4, 0, 4};
         g2.fillPolygon(xPoints, yPoints, 3);
+
+        g2.setTransform(originalTransform);
     }
 
     private void drawEquippedWeapon(Graphics2D g2, Alien alien) {

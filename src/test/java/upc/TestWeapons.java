@@ -14,6 +14,8 @@ import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Throwable;
 import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
+import upc.model.jeu.GameManager;
+import upc.model.jeu.GameWorld;
 import upc.model.jeu.Team;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,21 +76,14 @@ public class TestWeapons {
         assertEquals(3, bazooka.getNbOfShots());
         assertEquals(70, bazooka.getSpeed());
     }
-    @BeforeEach
-    public void setUp() {
-        Team dummyTeam = new Team("TestTeam", 1);
-        Position dummyPos = new Position(0, 0);
-        dummyShooter = new Alien(null, dummyTeam, dummyPos);
 
-    }
     @Test
     public void testBazookaCreateProjectile() {
-        Alien shooter = null;
         Bazooka bazooka = new Bazooka();
-        Projectile p = bazooka.createProjectile(shooter, new Position(0,0), 45, 100);
+        Projectile p = bazooka.createProjectile(dummyShooter, new Position(0,0), 0, 0);
+        assertNotNull(p);
+        assertTrue(p instanceof Rocket);
 
-        assertNotNull(p, "Le Bazooka doit créer un projectile");
-        assertTrue(p instanceof Rocket, "Le Bazooka doit créer une Rocket");
     }
     @Test
     public void testGrenadeCreateProjectile() {

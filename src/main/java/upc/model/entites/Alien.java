@@ -148,11 +148,19 @@ public class Alien extends Entity {
         this.direction = direction;
     }
 
-    public int getAimAngle() { return aimAngle; }
+    public int getAimAngle() {
+    return aimAngle;
+    }
 
-    public int getShootPower() { return shootPower; }
+    public int getShootPower() {
+    return shootPower;
+    }
 
-    public void setShootPower(int power) { this.shootPower = power; }
+    public void setShootPower(int power) {
+    this.shootPower = power;
+    }
 
-    public void setAimAngle(int angle) { this.aimAngle = angle; }
+    public void setAimAngle(int angle) {
+    this.aimAngle = angle;
+    }
 }

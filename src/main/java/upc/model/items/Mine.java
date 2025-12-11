@@ -3,7 +3,6 @@ import upc.model.entites.Alien;
 
 import upc.model.entites.projectiles.Trap;
 import upc.model.jeu.GameWorld;
-import upc.model.entites.projectiles.Trap;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
 
@@ -24,7 +23,8 @@ public class Mine extends Weapon {
         gameWorld.getPhysicsEngine().addProjectile(mineProj, angle, power);
     }
     @Override
-    public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees, int powerPercent) {
+    public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees,
+                                       int powerPercent) {
         return new Trap(this, shooter, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
     }
 }

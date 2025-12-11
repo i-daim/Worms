@@ -20,7 +20,8 @@ public class Uzi extends Weapon {
     }
 
     @Override
-    public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees, int powerPercent) {
+    public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees,
+                                       int powerPercent) {
         return new Bullet(this, shooter);
     }
 

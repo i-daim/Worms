@@ -16,7 +16,8 @@ public abstract class Weapon implements Item {
         this.nbOfShots = nbOfShots;
         this.speed = puissanceTir;
     }
-    public abstract Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees, int powerPercent);
+    public abstract Projectile createProjectile(Alien shooter, Position startPosition,
+                                                int angleDegrees, int powerPercent);
 
 ////    GETTERS    ////
     public String getName() {

@@ -23,6 +23,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestWeapons {
     private Alien dummyShooter;
+    public void setUp() {
+        // Crée un environnement minimal pour construire un Alien valide
+        GameManager manager = new GameManager("");
+        GameWorld world = manager.getWorld();
+        Team team = new Team("TestTeam", 1);
+        // Position arbitraire (0,0)
+        dummyShooter = new Alien(world, team, new Position(0, 0));
+        dummyShooter.setAimAngle(0);
+        dummyShooter.setShootPower(0);
+    }
 
     @Test
     public void testUziConstructeur() {

@@ -144,9 +144,6 @@ public class GameController {
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
 
-        double zoomX = GamePanel.ZOOM;
-        double zoomY = GamePanel.ZOOM;
-
         if (mousePos.x > width - limit) {
             camX += CAMERA_SPEED;
         } else if (mousePos.x < limit) {
@@ -159,8 +156,8 @@ public class GameController {
             camY -= CAMERA_SPEED;
         }
 
-        int viewportWidth = (int) (width / zoomX);
-        int viewportHeight = (int) (height / zoomY);
+        int viewportWidth = (int) (width / GamePanel.ZOOM);
+        int viewportHeight = (int) (height / GamePanel.ZOOM);
 
         camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
         camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
@@ -175,17 +172,13 @@ public class GameController {
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
+            gamePanel.centralizeCamera(activeAlien);
             if (leftPressed && !rightPressed) {
-                activeAlien.setState(Alien.State.WALK);
-                activeAlien.setDirection(false);
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, -1.0);
+                activeAlien.moveLeft();
             } else if (rightPressed && !leftPressed) {
-                activeAlien.setState(Alien.State.WALK);
-                activeAlien.setDirection(true);
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 1.0);
+                activeAlien.moveRight();
             } else {
-                activeAlien.setState(Alien.State.IDLE);
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 0);
+                activeAlien.idle();
             }
         }
 

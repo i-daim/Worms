@@ -23,7 +23,7 @@ public class Animation {
         return frames;
     }
 
-    public BufferedImage loadFrame(int index, boolean flip) {
+    private BufferedImage loadFrame(int index, boolean flip) {
         String path = "/" + name + index + ".png";
 
         try (InputStream is = getClass().getResourceAsStream(path)) {
@@ -49,9 +49,7 @@ public class Animation {
             return image;
 
         } catch (Exception e) {
-            System.err.println("Erreur (chargement de l'animation " + name + ") : "
-                    + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur (chargement de l'animation " + name + ")", e);
         }
     }
 }

@@ -64,7 +64,7 @@ public class MenuPanel extends JPanel {
         }
     }
 
-    private JButton createGameButton(String text) {
+    public static JButton createGameButton(String text) {
         JButton btn = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {

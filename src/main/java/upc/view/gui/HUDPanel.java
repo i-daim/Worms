@@ -46,17 +46,20 @@ public class HUDPanel extends JPanel {
         drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
     }
 
-    public void drawHealthBars(Graphics2D g2, GameManager gameManager, int cameraX, int cameraY) {
+    public void drawAlienInfo(Graphics2D g2, GameManager gameManager) {
         for (Team team : gameManager.getTeams()) {
             for (Alien alien : team.getAliens()) {
+
                 if (alien != null && alien.isAlive()) {
-                    drawWormHealthBar(g2, alien, gameManager.getActiveAlien() == alien);
+                    boolean active = gameManager.getActiveAlien() == alien;
+
+                    drawAlienHealthBar(g2, alien, active);
                 }
             }
         }
     }
 
-    private void drawWormHealthBar(Graphics2D g2, Alien alien, boolean active) {
+    private void drawAlienHealthBar(Graphics2D g2, Alien alien, boolean active) {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 

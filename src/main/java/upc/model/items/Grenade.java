@@ -11,7 +11,10 @@ public class Grenade extends Weapon {
     }
 
     public void useItem(GameWorld gameWorld, Alien shooter) {
-
+        int angle = shooter.getAimAngle();
+        int power = shooter.getShootPower();
+        Projectile proj = createProjectile(shooter, shooter.getPosition(), angle, power);
+        gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
     }
     @Override
     public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees, int powerPercent) {

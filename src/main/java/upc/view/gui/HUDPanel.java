@@ -56,6 +56,7 @@ public class HUDPanel extends JPanel {
                     drawAlienHealthBar(g2, alien, active);
 
                     if (active) {
+                        drawAlienAim(g2, alien);
                         drawEquippedWeapon(g2, alien);
                     }
                 }
@@ -64,7 +65,32 @@ public class HUDPanel extends JPanel {
     }
 
     private void drawAlienAim(Graphics2D g2, Alien alien) {
+        int centerX = alien.getPosition().getX();
+        int centerY = alien.getPosition().getY();
+        g2.translate(centerX, centerY);
 
+        if (!alien.getDirection()) {
+            g2.scale(-1, 1);
+        }
+
+        g2.rotate(Math.toRadians(-alien.getAimAngle()));
+
+        int distance = 20;
+        int width = 30;
+        int height = 6;
+
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRect(distance, -height / 2, width, height);
+
+        g2.setColor(new Color(255, 255, 255, 150));
+        g2.fillRect(distance + 1, -height / 2 + 1, width - 1, height - 1);
+
+        g2.setColor(Color.BLACK);
+        int arrowX = distance + width + 1;
+        int[] xPoints = {arrowX, arrowX + 5, arrowX};
+        int[] yPoints = {-4, 0, 4};
+        g2.fillPolygon(xPoints, yPoints, 3);
     }
 
     private void drawEquippedWeapon(Graphics2D g2, Alien alien) {

@@ -16,6 +16,8 @@ public class Alien extends Entity {
     private int healthPoints;
     private boolean alive;
     private boolean direction;
+    private int aimAngle = 0;
+    private int shootPower = 50;
 
     private Inventory inventory;
     private Item.Type equippedItem;
@@ -144,5 +146,21 @@ public class Alien extends Entity {
 
     public void setDirection(boolean direction) {
         this.direction = direction;
+    }
+
+    public int getAimAngle() {
+    return aimAngle;
+    }
+
+    public int getShootPower() {
+    return shootPower;
+    }
+
+    public void setShootPower(int power) {
+    this.shootPower = power;
+    }
+
+    public void setAimAngle(int angle) {
+    this.aimAngle = angle;
     }
 }

@@ -40,8 +40,10 @@ public class HUDPanel extends JPanel {
     }
     private void drawCurrentWeapon(Graphics2D g2) {
         Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null) return;
-        Item currentItem = activeAlien.getEquippedItem(); // Assurez-vous que cette méthode existe dans Alien
+        if (activeAlien == null) {
+            return;
+        }
+        Item currentItem = activeAlien.getEquippedItem();
         if (currentItem instanceof Weapon) {
             Weapon weapon = (Weapon) currentItem;
             int width = getWidth();

@@ -116,13 +116,13 @@ public class GamePanel extends JPanel {
             if (p instanceof Rocket) {
                 g2.setColor(Color.ORANGE);
                 g2.fillOval(x - 5, y - 5, 10, 10);
-            }else if (p instanceof Throwable) { // Grenade
+            } else if (p instanceof Throwable) { // Grenade
                 g2.setColor(Color.GREEN);
                 g2.fillOval(x - 4, y - 4, 8, 8);
-            }else if (p instanceof Bullet) { // Uzi/Shotgun
+            } else if (p instanceof Bullet) { // Uzi/Shotgun
                 g2.setColor(Color.YELLOW);
                 g2.fillOval(x - 2, y - 2, 4, 4);
-            }else if (p instanceof Trap) { // Mine
+            } else if (p instanceof Trap) { // Mine
                 g2.setColor(Color.RED);
                 g2.fillRect(x - 5, y - 2, 10, 5);
             }

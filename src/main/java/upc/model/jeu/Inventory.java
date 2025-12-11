@@ -80,7 +80,9 @@ public class Inventory {
         return ammoStock.getOrDefault(w, 0);
     }
     public Weapon getCurrentWeapon() {
-        if (currentWeaponType == null) return null;
+        if (currentWeaponType == null) {
+            return null;
+        }
         return (Weapon) weaponStock.get(currentWeaponType);
     }
 

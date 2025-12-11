@@ -44,6 +44,7 @@ public class Alien extends Entity {
 
         this.team = team;
         this.inventory = team.getInventory();
+        this.equippedItem = Item.Type.UZI;
 
         this.alive = true;
         this.state = State.IDLE;

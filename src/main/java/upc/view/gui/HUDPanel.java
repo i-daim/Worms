@@ -5,7 +5,6 @@ import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 
 import javax.swing.JPanel;
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

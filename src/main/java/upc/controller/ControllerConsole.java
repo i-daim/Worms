@@ -45,13 +45,13 @@ public class ControllerConsole {
         switch (command) {
             case "gauche":
                 gameManager.getActiveAlien().moveLeft();
-                vue.printMovementResult(true, "gauche");
+                vue.printMovementResult(true, "gauche", gameManager);
                 gameManager.skipTurn();
                 break;
 
             case "droite":
                 gameManager.getActiveAlien().moveRight();
-                vue.printMovementResult(true, "droite");
+                vue.printMovementResult(true, "droite", gameManager);
                 gameManager.skipTurn();
                 break;
 

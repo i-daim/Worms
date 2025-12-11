@@ -166,8 +166,35 @@ public class AlienPhysics {
 
 
     private boolean isOnGround(Body body) {
-        Vector2 vel = body.getLinearVelocity();
-        return Math.abs(vel.y) < 1.0;
+
+            Vector2 pos = body.getTransform().getTranslation();
+            int centerX = Converter.toPixels(pos.x);
+            int centerY = Converter.toPixels(pos.y);
+            int pixelWidth = Converter.toPixels(ALIEN_WIDTH);
+            int pixelHeight = Converter.toPixels(ALIEN_HEIGHT);
+            int feetY = centerY + (pixelHeight / 2) + 1;
+            int tileY = feetY / TerrainGenerator.TILE_SIZE;
+            boolean[][] collisions = terrain.getCollisions();
+            int height = collisions.length;
+            if (tileY < 0 || tileY >= height) {
+                return false;
+            }
+            int leftX = centerX - (pixelWidth / 2);
+            int rightX = centerX + (pixelWidth / 2);
+
+            int[] checkXs = new int[] {leftX + 1, centerX, rightX - 1 };
+            int width = collisions[0].length;
+            for (int px : checkXs) {
+                int tileX = px / TerrainGenerator.TILE_SIZE;
+                if (tileX < 0 || tileX >= width) {
+                    continue;
+                }
+                if (collisions[tileY][tileX]) {
+                    return true;
+                }
+            }
+
+            return false;
     }
 
     public void limitFallVelocities() {

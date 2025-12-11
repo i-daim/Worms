@@ -17,4 +17,30 @@ public class InventoryPanel extends JPanel {
     private static final Color COULEUR_SELECTIONNEE = new Color(50, 50, 50, 255);
     private static final Color COULEUR_BORDURE = new Color(120, 120, 120);
 
+    private InventoryPanel() {
+    }
+
+    public static void drawAlienInventory(Graphics2D g2, int drawX, int drawY, int selectedItemIndex) {
+
+        int currentX = drawX + PADDING;
+
+        for (int i = 0; i < INVENTORY_SLOTS; i++) {
+            Color couleurFond = (i == selectedItemIndex) ? COULEUR_SELECTIONNEE : COULEUR_NORMALE;
+
+            g2.setColor(couleurFond);
+            g2.fillRect(currentX, drawY + PADDING, SLOT_SIZE, SLOT_SIZE);
+
+            g2.setColor(COULEUR_BORDURE);
+            g2.drawRect(currentX, drawY + PADDING, SLOT_SIZE, SLOT_SIZE);
+
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 14)); // Police légèrement réduite
+            String numero = String.valueOf(i + 1);
+
+            int textWidth = g2.getFontMetrics().stringWidth(numero);
+            g2.drawString(numero, currentX + (SLOT_SIZE - textWidth) / 2, drawY + PADDING + 22); // Ajustement Y
+
+            currentX += SLOT_SIZE + PADDING;
+        }
+    }
 }

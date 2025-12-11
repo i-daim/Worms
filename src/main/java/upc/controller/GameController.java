@@ -115,6 +115,21 @@ public class GameController {
             activeAlien.idle();
         }
 
+        if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
+            int angle = activeAlien.getAimAngle() + 2;
+            if (angle > 80) {
+                angle = 80;
+            }
+            activeAlien.setAimAngle(angle);
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_DOWN)) {
+            int angle = activeAlien.getAimAngle() - 2;
+            if (angle < -45) {
+                angle = -45;
+            }
+            activeAlien.setAimAngle(angle);
+        }
+
+
         if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
             Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
             gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);

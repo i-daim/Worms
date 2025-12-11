@@ -77,7 +77,7 @@ public class GamePanel extends JPanel {
         drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
         // Affichage des barres de vie
-        hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
+        hudPanel.drawAlienInfo(g2, gameManager);
 
         // Affichage des animations du jeu
         drawActiveAnimations(g2);

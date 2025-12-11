@@ -20,6 +20,7 @@ import java.awt.Color;
 import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
 import upc.model.items.Bazooka;
+import java.awt.geom.AffineTransform;
 
 public class GamePanel extends JPanel {
 
@@ -194,15 +195,29 @@ public class GamePanel extends JPanel {
             BufferedImage weaponSprite = SpriteManager.get("weapon_bazooka");
 
             if (weaponSprite != null) {
+                AffineTransform oldTransform = g2.getTransform();
 
-                int weaponX = direction ? posX - 5 : posX - 15;
-                int weaponY = posY - 6;
+                double angleRad = Math.toRadians(alien.getAimAngle());
 
-                if (direction) {
-                    g2.drawImage(weaponSprite, weaponX, weaponY, null);
-                } else {
-                    g2.drawImage(weaponSprite, weaponX + weaponSprite.getWidth(), weaponY, -weaponSprite.getWidth(), weaponSprite.getHeight(), null);
+                if (!direction) {
+                    angleRad = Math.PI - angleRad;
                 }
+
+                int pivotX = posX;
+                int pivotY = posY - 5;
+                g2.translate(pivotX, pivotY);
+                g2.rotate(-angleRad);
+                int weaponW = weaponSprite.getWidth();
+                int weaponH = weaponSprite.getHeight();
+                if (direction) {
+                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+                } else {
+                    g2.scale(1, -1);
+                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+                }
+
+                // Restauration de la transformation
+                g2.setTransform(oldTransform);
             }
         }
 

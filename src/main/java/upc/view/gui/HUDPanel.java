@@ -54,9 +54,25 @@ public class HUDPanel extends JPanel {
                     boolean active = gameManager.getActiveAlien() == alien;
 
                     drawAlienHealthBar(g2, alien, active);
+
+                    if (active) {
+                        drawEquippedWeapon(g2, alien);
+                    }
                 }
             }
         }
+    }
+
+    private void drawEquippedWeapon(Graphics2D g2, Alien alien) {
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 12));
+        String text = alien.getEquippedItem().getName();
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+
+        g2.drawString(text, posX - textWidth/2, posY - 42);
     }
 
     private void drawAlienHealthBar(Graphics2D g2, Alien alien, boolean active) {

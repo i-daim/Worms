@@ -1,9 +1,12 @@
 package upc.view.gui;
 
+import upc.assets.Animation;
+import upc.assets.AnimationManager;
+import upc.assets.ActiveAnimation;
+import upc.assets.Sound;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
-import upc.view.Sound;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

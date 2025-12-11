@@ -25,6 +25,7 @@ public class GameController {
 
     private boolean leftPressed = false;
     private boolean rightPressed = false;
+    private boolean inventoryVisible = true;
 
     private volatile boolean running = true;
     private Thread gameThread;

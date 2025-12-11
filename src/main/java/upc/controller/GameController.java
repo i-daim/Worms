@@ -34,6 +34,8 @@ public class GameController {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
 
+        gamePanel.setInventoryVisible(inventoryVisible);
+
         addListeners();
         startGameLoop();
     }

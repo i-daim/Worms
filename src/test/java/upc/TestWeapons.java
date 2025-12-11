@@ -12,6 +12,7 @@ import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Throwable;
 import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,6 +91,12 @@ public class TestWeapons {
         Uzi uzi = new Uzi();
         Projectile p = uzi.createProjectile(null, new Position(0,0), 0, 0);
         assertTrue(p instanceof Bullet, "L'Uzi doit créer une Bullet");
+    }
+    @Test
+    public void testMineCreateProjectile() {
+        Mine mine = new Mine();
+        Projectile p = mine.createProjectile(null, new Position(0,0), 0, 0);
+        assertTrue(p instanceof Trap, "La Mine doit créer un Trap");
     }
 
 }

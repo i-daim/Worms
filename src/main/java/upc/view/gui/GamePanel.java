@@ -88,6 +88,9 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
+        // Affichage des Projectiles
+        drawProjectiles(g2);
+
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);

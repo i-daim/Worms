@@ -6,9 +6,14 @@ import upc.model.items.Uzi;
 import upc.model.items.Shotgun;
 import upc.model.items.Mine;
 import upc.model.items.Bazooka;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.Position;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.Alien;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestWeapons {
 
@@ -64,4 +69,14 @@ public class TestWeapons {
         assertEquals(3, bazooka.getNbOfShots());
         assertEquals(70, bazooka.getSpeed());
     }
+    @Test
+    public void testBazookaCreateProjectile() {
+        Alien shooter = null;
+        Bazooka bazooka = new Bazooka();
+        Projectile p = bazooka.createProjectile(shooter, new Position(0,0), 45, 100);
+
+        assertNotNull(p, "Le Bazooka doit créer un projectile");
+        assertTrue(p instanceof Rocket, "Le Bazooka doit créer une Rocket");
+    }
+
 }

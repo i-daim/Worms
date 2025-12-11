@@ -18,7 +18,10 @@ public class Mine extends Weapon {
     }
 
     public void useItem(GameWorld gameWorld, Alien shooter) {
-        Trap mine = new Trap(this, shooter, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
+        int angle = shooter.getAimAngle();
+        int power = shooter.getShootPower();
+        Projectile mineProj = createProjectile(shooter, shooter.getPosition(), angle, power);
+        gameWorld.getPhysicsEngine().addProjectile(mineProj, angle, power);
     }
     @Override
     public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees, int powerPercent) {

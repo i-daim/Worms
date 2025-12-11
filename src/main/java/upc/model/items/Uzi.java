@@ -13,7 +13,7 @@ public class Uzi extends Weapon {
 
     public void useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
-        int power = shooter.getShootPower(); // Souvent fixe pour les balles, ou max
+        int power = shooter.getShootPower();
 
         Projectile proj = createProjectile(shooter, shooter.getPosition(), angle, power);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);

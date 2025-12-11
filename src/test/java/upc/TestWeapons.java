@@ -10,7 +10,7 @@ import upc.model.entites.projectiles.Rocket;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.Alien;
-
+import upc.model.entites.projectiles.Throwable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,6 +77,12 @@ public class TestWeapons {
 
         assertNotNull(p, "Le Bazooka doit créer un projectile");
         assertTrue(p instanceof Rocket, "Le Bazooka doit créer une Rocket");
+    }
+    @Test
+    public void testGrenadeCreateProjectile() {
+        Grenade grenade = new Grenade();
+        Projectile p = grenade.createProjectile(null, new Position(0,0), 0, 0);
+        assertTrue(p instanceof Throwable, "La Grenade doit créer un Throwable");
     }
 
 }

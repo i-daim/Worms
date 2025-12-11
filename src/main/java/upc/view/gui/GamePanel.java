@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Throwable;
 import java.awt.Color;
 
 public class GamePanel extends JPanel {
@@ -112,6 +113,9 @@ public class GamePanel extends JPanel {
             if (p instanceof Rocket) {
                 g2.setColor(Color.ORANGE);
                 g2.fillOval(x - 5, y - 5, 10, 10); // Cercle orange pour roquette
+            }else if (p instanceof Throwable) { // Grenade
+                g2.setColor(Color.GREEN);
+                g2.fillOval(x - 4, y - 4, 8, 8);
             }
         }
     }

@@ -1,8 +1,9 @@
-package upc.model.entites;
+package upc.model.entites.projectiles;
+import upc.model.entites.Alien;
 import upc.model.items.Weapon;
 
-public class ProjectileBalle extends Projectile {
-    public ProjectileBalle(Weapon weapon, Alien shooter) {
+public class Bullet extends Projectile {
+    public Bullet(Weapon weapon, Alien shooter) {
         super(
                 shooter,
                 shooter.getPosition(),

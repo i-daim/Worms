@@ -1,21 +1,21 @@
-package upc.model.entites;
+package upc.model.entites.projectiles;
+import upc.model.entites.Alien;
 import upc.model.items.Weapon;
 
-public class ProjectileMine extends Projectile {
-    private int timer;
-    private boolean armed;
 
-    public ProjectileMine(Weapon weapon, Alien shooter) {
+public class Throwable extends Projectile {
+    private int timer;
+    public Throwable(Weapon weapon, Alien shooter, int timerSeconds) {
         super(
                 shooter,
                 shooter.getPosition(),
                 weapon.getDamage(),
-                60,
+                50,
                 true,
                 weapon.getSpeed(),
                 weapon
         );
-        this.timer = 5 * 60;
+        this.timer = timerSeconds * 60;
     }
     public void decrementTimer() {
         if (timer > 0) {

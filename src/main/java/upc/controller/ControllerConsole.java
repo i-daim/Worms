@@ -44,24 +44,19 @@ public class ControllerConsole {
     private void traiterCommande(String command, GameManager gameManager) {
         switch (command) {
             case "gauche":
-                boolean reussiteG = gameManager.getActiveAlien().moveLeft(gameManager.getTerrain());
-                vue.printMovementResult(reussiteG, "gauche", gameManager);
-                if (reussiteG) {
-                    gameManager.skipTurn();
-                }
+                gameManager.getActiveAlien().moveLeft();
+                vue.printMovementResult(true, "gauche");
+                gameManager.skipTurn();
                 break;
 
             case "droite":
-                boolean reussiteD =
-                        gameManager.getActiveAlien().moveRight(gameManager.getTerrain());
-                vue.printMovementResult(reussiteD, "droite", gameManager);
-                if (reussiteD) {
-                    gameManager.skipTurn();
-                }
+                gameManager.getActiveAlien().moveRight();
+                vue.printMovementResult(true, "droite");
+                gameManager.skipTurn();
                 break;
 
             case "sauter":
-                gameManager.getWorld().getPhysicsEngine().jumpAlien(gameManager.getActiveAlien());
+                gameManager.getActiveAlien().jump();
 
                 //System.out.println("⏳ Le worm saute...");
                 //for (int i = 0; i < 120; i++) {

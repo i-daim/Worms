@@ -16,60 +16,63 @@ public class TestInventory {
     @BeforeEach
     public void setUp() {
         inventory = new Inventory();
+        // PS: Toutes les munitions sont initialisées à 50
     }
 
     @Test
     public void testAjouterMunitionSimple() {
-        inventory.ajouterMunition(Type.GRENADE, 10);
+        inventory.addAmmo(Type.GRENADE, 10);
 
-        assertEquals(10, inventory.getStockMunitions().get(Type.GRENADE));
+        assertEquals(60, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
-    public void testAjouterMunitionPlusieurs() {
-        inventory.ajouterMunition(Type.GRENADE, 10);
-        inventory.ajouterMunition(Type.GRENADE, 5);
+    public void testAddAmmoPlusieurs() {
+        inventory.addAmmo(Type.GRENADE, 10);
+        inventory.addAmmo(Type.GRENADE, 5);
 
-        assertEquals(15, inventory.getStockMunitions().get(Type.GRENADE));
+        assertEquals(65, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
-    public void testAjouterMunitionNegative() {
-        inventory.ajouterMunition(Type.GRENADE, -5);
+    public void testAddAmmoNegative() {
+        inventory.addAmmo(Type.GRENADE, -5);
 
-        assertNull(inventory.getStockMunitions().get(Type.GRENADE));
+        assertEquals(50, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
-    public void testAjouterMunitionZero() {
-        inventory.ajouterMunition(Type.GRENADE, 0);
+    public void testAddAmmoZero() {
+        inventory.addAmmo(Type.GRENADE, 0);
 
-        assertNull(inventory.getStockMunitions().get(Type.GRENADE));
+        assertEquals(50, inventory.getAmmoStock().get(Type.GRENADE));
     }
 
     @Test
-    public void testEstDisponibleAvecStock() {
-        inventory.ajouterMunition(Type.GRENADE, 10);
+    public void testIsAvailableAvecStock() {
+        inventory.addAmmo(Type.GRENADE, 10);
 
-        assertTrue(inventory.estDisponible(Type.GRENADE));
+        assertTrue(inventory.isAvailable(Type.GRENADE));
     }
 
     @Test
-    public void testEstDisponibleSansStock() {
-        assertFalse(inventory.estDisponible(Type.GRENADE));
+    public void testIsAvailableSansStock() {
+        inventory.useAmmo(Type.GRENADE, 50);
+
+        assertFalse(inventory.isAvailable(Type.GRENADE));
     }
 
     @Test
-    public void testEstDisponibleIllimite() {
-        inventory.getStockMunitions().put(Type.UZI, -1);
+    public void testIsAvailableIllimite() {
+        inventory.getAmmoStock().put(Type.UZI, -1);
 
-        assertTrue(inventory.estDisponible(Type.UZI));
+        assertTrue(inventory.isAvailable(Type.UZI));
     }
 
     @Test
-    public void testGetStockMunitionsVide() {
-        assertNotNull(inventory.getStockMunitions());
-        assertTrue(inventory.getStockMunitions().isEmpty());
+    public void testGetAmmoStock() {
+        assertNotNull(inventory.getAmmoStock());
+        assertFalse(inventory.getAmmoStock().isEmpty());
     }
 
 

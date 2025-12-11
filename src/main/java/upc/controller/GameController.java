@@ -20,7 +20,7 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
-    private static final int CAMERA_SPEED = 15;
+    private static final int CAMERA_SPEED = 10;
     private Point mousePosition = new Point(0, 0);
 
     private boolean leftPressed = false;
@@ -78,6 +78,7 @@ public class GameController {
             case KeyEvent.VK_SPACE:
             case KeyEvent.VK_UP:
                 if (pressed) {
+                    activeAlien.setState(Alien.State.JUMP);
                     gameManager.getWorld().getPhysicsEngine().jumpAlien(activeAlien);
                 }
                 break;
@@ -125,15 +126,12 @@ public class GameController {
     private void handleCameraScroll(Point mousePos) {
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
-        int limit = 50;
+        int limit = (int) (50 * GamePanel.ZOOM);
 
         int camX = gamePanel.getCameraX();
         int camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
-
-        double zoomX = gamePanel.getZoomX();
-        double zoomY = gamePanel.getZoomY();
 
         if (mousePos.x > width - limit) {
             camX += CAMERA_SPEED;
@@ -147,8 +145,8 @@ public class GameController {
             camY -= CAMERA_SPEED;
         }
 
-        int viewportWidth = (int) (width / zoomX);
-        int viewportHeight = (int) (height / zoomY);
+        int viewportWidth = (int) (width / GamePanel.ZOOM);
+        int viewportHeight = (int) (height / GamePanel.ZOOM);
 
         camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
         camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
@@ -163,12 +161,13 @@ public class GameController {
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
+            gamePanel.centralizeCamera(activeAlien);
             if (leftPressed && !rightPressed) {
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, -1.0);
+                activeAlien.moveLeft();
             } else if (rightPressed && !leftPressed) {
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 1.0);
+                activeAlien.moveRight();
             } else {
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 0);
+                activeAlien.idle();
             }
         }
 

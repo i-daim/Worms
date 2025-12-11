@@ -38,6 +38,7 @@ public class GamePanel extends JPanel {
         this.terrain = gameManager.getTerrain();
         this.hudPanel = new HUDPanel(gameManager);
         this.setDoubleBuffered(true);
+
         gameMusic.loop();
     }
 
@@ -85,6 +86,19 @@ public class GamePanel extends JPanel {
 
         g2.dispose();
     }
+
+    private void drawActiveAlienInventory(Graphics2D g2) {
+        Alien alienActif = gameManager.getActiveAlien();
+        if (alienActif != null && alienActif.isAlive()) {
+            int alienPosX = alienActif.getPosition().getX();
+
+            int inventoryY = alienActif.getPosition().getY() - INV_OFFSET_Y;
+            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
+
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, selectedItemIndex);
+        }
+    }
+
     public Point screenToWorld(Point screenPoint) {
         double worldX = (screenPoint.x / ZOOM) + cameraX;
         double worldY = (screenPoint.y / ZOOM) + cameraY;

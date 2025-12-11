@@ -19,6 +19,7 @@ import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
 import upc.model.entites.projectiles.Throwable;
 import java.awt.Color;
+import upc.model.entites.projectiles.Bullet;
 
 public class GamePanel extends JPanel {
 
@@ -116,6 +117,9 @@ public class GamePanel extends JPanel {
             }else if (p instanceof Throwable) { // Grenade
                 g2.setColor(Color.GREEN);
                 g2.fillOval(x - 4, y - 4, 8, 8);
+            }else if (p instanceof Bullet) { // Uzi/Shotgun
+                g2.setColor(Color.YELLOW);
+                g2.fillOval(x - 2, y - 2, 4, 4);
             }
         }
     }

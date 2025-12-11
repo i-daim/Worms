@@ -82,7 +82,7 @@ public class GamePanel extends JPanel {
         drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
         // Affichage des barres de vie
-        hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
+        hudPanel.drawAlienInfo(g2, gameManager);
 
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
@@ -183,8 +183,8 @@ public class GamePanel extends JPanel {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
-        int drawX = posX - 10;
-        int drawY = posY - 18;
+        int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
+        int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
 
         drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
 

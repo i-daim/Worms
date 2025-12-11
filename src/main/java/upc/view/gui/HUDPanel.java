@@ -14,6 +14,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 
 public class HUDPanel extends JPanel {
 
@@ -65,6 +66,7 @@ public class HUDPanel extends JPanel {
         }
     }
 
+
     private void drawTopBar(Graphics2D g2) {
         int width = this.getWidth();
         int height = 50;
@@ -75,17 +77,79 @@ public class HUDPanel extends JPanel {
         drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
     }
 
-    public void drawHealthBars(Graphics2D g2, GameManager gameManager, int cameraX, int cameraY) {
+
+    public void drawAlienInfo(Graphics2D g2, GameManager gameManager) {
         for (Team team : gameManager.getTeams()) {
             for (Alien alien : team.getAliens()) {
+
                 if (alien != null && alien.isAlive()) {
-                    drawWormHealthBar(g2, alien, gameManager.getActiveAlien() == alien);
+                    boolean active = gameManager.getActiveAlien() == alien;
+
+                    drawAlienHealthBar(g2, alien, active);
+
+                    if (active) {
+                        drawAlienAim(g2, alien);
+                        drawEquippedWeapon(g2, alien);
+                    }
                 }
             }
         }
     }
 
-    private void drawWormHealthBar(Graphics2D g2, Alien alien, boolean active) {
+
+    private void drawAlienAim(Graphics2D g2, Alien alien) {
+        // "Sauvegarde" de l'état des graphiques pour ne transformer que le viseur
+        AffineTransform originalTransform = g2.getTransform();
+
+        int centerX = alien.getPosition().getX();
+        int centerY = alien.getPosition().getY();
+        g2.translate(centerX, centerY);
+
+        // Inverse le viseur si l'alien est tourné à gauche
+        if (!alien.getDirection()) {
+            g2.scale(-1, 1);
+        }
+
+        // Rotation du viseur en fonction de l'angle
+        g2.rotate(Math.toRadians(-alien.getAimAngle()));
+
+        int distance = 20;
+        int width = 25;
+        int height = 6;
+
+        // Bordures noires pour le viseur
+        g2.setColor(Color.BLACK);
+        g2.drawRect(distance, -height / 2, width, height);
+
+        // Rectangle transparent blanc
+        g2.setColor(new Color(255, 255, 255, 150));
+        g2.fillRect(distance + 1, -height / 2 + 1, width - 1, height - 1);
+
+        // Flèche au bout du viseur
+        g2.setColor(Color.BLACK);
+        int arrowX = distance + width + 1;
+        int[] xPoints = {arrowX, arrowX + 5, arrowX};
+        int[] yPoints = {-4, 0, 4};
+        g2.fillPolygon(xPoints, yPoints, 3);
+
+        g2.setTransform(originalTransform);
+    }
+
+
+    private void drawEquippedWeapon(Graphics2D g2, Alien alien) {
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 12));
+        String text = alien.getEquippedItem().getName();
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+
+        g2.drawString(text, posX - textWidth / 2, posY - 42);
+    }
+
+
+    private void drawAlienHealthBar(Graphics2D g2, Alien alien, boolean active) {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 

@@ -121,4 +121,9 @@ public class PhysicsEngine {
     public TerrainPhysics getTerrainPhysics() {
         return terrainPhysics;
     }
+
+    public AlienPhysics getAlienPhysics() {
+        return alienPhysics;
+    }
+
 }

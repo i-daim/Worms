@@ -1,16 +1,28 @@
 package upc;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import upc.model.items.Grenade;
 import upc.model.items.Uzi;
 import upc.model.items.Shotgun;
 import upc.model.items.Mine;
 import upc.model.items.Bazooka;
-
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.Position;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.Alien;
+import upc.model.entites.projectiles.Throwable;
+import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
+import upc.model.jeu.GameManager;
+import upc.model.jeu.GameWorld;
+import upc.model.jeu.Team;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class TestWeapons {
+    private Alien dummyShooter;
 
     @Test
     public void testUziConstructeur() {
@@ -64,4 +76,32 @@ public class TestWeapons {
         assertEquals(3, bazooka.getNbOfShots());
         assertEquals(70, bazooka.getSpeed());
     }
+
+    @Test
+    public void testBazookaCreateProjectile() {
+        Bazooka bazooka = new Bazooka();
+        Projectile p = bazooka.createProjectile(dummyShooter, new Position(0,0), 0, 0);
+        assertNotNull(p);
+        assertTrue(p instanceof Rocket);
+
+    }
+    @Test
+    public void testGrenadeCreateProjectile() {
+        Grenade grenade = new Grenade();
+        Projectile p = grenade.createProjectile(null, new Position(0,0), 0, 0);
+        assertTrue(p instanceof Throwable, "La Grenade doit créer un Throwable");
+    }
+    @Test
+    public void testUziCreateProjectile() {
+        Uzi uzi = new Uzi();
+        Projectile p = uzi.createProjectile(null, new Position(0,0), 0, 0);
+        assertTrue(p instanceof Bullet, "L'Uzi doit créer une Bullet");
+    }
+    @Test
+    public void testMineCreateProjectile() {
+        Mine mine = new Mine();
+        Projectile p = mine.createProjectile(null, new Position(0,0), 0, 0);
+        assertTrue(p instanceof Trap, "La Mine doit créer un Trap");
+    }
+
 }

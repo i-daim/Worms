@@ -45,6 +45,7 @@ public class GameWorld {
         }
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);
+        gameManager.addActiveAnimation("explosion", x, y);
     }
 
     public Terrain getTerrain() {

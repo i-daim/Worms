@@ -1,8 +1,10 @@
 package upc.view.gui;
 
 import upc.model.entites.Alien;
+import upc.model.items.Weapon;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
+import upc.model.items.Item;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -34,6 +36,30 @@ public class HUDPanel extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         drawTopBar(g2);
+    }
+    private void drawCurrentWeapon(Graphics2D g2) {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien == null) return;
+        Item currentItem = activeAlien.getEquippedItem(); // Assurez-vous que cette méthode existe dans Alien
+        if (currentItem instanceof Weapon) {
+            Weapon weapon = (Weapon) currentItem;
+            int width = getWidth();
+            int boxW = 200;
+            int boxH = 50;
+            int x = width - boxW - 20;
+            int y = 10;
+
+            g2.setColor(new Color(0, 0, 0, 150));
+            g2.fillRoundRect(x, y, boxW, boxH, 15, 15);
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 18));
+            g2.drawString(weapon.getName(), x + 15, y + 30);
+
+            String ammo = (weapon.getNbOfShots() < 0) ? "Infini" : "x" + weapon.getNbOfShots();
+            g2.setFont(new Font("Arial", Font.PLAIN, 14));
+            g2.setColor(Color.YELLOW);
+            g2.drawString(ammo, x + 140, y + 30);
+        }
     }
 
     private void drawTopBar(Graphics2D g2) {

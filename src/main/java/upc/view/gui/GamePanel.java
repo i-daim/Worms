@@ -15,6 +15,9 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Rocket;
+import java.awt.Color;
 
 public class GamePanel extends JPanel {
 
@@ -98,7 +101,20 @@ public class GamePanel extends JPanel {
         double worldY = (screenPoint.y / ZOOM) + cameraY;
         return new Point((int) worldX, (int) worldY);
     }
+    private void drawProjectiles(Graphics2D g2) {
+        List<Projectile> projectiles = gameManager.getWorld().getActiveProjectiles();
 
+        for (Projectile p : projectiles) {
+            int x = p.getPosition().getX();
+            int y = p.getPosition().getY();
+
+            // Choix de la couleur/forme selon le type
+            if (p instanceof Rocket) {
+                g2.setColor(Color.ORANGE);
+                g2.fillOval(x - 5, y - 5, 10, 10); // Cercle orange pour roquette
+            }
+        }
+    }
 
     public void drawAliens(Graphics2D g2) {
         for (Alien alien : gameManager.getWorld().getActiveWorms()) {

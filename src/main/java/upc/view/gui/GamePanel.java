@@ -1,9 +1,6 @@
 package upc.view.gui;
 
-import upc.assets.Animation;
-import upc.assets.AnimationManager;
-import upc.assets.ActiveAnimation;
-import upc.assets.Sound;
+import upc.assets.*;
 import upc.model.entites.Alien;
 import upc.model.items.Item;
 import upc.model.jeu.GameManager;
@@ -22,6 +19,7 @@ import upc.model.entites.projectiles.Throwable;
 import java.awt.Color;
 import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
+import upc.model.items.Bazooka;
 
 public class GamePanel extends JPanel {
 
@@ -189,8 +187,29 @@ public class GamePanel extends JPanel {
         int drawY = posY - 18;
 
         drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+
         Item currentItem = alien.getEquippedItem();
+
+        if (currentItem instanceof Bazooka) {
+            BufferedImage weaponSprite = SpriteManager.get("weapon_bazooka");
+
+            if (weaponSprite != null) {
+
+                int weaponX = direction ? posX - 5 : posX - 15;
+                int weaponY = posY - 6;
+
+                if (direction) {
+                    g2.drawImage(weaponSprite, weaponX, weaponY, null);
+                } else {
+                    g2.drawImage(weaponSprite, weaponX + weaponSprite.getWidth(), weaponY, -weaponSprite.getWidth(), weaponSprite.getHeight(), null);
+                }
+            }
+        }
+
+
     }
+
+
 
     public void centralizeCamera(Alien alien) {
         if (alien == null) {

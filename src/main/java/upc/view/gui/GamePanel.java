@@ -20,6 +20,7 @@ import upc.model.entites.projectiles.Rocket;
 import upc.model.entites.projectiles.Throwable;
 import java.awt.Color;
 import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
 
 public class GamePanel extends JPanel {
 
@@ -109,17 +110,18 @@ public class GamePanel extends JPanel {
         for (Projectile p : projectiles) {
             int x = p.getPosition().getX();
             int y = p.getPosition().getY();
-
-            // Choix de la couleur/forme selon le type
             if (p instanceof Rocket) {
                 g2.setColor(Color.ORANGE);
-                g2.fillOval(x - 5, y - 5, 10, 10); // Cercle orange pour roquette
+                g2.fillOval(x - 5, y - 5, 10, 10);
             }else if (p instanceof Throwable) { // Grenade
                 g2.setColor(Color.GREEN);
                 g2.fillOval(x - 4, y - 4, 8, 8);
             }else if (p instanceof Bullet) { // Uzi/Shotgun
                 g2.setColor(Color.YELLOW);
                 g2.fillOval(x - 2, y - 2, 4, 4);
+            }else if (p instanceof Trap) { // Mine
+                g2.setColor(Color.RED);
+                g2.fillRect(x - 5, y - 2, 10, 5);
             }
         }
     }

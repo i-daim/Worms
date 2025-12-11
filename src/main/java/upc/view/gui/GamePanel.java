@@ -5,6 +5,7 @@ import upc.assets.AnimationManager;
 import upc.assets.ActiveAnimation;
 import upc.assets.Sound;
 import upc.model.entites.Alien;
+import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 
@@ -188,6 +189,7 @@ public class GamePanel extends JPanel {
         int drawY = posY - 18;
 
         drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+        Item currentItem = alien.getEquippedItem();
     }
 
     public void centralizeCamera(Alien alien) {

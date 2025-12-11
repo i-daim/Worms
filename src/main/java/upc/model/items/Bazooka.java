@@ -1,6 +1,9 @@
 package upc.model.items;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameWorld;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.Position;
+import upc.model.entites.projectiles.Projectile;
 
 public class Bazooka extends Weapon {
     public Bazooka() {
@@ -8,6 +11,10 @@ public class Bazooka extends Weapon {
     }
     @Override
     public void useItem(GameWorld gameWorld, Alien shooter) {
+    }
+    @Override
+    public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees, int powerPercent) {
+        return new Rocket(this, shooter);
     }
 
 }

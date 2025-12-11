@@ -106,6 +106,12 @@ public class GamePanel extends JPanel {
         }
     }
 
+    public void setInventoryVisible(boolean visible) {
+        this.inventoryVisible = visible;
+        repaint();
+    }
+
+
     public Point screenToWorld(Point screenPoint) {
         double worldX = (screenPoint.x / ZOOM) + cameraX;
         double worldY = (screenPoint.y / ZOOM) + cameraY;

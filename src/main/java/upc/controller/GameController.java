@@ -64,6 +64,35 @@ public class GameController {
     }
 
     private void handleKeyPress(int keyCode, boolean pressed) {
+
+        if (pressed) {
+
+            if (keyCode == KeyEvent.VK_I) {
+                inventoryVisible = !inventoryVisible;
+                gamePanel.setInventoryVisible(inventoryVisible);
+                return;
+            }
+
+            int index = -1;
+
+            switch (keyCode) {
+                case KeyEvent.VK_1: index = 0; break;
+                case KeyEvent.VK_2: index = 1; break;
+                case KeyEvent.VK_3: index = 2; break;
+                case KeyEvent.VK_4: index = 3; break;
+                case KeyEvent.VK_5: index = 4; break;
+                default: break;
+            }
+
+            if (index != -1) {
+                if (inventoryVisible) {
+                    gamePanel.setSelectedItemIndex(index);
+                }
+                return;
+            }
+        }
+
+
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;

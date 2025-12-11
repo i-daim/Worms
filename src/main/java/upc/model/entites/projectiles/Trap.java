@@ -10,7 +10,7 @@ public class Trap extends Projectile {
     private final int activationRadius;
 
     public Trap(Weapon weapon, Alien shooter, int activationRadius, int explosionRadius) {
-        super(shooter, (shooter != null) ? shooter.getPosition() : new Position(0,0),
+        super(shooter, (shooter != null) ? shooter.getPosition() : new Position(0, 0),
                 weapon.getDamage(), explosionRadius, false, weapon.getSpeed(), weapon);
 
         this.activationRadius = activationRadius;

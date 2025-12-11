@@ -7,7 +7,7 @@ public class Rocket extends Projectile {
     public Rocket(Weapon weapon, Alien shooter) {
         super(
                 shooter,
-                (shooter != null) ? shooter.getPosition() : new Position(0,0),
+                (shooter != null) ? shooter.getPosition() : new Position(0, 0),
                 weapon.getDamage(),
                 45,
                 true,

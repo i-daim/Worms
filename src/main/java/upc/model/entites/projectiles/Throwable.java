@@ -9,7 +9,7 @@ public class Throwable extends Projectile {
     public Throwable(Weapon weapon, Alien shooter, int timerSeconds) {
         super(
                 shooter,
-                (shooter != null) ? shooter.getPosition() : new Position(0,0),
+                (shooter != null) ? shooter.getPosition() : new Position(0, 0),
                 weapon.getDamage(),
                 50,
                 true,

@@ -23,6 +23,12 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
+    private boolean inventoryVisible = true;
+
+    // Variables pour la gestion manuelle du TOGGLE (pour éviter la répétition)
+    private boolean iKeyWasPressed = false;
+    private boolean[] selectionKeysWasPressed = new boolean[5];
+
     private volatile boolean running = true;
     private Thread gameThread;
 
@@ -30,6 +36,8 @@ public class GameController {
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
+
+        gamePanel.setInventoryVisible(inventoryVisible);
 
         addListeners();
         startGameLoop();
@@ -42,7 +50,7 @@ public class GameController {
     }
 
 
-////    GESTION DE LA BOUCLE DU JEU    ////
+    ////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -77,7 +85,7 @@ public class GameController {
     private void update() {
         // Gestion de la caméra à travers mouseHandler
         handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier
+        // Gestion des touches clavier et de l'inventaire
         handleControls();
 
         Alien activeAlien = gameManager.getActiveAlien();
@@ -96,8 +104,35 @@ public class GameController {
     }
 
 
-////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
+
+        boolean iIsPressed = keyHandler.isKeyPressed(KeyEvent.VK_I);
+
+        if (iIsPressed && !iKeyWasPressed) {
+            inventoryVisible = !inventoryVisible;
+            gamePanel.setInventoryVisible(inventoryVisible);
+        }
+        iKeyWasPressed = iIsPressed;
+
+
+        if (inventoryVisible) {
+            for (int i = 0; i < 5; i++) {
+                int keyCode = KeyEvent.VK_1 + i;
+                boolean keyIsPressed = keyHandler.isKeyPressed(keyCode);
+
+                if (keyIsPressed && !selectionKeysWasPressed[i]) {
+                    gamePanel.setSelectedItemIndex(i);
+
+                }
+                selectionKeysWasPressed[i] = keyIsPressed;
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                selectionKeysWasPressed[i] = false;
+            }
+        }
+
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
@@ -167,7 +202,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-////    ARRET DU JEU    ////
+    ////    ARRET DU JEU    ////
     public void stop() {
         running = false;
         if (gameThread != null) {

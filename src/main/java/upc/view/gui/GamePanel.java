@@ -28,6 +28,10 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
+    private int selectedItemIndex = 0;
+    private boolean inventoryVisible = true;
+    private static final int INV_OFFSET_Y = 80;
+
     private List<ActiveAnimation> activeAnimations;
 
     private final Sound gameMusic = new Sound("/sounds/game_music.wav");
@@ -48,7 +52,7 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
@@ -82,6 +86,10 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
+        if (inventoryVisible) {
+            drawActiveAlienInventory(g2);
+        }
+
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
@@ -91,6 +99,30 @@ public class GamePanel extends JPanel {
         hudPanel.paintComponent(g2);
 
         g2.dispose();
+    }
+
+    private void drawActiveAlienInventory(Graphics2D g2) {
+        Alien alienActif = gameManager.getActiveAlien();
+        if (alienActif != null && alienActif.isAlive()) {
+            int alienPosX = alienActif.getPosition().getX();
+
+            int inventoryY = alienActif.getPosition().getY() - INV_OFFSET_Y;
+            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
+
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, selectedItemIndex);
+        }
+    }
+
+    public void setSelectedItemIndex(int index) {
+        if (index >= 0 && index < InventoryPanel.INVENTORY_SLOTS) {
+            this.selectedItemIndex = index;
+            repaint();
+        }
+    }
+
+    public void setInventoryVisible(boolean visible) {
+        this.inventoryVisible = visible;
+        repaint();
     }
 
     public Point screenToWorld(Point screenPoint) {

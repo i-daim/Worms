@@ -12,6 +12,10 @@ import java.io.InputStream;
  */
 public class TerrainGenerator {
 
+    /**
+     * Taille en pixels d'une tuile (tile) de collision dans l'image source.
+     * <p>Une tuile de collision est de {@code TILE_SIZE} x {@code TILE_SIZE} pixels.</p>
+     */
     public static final int TILE_SIZE = 4;
 
 

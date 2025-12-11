@@ -4,6 +4,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
+/**
+ * <p>Classe utilitaire responsable de la génération et du chargement des maps {@link Terrain}.</p>
+ *
+ * <p>Elle fournit des méthodes statiques pour charger les données de collision à partir
+ * d'images PNG et pour créer des terrains par défaut (vides).</p>
+ */
 public class TerrainGenerator {
 
     public static final int TILE_SIZE = 4;

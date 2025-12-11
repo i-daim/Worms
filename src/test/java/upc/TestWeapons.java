@@ -98,7 +98,7 @@ public class TestWeapons {
     @Test
     public void testGrenadeCreateProjectile() {
         Grenade grenade = new Grenade();
-        Projectile p = grenade.createProjectile(null, new Position(0,0), 0, 0);
+        Projectile p = grenade.createProjectile(dummyShooter, new Position(0,0), 0, 0);
         assertTrue(p instanceof Throwable, "La Grenade doit créer un Throwable");
     }
     @Test

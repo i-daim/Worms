@@ -1,4 +1,4 @@
-package upc.view.gui;
+package upc.assets;
 
 import java.util.HashMap;
 
@@ -8,25 +8,26 @@ public class AnimationManager {
     private static HashMap<String, Animation> zlerps = new HashMap<>();
     private static HashMap<String, Animation> glorbs = new HashMap<>();
 
-
-    public AnimationManager() {
+    static {
         // Animations joueur //
         zlerps.put("idle_right", new Animation("characters/zlerp/idle", 1, false));
-        zlerps.put("idle_left", new Animation("characters/zlerp/idle", 1, true));
-        zlerps.put("walk_right", new Animation("characters/zlerp/walk", 6, false));
-        zlerps.put("walk_left", new Animation("characters/zlerp/walk", 6, true));
-        zlerps.put("jump", new Animation("characters/zlerp/jump", 4, false));
+        zlerps.put("idle_left", new Animation("characters/zlerp/idle", 1, false));
+        zlerps.put("walk_right", new Animation("characters/zlerp/walk", 5, false));
+        zlerps.put("walk_left", new Animation("characters/zlerp/walk", 5, true));
+//        zlerps.put("jump", new Animation("characters/zlerp/jump", 4, false));
 
         glorbs.put("idle_right", new Animation("characters/glorb/idle", 1, false));
         glorbs.put("idle_left", new Animation("characters/glorb/idle", 1, true));
 
         // Animations monde //
         animations.put("water", new Animation("animations/water/water", 8, false));
-        //animations.put("explosion", new Animation("explosion", 4));
-
+        animations.put("explosion", new Animation("animations/explosion/explosion", 7, false));
     }
 
     public static Animation getAnimation(String name) {
+        if (!animations.containsKey(name)) {
+            throw new RuntimeException("Erreur lors du chargement de l'animation : " + name);
+        }
         return animations.get(name);
     }
 

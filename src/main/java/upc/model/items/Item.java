@@ -13,4 +13,6 @@ public interface Item {
     }
 
     void useItem(GameWorld gameWorld, Alien alienActif);
+
+    String getName();
 }

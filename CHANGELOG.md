@@ -1,0 +1,65 @@
+# Changelog
+
+Ce projet suit les directives du cours de Conduite de Projet (L2 Informatique).
+Les versions suivent le format [SemVer](https://semver.org/).
+
+## [Unreleased]
+*Travaux en cours pour le Sprint 3 : utilisation des armes, animations, inventaire, sauvegarde du jeu*
+
+### Added
+- Possibilité d’utiliser les armes en jeu.
+- Inventaire fonctionnel pour les équipes (consultation et utilisation d’armes).
+- Affichage simple de l’inventaire dans l’interface.
+- Lien entre armes et projectiles (création des projectiles lors de l’utilisation d’une arme).
+- Sauvegarde du jeu.
+- Tests de la classe projectile.
+- Fenêtre dédiée aux paramètres.
+- Caméra centrée sur l’alien actif.
+- Ajout des images d’animation pour les explosions.
+- Ajout des debug et tests supplémentaires.
+
+### Fixed
+- Bug : la partie ne se termine pas lorsque tous les aliens d’une équipe meurent.
+- Bug : les aliens ne meurent pas dans l’eau.
+- Bug : collisions des worms pas assez précises.
+- Bug : le tour ne se termine pas lorsque le worm actuel meurt.
+- Bug : un alien doit pouvoir utiliser (et avoir) une arme active.
+- Bug sur le saut qui ne marche pas toujours comme prévu.
+
+---
+
+## [0.2] - 2025-11-28
+*Jeu avec vue graphique – Sprint 2 : vue graphique, maps et physiques du jeu*
+
+### Added
+- Lancement du jeu avec le menu graphique (nouvelle partie).
+- Système de gravité intégrant les dégâts de chute.
+- Affichage de la map avec fond.
+- Affichage des aliens en temps réel.
+- Intégration des animations (eau en mouvement).
+- Interface de jeu : timer du tour, barres de vie, indicateur de l’alien actif.
+
+### Started for next sprint (migré ensuite dans Unreleased)
+- Ajout de la physique sur les projectiles.
+- Création de toutes les classes de projectiles.
+- Direction des worms (optimisation des déplacements).
+
+---
+
+## [0.1] - 2025-11-14
+*Jeu avec vue console – Sprint 1 : structure de base du jeu*
+
+### Added
+- Lancement du jeu via console, avec initialisation d’une partie.
+- Création de 2 équipes, avec 2 worms chacune, automatiquement.
+- Affichage des commandes, de la carte du jeu et de l’état du jeu sous forme de texte.
+- Déplacement des worms.
+- Attaque sur une position précise (avec dégâts sur le worm présent dans la position).
+- Possibilité de passer son tour.
+- Retour textuel pour chaque action effectuée.
+
+### Planned for next sprint (0.2)
+- Vue graphique (menu du jeu déjà disponible).
+- Création de maps personnalisées affichables sur l’interface graphique.
+- Grand arsenal d’armes (implémenté, à rattacher au jeu).
+- Physique du jeu : gravité, vitesse, collisions, projectiles traversant le terrain.

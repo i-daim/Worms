@@ -1,5 +1,6 @@
 package upc.model.entites.projectiles;
 import upc.model.entites.Alien;
+import upc.model.entites.Position;
 import upc.model.items.Weapon;
 
 
@@ -8,7 +9,7 @@ public class Throwable extends Projectile {
     public Throwable(Weapon weapon, Alien shooter, int timerSeconds) {
         super(
                 shooter,
-                shooter.getPosition(),
+                (shooter != null) ? shooter.getPosition() : new Position(0,0),
                 weapon.getDamage(),
                 50,
                 true,

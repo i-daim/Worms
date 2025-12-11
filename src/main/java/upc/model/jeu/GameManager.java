@@ -1,5 +1,6 @@
 package upc.model.jeu;
 
+import upc.assets.SpriteManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;
@@ -38,6 +39,8 @@ public class GameManager {
         this.gameWorld = new GameWorld(this, this.terrain);
 
         this.activeAnimations = new CopyOnWriteArrayList<>();
+        SpriteManager.load("weapon_bazooka", "/Items/Bazooka2.png");
+
 
         initializeGame();
     }

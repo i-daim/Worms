@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestWeapons {
     private Alien dummyShooter;
+    @BeforeEach
     public void setUp() {
         // Crée un environnement minimal pour construire un Alien valide
         GameManager manager = new GameManager("");

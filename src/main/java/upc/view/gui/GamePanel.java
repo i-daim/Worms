@@ -24,6 +24,10 @@ public class GamePanel extends JPanel {
     private final HUDPanel hudPanel;
     private int cameraX = 0;
     private int cameraY = 0;
+    private int selectedItemIndex = 0;
+
+    private static final int INV_OFFSET_Y = 80;
+    private boolean inventoryVisible = true;
 
     private final AnimationManager animationManager = new AnimationManager();
 
@@ -43,50 +47,39 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
-        // Zoom + ajustement de la caméra
         g2.scale(ZOOM, ZOOM);
         g2.translate(-cameraX, -cameraY);
 
-        // Affichage du background
         BufferedImage backgroundImage = terrain.getBackground();
         if (backgroundImage != null) {
             g2.drawImage(backgroundImage, 0, 0, this);
         }
 
-        // Affichage de l'eau (arrière plan)
         int waterY = DEFAULT_HEIGHT
                 - animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
 
         drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY, 100);
 
-        // Affichage du terrain
         BufferedImage terrainImage = terrain.getImage();
         g2.drawImage(terrainImage, 0, 0, this);
 
-        // Affichage des entites
         drawAliens(g2);
 
-        // Affichage de l'eau
         drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
 
-        // Affichage des barres de vie
         hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
-
-        // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
 
-        // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setSize(getWidth(), 100);
         hudPanel.paintComponent(g2);
 
         g2.dispose();
     }
-
     public Point screenToWorld(Point screenPoint) {
         double worldX = (screenPoint.x / ZOOM) + cameraX;
         double worldY = (screenPoint.y / ZOOM) + cameraY;
@@ -103,7 +96,6 @@ public class GamePanel extends JPanel {
                 if (w.getTeam() == gameManager.getTeam(0)) {
                     drawAlien(g2, w, 0);
                 } else {
-                    // Pour quand on aura des animations séparées pour la 2e équipe
                     drawAlien(g2, w, 1);
                 }
             }

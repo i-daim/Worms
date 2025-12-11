@@ -1,5 +1,6 @@
 package upc;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import upc.model.items.Grenade;
 import upc.model.items.Uzi;
@@ -13,11 +14,13 @@ import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Throwable;
 import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
+import upc.model.jeu.Team;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestWeapons {
+    private Alien dummyShooter;
 
     @Test
     public void testUziConstructeur() {
@@ -70,6 +73,13 @@ public class TestWeapons {
         assertEquals(45, bazooka.getDamage());
         assertEquals(3, bazooka.getNbOfShots());
         assertEquals(70, bazooka.getSpeed());
+    }
+    @BeforeEach
+    public void setUp() {
+        Team dummyTeam = new Team("TestTeam", 1);
+        Position dummyPos = new Position(0, 0);
+        dummyShooter = new Alien(null, dummyTeam, dummyPos);
+
     }
     @Test
     public void testBazookaCreateProjectile() {

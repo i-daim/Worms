@@ -14,7 +14,7 @@ public class Inventory {
     // Stock des armes et des munitions de l'équipe
     private final HashMap<Item.Type, Weapon> weaponStock;
     private final HashMap<Item.Type, Integer> ammoStock;
-
+    private Item.Type currentWeaponType;
     // Constructeur
     public Inventory() {
         this.weaponStock = new HashMap<>();
@@ -32,6 +32,7 @@ public class Inventory {
         weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
         weaponStock.put(Item.Type.GRENADE, new Grenade());
         weaponStock.put(Item.Type.MINE, new Mine());
+        this.currentWeaponType = Item.Type.BAZOOKA;
     }
 
     private void initializeAmmo() {
@@ -77,6 +78,10 @@ public class Inventory {
 
     public int getAmmo(Item.Type w) {
         return ammoStock.getOrDefault(w, 0);
+    }
+    public Weapon getCurrentWeapon() {
+        if (currentWeaponType == null) return null;
+        return (Weapon) weaponStock.get(currentWeaponType);
     }
 
 }

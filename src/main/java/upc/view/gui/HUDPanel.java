@@ -36,6 +36,7 @@ public class HUDPanel extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         drawTopBar(g2);
+        drawCurrentWeapon(g2);
     }
     private void drawCurrentWeapon(Graphics2D g2) {
         Alien activeAlien = gameManager.getActiveAlien();

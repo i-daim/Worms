@@ -147,4 +147,8 @@ public class Alien extends Entity {
     public void setDirection(boolean direction) {
         this.direction = direction;
     }
+
+    public int getAimAngle() { return aimAngle; }
+
+    public int getShootPower() { return shootPower; }
 }

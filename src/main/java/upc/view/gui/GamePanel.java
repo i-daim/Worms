@@ -99,6 +99,13 @@ public class GamePanel extends JPanel {
         }
     }
 
+    public void setSelectedItemIndex(int index) {
+        if (index >= 0 && index < InventoryPanel.INVENTORY_SLOTS) {
+            this.selectedItemIndex = index;
+            repaint();
+        }
+    }
+
     public Point screenToWorld(Point screenPoint) {
         double worldX = (screenPoint.x / ZOOM) + cameraX;
         double worldY = (screenPoint.y / ZOOM) + cameraY;

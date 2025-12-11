@@ -21,8 +21,8 @@ public class InventoryPanel extends JPanel {
     private InventoryPanel() {
     }
 
-    public static void drawAlienInventory(Graphics2D g2, int drawX, int drawY
-            , int selectedItemIndex) {
+    public static void drawAlienInventory(Graphics2D g2, int drawX, int drawY,
+                                          int selectedItemIndex) {
 
         int currentX = drawX + PADDING;
 

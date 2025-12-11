@@ -1,5 +1,6 @@
 package upc.model.entites;
 
+import upc.model.items.Bazooka;
 import upc.model.items.Item;
 import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
@@ -21,6 +22,8 @@ public class Alien extends Entity {
 
     private Inventory inventory;
     private Item.Type equippedItem;
+
+
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -44,6 +47,7 @@ public class Alien extends Entity {
 
         this.team = team;
         this.inventory = team.getInventory();
+        this.equippedItem = Item.Type.BAZOOKA;
 
         this.alive = true;
         this.state = State.IDLE;

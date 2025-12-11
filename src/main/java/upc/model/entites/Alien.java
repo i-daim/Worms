@@ -16,6 +16,8 @@ public class Alien extends Entity {
     private int healthPoints;
     private boolean alive;
     private boolean direction;
+    private int aimAngle = 0;
+    private int shootPower = 50;
 
     private Inventory inventory;
     private Item.Type equippedItem;

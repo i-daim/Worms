@@ -72,6 +72,11 @@ public class GamePanel extends JPanel {
         drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
 
         hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
+
+        if (inventoryVisible) {
+            drawActiveAlienInventory(g2);
+        }
+
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
 

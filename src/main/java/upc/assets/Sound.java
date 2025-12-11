@@ -1,4 +1,4 @@
-package upc.view;
+package upc.assets;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

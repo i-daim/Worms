@@ -42,10 +42,10 @@ public class Team {
         return null;
     }
 
-    public void initializeTeam(String mapName, int team) {
+    public void initializeTeam(GameWorld gameWorld, String mapName, int team) {
         List<Position> spawns = SpawnPoints.getSpawns(mapName, team);
         for (int i = 0; i < aliens.length; i++) {
-            aliens[i] = new Alien(this, spawns.get(i));
+            aliens[i] = new Alien(gameWorld, this, spawns.get(i));
         }
     }
 

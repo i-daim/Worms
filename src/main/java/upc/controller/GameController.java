@@ -8,9 +8,6 @@ import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -18,17 +15,18 @@ import javax.swing.SwingUtilities;
 
 public class GameController {
 
+    private final KeyboardHandler keyHandler = new KeyboardHandler();
+    private final MouseHandler mouseHandler = new MouseHandler();
+
     private final GamePanel gamePanel;
     private final GameManager gameManager;
-    private static final int CAMERA_SPEED = 10;
-    private Point mousePosition = new Point(0, 0);
 
-    private boolean leftPressed = false;
-    private boolean rightPressed = false;
+    private static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
     private Thread gameThread;
 
+    // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
@@ -38,71 +36,13 @@ public class GameController {
     }
 
     private void addListeners() {
-        gamePanel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                mousePosition = e.getPoint();
-            }
-        });
-
-        gamePanel.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleKeyPress(e.getKeyCode(), true);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                handleKeyPress(e.getKeyCode(), false);
-            }
-        });
-
+        gamePanel.addKeyListener(keyHandler);
+        gamePanel.addMouseMotionListener(mouseHandler);
         gamePanel.setFocusable(true);
     }
 
-    private void handleKeyPress(int keyCode, boolean pressed) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null || !activeAlien.isAlive()) {
-            return;
-        }
 
-        switch (keyCode) {
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_Q:
-                leftPressed = pressed;
-                break;
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_D:
-                rightPressed = pressed;
-                break;
-            case KeyEvent.VK_SPACE:
-                if (pressed) {
-                    activeAlien.setState(Alien.State.JUMP);
-                    gameManager.getWorld().getPhysicsEngine().jumpAlien(activeAlien);
-                }
-                break;
-            case KeyEvent.VK_UP:
-                if (pressed) {
-                    activeAlien.setAimAngle(activeAlien.getAimAngle() + 2);
-                }
-                break;
-            case KeyEvent.VK_DOWN:
-                if (pressed) {
-                    activeAlien.setAimAngle(activeAlien.getAimAngle() - 2);
-                }
-                break;
-            case KeyEvent.VK_E:
-                if (pressed) {
-                    Point worldPos = gamePanel.screenToWorld(mousePosition);
-                    gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
-                }
-            default:
-                break;
-        }
-    }
-
-
-
+////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -132,6 +72,53 @@ public class GameController {
         });
         gameThread.setDaemon(true);
         gameThread.start();
+    }
+
+    private void update() {
+        // Gestion de la caméra à travers mouseHandler
+        handleCameraScroll(mouseHandler.getPosition());
+        // Gestion des touches clavier
+        handleControls();
+
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien != null && activeAlien.isAlive()) {
+            gamePanel.centralizeCamera(activeAlien);
+        }
+
+        gameManager.update(1.0 / 60.0);
+
+        if (gameManager.isOver()) {
+            showGameOver();
+            return;
+        }
+
+        gamePanel.repaint();
+    }
+
+
+////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    private void handleControls() {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien == null || !activeAlien.isAlive()) {
+            return;
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+            activeAlien.jump();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
+            activeAlien.moveLeft();
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            activeAlien.moveRight();
+        } else {
+            activeAlien.idle();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
+            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        }
     }
 
     private void handleCameraScroll(Point mousePos) {
@@ -165,34 +152,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    private void update() {
-        if (mousePosition != null) {
-            handleCameraScroll(mousePosition);
-        }
-
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            gamePanel.centralizeCamera(activeAlien);
-            if (leftPressed && !rightPressed) {
-                activeAlien.moveLeft();
-            } else if (rightPressed && !leftPressed) {
-                activeAlien.moveRight();
-            } else {
-                activeAlien.idle();
-            }
-        }
-
-        gameManager.update(1.0 / 60.0);
-
-        if (gameManager.isOver()) {
-            showGameOver();
-            return;
-        }
-
-        gamePanel.repaint();
-    }
-
-
+////    ARRET DU JEU    ////
     public void stop() {
         running = false;
         if (gameThread != null) {

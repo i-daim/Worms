@@ -2,9 +2,9 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.view.gui.ActiveAnimation;
-import upc.view.gui.Animation;
-import upc.view.gui.AnimationManager;
+import upc.assets.ActiveAnimation;
+import upc.assets.Animation;
+import upc.assets.AnimationManager;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

@@ -1,4 +1,4 @@
-package upc.view.gui;
+package upc.assets;
 
 import java.util.HashMap;
 

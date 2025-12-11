@@ -1,6 +1,6 @@
 package upc.view.gui;
 
-import upc.view.Sound;
+import upc.assets.Sound;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;

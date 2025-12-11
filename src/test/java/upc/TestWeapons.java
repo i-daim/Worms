@@ -110,7 +110,7 @@ public class TestWeapons {
     @Test
     public void testMineCreateProjectile() {
         Mine mine = new Mine();
-        Projectile p = mine.createProjectile(null, new Position(0,0), 0, 0);
+        Projectile p = mine.createProjectile(dummyShooter, new Position(0,0), 0, 0);
         assertTrue(p instanceof Trap, "La Mine doit créer un Trap");
     }
 

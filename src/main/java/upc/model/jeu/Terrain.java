@@ -32,7 +32,8 @@ public class Terrain {
      * @param image L'image du terrain (premier plan, destructible).
      * @param background L'image de fond (non destructible).
      */
-    public Terrain(String mapName, boolean[][] collisions, BufferedImage image, BufferedImage background) {
+    public Terrain(String mapName, boolean[][] collisions,
+                   BufferedImage image, BufferedImage background) {
         this.mapName = mapName;
         this.collisions = collisions;
         this.image = image;

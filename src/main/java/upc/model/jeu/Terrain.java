@@ -169,6 +169,12 @@ public class Terrain {
         return collisions[y][x];
     }
 
+    /**
+     * Vérifie si la coordonnée verticale (en tuiles) est au niveau de l'eau ou en dessous.
+     *
+     * @param y La coordonnée verticale (en tuiles).
+     * @return {@code true} si la position est dans l'eau ou sous l'eau.
+     */
     public boolean isWater(int y) {
         return y >= WATER_LEVEL;
     }

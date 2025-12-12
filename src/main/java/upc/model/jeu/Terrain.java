@@ -37,26 +37,39 @@ public class Terrain {
         this.background = background;
     }
 
+    /**
+     * Crée un trou circulaire dans le terrain, simulant une explosion.
+     * <p>
+     * Cette méthode modifie l'image du terrain en rendant les pixels du cercle transparents
+     * et met à jour le tableau de collisions en marquant les tuiles affectées comme {@code false}.
+     * </p>
+     *
+     * @param centerX La coordonnée X du centre du trou (en pixels).
+     * @param centerY La coordonnée Y du centre du trou (en pixels).
+     * @param radius Le rayon du trou (en pixels).
+     */
     public void makeHole(int centerX, int centerY, int radius) {
-        // Boucle qui commence à la position du trou pour mieux réduire les calculs
+        // Boucle optimisée qui ne parcourt que le carré englobant le cercle
         for (int y = centerY - radius; y <= centerY + radius; y++) {
             for (int x = centerX - radius; x <= centerX + radius; x++) {
 
-                // Vérifie que les coordonnées sont dans l'image
+                // 1. Vérifie que les coordonnées sont dans les limites de l'image
                 if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()) {
 
-                    // Vérifie que le pixel est dans le rayon
-                    // (pour avoir un cercle au lieu d'un carré)
+                    // 2. Vérifie que le pixel est dans le rayon (pour avoir un cercle)
+                    // Utilise le théorème de Pythagore : distance = sqrt(dx^2 + dy^2)
                     double distance = Math.sqrt(Math.pow(x - centerX, 2)
                             + Math.pow(y - centerY, 2));
                     if (distance <= radius) {
-                        image.setRGB(x, y, 0x00000000); // Rend le pixel transparent
+                        // Rend le pixel transparent (canal alpha à 0)
+                        image.setRGB(x, y, 0x00000000);
 
-                        // Màj des collisions (à vérifier)
+                        // 3. Mise à jour du tableau de collisions
                         int colX = x / TILE_SIZE;
                         int colY = y / TILE_SIZE;
                         if (colX >= 0 && colX < getCollisionsWidth()
                                 && colY >= 0 && colY < getCollisionsHeight()) {
+                            // Marque la tuile comme non solide (vide)
                             collisions[colY][colX] = false;
                         }
                     }

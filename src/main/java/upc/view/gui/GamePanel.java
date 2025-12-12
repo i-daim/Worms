@@ -1,6 +1,10 @@
 package upc.view.gui;
 
-import upc.assets.*;
+import upc.assets.Animation;
+import upc.assets.AnimationManager;
+import upc.assets.SpriteManager;
+import upc.assets.Sound;
+import upc.assets.ActiveAnimation;
 import upc.model.entites.Alien;
 import upc.model.items.Item;
 import upc.model.jeu.GameManager;
@@ -21,6 +25,7 @@ import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
 import upc.model.items.Bazooka;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
@@ -108,16 +113,23 @@ public class GamePanel extends JPanel {
         return new Point((int) worldX, (int) worldY);
     }
     private void drawProjectiles(Graphics2D g2) {
-        List<Projectile> projectiles = gameManager.getWorld().getActiveProjectiles();
+        var projectileList = gameManager.getWorld().getActiveProjectiles();
+        var projectiles = new ArrayList<>(projectileList);
 
         for (Projectile p : projectiles) {
             int x = p.getPosition().getX();
             int y = p.getPosition().getY();
             if (p instanceof Rocket) {
-                g2.setColor(Color.ORANGE);
-                g2.fillOval(x - 5, y - 5, 10, 10);
-            } else if (p instanceof Throwable) { // Grenade
-                g2.setColor(Color.GREEN);
+                Animation rocketAnim = AnimationManager.getAnimation("rocket");
+                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
+                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
+                    BufferedImage frame = (BufferedImage) rocketAnim.getFrames().get(frameIndex);
+                    g2.drawImage(frame, x - frame.getWidth() / 2, y - frame.getHeight() / 2, null);
+                } else {
+                    g2.setColor(Color.ORANGE);
+                    g2.fillOval(x - 5, y - 5, 10, 10);
+                }
+            } else if (p instanceof Throwable) { // Grenadeg2.setColor(Color.GREEN);
                 g2.fillOval(x - 4, y - 4, 8, 8);
             } else if (p instanceof Bullet) { // Uzi/Shotgun
                 g2.setColor(Color.YELLOW);

@@ -52,6 +52,7 @@ public class Alien extends Entity {
         this.alive = true;
         this.state = State.IDLE;
         this.direction = true;
+        this.aimAngle = 0;
     }
 
 ////    Mouvements de l'alien    ////
@@ -127,6 +128,9 @@ public class Alien extends Entity {
     public Team getTeam() {
         return team;
     }
+    public int getAimAngle() {
+        return aimAngle;
+    }
 
     public Item getEquippedItem() {
         return inventory.getWeapon(equippedItem);
@@ -150,10 +154,6 @@ public class Alien extends Entity {
 
     public void setDirection(boolean direction) {
         this.direction = direction;
-    }
-
-    public int getAimAngle() {
-    return aimAngle;
     }
 
     public int getShootPower() {

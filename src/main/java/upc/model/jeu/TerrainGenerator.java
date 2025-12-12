@@ -19,6 +19,25 @@ public class TerrainGenerator {
     public static final int TILE_SIZE = 4;
 
 
+    /**
+     * Crée un objet {@link Terrain} en chargeant les données de collision à partir
+     * d'une image PNG. La collision est déterminée par la transparence des pixels.
+     * <p>
+     * Le processus de chargement :
+     * <ul>
+     * <li>Charge l'image du terrain ({@code maps/[mapName].png}).</li>
+     * <li>Calcule un tableau de booléens ({@code collisions}) où chaque entrée
+     * représente une tuile de {@code TILE_SIZE} x {@code TILE_SIZE} pixels.</li>
+     * <li>Une tuile est considérée comme solide ({@code true}) si le pixel central
+     * correspondant dans l'image n'est pas transparent.</li>
+     * <li>Tente de charger l'image de fond ({@code maps/[mapName]_background.png}).</li>
+     * </ul>
+     * </p>
+     *
+     * @param mapName Le nom de la carte à charger (ex: "map_1"). Si {@code null} ou vide, un terrain vide est créé.
+     * @return Un nouvel objet {@link Terrain} contenant les données de collision et les images,
+     * ou {@code null} en cas d'échec de chargement critique de l'image principale.
+     */
     public static Terrain createTerrain(String mapName) {
         if (mapName == null || mapName.isEmpty()) {
             return createEmptyTerrain(40, 10);

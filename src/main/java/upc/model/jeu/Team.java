@@ -13,9 +13,13 @@ import java.util.List;
  * actif qui est en train de jouer, et contient l'inventaire commun de l'équipe.</p>
  */
 public class Team {
+    /** Le nom de l'équipe. */
     private final String name;
+    /** Le tableau des entités {@link Alien} appartenant à cette équipe. */
     private final Alien[] aliens;
+    /** L'indice dans le tableau {@code aliens} de l'Alien actuellement actif. */
     private int activeAlienIndex;
+    /** L'inventaire de l'équipe, contenant les armes et outils disponibles. */
     private final Inventory inventory = new Inventory();
 
 

@@ -100,6 +100,18 @@ public class TerrainGenerator {
         }
     }
 
+    /**
+     * Crée un objet {@link Terrain} simple avec des dimensions spécifiées et
+     * génère une plateforme centrale de base pour le jeu.
+     * <p>
+     * Ce terrain est utilisé comme valeur par défaut ou de repli.
+     * Il ne contient aucune image ({@code null}).
+     * </p>
+     *
+     * @param largeur La largeur du tableau de collisions (en tuiles).
+     * @param hauteur La hauteur du tableau de collisions (en tuiles).
+     * @return Un nouvel objet {@link Terrain} avec une plateforme centrale.
+     */
     public static Terrain createEmptyTerrain(int largeur, int hauteur) {
         boolean[][] collisions = new boolean[hauteur][largeur];
 

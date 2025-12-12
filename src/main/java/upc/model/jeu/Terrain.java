@@ -78,34 +78,75 @@ public class Terrain {
         }
     }
 
+
+    /**
+     * Retourne la largeur de l'image du terrain en pixels.
+     *
+     * @return La largeur en pixels.
+     */
     public int getWidth() {
         return image.getWidth();
     }
 
+    /**
+     * Retourne la hauteur de l'image du terrain en pixels.
+     *
+     * @return La hauteur en pixels.
+     */
     public int getHeight() {
         return image.getHeight();
     }
 
+    /**
+     * Retourne la largeur du tableau de collisions (en nombre de tuiles).
+     *
+     * @return Le nombre de colonnes dans le tableau de collisions.
+     */
     public int getCollisionsWidth() {
         return collisions[0].length;
     }
 
+    /**
+     * Retourne la hauteur du tableau de collisions (en nombre de tuiles).
+     *
+     * @return Le nombre de lignes dans le tableau de collisions.
+     */
     public int getCollisionsHeight() {
         return collisions.length;
     }
 
+    /**
+     * Retourne le tableau de collisions du terrain.
+     *
+     * @return Le tableau {@code boolean[][]}.
+     */
     public boolean[][] getCollisions() {
         return collisions;
     }
 
+    /**
+     * Retourne l'image du terrain (premier plan, potentiellement destructible).
+     *
+     * @return Le {@code BufferedImage} du terrain.
+     */
     public BufferedImage getImage() {
         return image;
     }
 
+    /**
+     * Retourne l'image de fond du terrain.
+     *
+     * @return Le {@code BufferedImage} de l'arrière-plan.
+     */
     public BufferedImage getBackground() {
         return background;
     }
 
+    /**
+     * Retourne le niveau de l'eau (en tuiles).
+     *
+     * @return La constante {@code WATER_LEVEL}.
+     */
     public static int getWaterLevel() {
         return WATER_LEVEL;
     }

@@ -25,6 +25,7 @@ public class GameController {
 
     private volatile boolean running = true;
     private Thread gameThread;
+    private boolean lastAWasPressed = false;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
@@ -91,7 +92,14 @@ public class GameController {
             showGameOver();
             return;
         }
-
+        boolean isAPressed = keyHandler.isKeyPressed(KeyEvent.VK_A);
+        if (isAPressed && !lastAWasPressed) {  // ← EDGE DETECTION
+            if (!gameManager.isActionDone() && activeAlien != null) {
+                activeAlien.useEquippedItem();  // ← Appelé UNE SEULE FOIS
+                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
+            }
+        }
+        lastAWasPressed = isAPressed;
         gamePanel.repaint();
     }
 

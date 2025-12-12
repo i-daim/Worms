@@ -121,6 +121,11 @@ public class Team {
                 (aliens[activeAlienIndex] == null || !aliens[activeAlienIndex].isAlive()));
     }
 
+    /**
+     * Vérifie si toute l'équipe a été éliminée (tous les Aliens sont morts).
+     *
+     * @return {@code true} si aucun Alien vivant n'est trouvé dans l'équipe, {@code false} sinon.
+     */
     public boolean isEliminated() {
         for (Alien a : aliens) {
             if (a != null && a.isAlive()) {

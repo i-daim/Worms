@@ -9,13 +9,13 @@ import java.io.IOException;
 
 
 public class SpriteManager {
-    private static final Map<String, BufferedImage> sprites = new HashMap<>();
+    private static final Map<String, BufferedImage> SPRITES = new HashMap<>();
 
     public static void load(String name, String path) {
         try {
             var url = SpriteManager.class.getResource(path);
             if (url != null) {
-                sprites.put(name, ImageIO.read(url));
+                SPRITES.put(name, ImageIO.read(url));
             } else {
                 System.err.println("Sprite introuvable : " + path);
             }
@@ -25,6 +25,6 @@ public class SpriteManager {
     }
 
     public static BufferedImage get(String name) {
-        return sprites.get(name);
+        return SPRITES.get(name);
     }
 }

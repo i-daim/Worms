@@ -15,7 +15,7 @@ public class GameWorld {
 
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
-        this.physicsEngine = new PhysicsEngine(terrain);
+        this.physicsEngine = new PhysicsEngine(this);
 
         this.activeAliens = new ArrayList<>();
 
@@ -45,6 +45,7 @@ public class GameWorld {
         }
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);
+        gameManager.addActiveAnimation("explosion", x, y);
     }
 
     public Terrain getTerrain() {

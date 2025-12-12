@@ -1,9 +1,15 @@
 package upc.view.gui;
 
+import upc.assets.Animation;
+import upc.assets.AnimationManager;
+import upc.assets.ActiveAnimation;
+import upc.assets.Sound;
 import upc.model.entites.Alien;
+import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
-import upc.view.Sound;
+import upc.assets.SpriteManager;
+
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -12,6 +18,15 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Throwable;
+import java.awt.Color;
+import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
+import upc.model.items.Bazooka;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
@@ -25,7 +40,11 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
-    private final AnimationManager animationManager = new AnimationManager();
+    private int selectedItemIndex = 0;
+    private boolean inventoryVisible = true;
+    private static final int INV_OFFSET_Y = 80;
+
+    private List<ActiveAnimation> activeAnimations;
 
     private final Sound gameMusic = new Sound("/sounds/game_music.wav");
 
@@ -33,6 +52,8 @@ public class GamePanel extends JPanel {
         this.gameManager = gameManager;
         this.terrain = gameManager.getTerrain();
         this.hudPanel = new HUDPanel(gameManager);
+
+        activeAnimations = gameManager.getActiveAnimations();
         this.setDoubleBuffered(true);
         gameMusic.loop();
     }
@@ -58,23 +79,30 @@ public class GamePanel extends JPanel {
         }
 
         // Affichage de l'eau (arrière plan)
-        int waterY = DEFAULT_HEIGHT
-                - animationManager.getAnimation("water").getFrames().get(0).getHeight() - 15;
-
-        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY, 100);
+        int waterY = terrain.getHeight() - (Terrain.WATER_LEVEL);
+        Animation waterAnim = AnimationManager.getAnimation("water");
+        drawAnimation(g2, waterAnim, 0, waterY, 0, 100, true);
 
         // Affichage du terrain
-        BufferedImage terrainImage = terrain.getImage();
-        g2.drawImage(terrainImage, 0, 0, this);
+        g2.drawImage(terrain.getImage(), 0, 0, this);
 
         // Affichage des entites
         drawAliens(g2);
 
-        // Affichage de l'eau
-        drawAnimation(g2, animationManager.getAnimation("water"), 0, waterY + 30, 100);
+        // Affichage de l'eau (avant-plan)
+        drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
         // Affichage des barres de vie
-        hudPanel.drawHealthBars(g2, gameManager, cameraX, cameraY);
+        hudPanel.drawAlienInfo(g2, gameManager);
+
+        // Affichage des animations du jeu
+        drawActiveAnimations(g2);
+
+
+
+        // Affichage des Projectiles
+        drawProjectiles(g2);
+
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
@@ -87,43 +115,99 @@ public class GamePanel extends JPanel {
         g2.dispose();
     }
 
+    private void drawActiveAlienInventory(Graphics2D g2) {
+        Alien alienActif = gameManager.getActiveAlien();
+        if (alienActif != null && alienActif.isAlive()) {
+            int alienPosX = alienActif.getPosition().getX();
+
+            int inventoryY = alienActif.getPosition().getY() - INV_OFFSET_Y;
+            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
+
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, selectedItemIndex);
+        }
+    }
+
+    public void setSelectedItemIndex(int index) {
+        if (index >= 0 && index < InventoryPanel.INVENTORY_SLOTS) {
+            this.selectedItemIndex = index;
+            repaint();
+        }
+    }
+
+    public void setInventoryVisible(boolean visible) {
+        this.inventoryVisible = visible;
+        repaint();
+    }
+
     public Point screenToWorld(Point screenPoint) {
         double worldX = (screenPoint.x / ZOOM) + cameraX;
         double worldY = (screenPoint.y / ZOOM) + cameraY;
         return new Point((int) worldX, (int) worldY);
     }
+    private void drawProjectiles(Graphics2D g2) {
+        var projectileList = gameManager.getWorld().getActiveProjectiles();
+        var projectiles = new ArrayList<>(projectileList);
 
+        for (Projectile p : projectiles) {
+            int x = p.getPosition().getX();
+            int y = p.getPosition().getY();
+            if (p instanceof Rocket) {
+                Animation rocketAnim = AnimationManager.getAnimation("rocket");
+                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
+                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
+                    BufferedImage frame = (BufferedImage) rocketAnim.getFrames().get(frameIndex);
+                    g2.drawImage(frame, x - frame.getWidth() / 2, y - frame.getHeight() / 2, null);
+                } else {
+                    g2.setColor(Color.ORANGE);
+                    g2.fillOval(x - 5, y - 5, 10, 10);
+                }
+            } else if (p instanceof Throwable) { // Grenadeg2.setColor(Color.GREEN);
+                g2.fillOval(x - 4, y - 4, 8, 8);
+            } else if (p instanceof Bullet) { // Uzi/Shotgun
+                g2.setColor(Color.YELLOW);
+                g2.fillOval(x - 2, y - 2, 4, 4);
+            } else if (p instanceof Trap) { // Mine
+                g2.setColor(Color.RED);
+                g2.fillRect(x - 5, y - 2, 10, 5);
+            }
+        }
+    }
 
     public void drawAliens(Graphics2D g2) {
-        for (Alien w : gameManager.getWorld().getActiveWorms()) {
-            if (w != null && w.isAlive() && w.isVisible(cameraX, cameraY)) {
-                int posX = w.getPosition().getX();
-                int posY = w.getPosition().getY();
-
-                if (w.getTeam() == gameManager.getTeam(0)) {
-                    drawAlien(g2, w, 0);
+        for (Alien alien : gameManager.getWorld().getActiveWorms()) {
+            if (alien != null && alien.isAlive() && alien.isVisible(cameraX, cameraY)) {
+                if (alien.getTeam() == gameManager.getTeam(0)) {
+                    drawAlien(g2, alien, 0);
                 } else {
-                    // Pour quand on aura des animations séparées pour la 2e équipe
-                    drawAlien(g2, w, 1);
+                    drawAlien(g2, alien, 1);
                 }
             }
         }
     }
 
-    private void drawAnimation(Graphics2D g2, Animation animation,
-                               int drawX, int drawY, int speedMs) {
-
-        if (animation != null && !animation.getFrames().isEmpty()) {
-            List<BufferedImage> frames = animation.getFrames();
-
-            long timeIndex = System.currentTimeMillis() / speedMs;
-
-            int frameIndex = (int) (timeIndex % frames.size());
-
-            BufferedImage currentFrame = frames.get(frameIndex);
-
-            g2.drawImage(currentFrame, drawX, drawY, this);
+    public void drawActiveAnimations(Graphics2D g2) {
+        for (ActiveAnimation active : activeAnimations) {
+            drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
+                    active.getStartTime(), active.getFrameTime(), false);
         }
+    }
+
+    private void drawAnimation(Graphics2D g2, Animation anim, int x, int y,
+                               long startTime, int speedMs, boolean loop) {
+        if (anim == null || anim.getFrames().isEmpty()) {
+            return;
+        }
+
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        int animSize = anim.getFrames().size();
+
+        int frameIndex = (int) (elapsedTime / speedMs);
+
+        frameIndex = loop
+                ? frameIndex % animSize
+                : Math.min(frameIndex, animSize - 1);
+
+        g2.drawImage(anim.getFrames().get(frameIndex), x, y, this);
     }
 
     public void drawAlien(Graphics2D g2, Alien alien, int type) {
@@ -144,10 +228,62 @@ public class GamePanel extends JPanel {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
-        int drawX = posX - 10;
-        int drawY = posY - 18;
+        int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
+        int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
 
-        drawAnimation(g2, animation, drawX, drawY, 100);
+        drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+
+        Item currentItem = alien.getEquippedItem();
+
+        if (currentItem instanceof Bazooka) {
+            BufferedImage weaponSprite = SpriteManager.get("weapon_bazooka");
+
+            if (weaponSprite != null) {
+                AffineTransform oldTransform = g2.getTransform();
+
+                double angleRad = Math.toRadians(alien.getAimAngle());
+
+                if (!direction) {
+                    angleRad = Math.PI - angleRad;
+                }
+
+                int pivotX = posX;
+                int pivotY = posY - 5;
+                g2.translate(pivotX, pivotY);
+                g2.rotate(-angleRad);
+                int weaponW = weaponSprite.getWidth();
+                int weaponH = weaponSprite.getHeight();
+                if (direction) {
+                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+                } else {
+                    g2.scale(1, -1);
+                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+                }
+
+                // Restauration de la transformation
+                g2.setTransform(oldTransform);
+            }
+        }
+
+
+    }
+
+    public void centralizeCamera(Alien alien) {
+        if (alien == null) {
+            return;
+        }
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
+
+        int viewX = posX - (int) (getWidth() / (2 * ZOOM));
+        int viewY = posY - (int) (getHeight() / (2 * ZOOM));
+
+        int maxX = (int) (terrain.getWidth() - getWidth() / ZOOM);
+        int maxY = (int) (terrain.getHeight() - getHeight() / ZOOM);
+
+        int camX = Math.max(0, Math.min(viewX, maxX));
+        int camY = Math.max(0, Math.min(viewY, maxY));
+        setCamera(camX, camY);
     }
 
 

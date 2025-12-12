@@ -8,9 +8,6 @@ import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -18,80 +15,43 @@ import javax.swing.SwingUtilities;
 
 public class GameController {
 
+    private final KeyboardHandler keyHandler = new KeyboardHandler();
+    private final MouseHandler mouseHandler = new MouseHandler();
+
     private final GamePanel gamePanel;
     private final GameManager gameManager;
-    private static final int CAMERA_SPEED = 10;
-    private Point mousePosition = new Point(0, 0);
 
-    private boolean leftPressed = false;
-    private boolean rightPressed = false;
+    private static final int CAMERA_SPEED = 10;
+
+    private boolean inventoryVisible = true;
+
+    // Variables pour la gestion manuelle du TOGGLE (pour éviter la répétition)
+    private boolean iKeyWasPressed = false;
+    private boolean[] selectionKeysWasPressed = new boolean[5];
 
     private volatile boolean running = true;
     private Thread gameThread;
+    private boolean lastAWasPressed = false;
 
+    // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
+
+        gamePanel.setInventoryVisible(inventoryVisible);
 
         addListeners();
         startGameLoop();
     }
 
     private void addListeners() {
-        gamePanel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                mousePosition = e.getPoint();
-            }
-        });
-
-        gamePanel.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleKeyPress(e.getKeyCode(), true);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                handleKeyPress(e.getKeyCode(), false);
-            }
-        });
-
+        gamePanel.addKeyListener(keyHandler);
+        gamePanel.addMouseMotionListener(mouseHandler);
         gamePanel.setFocusable(true);
     }
 
-    private void handleKeyPress(int keyCode, boolean pressed) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null || !activeAlien.isAlive()) {
-            return;
-        }
 
-        switch (keyCode) {
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_Q:
-                leftPressed = pressed;
-                break;
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_D:
-                rightPressed = pressed;
-                break;
-            case KeyEvent.VK_SPACE:
-            case KeyEvent.VK_UP:
-                if (pressed) {
-                    activeAlien.setState(Alien.State.JUMP);
-                    gameManager.getWorld().getPhysicsEngine().jumpAlien(activeAlien);
-                }
-                break;
-            case KeyEvent.VK_E:
-                if (pressed) {
-                    Point worldPos = gamePanel.screenToWorld(mousePosition);
-                    gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
-                }
-            default:
-                break;
-        }
-    }
-
+    ////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -123,6 +83,102 @@ public class GameController {
         gameThread.start();
     }
 
+    private void update() {
+        // Gestion de la caméra à travers mouseHandler
+        handleCameraScroll(mouseHandler.getPosition());
+        // Gestion des touches clavier et de l'inventaire
+        handleControls();
+
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien != null && activeAlien.isAlive()) {
+            gamePanel.centralizeCamera(activeAlien);
+        }
+
+        gameManager.update(1.0 / 60.0);
+
+        if (gameManager.isOver()) {
+            showGameOver();
+            return;
+        }
+        boolean isAPressed = keyHandler.isKeyPressed(KeyEvent.VK_A);
+        if (isAPressed && !lastAWasPressed) {  // ← EDGE DETECTION
+            if (!gameManager.isActionDone() && activeAlien != null) {
+                activeAlien.useEquippedItem();  // ← Appelé UNE SEULE FOIS
+                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
+            }
+        }
+        lastAWasPressed = isAPressed;
+        gamePanel.repaint();
+    }
+
+
+    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    private void handleControls() {
+
+        boolean iIsPressed = keyHandler.isKeyPressed(KeyEvent.VK_I);
+
+        if (iIsPressed && !iKeyWasPressed) {
+            inventoryVisible = !inventoryVisible;
+            gamePanel.setInventoryVisible(inventoryVisible);
+        }
+        iKeyWasPressed = iIsPressed;
+
+
+        if (inventoryVisible) {
+            for (int i = 0; i < 5; i++) {
+                int keyCode = KeyEvent.VK_1 + i;
+                boolean keyIsPressed = keyHandler.isKeyPressed(keyCode);
+
+                if (keyIsPressed && !selectionKeysWasPressed[i]) {
+                    gamePanel.setSelectedItemIndex(i);
+
+                }
+                selectionKeysWasPressed[i] = keyIsPressed;
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                selectionKeysWasPressed[i] = false;
+            }
+        }
+
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien == null || !activeAlien.isAlive()) {
+            return;
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+            activeAlien.jump();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
+            activeAlien.moveLeft();
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            activeAlien.moveRight();
+        } else {
+            activeAlien.idle();
+        }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
+            int angle = activeAlien.getAimAngle() + 2;
+            if (angle > 80) {
+                angle = 80;
+            }
+            activeAlien.setAimAngle(angle);
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_DOWN)) {
+            int angle = activeAlien.getAimAngle() - 2;
+            if (angle < -45) {
+                angle = -45;
+            }
+            activeAlien.setAimAngle(angle);
+        }
+
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
+            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        }
+    }
+
     private void handleCameraScroll(Point mousePos) {
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
@@ -132,9 +188,6 @@ public class GameController {
         int camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
-
-        double zoomX = GamePanel.ZOOM;
-        double zoomY = GamePanel.ZOOM;
 
         if (mousePos.x > width - limit) {
             camX += CAMERA_SPEED;
@@ -148,8 +201,8 @@ public class GameController {
             camY -= CAMERA_SPEED;
         }
 
-        int viewportWidth = (int) (width / zoomX);
-        int viewportHeight = (int) (height / zoomY);
+        int viewportWidth = (int) (width / GamePanel.ZOOM);
+        int viewportHeight = (int) (height / GamePanel.ZOOM);
 
         camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
         camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
@@ -157,38 +210,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    private void update() {
-        if (mousePosition != null) {
-            handleCameraScroll(mousePosition);
-        }
-
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            if (leftPressed && !rightPressed) {
-                activeAlien.setState(Alien.State.WALK);
-                activeAlien.setDirection(false);
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, -1.0);
-            } else if (rightPressed && !leftPressed) {
-                activeAlien.setState(Alien.State.WALK);
-                activeAlien.setDirection(true);
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 1.0);
-            } else {
-                activeAlien.setState(Alien.State.IDLE);
-                gameManager.getWorld().getPhysicsEngine().moveAlien(activeAlien, 0);
-            }
-        }
-
-        gameManager.update(1.0 / 60.0);
-
-        if (gameManager.isOver()) {
-            showGameOver();
-            return;
-        }
-
-        gamePanel.repaint();
-    }
-
-
+    ////    ARRET DU JEU    ////
     public void stop() {
         running = false;
         if (gameThread != null) {

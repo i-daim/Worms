@@ -1,7 +1,14 @@
 package upc.model.jeu;
 
+import upc.assets.SpriteManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
+import upc.assets.ActiveAnimation;
+import upc.assets.Animation;
+import upc.assets.AnimationManager;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager {
     public static final int ROUND_TIME = 60;
@@ -19,6 +26,8 @@ public class GameManager {
 
     private final String mapName;
 
+    private final List<ActiveAnimation> activeAnimations;
+
     public GameManager(String mapName) {
         this.mapName = mapName;
         this.terrain = TerrainGenerator.createTerrain(mapName);
@@ -28,6 +37,10 @@ public class GameManager {
         this.teams[1] = new Team("Glorbs", TEAM_SIZE);
 
         this.gameWorld = new GameWorld(this, this.terrain);
+
+        this.activeAnimations = new CopyOnWriteArrayList<>();
+        SpriteManager.load("weapon_bazooka", "/Items/Bazooka2.png");
+
 
         initializeGame();
     }
@@ -40,14 +53,16 @@ public class GameManager {
         }
         gameWorld.update(elapsedTime);
 
+        updateAnimations();
+
         checkGameOver();
 
         countTimeLeft();
     }
 
     private void initializeGame() {
-        teams[0].initializeTeam(mapName, 0);
-        teams[1].initializeTeam(mapName, 1);
+        teams[0].initializeTeam(gameWorld, mapName, 0);
+        teams[1].initializeTeam(gameWorld, mapName, 1);
 
         gameWorld.initializePhysics();
 
@@ -79,7 +94,6 @@ public class GameManager {
 
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
-            return;
         }
     }
 
@@ -133,6 +147,19 @@ public class GameManager {
             }
         }
         return null;
+    }
+
+    private void updateAnimations() {
+        activeAnimations.removeIf(active -> {
+            active.update();
+            return active.isDone();
+        });
+    }
+
+    public void addActiveAnimation(String name, int posX, int posY) {
+        Animation animation = AnimationManager.getAnimation(name);
+        ActiveAnimation active = new ActiveAnimation(animation, 50, false, posX, posY);
+        activeAnimations.add(active);
     }
 
 
@@ -210,5 +237,9 @@ public class GameManager {
 
     public boolean isActionDone() {
         return actionDone;
+    }
+
+    public List<ActiveAnimation> getActiveAnimations() {
+        return activeAnimations;
     }
 }

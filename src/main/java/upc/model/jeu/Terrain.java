@@ -24,7 +24,13 @@ public class Terrain {
     /** L'image de fond qui n'est pas affectée par la destruction. */
     private final BufferedImage background;
 
-
+    /**
+     * Constructeur pour {@code Terrain}.
+     *
+     * @param collisions Le tableau de collisions ({@code true} = solide, {@code false} = vide).
+     * @param image L'image du terrain (premier plan, destructible).
+     * @param background L'image de fond (non destructible).
+     */
     public Terrain(boolean[][] collisions, BufferedImage image, BufferedImage background) {
         this.collisions = collisions;
         this.image = image;

@@ -215,7 +215,9 @@ public class ProjectilePhysics {
 
         Terrain terrain = physicsEngine.getTerrain();
         int pixelRadius = radius * 8;
-        terrain.makeHole(explosionX, explosionY, pixelRadius);
+        physicsEngine.getGameWorld().explode(
+                explosionX, explosionY, pixelRadius, 0
+        );
 
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
             // Ignore les aliens déjà morts (pas besoin de les blesser ou de les propulser)

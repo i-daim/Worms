@@ -14,11 +14,16 @@ import static upc.model.jeu.TerrainGenerator.TILE_SIZE;
  * pour interagir avec le terrain, notamment pour y créer des trous et vérifier les collisions.</p>
  */
 public class Terrain {
+    /** Niveau vertical (en tuiles) où l'eau est considérée comme présente. */
     public static final int WATER_LEVEL = 170;
 
+    /** Le tableau de booléens définissant la présence de collision pour chaque tuile. */
     private final boolean[][] collisions;
+    /** L'image du terrain qui peut être modifiée (pour la destruction). */
     private final BufferedImage image;
+    /** L'image de fond qui n'est pas affectée par la destruction. */
     private final BufferedImage background;
+
 
     public Terrain(boolean[][] collisions, BufferedImage image, BufferedImage background) {
         this.collisions = collisions;

@@ -84,9 +84,18 @@ public class Team {
         return null;
     }
 
+    /**
+     * Initialise tous les Aliens de l'équipe en les plaçant à des points d'apparition
+     * prédéfinis.
+     *
+     * @param gameWorld Le monde de jeu auquel les Aliens appartiennent.
+     * @param mapName Le nom de la carte pour récupérer les points de spawn.
+     * @param team L'identifiant de l'équipe (utilisé pour sélectionner les points de spawn).
+     */
     public void initializeTeam(GameWorld gameWorld, String mapName, int team) {
         List<Position> spawns = SpawnPoints.getSpawns(mapName, team);
         for (int i = 0; i < aliens.length; i++) {
+            // Crée une nouvelle instance d'Alien avec le point de spawn correspondant
             aliens[i] = new Alien(gameWorld, this, spawns.get(i));
         }
     }

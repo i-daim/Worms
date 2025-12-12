@@ -100,6 +100,17 @@ public class Team {
         }
     }
 
+    /**
+     * Passe au prochain Alien vivant dans l'équipe pour le prochain tour de jeu.
+     * <p>
+     * La méthode effectue une recherche cyclique :
+     * <ul>
+     * <li>Elle incrémente l'index de manière circulaire (modulo la taille de l'équipe).</li>
+     * <li>Elle ignore les positions {@code null} ou les Aliens qui ne sont plus vivants ({@code isAlive() == false}).</li>
+     * <li>La boucle s'arrête après un tour complet (si aucun Alien vivant n'est trouvé).</li>
+     * </ul>
+     * </p>
+     */
     public void skipToNextAlien() {
         int attempts = 0;
         do {

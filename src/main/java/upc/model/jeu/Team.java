@@ -71,6 +71,12 @@ public class Team {
         return activeAlienIndex;
     }
 
+
+    /**
+     * Retourne l'Alien actuellement actif (celui qui est en train de jouer).
+     *
+     * @return L'objet {@link Alien} actif, ou {@code null} si l'index est invalide ou l'Alien n'existe pas.
+     */
     public Alien getActiveAlien() {
         if (activeAlienIndex < aliens.length && aliens[activeAlienIndex] != null) {
             return aliens[activeAlienIndex];

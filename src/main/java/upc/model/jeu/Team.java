@@ -75,7 +75,8 @@ public class Team {
     /**
      * Retourne l'Alien actuellement actif (celui qui est en train de jouer).
      *
-     * @return L'objet {@link Alien} actif, ou {@code null} si l'index est invalide ou l'Alien n'existe pas.
+     * @return L'objet {@link Alien} actif,
+     * ou {@code null} si l'index est invalide ou l'Alien n'existe pas.
      */
     public Alien getActiveAlien() {
         if (activeAlienIndex < aliens.length && aliens[activeAlienIndex] != null) {
@@ -106,7 +107,8 @@ public class Team {
      * La méthode effectue une recherche cyclique :
      * <ul>
      * <li>Elle incrémente l'index de manière circulaire (modulo la taille de l'équipe).</li>
-     * <li>Elle ignore les positions {@code null} ou les Aliens qui ne sont plus vivants ({@code isAlive() == false}).</li>
+     * <li>Elle ignore les positions {@code null} ou
+     * les Aliens qui ne sont plus vivants ({@code isAlive() == false}).</li>
      * <li>La boucle s'arrête après un tour complet (si aucun Alien vivant n'est trouvé).</li>
      * </ul>
      * </p>
@@ -170,7 +172,8 @@ public class Team {
      * Vérifie si l'Alien actuellement actif est le dernier Alien vivant de l'équipe
      * qui n'a pas encore joué durant ce tour (dans l'ordre du tableau).
      *
-     * @return {@code true} si aucun autre Alien vivant ne suit l'Alien actif dans le tableau, {@code false} sinon.
+     * @return {@code true} si aucun autre Alien vivant ne suit,
+     * l'Alien actif dans le tableau, {@code false} sinon.
      */
     public boolean isActiveLastAlien() {
         // Commence la recherche à l'index juste après l'Alien actif

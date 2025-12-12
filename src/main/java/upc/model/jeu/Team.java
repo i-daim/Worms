@@ -23,6 +23,12 @@ public class Team {
     private final Inventory inventory = new Inventory();
 
 
+    /**
+     * Constructeur pour {@code Team}.
+     *
+     * @param name Le nom de l'équipe.
+     * @param teamSize Le nombre maximum d'Aliens dans l'équipe.
+     */
     public Team(String name, int teamSize) {
         this.name = name;
         this.aliens = new Alien[teamSize];

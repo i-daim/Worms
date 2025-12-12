@@ -88,7 +88,7 @@ public class Projectile extends Entity {
     public Weapon getWeapon() {
         return weapon;
     }
-    public double getAngle() {
+    public int getAngle() {
         return angle;
     }
 

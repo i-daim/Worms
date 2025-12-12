@@ -93,8 +93,16 @@ public class ProjectilePhysics {
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
-
         double angleRad = Math.toRadians(angleDegrees);
+
+        Alien shooter = projectile.getShooter();
+        boolean facingRight = shooter.getDirection();
+
+        if (!facingRight) {
+            angleRad = Math.PI - angleRad;
+        }
+
+
         double baseVelocity = projectile.getWeapon().getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
@@ -146,6 +154,7 @@ public class ProjectilePhysics {
             Body body = proj.getBody();
 
             if (body == null) {
+                System.out.println("Projectile sans body !");
                 iterator.remove();
                 continue;
             }
@@ -157,18 +166,24 @@ public class ProjectilePhysics {
             int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
 
-            if (
-                    y > terrain.getCollisionsHeight() + 100
-                            || x < -50
-                            || x > terrain.getCollisionsWidth() + 50
-            ) {
+            int mapWidth = terrain.getWidth();
+            int mapHeight = terrain.getHeight();
+
+            if (y > mapHeight + 100 || x < -500 || x > mapWidth + 500) {
                 proj.setState(Projectile.State.OUT_OF_BOUNDS);
                 world.removeBody(body);
                 iterator.remove();
                 continue;
             }
-
-            if (body.getLinearVelocity().getMagnitude() < 1.0 && proj.getFrameCount() > 10) {
+            if (proj.getState() == Projectile.State.EXPLODED) {
+                explodeProjectile(proj);
+                world.removeBody(body);
+                iterator.remove();
+                continue;
+            }
+            if (!(proj instanceof Rocket)
+                    && body.getLinearVelocity().getMagnitude() < 1.0
+                    && proj.getFrameCount() > 100) {
                 proj.setState(Projectile.State.EXPLODED);
                 explodeProjectile(proj);
                 world.removeBody(body);
@@ -197,6 +212,10 @@ public class ProjectilePhysics {
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
         int damage = proj.getDamage();
+
+        Terrain terrain = physicsEngine.getTerrain();
+        int pixelRadius = radius * 8;
+        terrain.makeHole(explosionX, explosionY, pixelRadius);
 
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
             // Ignore les aliens déjà morts (pas besoin de les blesser ou de les propulser)

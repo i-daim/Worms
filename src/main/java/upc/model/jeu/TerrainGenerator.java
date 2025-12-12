@@ -34,7 +34,8 @@ public class TerrainGenerator {
      * </ul>
      * </p>
      *
-     * @param mapName Le nom de la carte à charger (ex: "map_1"). Si {@code null} ou vide, un terrain vide est créé.
+     * @param mapName Le nom de la carte à charger (ex: "map_1").
+     * Si {@code null} ou vide, un terrain vide est créé.
      * @return Un nouvel objet {@link Terrain} contenant les données de collision et les images,
      * ou {@code null} en cas d'échec de chargement critique de l'image principale.
      */
@@ -55,7 +56,7 @@ public class TerrainGenerator {
 
             BufferedImage terrainImage = ImageIO.read(is);
 
-            // Taille du tableau de booleans
+            // La taille du tableau de collisions (en nombre de tuiles)
             int collisionWidth = terrainImage.getWidth() / TILE_SIZE;
             int collisionHeight = terrainImage.getHeight() / TILE_SIZE;
 
@@ -65,35 +66,40 @@ public class TerrainGenerator {
             int imageWidth = terrainImage.getWidth();
             int imageHeight = terrainImage.getHeight();
 
+            // Génération du tableau de collisions
             for (int y = 0; y < collisionHeight; y++) {
                 for (int x = 0; x < collisionWidth; x++) {
-                    // Calcule les coordonnées du pixel au centre du tile
+                    // Calcule les coordonnées du pixel au centre du tile (le point de référence)
                     int centerX = x * TILE_SIZE + TILE_SIZE / 2;
                     int centerY = y * TILE_SIZE + TILE_SIZE / 2;
 
                     if (centerX >= imageWidth || centerY >= imageHeight) {
+                        // S'assurer de ne pas dépasser les bords de l'image
                         collisions[y][x] = false;
                     } else {
-                        // Pixel : couleur du pixel aux coordonnées (centerX,centerY)
+                        // Récupère la valeur RGB du pixel central
                         int pixel = terrainImage.getRGB(centerX, centerY);
-                        // Vérifie si le pixel est transparent : False si il l'est
+                        // Vérifie si le canal alpha est supérieur à zéro (non transparent)
+                        // collisions[y][x] est TRUE si le pixel est OPAQUE.
                         collisions[y][x] = (0xff & (pixel >> 24)) > 0;
                     }
                 }
             }
 
+            // Tentative de chargement de l'image de fond
             try (InputStream backgroundIs = TerrainGenerator.class.getClassLoader()
                     .getResourceAsStream(backgroundPath)) {
                 BufferedImage backgroundImage = ImageIO.read(backgroundIs);
                 return new Terrain(collisions, terrainImage, backgroundImage);
-
             } catch (Exception e) {
+                // Si le fond n'est pas trouvé, terrain créé sans fond, mais collisions valides
                 System.err.println(
                         "Erreur (chargement du fond de la map) : " + e.getMessage());
                 return new Terrain(collisions, terrainImage, null);
             }
 
         } catch (Exception e) {
+            // Erreur critique (l'image du terrain principal est manquante ou illisible)
             System.err.println(
                     "Erreur (chargement de la map) : " + e.getMessage());
             return null;

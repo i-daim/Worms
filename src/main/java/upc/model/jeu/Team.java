@@ -35,18 +35,38 @@ public class Team {
         this.activeAlienIndex = 0;
     }
 
+    /**
+     * Retourne le nom de l'équipe.
+     *
+     * @return Le nom de l'équipe.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Retourne l'inventaire commun de l'équipe.
+     *
+     * @return L'objet {@link Inventory}.
+     */
     public Inventory getInventory() {
         return inventory;
     }
 
+    /**
+     * Retourne le tableau des Aliens de l'équipe.
+     *
+     * @return Le tableau d'objets {@link Alien}.
+     */
     public Alien[] getAliens() {
         return aliens;
     }
 
+    /**
+     * Retourne l'indice dans le tableau de l'Alien actuellement actif.
+     *
+     * @return L'index de l'Alien actif.
+     */
     public int getActiveAlienIndex() {
         return activeAlienIndex;
     }

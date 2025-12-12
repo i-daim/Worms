@@ -4,7 +4,6 @@ import upc.assets.Animation;
 import upc.assets.AnimationManager;
 import upc.assets.ActiveAnimation;
 import upc.assets.Sound;
-import upc.assets.ActiveAnimation;
 import upc.model.entites.Alien;
 import upc.model.items.Item;
 import upc.model.jeu.GameManager;
@@ -98,6 +97,8 @@ public class GamePanel extends JPanel {
 
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
+
+
 
         // Affichage des Projectiles
         drawProjectiles(g2);

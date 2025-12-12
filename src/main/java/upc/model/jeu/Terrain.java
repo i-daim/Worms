@@ -6,6 +6,13 @@ import java.awt.image.BufferedImage;
 
 import static upc.model.jeu.TerrainGenerator.TILE_SIZE;
 
+/**
+ * <p>Représente le terrain de jeu, y compris ses propriétés physiques et graphiques.</p>
+ *
+ * <p>Cette classe contient les données de collision ({@code boolean[][]}), l'image du terrain
+ * destructible ({@code BufferedImage}), et l'image de fond. Elle fournit des méthodes
+ * pour interagir avec le terrain, notamment pour y créer des trous et vérifier les collisions.</p>
+ */
 public class Terrain {
     public static final int WATER_LEVEL = 170;
 

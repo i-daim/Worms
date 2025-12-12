@@ -150,10 +150,16 @@ public class Team {
         return count;
     }
 
+    /**
+     * Réinitialise l'index de l'Alien actif au premier Alien vivant trouvé dans le tableau.
+     * <p>
+     * Utilisé généralement au début d'un nouveau round.
+     * </p>
+     */
     public void resetIndex() {
         activeAlienIndex = 0;
 
-        // Trouver le premier alien vivant
+        // Cherche séquentiellement le premier alien vivant et met à jour activeAlienIndex
         while (activeAlienIndex < aliens.length
                 && (aliens[activeAlienIndex] == null || !aliens[activeAlienIndex].isAlive())) {
             activeAlienIndex++;

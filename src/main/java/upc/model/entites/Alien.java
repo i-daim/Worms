@@ -1,6 +1,5 @@
 package upc.model.entites;
 
-import upc.model.items.Bazooka;
 import upc.model.items.Item;
 import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;

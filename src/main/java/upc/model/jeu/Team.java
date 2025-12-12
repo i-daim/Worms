@@ -166,10 +166,17 @@ public class Team {
         }
     }
 
+    /**
+     * Vérifie si l'Alien actuellement actif est le dernier Alien vivant de l'équipe
+     * qui n'a pas encore joué durant ce tour (dans l'ordre du tableau).
+     *
+     * @return {@code true} si aucun autre Alien vivant ne suit l'Alien actif dans le tableau, {@code false} sinon.
+     */
     public boolean isActiveLastAlien() {
+        // Commence la recherche à l'index juste après l'Alien actif
         for (int i = activeAlienIndex + 1; i < aliens.length; i++) {
             if (aliens[i] != null && aliens[i].isAlive()) {
-                return false;
+                return false; // Trouvé un Alien vivant après l'Alien actif
             }
         }
         return true;

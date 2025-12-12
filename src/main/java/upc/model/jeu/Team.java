@@ -183,6 +183,12 @@ public class Team {
     }
 
 
+    /**
+     * Fournit une représentation textuelle de l'équipe, incluant son nom et le
+     * décompte des Aliens vivants.
+     *
+     * @return Une chaîne de caractères descriptive.
+     */
     @Override
     public String toString() {
         return name + " (" + getAliveAliensNumber() + "/" + aliens.length + " vivants)";

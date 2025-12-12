@@ -2,37 +2,36 @@ package upc.controller;
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
-import upc.view.console.ConsoleView;
+import upc.view.console.LanternaView;
 
 public class ControllerConsole {
     private final GameManager gameManager;
-    private final ConsoleView vue;
+    private final LanternaView vue;
     private boolean enCours;
 
     public ControllerConsole() {
         this.gameManager = new GameManager("");
-        this.vue = new ConsoleView();
+        this.vue = new LanternaView();
         this.enCours = true;
     }
 
     public void start() {
-        vue.printWelcome();
         vue.printTerrain(gameManager);
 
         // Faire tomber les worms
         System.out.println("\n⏳ Les worms tombent...\n");
 
-        for (int i = 0; i < 180; i++) {
-            gameManager.update(1.0 / 60.0);
-        }
+        //for (int i = 0; i < 180; i++) {
+            //gameManager.update(1.0 / 60.0);
+        //}
 
         // Afficher l'état après la chute
         vue.printStateAfterFall(gameManager);
 
         while (enCours && !gameManager.isOver()) {
             vue.printGameState(gameManager);
-            String command = vue.requestCommand();
-            traiterCommande(command);
+            String command = vue.readKey();
+            traiterCommande(command, gameManager);
         }
 
         if (gameManager.isOver()) {
@@ -42,39 +41,41 @@ public class ControllerConsole {
         vue.close();
     }
 
-    private void traiterCommande(String command) {
+    private void traiterCommande(String command, GameManager gameManager) {
         switch (command) {
             case "gauche":
                 gameManager.getActiveAlien().moveLeft();
-                vue.printMovementResult(true, "gauche");
+                vue.printMovementResult(true, "gauche", gameManager);
                 gameManager.skipTurn();
                 break;
 
             case "droite":
                 gameManager.getActiveAlien().moveRight();
-                vue.printMovementResult(true, "droite");
+                vue.printMovementResult(true, "droite", gameManager);
                 gameManager.skipTurn();
                 break;
 
             case "sauter":
                 gameManager.getActiveAlien().jump();
 
-                System.out.println("⏳ Le worm saute...");
-                for (int i = 0; i < 120; i++) {
-                    gameManager.update(1.0 / 60.0);
-                }
+                //System.out.println("⏳ Le worm saute...");
+                //for (int i = 0; i < 120; i++) {
+                //    gameManager.update(1.0 / 60.0);
+                //}
 
-                vue.printJumpResult(true);
+                vue.printJumpResult(true, gameManager);
                 gameManager.skipTurn();
                 break;
 
             case "attaquer":
-                int damage = vue.requestInteger("💥 Combien de dégâts ? ");
-                int x = vue.requestInteger("🎯 Coordonnée X de la cible : ");
-                int y = vue.requestInteger("🎯 Coordonnée Y de la cible : ");
+                int damage = vue.chooseDamage();
+                int x = vue.chooseX();
+                int y = vue.chooseY();
 
                 Alien target = gameManager.attackPosition(x, y, damage);
                 vue.printAttackResult(target, x, y, gameManager.getActiveTeam());
+                gameManager.skipTurn();
+                vue.printTurnSkipped();
 
                 if (target != null) {
                     gameManager.skipTurn();
@@ -86,12 +87,17 @@ public class ControllerConsole {
                 vue.printTurnSkipped();
                 break;
 
+            case "info" :
+                vue.printWelcome();
+                break;
+
             case "aliens":
                 vue.printAliensStats(gameManager);
                 break;
 
             case "map":
                 vue.printTerrain(gameManager);
+                vue.printGameState(gameManager);
                 break;
 
             case "exit":
@@ -99,8 +105,11 @@ public class ControllerConsole {
                 vue.printGameAbandoned();
                 break;
 
-            default:
+            case null:
                 vue.printUnknownCommand();
+                break;
+
+            default:
                 break;
         }
     }

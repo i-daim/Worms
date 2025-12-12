@@ -2,13 +2,15 @@ package upc.view.gui;
 
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
-import upc.assets.SpriteManager;
+import upc.assets.ActiveAnimation;
 import upc.assets.Sound;
 import upc.assets.ActiveAnimation;
 import upc.model.entites.Alien;
 import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
+import upc.assets.SpriteManager;
+
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -38,6 +40,10 @@ public class GamePanel extends JPanel {
     private final HUDPanel hudPanel;
     private int cameraX = 0;
     private int cameraY = 0;
+
+    private int selectedItemIndex = 0;
+    private boolean inventoryVisible = true;
+    private static final int INV_OFFSET_Y = 80;
 
     private List<ActiveAnimation> activeAnimations;
 
@@ -96,6 +102,7 @@ public class GamePanel extends JPanel {
         // Affichage des Projectiles
         drawProjectiles(g2);
 
+
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
@@ -105,6 +112,30 @@ public class GamePanel extends JPanel {
         hudPanel.paintComponent(g2);
 
         g2.dispose();
+    }
+
+    private void drawActiveAlienInventory(Graphics2D g2) {
+        Alien alienActif = gameManager.getActiveAlien();
+        if (alienActif != null && alienActif.isAlive()) {
+            int alienPosX = alienActif.getPosition().getX();
+
+            int inventoryY = alienActif.getPosition().getY() - INV_OFFSET_Y;
+            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
+
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, selectedItemIndex);
+        }
+    }
+
+    public void setSelectedItemIndex(int index) {
+        if (index >= 0 && index < InventoryPanel.INVENTORY_SLOTS) {
+            this.selectedItemIndex = index;
+            repaint();
+        }
+    }
+
+    public void setInventoryVisible(boolean visible) {
+        this.inventoryVisible = visible;
+        repaint();
     }
 
     public Point screenToWorld(Point screenPoint) {
@@ -235,8 +266,6 @@ public class GamePanel extends JPanel {
 
 
     }
-
-
 
     public void centralizeCamera(Alien alien) {
         if (alien == null) {

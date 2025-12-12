@@ -151,6 +151,16 @@ public class Terrain {
         return WATER_LEVEL;
     }
 
+    /**
+     * Vérifie s'il y a une collision à la coordonnée de tuile spécifiée.
+     * <p>
+     * Note: Toute coordonnée en dehors des limites du tableau est considérée comme une collision ({@code true}).
+     * </p>
+     *
+     * @param x La coordonnée X de la tuile.
+     * @param y La coordonnée Y de la tuile.
+     * @return {@code true} s'il y a collision (ou hors limites), {@code false} sinon.
+     */
     public boolean isCollision(int x, int y) {
         if (x < 0 || x >= getCollisionsWidth()
                 || y < 0 || y >= getCollisionsHeight()) {

@@ -6,6 +6,12 @@ import upc.model.entites.Position;
 
 import java.util.List;
 
+/**
+ * <p>Représente une équipe de joueurs (Aliens) dans le jeu.</p>
+ *
+ * <p>Cette classe gère un ensemble d'entités {@link Alien}, assure le suivi de l'alien
+ * actif qui est en train de jouer, et contient l'inventaire commun de l'équipe.</p>
+ */
 public class Team {
     private final String name;
     private final Alien[] aliens;

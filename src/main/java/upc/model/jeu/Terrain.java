@@ -154,7 +154,8 @@ public class Terrain {
     /**
      * Vérifie s'il y a une collision à la coordonnée de tuile spécifiée.
      * <p>
-     * Note: Toute coordonnée en dehors des limites du tableau est considérée comme une collision ({@code true}).
+     * Note: Toute coordonnée dehors des limites du tableau est considérée
+     * comme collision ({@code true}).
      * </p>
      *
      * @param x La coordonnée X de la tuile.
@@ -187,7 +188,8 @@ public class Terrain {
      * </p>
      *
      * @param pos La position de la tuile à vérifier.
-     * @return {@code true} si le mouvement est possible (pas de collision, dans les limites), {@code false} sinon.
+     * @return {@code true} si le mouvement est possible
+     * (pas de collision, dans les limites), {@code false} sinon.
      */
     public boolean possibleMove(Position pos) {
         int posX = pos.getX();

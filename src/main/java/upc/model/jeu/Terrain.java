@@ -179,13 +179,26 @@ public class Terrain {
         return y >= WATER_LEVEL;
     }
 
+    /**
+     * Vérifie si le déplacement vers la position de tuile spécifiée est possible.
+     * <p>
+     * Un mouvement est possible si la position est dans les limites et si la tuile
+     * correspondante n'est pas en collision (est vide).
+     * </p>
+     *
+     * @param pos La position de la tuile à vérifier.
+     * @return {@code true} si le mouvement est possible (pas de collision, dans les limites), {@code false} sinon.
+     */
     public boolean possibleMove(Position pos) {
         int posX = pos.getX();
         int posY = pos.getY();
-        if (posX > getCollisionsWidth() ||  posX < 0
-                || posY > getCollisionsHeight() || posY < 0) {
+
+        // 1. Vérifie si la position est hors limites
+        if (posX > getCollisionsWidth() - 1 || posX < 0
+                || posY > getCollisionsHeight() - 1 || posY < 0) {
             return false;
         }
+        // 2. Vérifie s'il n'y a pas de collision à cette position
         return !collisions[posY][posX];
     }
 }

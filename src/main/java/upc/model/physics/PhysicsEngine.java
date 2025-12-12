@@ -34,6 +34,28 @@ public class PhysicsEngine {
 
         terrainPhysics.rebuildTerrain();
     }
+    private void checkProjectileCollision(Body b1, Body b2) {
+        if (b1 != null && b1.getUserData() instanceof Projectile) {
+            Projectile p = (Projectile) b1.getUserData();
+
+            if (b2 != null && b2.getUserData() instanceof Alien) {
+                Alien alienTouche = (Alien) b2.getUserData();
+                if (p.getShooter() == alienTouche && p.getFrameCount() < 30) {
+                    return;
+                }
+            }
+            if (p.isActive() && p instanceof Rocket && p.getState() == Projectile.State.FLYING) {
+                p.setState(Projectile.State.EXPLODED);
+                projectilePhysics.explodeProjectile(p);
+                world.removeBody(p.getBody());
+                projectilePhysics.getActiveProjectiles().remove(p);
+            }
+        }
+    }
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
 
 ////    UPDATE DES PHYSIQUES    ////
     public void update() {

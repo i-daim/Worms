@@ -23,6 +23,8 @@ public class Alien extends Entity {
     private final Inventory inventory;
     private Item.Type equippedItem;
 
+
+
     // Champs statiques
     private static final int SPEED = 5;
     private static final int INITIAL_HP = 100;
@@ -45,7 +47,7 @@ public class Alien extends Entity {
 
         this.team = team;
         this.inventory = team.getInventory();
-        this.equippedItem = Item.Type.UZI;
+        this.equippedItem = Item.Type.BAZOOKA;
 
         this.alive = true;
         this.state = State.IDLE;

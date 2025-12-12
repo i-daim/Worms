@@ -5,8 +5,11 @@ import upc.assets.AnimationManager;
 import upc.assets.ActiveAnimation;
 import upc.assets.Sound;
 import upc.model.entites.Alien;
+import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
+import upc.assets.SpriteManager;
+
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -15,6 +18,15 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Throwable;
+import java.awt.Color;
+import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
+import upc.model.items.Bazooka;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
@@ -52,7 +64,7 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
@@ -86,9 +98,11 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
-        if (inventoryVisible) {
-            drawActiveAlienInventory(g2);
-        }
+
+
+        // Affichage des Projectiles
+        drawProjectiles(g2);
+
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
@@ -130,7 +144,34 @@ public class GamePanel extends JPanel {
         double worldY = (screenPoint.y / ZOOM) + cameraY;
         return new Point((int) worldX, (int) worldY);
     }
+    private void drawProjectiles(Graphics2D g2) {
+        var projectileList = gameManager.getWorld().getActiveProjectiles();
+        var projectiles = new ArrayList<>(projectileList);
 
+        for (Projectile p : projectiles) {
+            int x = p.getPosition().getX();
+            int y = p.getPosition().getY();
+            if (p instanceof Rocket) {
+                Animation rocketAnim = AnimationManager.getAnimation("rocket");
+                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
+                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
+                    BufferedImage frame = (BufferedImage) rocketAnim.getFrames().get(frameIndex);
+                    g2.drawImage(frame, x - frame.getWidth() / 2, y - frame.getHeight() / 2, null);
+                } else {
+                    g2.setColor(Color.ORANGE);
+                    g2.fillOval(x - 5, y - 5, 10, 10);
+                }
+            } else if (p instanceof Throwable) { // Grenadeg2.setColor(Color.GREEN);
+                g2.fillOval(x - 4, y - 4, 8, 8);
+            } else if (p instanceof Bullet) { // Uzi/Shotgun
+                g2.setColor(Color.YELLOW);
+                g2.fillOval(x - 2, y - 2, 4, 4);
+            } else if (p instanceof Trap) { // Mine
+                g2.setColor(Color.RED);
+                g2.fillRect(x - 5, y - 2, 10, 5);
+            }
+        }
+    }
 
     public void drawAliens(Graphics2D g2) {
         for (Alien alien : gameManager.getWorld().getActiveWorms()) {
@@ -191,6 +232,40 @@ public class GamePanel extends JPanel {
         int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
 
         drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+
+        Item currentItem = alien.getEquippedItem();
+
+        if (currentItem instanceof Bazooka) {
+            BufferedImage weaponSprite = SpriteManager.get("weapon_bazooka");
+
+            if (weaponSprite != null) {
+                AffineTransform oldTransform = g2.getTransform();
+
+                double angleRad = Math.toRadians(alien.getAimAngle());
+
+                if (!direction) {
+                    angleRad = Math.PI - angleRad;
+                }
+
+                int pivotX = posX;
+                int pivotY = posY - 5;
+                g2.translate(pivotX, pivotY);
+                g2.rotate(-angleRad);
+                int weaponW = weaponSprite.getWidth();
+                int weaponH = weaponSprite.getHeight();
+                if (direction) {
+                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+                } else {
+                    g2.scale(1, -1);
+                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+                }
+
+                // Restauration de la transformation
+                g2.setTransform(oldTransform);
+            }
+        }
+
+
     }
 
     public void centralizeCamera(Alien alien) {

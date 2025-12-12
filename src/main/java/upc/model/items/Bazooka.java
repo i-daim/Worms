@@ -11,9 +11,20 @@ public class Bazooka extends Weapon {
     }
     @Override
     public void useItem(GameWorld gameWorld, Alien shooter) {
+        System.out.println("🎯 useItem appelée");
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
-        Position startPos = shooter.getPosition();
+        double distance = 25.0;
+        double rad = Math.toRadians(angle);
+        if (!shooter.getDirection()) { // Si regarde à gauche
+            rad = Math.PI - rad;
+        }
+        int offsetX = (int) (Math.cos(rad) * distance);
+        int offsetY = (int) (-Math.sin(rad) * distance);
+        Position startPos = new Position(
+                shooter.getPosition().getX() + offsetX,
+                shooter.getPosition().getY() + offsetY - 10 // Légèrement plus haut (épaules)
+        );
         Projectile proj = createProjectile(shooter, startPos, angle, power);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
 
@@ -21,7 +32,16 @@ public class Bazooka extends Weapon {
     @Override
     public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees,
                                        int powerPercent) {
-        return new Rocket(this, shooter);
+        Rocket rocket = new Rocket(
+                shooter,                          // Le tireur
+                startPosition,                    // ✅ La position de départ (sortie du canon)
+                this.getDamage(),                 // Les dégâts
+                3,        // Rayon d'explosion
+                true,                             // C'est explosif
+                this.getSpeed(),                  // Vitesse
+                this                              // L'arme (Bazooka)
+        );
+        return rocket;
     }
 
 }

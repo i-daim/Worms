@@ -15,4 +15,16 @@ public class Rocket extends Projectile {
                 weapon
         );
     }
+    public Rocket(Alien shooter, Position startPosition, int damage,
+                  int explosionRadius, boolean explosive, double speed, Weapon weapon) {
+        super(
+                shooter,
+                startPosition,
+                damage,
+                explosionRadius,
+                explosive,
+                speed,
+                weapon
+        );
+    }
 }

@@ -11,10 +11,10 @@ public class AnimationManager {
     static {
         // Animations joueur //
         zlerps.put("idle_right", new Animation("characters/zlerp/idle", 1, false));
-        zlerps.put("idle_left", new Animation("characters/zlerp/idle", 1, true));
-        zlerps.put("walk_right", new Animation("characters/zlerp/walk", 6, false));
-        zlerps.put("walk_left", new Animation("characters/zlerp/walk", 6, true));
-        zlerps.put("jump", new Animation("characters/zlerp/jump", 4, false));
+        zlerps.put("idle_left", new Animation("characters/zlerp/idle", 1, false));
+        zlerps.put("walk_right", new Animation("characters/zlerp/walk", 5, false));
+        zlerps.put("walk_left", new Animation("characters/zlerp/walk", 5, true));
+//        zlerps.put("jump", new Animation("characters/zlerp/jump", 4, false));
 
         glorbs.put("idle_right", new Animation("characters/glorb/idle", 1, false));
         glorbs.put("idle_left", new Animation("characters/glorb/idle", 1, true));
@@ -22,6 +22,11 @@ public class AnimationManager {
         // Animations monde //
         animations.put("water", new Animation("animations/water/water", 8, false));
         animations.put("explosion", new Animation("animations/explosion/explosion", 7, false));
+        try {
+            animations.put("rocket", new Animation("animations/Rocket/Rocket", 9, false));
+        } catch (Exception e) {
+            System.err.println("⚠️  Erreur chargement animation Rocket : " + e.getMessage());
+        }
     }
 
     public static Animation getAnimation(String name) {

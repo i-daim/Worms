@@ -13,14 +13,17 @@ public class Alien extends Entity {
     private final GameWorld world;
     private final AlienPhysics alienPhysics;
     private final Team team;
+
     private int healthPoints;
     private boolean alive;
     private boolean direction;
     private int aimAngle = 0;
     private int shootPower = 50;
 
-    private Inventory inventory;
+    private final Inventory inventory;
     private Item.Type equippedItem;
+
+
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -44,6 +47,7 @@ public class Alien extends Entity {
 
         this.team = team;
         this.inventory = team.getInventory();
+        this.equippedItem = Item.Type.BAZOOKA;
 
         this.alive = true;
         this.state = State.IDLE;
@@ -153,7 +157,7 @@ public class Alien extends Entity {
     }
 
     public int getShootPower() {
-    return shootPower;
+        return shootPower;
     }
 
     public void setShootPower(int power) {

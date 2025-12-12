@@ -23,13 +23,22 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
+    private boolean inventoryVisible = true;
+
+    // Variables pour la gestion manuelle du TOGGLE (pour éviter la répétition)
+    private boolean iKeyWasPressed = false;
+    private boolean[] selectionKeysWasPressed = new boolean[5];
+
     private volatile boolean running = true;
     private Thread gameThread;
+    private boolean lastAWasPressed = false;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
+
+        gamePanel.setInventoryVisible(inventoryVisible);
 
         addListeners();
         startGameLoop();
@@ -42,7 +51,7 @@ public class GameController {
     }
 
 
-////    GESTION DE LA BOUCLE DU JEU    ////
+    ////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -77,7 +86,7 @@ public class GameController {
     private void update() {
         // Gestion de la caméra à travers mouseHandler
         handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier
+        // Gestion des touches clavier et de l'inventaire
         handleControls();
 
         Alien activeAlien = gameManager.getActiveAlien();
@@ -91,13 +100,47 @@ public class GameController {
             showGameOver();
             return;
         }
-
+        boolean isAPressed = keyHandler.isKeyPressed(KeyEvent.VK_A);
+        if (isAPressed && !lastAWasPressed) {  // ← EDGE DETECTION
+            if (!gameManager.isActionDone() && activeAlien != null) {
+                activeAlien.useEquippedItem();  // ← Appelé UNE SEULE FOIS
+                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
+            }
+        }
+        lastAWasPressed = isAPressed;
         gamePanel.repaint();
     }
 
 
-////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
+
+        boolean iIsPressed = keyHandler.isKeyPressed(KeyEvent.VK_I);
+
+        if (iIsPressed && !iKeyWasPressed) {
+            inventoryVisible = !inventoryVisible;
+            gamePanel.setInventoryVisible(inventoryVisible);
+        }
+        iKeyWasPressed = iIsPressed;
+
+
+        if (inventoryVisible) {
+            for (int i = 0; i < 5; i++) {
+                int keyCode = KeyEvent.VK_1 + i;
+                boolean keyIsPressed = keyHandler.isKeyPressed(keyCode);
+
+                if (keyIsPressed && !selectionKeysWasPressed[i]) {
+                    gamePanel.setSelectedItemIndex(i);
+
+                }
+                selectionKeysWasPressed[i] = keyIsPressed;
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                selectionKeysWasPressed[i] = false;
+            }
+        }
+
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
@@ -114,6 +157,21 @@ public class GameController {
         } else {
             activeAlien.idle();
         }
+
+        if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
+            int angle = activeAlien.getAimAngle() + 2;
+            if (angle > 80) {
+                angle = 80;
+            }
+            activeAlien.setAimAngle(angle);
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_DOWN)) {
+            int angle = activeAlien.getAimAngle() - 2;
+            if (angle < -45) {
+                angle = -45;
+            }
+            activeAlien.setAimAngle(angle);
+        }
+
 
         if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
             Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
@@ -152,7 +210,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-////    ARRET DU JEU    ////
+    ////    ARRET DU JEU    ////
     public void stop() {
         running = false;
         if (gameThread != null) {

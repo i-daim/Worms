@@ -15,7 +15,7 @@ public class GameWorld {
 
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
-        this.physicsEngine = new PhysicsEngine(terrain);
+        this.physicsEngine = new PhysicsEngine(this);
 
         this.activeAliens = new ArrayList<>();
 

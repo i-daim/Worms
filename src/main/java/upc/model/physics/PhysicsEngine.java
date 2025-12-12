@@ -6,6 +6,7 @@ import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
+import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import org.dyn4j.world.listener.ContactListenerAdapter;
 import org.dyn4j.world.ContactCollisionData;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PhysicsEngine {
+
+    private final GameWorld gameWorld;
     private final Terrain terrain;
     private final World<Body> world;
 
@@ -27,8 +30,9 @@ public class PhysicsEngine {
     private final Vector2 gravity = new Vector2(0, 60.0);
 
 ////    CONSTRUCTEUR    ////
-    public PhysicsEngine(Terrain terrain) {
-        this.terrain = terrain;
+    public PhysicsEngine(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+        this.terrain = gameWorld.getTerrain();
         this.world = new World<>();
         this.world.setGravity(gravity);
 
@@ -162,4 +166,7 @@ public class PhysicsEngine {
         return alienPhysics;
     }
 
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 }

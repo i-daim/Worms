@@ -28,6 +28,16 @@ public class PhysicsEngine {
         this.world = new World<>();
         this.world.setGravity(gravity);
 
+        this.world.addContactListener(new ContactListenerAdapter<Body>() {
+            @Override
+            public void begin(ContactCollisionData<Body> collision, Contact contact) {
+                Body body1 = collision.getBody1();
+                Body body2 = collision.getBody2();
+                checkProjectileCollision(body1, body2);
+                checkProjectileCollision(body2, body1);
+            }
+        });
+
         this.alienPhysics = new AlienPhysics(world, terrain);
         this.projectilePhysics = new ProjectilePhysics(this);
         this.terrainPhysics = new TerrainPhysics(world, terrain);

@@ -135,6 +135,11 @@ public class Team {
         return true;
     }
 
+    /**
+     * Compte et retourne le nombre d'Aliens qui sont encore vivants dans l'équipe.
+     *
+     * @return Le nombre d'Aliens vivants.
+     */
     public int getAliveAliensNumber() {
         int count = 0;
         for (Alien a : aliens) {

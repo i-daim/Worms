@@ -29,7 +29,7 @@ public class Projectile extends Entity {
     private State state;
     private int frameCount;
     private final Weapon weapon;
-    private double angle;
+    private int angle;
 
 
     /// /    CONSTRUCTOR    ////

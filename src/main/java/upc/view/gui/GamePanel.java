@@ -8,7 +8,7 @@ import upc.model.entites.Alien;
 import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
-import upc.assets.SpriteManager;
+import upc.assets.ImageManager;
 
 
 import javax.swing.JPanel;
@@ -236,7 +236,7 @@ public class GamePanel extends JPanel {
         Item currentItem = alien.getEquippedItem();
 
         if (currentItem instanceof Bazooka) {
-            BufferedImage weaponSprite = SpriteManager.get("weapon_bazooka");
+            BufferedImage weaponSprite = ImageManager.get("weapon_bazooka");
 
             if (weaponSprite != null) {
                 AffineTransform oldTransform = g2.getTransform();

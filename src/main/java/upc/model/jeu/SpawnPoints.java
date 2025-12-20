@@ -27,6 +27,24 @@ public class SpawnPoints {
         ));
     }
 
+    private static final HashMap<Integer, List<Position>> SPACESHIP_SPAWNS = new HashMap<>();
+
+    static {
+        SPACESHIP_SPAWNS.put(0, Arrays.asList(
+                new Position(148, 271),
+                new Position(741, 522),
+                new Position(924, 330),
+                new Position(494, 198)
+        ));
+
+        SPACESHIP_SPAWNS.put(1, Arrays.asList(
+                new Position(384, 360),
+                new Position(877, 210),
+                new Position(1077, 522),
+                new Position(1382, 576)
+        ));
+    }
+
 
     // SPAWNS POUR CONSOLE //
     private static final HashMap<Integer, List<Position>> CONSOLE_SPAWNS = new HashMap<>();
@@ -50,6 +68,9 @@ public class SpawnPoints {
     public static List<Position> getSpawns(String mapName, int team) {
         if (mapName.equals("liberty")) {
             return LIBERTY_SPAWNS.get(team);
+        }
+        if (mapName.equals("spaceship")) {
+            return SPACESHIP_SPAWNS.get(team);
         }
         if (mapName.isEmpty()) {
             return CONSOLE_SPAWNS.get(team);

@@ -10,7 +10,6 @@ import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 import upc.assets.SpriteManager;
 
-
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -100,7 +99,10 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
-
+        // Affichage de l'inventaire
+        if (inventoryVisible) {
+            drawActiveAlienInventory(g2);
+        }
 
         // Affichage des Projectiles
         drawProjectiles(g2);

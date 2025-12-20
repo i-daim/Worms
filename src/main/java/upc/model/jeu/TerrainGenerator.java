@@ -11,13 +11,18 @@ import java.io.InputStream;
  * d'images PNG et pour créer des terrains par défaut (vides).</p>
  */
 public class TerrainGenerator {
-
     /**
-     * Taille en pixels d'une tuile (tile) de collision dans l'image source.
-     * <p>Une tuile de collision est de {@code TILE_SIZE} x {@code TILE_SIZE} pixels.</p>
+     * Taille en pixels d'une tuile de collision dans l'image source.
      */
     public static final int TILE_SIZE = 4;
 
+    private static final String[] MAPS = {"liberty", "spaceship"};
+
+    public static Terrain chooseRandomMap() {
+        int index = (int) (Math.random() * MAPS.length);
+        String randomMap =  MAPS[index];
+        return createTerrain(randomMap);
+    }
 
     /**
      * Crée un objet {@link Terrain} en chargeant les données de collision à partir
@@ -90,12 +95,12 @@ public class TerrainGenerator {
             try (InputStream backgroundIs = TerrainGenerator.class.getClassLoader()
                     .getResourceAsStream(backgroundPath)) {
                 BufferedImage backgroundImage = ImageIO.read(backgroundIs);
-                return new Terrain(collisions, terrainImage, backgroundImage);
+                return new Terrain(mapName, collisions, terrainImage, backgroundImage);
             } catch (Exception e) {
                 // Si le fond n'est pas trouvé, terrain créé sans fond, mais collisions valides
                 System.err.println(
                         "Erreur (chargement du fond de la map) : " + e.getMessage());
-                return new Terrain(collisions, terrainImage, null);
+                return new Terrain(mapName, collisions, terrainImage, null);
             }
 
         } catch (Exception e) {
@@ -129,6 +134,6 @@ public class TerrainGenerator {
                 collisions[y][x] = true;
             }
         }
-        return new Terrain(collisions, null, null);
+        return new Terrain("", collisions, null, null);
     }
 }

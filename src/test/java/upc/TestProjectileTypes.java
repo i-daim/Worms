@@ -21,7 +21,7 @@ public class TestProjectileTypes {
 
     @BeforeEach
     public void setUp() {
-        GameManager manager = new GameManager("");
+        GameManager manager = new GameManager();
         world = manager.getWorld();
 
         team = new Team("TestTeam", 1);
@@ -29,7 +29,7 @@ public class TestProjectileTypes {
     }
     @Test
     public void testWeaponShootingIntegration() {
-        GameManager manager = new GameManager("");
+        GameManager manager = new GameManager();
         Alien alien = new Alien(manager.getWorld(), manager.getTeams()[0], new Position(100, 100));
         Bazooka bazooka = new Bazooka();
         alien.setAimAngle(90);

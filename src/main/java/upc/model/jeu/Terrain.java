@@ -17,6 +17,7 @@ public class Terrain {
     /** Niveau vertical (en tuiles) où l'eau est considérée comme présente. */
     public static final int WATER_LEVEL = 170;
 
+    private final String mapName;
     /** Le tableau de booléens définissant la présence de collision pour chaque tuile. */
     private final boolean[][] collisions;
     /** L'image du terrain qui peut être modifiée (pour la destruction). */
@@ -31,7 +32,9 @@ public class Terrain {
      * @param image L'image du terrain (premier plan, destructible).
      * @param background L'image de fond (non destructible).
      */
-    public Terrain(boolean[][] collisions, BufferedImage image, BufferedImage background) {
+    public Terrain(String mapName, boolean[][] collisions,
+                   BufferedImage image, BufferedImage background) {
+        this.mapName = mapName;
         this.collisions = collisions;
         this.image = image;
         this.background = background;
@@ -78,6 +81,10 @@ public class Terrain {
         }
     }
 
+
+    public String getMapName() {
+        return mapName;
+    }
 
     /**
      * Retourne la largeur de l'image du terrain en pixels.

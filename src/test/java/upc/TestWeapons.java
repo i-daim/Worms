@@ -26,7 +26,7 @@ public class TestWeapons {
     @BeforeEach
     public void setUp() {
         // Crée un environnement minimal pour construire un Alien valide
-        GameManager manager = new GameManager("");
+        GameManager manager = new GameManager();
         GameWorld world = manager.getWorld();
         Team team = new Team("TestTeam", 1);
         // Position arbitraire (0,0)

@@ -31,11 +31,11 @@ public class AlienPhysics {
     private static final int DMG_MULTIPLIER = 1;
 
     private static final double FRICTION = 0.0;
-    private static final double DENSITY = 1.2;
+    private static final double DENSITY = 2;
     private static final double LINEAR_DAMPING = 4.0;
 
-    private static final double ALIEN_WIDTH = Converter.toMeters(20);
-    private static final double ALIEN_HEIGHT = Converter.toMeters(37);
+    private static final double ALIEN_WIDTH = Converter.toMeters(18);
+    private static final double ALIEN_HEIGHT = Converter.toMeters(25);
 
     public AlienPhysics(World<Body> world, Terrain terrain) {
         this.world = world;

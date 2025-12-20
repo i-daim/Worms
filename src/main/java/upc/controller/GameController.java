@@ -215,7 +215,7 @@ public class GameController {
         running = false;
         if (gameThread != null) {
             try {
-                gameThread.join(1000);
+                gameThread.join(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

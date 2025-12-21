@@ -50,6 +50,9 @@ public class ConsoleView {
         StringBuilder sb = new StringBuilder();
         sb.append("╔══════════════════════════════════════════════════════╗\n");
         sb.append(String.format("║ EQUIPE : %-20s                ║\n", equipeActive.getName()));
+        String statut = (alienActif != null) ? "Vivant" : "Mort";
+        sb.append(String.format("║ ALIEN  : %-20s                ║\n", statut));
+
 
 
         // TODO: contenu

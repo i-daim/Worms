@@ -44,6 +44,9 @@ public class ConsoleView {
     }
 
     protected void renderHUD(GameManager gm) {
+        Team equipeActive = gm.getActiveTeam();
+        Alien alienActif = gm.getActiveAlien();
+
         StringBuilder sb = new StringBuilder();
         sb.append("╔══════════════════════════════════════════════════════╗\n");
 

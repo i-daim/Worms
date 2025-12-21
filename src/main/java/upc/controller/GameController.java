@@ -242,14 +242,22 @@ public class GameController {
         });
     }
 
+    /*Méthode permettant la sauvegarde du jeu*/
     public void saveGame() throws IOException {
+
+        //Crée un objet saveMap
+        //Sauvegarde de la map dans un fichier dédié
         SaveMap saveMap = new SaveMap();
         saveMap.saveMap(gameManager.getTerrain());
 
+        //Crée un objet saveTeam
+        //Sauvegarde des équipes dans deux fichiers dédiés
         SaveTeam saveTeam = new SaveTeam();
         saveTeam.saveTeam(gameManager.getActiveTeam());
         saveTeam.saveTeam(gameManager.getEnnemyTeam());
 
+        //Crée un objet saveInventory
+        //Sauvegarde des inventaires des équipes dans 2 fichier dédiés
         SaveInventory saveInventory = new SaveInventory();
         saveInventory.saveInventory(gameManager.getActiveTeam().getInventory());
         saveInventory.saveInventory(gameManager.getEnnemyTeam().getInventory());

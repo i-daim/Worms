@@ -39,8 +39,6 @@ public class GameManager {
         this.gameWorld = new GameWorld(this, this.terrain);
 
         this.activeAnimations = new CopyOnWriteArrayList<>();
-        SpriteManager.load("weapon_bazooka", "/Items/Bazooka2.png");
-
 
         initializeGame();
     }

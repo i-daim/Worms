@@ -48,19 +48,19 @@ public class SaveTeam {
         try (FileReader file = new FileReader("Team.json")) {
 
             //Permet de convertir la list<Alien> dans un format compréhensible par Gson
-            Type type = new TypeToken<List<Alien>>() {}.getType();
+            Type type = new TypeToken<List<Alien>>() { }.getType();
 
             //Liste des aliens vivants de l'équipe
             List<Alien> liste = gson.fromJson(file, type);
 
             //Recréation de l'équipe sauvegardé
-            Team SaveEquipe = new Team(equipe.getName(), liste.size());
-            for(int i = 0; i < liste.size(); i++){
-                SaveEquipe.getAliens()[i] = liste.get(i);
+            Team saveequipe = new Team(equipe.getName(), liste.size());
+            for (int i = 0; i < liste.size(); i++) {
+                saveequipe.getAliens()[i] = liste.get(i);
             }
 
             //Renvoie l'équipe sauvegardé
-            return SaveEquipe;
+            return saveequipe;
         }
     }
 }

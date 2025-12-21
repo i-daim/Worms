@@ -42,20 +42,25 @@ public class SaveTeam {
         }
     }
 
+    /*Méthode permettant de charger l'objet Team*/
     public Team loadTeam() throws IOException {
 
-
+        //Permet de lire le fichier de sauvegarde de type Json
         try (FileReader file = new FileReader("Team.json")) {
 
+            //Permet de convertir la list<Alien> dans un format compréhensible par Gson
             Type type = new TypeToken<List<Alien>>() {}.getType();
 
+            //Liste des aliens vivants de l'équipe
             List<Alien> liste = gson.fromJson(file, type);
 
+            //Recréation de l'équipe sauvegardé
             Team equipe = new Team("", liste.size());
             for(int i = 0; i < liste.size(); i++){
                 equipe.getAliens()[i] = liste.get(i);
             }
 
+            //Renvoie l'équipe sauvegardé
             return equipe;
         }
     }

@@ -10,6 +10,12 @@ import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 import upc.assets.SpriteManager;
+import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
+import upc.model.items.Bazooka;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Throwable;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -19,13 +25,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
 import java.util.List;
-import upc.model.entites.projectiles.Projectile;
-import upc.model.entites.projectiles.Rocket;
-import upc.model.entites.projectiles.Throwable;
 import java.awt.Color;
-import upc.model.entites.projectiles.Bullet;
-import upc.model.entites.projectiles.Trap;
-import upc.model.items.Bazooka;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
@@ -249,8 +249,6 @@ public class GamePanel extends JPanel {
                 g2.setTransform(oldTransform);
             }
         }
-
-
     }
 
 
@@ -303,7 +301,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void setInventoryVisible(boolean visible) {
+    public void toggleInventory(boolean visible) {
         this.inventoryVisible = visible;
         repaint();
     }

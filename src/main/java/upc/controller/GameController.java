@@ -38,7 +38,7 @@ public class GameController {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
 
-        gamePanel.setInventoryVisible(inventoryVisible);
+        gamePanel.toggleInventory(inventoryVisible);
 
         addListeners();
         startGameLoop();

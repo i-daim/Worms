@@ -16,9 +16,10 @@ public class SaveMap {
     public void saveMap(Terrain terrain) throws IOException {
 
         //Permet de créer le fichier de sauvegarde de type Json
-        try(FileWriter file = new FileWriter("saveMap.json")) {
+        try (FileWriter file = new FileWriter("saveMap.json")) {
 
-            //Conversion de l'objet terrain en json et implémentation dans le fichier sauvegarde dédié
+            //Conversion de l'objet terrain en json
+            // Et implémentation dans le fichier sauvegarde dédié
             gson.toJson(terrain, file);
         }
     }
@@ -27,7 +28,7 @@ public class SaveMap {
     public Terrain loadMap() throws IOException {
 
         //Appel du fichier de sauvegarde de l'objet terrain
-        try(FileReader file = new FileReader("saveMap.json")) {
+        try (FileReader file = new FileReader("saveMap.json")) {
 
             //Reconversion de l'objet au format initial
             return gson.fromJson(file, Terrain.class);

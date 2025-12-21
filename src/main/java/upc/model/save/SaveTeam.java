@@ -12,7 +12,7 @@ public class SaveTeam {
     private final Gson gson = new Gson();
 
     public void saveTeam(Team equipe) throws IOException {
-        try(FileWriter file = new FileWriter("Team.json")) {
+        try (FileWriter file = new FileWriter("Team.json")) {
             for (Alien alien : equipe.getAliens()) {
                 if (alien.isAlive()) {
                     file.write(gson.toJson(alien));

@@ -21,9 +21,10 @@ public class SaveTeam {
     public void saveTeam(Team zlerps, Team glorbs) throws IOException {
 
         //Permet de créer le fichier de sauvegarde de type Json
+        //Pour l'équipe zlerps
         try (FileWriter file = new FileWriter("zlerps.json")) {
 
-            //Liste représentant les aliens vivants dans l'équipe
+            //Liste représentant les aliens vivants dans l'équipe zlerps
             List<Alien> list = new ArrayList<Alien>();
 
             //Boucle
@@ -41,9 +42,10 @@ public class SaveTeam {
         }
 
         //Permet de créer le fichier de sauvegarde de type Json
+        //Pour l'équipe glorps
         try (FileWriter file = new FileWriter("glorbs.json")) {
 
-            //Liste représentant les aliens vivants dans l'équipe
+            //Liste représentant les aliens vivants dans l'équipe glorbs
             List<Alien> list = new ArrayList<Alien>();
 
             //Boucle
@@ -74,10 +76,10 @@ public class SaveTeam {
             //Permet de convertir la list<Alien> dans un format compréhensible par Gson
             Type type = new TypeToken<List<Alien>>() { }.getType();
 
-            //Liste des aliens vivants de l'équipe
+            //Liste des aliens vivants de l'équipe zlerps
             List<Alien> liste = gson.fromJson(file, type);
 
-            //Recréation de l'équipe sauvegardé
+            //Recréation de l'équipe sauvegardé zleprs
             Team savezlerps = new Team("Zlerps", liste.size());
             for (int i = 0; i < liste.size(); i++) {
                 savezlerps.getAliens()[i] = liste.get(i);
@@ -93,10 +95,10 @@ public class SaveTeam {
             //Permet de convertir la list<Alien> dans un format compréhensible par Gson
             Type type = new TypeToken<List<Alien>>() { }.getType();
 
-            //Liste des aliens vivants de l'équipe
+            //Liste des aliens vivants de l'équipe glorbs
             List<Alien> liste = gson.fromJson(file, type);
 
-            //Recréation de l'équipe sauvegardé
+            //Recréation de l'équipe sauvegardé glorbs
             Team saveglorbs = new Team("Glorbs", liste.size());
             for (int i = 0; i < liste.size(); i++) {
                 saveglorbs.getAliens()[i] = liste.get(i);
@@ -105,6 +107,8 @@ public class SaveTeam {
             teams[1] = saveglorbs;
 
         }
+
+        //renvoie les équipes sauvegardés
         return teams;
     }
 }

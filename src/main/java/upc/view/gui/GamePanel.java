@@ -31,7 +31,6 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
-    public static final int DEFAULT_HEIGHT = 720;
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final double ZOOM = 1.5 * SCREEN_WIDTH / DEFAULT_WIDTH;
 
@@ -41,9 +40,7 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
-    private int selectedItemIndex = 0;
     private boolean inventoryVisible = true;
-    private static final int INV_OFFSET_Y = 80;
 
     private List<ActiveAnimation> activeAnimations;
 
@@ -107,7 +104,6 @@ public class GamePanel extends JPanel {
         // Affichage des Projectiles
         drawProjectiles(g2);
 
-
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
@@ -131,23 +127,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void setSelectedItemIndex(int index) {
-        if (index >= 0 && index < InventoryPanel.INVENTORY_SLOTS) {
-            this.selectedItemIndex = index;
-            repaint();
-        }
-    }
-
-    public void setInventoryVisible(boolean visible) {
-        this.inventoryVisible = visible;
-        repaint();
-    }
-
-    public Point screenToWorld(Point screenPoint) {
-        double worldX = (screenPoint.x / ZOOM) + cameraX;
-        double worldY = (screenPoint.y / ZOOM) + cameraY;
-        return new Point((int) worldX, (int) worldY);
-    }
     private void drawProjectiles(Graphics2D g2) {
         var projectileList = gameManager.getWorld().getActiveProjectiles();
         var projectiles = new ArrayList<>(projectileList);
@@ -165,7 +144,8 @@ public class GamePanel extends JPanel {
                     g2.setColor(Color.ORANGE);
                     g2.fillOval(x - 5, y - 5, 10, 10);
                 }
-            } else if (p instanceof Throwable) { // Grenadeg2.setColor(Color.GREEN);
+            } else if (p instanceof Throwable) { // Grenade
+                g2.setColor(Color.GREEN);
                 g2.fillOval(x - 4, y - 4, 8, 8);
             } else if (p instanceof Bullet) { // Uzi/Shotgun
                 g2.setColor(Color.YELLOW);
@@ -274,6 +254,14 @@ public class GamePanel extends JPanel {
 
     public void centralizeCamera(Alien alien) {
         if (alien == null) {
+
+////    AUTRES METHODES    ////
+    public Point screenToWorld(Point screenPoint) {
+        double worldX = (screenPoint.x / ZOOM) + cameraX;
+        double worldY = (screenPoint.y / ZOOM) + cameraY;
+        return new Point((int) worldX, (int) worldY);
+    }
+
             return;
         }
         int posX = alien.getPosition().getX();
@@ -291,6 +279,7 @@ public class GamePanel extends JPanel {
     }
 
 
+////    SETTERS & GETTERS    ////
     public void setCamera(int x, int y) {
         cameraX = x;
         cameraY = y;
@@ -303,6 +292,19 @@ public class GamePanel extends JPanel {
 
     public int getCameraY() {
         return cameraY;
+    }
+
+    public void setSelectedItemIndex(int index) {
+        if (index >= 0 && index < InventoryPanel.INVENTORY_SLOTS) {
+            Alien activeAlien = gameManager.getActiveAlien();
+            activeAlien.setSelectedItemIndex(index);
+            repaint();
+        }
+    }
+
+    public void setInventoryVisible(boolean visible) {
+        this.inventoryVisible = visible;
+        repaint();
     }
 
     public Terrain getTerrain() {

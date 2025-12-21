@@ -6,7 +6,6 @@ import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
-import upc.view.gui.GamePanel;
 
 public class Alien extends Entity {
     // Attributs
@@ -100,21 +99,6 @@ public class Alien extends Entity {
         }
     }
 
-    public boolean isVisible(int cameraX, int cameraY) {
-        if (!alive) {
-            return false;
-        }
-        int posX = getPosition().getX();
-        int posY = getPosition().getY();
-
-        int margin = 200;
-
-        return posX >= (cameraX - margin)
-                && posX <= (cameraX + GamePanel.DEFAULT_WIDTH + margin)
-                && posY >= (cameraY - margin)
-                && posY <= (cameraY + GamePanel.DEFAULT_HEIGHT + margin);
-    }
-
 
 ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
@@ -128,6 +112,7 @@ public class Alien extends Entity {
     public Team getTeam() {
         return team;
     }
+
     public int getAimAngle() {
         return aimAngle;
     }

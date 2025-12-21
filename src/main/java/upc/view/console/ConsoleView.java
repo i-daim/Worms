@@ -37,13 +37,13 @@ public class ConsoleView {
         System.out.println("📊 " + gameManager.toString());
         System.out.println("─".repeat(60));
 
-        printTeamStats(gameManager);
+        renderHUD(gameManager);
         printActiveAlienStats(gameManager);
 
         System.out.println("─".repeat(60));
     }
 
-    private void printTeamStats(GameManager gameManager) {
+    private void renderHUD(GameManager gameManager) {
         System.out.println("\n🏆 État des équipes:");
 
         Team[] teams = gameManager.getTeams();
@@ -133,7 +133,7 @@ public class ConsoleView {
             System.out.println("\n🏆 " + gagnante.getName() + " a gagné ! 🏆\n");
         }
 
-        printTeamStats(gameManager);
+        renderHUD(gameManager);
         System.out.println("\n" + "=".repeat(60));
     }
 

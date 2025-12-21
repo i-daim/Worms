@@ -52,6 +52,9 @@ public class ConsoleView {
         sb.append(String.format("║ EQUIPE : %-20s                ║\n", equipeActive.getName()));
         String statut = (alienActif != null) ? "Vivant" : "Mort";
         sb.append(String.format("║ ALIEN  : %-20s                ║\n", statut));
+        int pv = (alienActif != null) ? alienActif.getHealthPoints() : 0;
+        sb.append(String.format("║ SANTE  : %-3d PV                            ║\n", pv));
+
 
 
 

@@ -54,6 +54,8 @@ public class ConsoleView {
         sb.append(String.format("║ ALIEN  : %-20s                ║\n", statut));
         int pv = (alienActif != null) ? alienActif.getHealthPoints() : 0;
         sb.append(String.format("║ SANTE  : %-3d PV                            ║\n", pv));
+        sb.append("╚══════════════════════════════════════════════════════╝");
+
 
 
 

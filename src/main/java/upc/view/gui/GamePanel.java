@@ -12,7 +12,6 @@ import upc.model.jeu.Terrain;
 import upc.assets.SpriteManager;
 import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
-import upc.model.items.Bazooka;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
 import upc.model.entites.projectiles.Throwable;
@@ -250,7 +249,8 @@ public class GamePanel extends JPanel {
             int inventoryY = activeAlien.getPosition().getY() - 80;
             int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
 
-            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, activeAlien.getSelectedItemIndex());
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY,
+                    activeAlien.getSelectedItemIndex());
         }
     }
 

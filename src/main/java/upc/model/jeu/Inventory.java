@@ -12,8 +12,9 @@ import upc.model.items.Weapon;
 
 public class Inventory {
 
-    public final static Item.Type[]
-            ITEMS = {Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA, Item.Type.GRENADE, Item.Type.MINE};
+    public static final Item.Type[] ITEMS = {
+            Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
+            Item.Type.GRENADE, Item.Type.MINE};
 
     // Stock des armes et des munitions de l'équipe
     private final HashMap<Item.Type, Weapon> weaponStock;

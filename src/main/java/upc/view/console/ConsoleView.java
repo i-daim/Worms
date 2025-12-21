@@ -1,268 +1,154 @@
 package upc.view.console;
 
 import upc.model.entites.Alien;
-import upc.model.entites.Position;
-import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
+import upc.model.jeu.Team;
 import upc.model.jeu.Terrain;
 
 import java.util.Scanner;
 
+/**
+ * Console view for Worms (Glorb26).
+ * Handles buffered display and user input.
+ */
 public class ConsoleView {
     private final Scanner scanner;
+
+    // Game window size
+    private static final int MAX_WIDTH = 60;
+    private static final int MAX_HEIGHT = 25;
 
     public ConsoleView() {
         this.scanner = new Scanner(System.in);
     }
 
-    public void printWelcome() {
-        System.out.println("=================================");
-        System.out.println("  Bienvenue dans Worms Game!    ");
-        System.out.println("=================================");
-        System.out.println("Commandes disponibles:");
-        System.out.println("  gauche  - Déplacer l'alien à gauche");
-        System.out.println("  droite  - Déplacer l'alien à droite");
-        System.out.println("  sauter  - Faire sauter l'alien");
-        System.out.println("  dégâts  - Infliger des dégâts à l'équipe ennemie");
-        System.out.println("  passer  - Passer son tour");
-        System.out.println("  aliens  - Afficher tous les aliens vivants");
-        System.out.println("  map     - Afficher la carte du terrain");
-        System.out.println("  info    - Afficher l'état complet de la partie");
-        System.out.println("  exit    - Quitter la partie");
-        System.out.println("=================================\n");
+    /**
+     * Clears the screen (simulated with line breaks to avoid IDE bugs).
+     */
+    public void clearScreen() {
+        System.out.println("\n".repeat(2));
     }
 
-    public void printGameState(GameManager gameManager) {
-        System.out.println("\n" + "─".repeat(60));
-        System.out.println("📊 " + gameManager.toString());
-        System.out.println("─".repeat(60));
-
-        renderHUD(gameManager,0);
-        System.out.println("─".repeat(60));
+    public void printWelcome() {
+        System.out.println("╔══════════════════════════════════════════════════════╗");
+        System.out.println("║            BIENVENUE DANS WORMS (GLORB26)            ║");
+        System.out.println("╚══════════════════════════════════════════════════════╝");
+        System.out.println("Commandes : gauche, droite, sauter, attaquer, passer, exit\n");
     }
 
     /**
-     * Affiche le panneau d'informations (HUD).
-     * @param gm le gestionnaire de jeu
+     * Displays the full game state (HUD + Terrain).
      */
+    public void printGameState(GameManager gameManager) {
+        System.out.println("\n--- TOUR EN COURS ---");
+        renderHUD(gameManager);
+        printTerrain(gameManager);
+    }
 
-    protected void renderHUD(GameManager gm, int vent) {
-        Team equipeActive = gm.getActiveTeam();
-        Alien alienActif = gm.getActiveAlien();
+    /**
+     * Renders the Head-Up Display (HUD) with stats.
+     */
+    protected void renderHUD(final GameManager gm) {
+        Team activeTeam = gm.getActiveTeam();
+        Alien activeAlien = gm.getActiveAlien();
 
         StringBuilder sb = new StringBuilder();
-        sb.append("╔══════════════════════════════════════════════════════╗\n");
-        sb.append(String.format("║ EQUIPE : [E] %-20s                ║\n", equipeActive.getName()));
-        String statut = (alienActif != null) ? "Vivant" : "Mort";
-        sb.append(String.format("║ ALIEN  : [A] %-20s                ║\n", statut));
-        int pv = (alienActif != null) ? alienActif.getHealthPoints() : 0;
-        sb.append(String.format("║ SANTE  : [+] %-3d PV                            ║\n", pv));
-        sb.append(String.format("║ VENT   : %-3d                                ║\n", vent));
+        sb.append("╔══════════════════════════════════════════════════════════╗\n");
 
-        sb.append("╚══════════════════════════════════════════════════════╝");
+        // Team Line
+        String teamName = (activeTeam != null) ? activeTeam.getName() : "Aucune";
+        sb.append(String.format("║ ÉQUIPE : 🏴 %-45s ║\n", teamName));
+
+        // Alien & Health Line
+        String status = (activeAlien != null) ? "Vivant" : "Mort";
+        int hp = (activeAlien != null) ? activeAlien.getHealthPoints() : 0;
+
+        // Visual Health Bar [████░░░░░░]
+        String healthBar = generateHealthBar(hp);
+
+        sb.append(String.format("║ ALIEN  : 👽 %-10s | SANTÉ : ❤️ %03d %-16s ║\n",
+                status, hp, healthBar));
+
+        sb.append("╚══════════════════════════════════════════════════════════╝");
+        System.out.println(sb.toString());
+    }
+
+    private String generateHealthBar(int hp) {
+        int bars = Math.max(0, Math.min(10, hp / 10));
+        return "[" + "█".repeat(bars) + "░".repeat(10 - bars) + "]";
+    }
+
+    /**
+     * Renders the terrain map in ASCII.
+     */
+    public void printTerrain(GameManager gameManager) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n🗺️  CARTE (EAU Y=").append(Terrain.getWaterLevel()).append("):\n");
+
+        // Top Border
+        sb.append("╔");
+        for(int i = 0; i < MAX_WIDTH; i++) sb.append("═");
+        sb.append("╗\n");
+
+        Terrain terrain = gameManager.getTerrain();
+        int height = Math.min(terrain.getCollisionsHeight(), MAX_HEIGHT);
+        int width = Math.min(terrain.getCollisionsWidth(), MAX_WIDTH);
+
+        for (int y = 0; y < height; y++) {
+            sb.append("║");
+            for (int x = 0; x < width; x++) {
+                sb.append(calculateTileChar(x, y, gameManager));
+            }
+            sb.append("║\n");
+        }
+
+        // Bottom Border
+        sb.append("╚");
+        for(int i = 0; i < MAX_WIDTH; i++) sb.append("═");
+        sb.append("╝\n");
 
         System.out.println(sb.toString());
     }
 
-
-
-    public void printAliensStats(GameManager gameManager) {
-        System.out.println("\n" + "═".repeat(60));
-        System.out.println("           🐛 ÉTAT DE TOUS LES ALIENS VIVANTS 🐛");
-        System.out.println("═".repeat(60));
-
-        Team teamActive = gameManager.getActiveTeam();
-        Team teamEnnemie = gameManager.getEnnemyTeam();
-
-        System.out.println("\n💚 ÉQUIPE ALLIÉE : " + teamActive.getName());
-        System.out.println("─".repeat(60));
-        printAliensTeam(teamActive, gameManager.getActiveAlien());
-
-        System.out.println("\n💀 ÉQUIPE ENNEMIE : " + teamEnnemie.getName());
-        System.out.println("─".repeat(60));
-        printAliensTeam(teamEnnemie, null);
-
-        System.out.println("═".repeat(60) + "\n");
-    }
-
-    private void printAliensTeam(Team team, Alien alienActif) {
-        Alien[] aliens = team.getAliens();
-        int count = 1;
-        boolean noneAlive = true;
-
-        for (Alien alien : aliens) {
-            if (alien != null && alien.isAlive()) {
-                noneAlive = false;
-                Position pos = alien.getPosition();
-                String indicateur = (alien == alienActif) ? "► " : "  ";
-
-                System.out.printf("%sAlien #%d | Position: %s | PV: %3d/100 ",
-                        indicateur, count, pos, alien.getHealthPoints());
-                printHealthBar(alien.getHealthPoints());
-                count++;
-            }
-        }
-
-        if (noneAlive) {
-            System.out.println("  ⚰️  Tous les aliens sont morts");
-        }
-    }
-
-
-    private void printHealthBar(int pv) {
-        int barres = pv / 10;
-        System.out.print("[");
-        for (int i = 0; i < 10; i++) {
-            if (i < barres) {
-                System.out.print("█");
-            } else {
-                System.out.print("░");
-            }
-        }
-        System.out.println("]");
-    }
-
-    public void printGameOver(GameManager gameManager) {
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("            🎉 PARTIE TERMINÉE ! 🎉");
-        System.out.println("=".repeat(60));
-
-        Team gagnante = gameManager.getWinningTeam();
-        if (gagnante != null) {
-            System.out.println("\n🏆 " + gagnante.getName() + " a gagné ! 🏆\n");
-        }
-
-        renderHUD(gameManager);
-        System.out.println("\n" + "=".repeat(60));
-    }
-
-    public void printTerrain(GameManager gameManager) {
-        Terrain terrain = gameManager.getTerrain();
-        System.out.println("\n🗺️  Carte (ligne d'eau Y=" + Terrain.getWaterLevel() + "):");
-
-        int height = Math.min(terrain.getCollisionsHeight(), 25);
-        int width = Math.min(terrain.getCollisionsWidth(), 60);
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                System.out.print(symbolForTile(x, y, gameManager));
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public char symbolForTile(int x, int y, GameManager gameManager) {
-        Alien w = gameManager.getAlienAtPosition(x, y);
-        Terrain terrain = gameManager.getTerrain();
+    private char calculateTileChar(int x, int y, GameManager gm) {
+        Alien w = gm.getAlienAtPosition(x, y);
         if (w != null && w.isAlive()) {
-            return 'W';
+            return 'Ω';
         }
-        if (terrain.isCollision(x, y)) {
-            return 'X';
+        if (gm.getTerrain().isCollision(x, y)) {
+            return '█';
         }
-        if (terrain.isWater(y) && terrain.isCollision(x, y)) {
-            return '~';
+        if (gm.getTerrain().isWater(y)) {
+            return '≈';
         }
-        return ' ';
+        return '░';
     }
 
-    public void printStateAfterFall(GameManager gameManager) {
-        System.out.println("\n💥 ÉTAT DES ALIENS APRÈS LA CHUTE :\n");
+    // --- Input Methods ---
 
-        for (int i = 0; i < 2; i++) {
-            System.out.println("🔹 " + gameManager.getTeam(i).getName() + " :");
-
-            Alien[] aliens = gameManager.getTeam(i).getAliens();
-            for (int j = 0; j < aliens.length; j++) {
-                Alien a = aliens[j];
-                if (a != null && a.isAlive()) {
-                    System.out.println("   → Alien #" + (j + 1) + " : PV = "
-                            + a.getHealthPoints() + "/100");
-                }
-            }
+    public String readKey() {
+        System.out.print("\n💬 ORDRE > ");
+        if (scanner.hasNextLine()) {
+            return scanner.nextLine().toLowerCase().trim();
         }
-        System.out.println();
+        return "exit";
     }
 
+    public void close() { scanner.close(); }
 
-    public void printMovementResult(boolean success, String direction) {
-        if (success) {
-            System.out.println("✅ Déplacement à " + direction + " réussi");
-        } else {
-            System.out.println("❌ Déplacement impossible (collision ou hors limites)");
-        }
-    }
+    // --- Mock Methods for compatibility with current Controller ---
+    // (These prevent compilation errors until you update the Controller in Ticket 3)
 
-    public void printJumpResult(boolean success) {
-        if (success) {
-            System.out.println("✅ L'alien a sauté !");
-        } else {
-            System.out.println("❌ Saut impossible");
-        }
-    }
-
-    public void printAttackResult(Alien target, int x, int y, Team activeTeam) {
-        if (target == null) {
-            System.out.println("❌ Aucun alien à la position (" + x + ", " + y + ")");
-            return;
-        }
-
-        boolean isAlly = (target.getTeam() == activeTeam);
-        boolean alienDead = !target.isAlive();
-
-        if (isAlly) {
-            if (alienDead) {
-                System.out.println("💀 TIR AMI FATAL ! Vous avez tué votre propre alien !");
-            } else {
-                System.out.println("⚠️  TIR AMI ! Votre alien a été touché (PV restants: "
-                        + target.getHealthPoints() + ")");
-
-            }
-        } else {
-            if (alienDead) {
-                System.out.println("💀 Alien ennemi éliminé !");
-            } else {
-                System.out.println("💥 Alien ennemi touché ! Il lui reste "
-                        + target.getHealthPoints() + " PV");
-            }
-        }
-    }
-
-    public void printTurnSkipped() {
-        System.out.println("⏭️  Tour passé");
-    }
-
-    public void printGameAbandoned() {
-        System.out.println("\n❌ Partie abandonnée.");
-    }
-
-    public void printUnknownCommand() {
-        System.out.println("❌ Commande inconnue ! Tapez 'info' pour l'aide.");
-    }
-
-    public void printMessage(String message) {
-        System.out.println(message);
-    }
-
-    public String requestCommand() {
-        System.out.print("\n💬 > ");
-        return scanner.nextLine().toLowerCase().trim();
-    }
-
-    public int requestInteger(String message) {
-        System.out.print(message);
-        while (!scanner.hasNextInt()) {
-            scanner.next();
-            System.out.print("⚠️  Veuillez entrer un nombre valide: ");
-        }
-        int value = scanner.nextInt();
-        scanner.nextLine();
-        return value;
-    }
-
-    public void close() {
-        scanner.close();
-        System.out.println("\n👋 Merci d'avoir joué !");
-    }
+    public void printMovementResult(boolean b, String s, GameManager g) {}
+    public void printJumpResult(boolean b, GameManager g) {}
+    public void printAttackResult(Alien t, int x, int y, Team tm) {}
+    public void printTurnSkipped() {}
+    public void printGameAbandoned() {}
+    public void printUnknownCommand() {}
+    public void printAliensStats(GameManager g) {}
+    public void printStateAfterFall(GameManager g) {}
+    public void printGameOver(GameManager g) {}
+    public int chooseDamage() { return 10; }
+    public int chooseX() { return 0; }
+    public int chooseY() { return 0; }
 }

@@ -6,7 +6,6 @@ import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
-import upc.view.gui.GamePanel;
 
 public class Alien extends Entity {
     // Attributs
@@ -21,9 +20,7 @@ public class Alien extends Entity {
     private int shootPower = 50;
 
     private final Inventory inventory;
-    private Item.Type equippedItem;
-
-
+    private int selectedItemIndex = 0;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -47,7 +44,6 @@ public class Alien extends Entity {
 
         this.team = team;
         this.inventory = team.getInventory();
-        this.equippedItem = Item.Type.BAZOOKA;
 
         this.alive = true;
         this.state = State.IDLE;
@@ -81,6 +77,8 @@ public class Alien extends Entity {
 
 ////    Autres Méthodes    ////
     public void useEquippedItem() {
+        Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
+
         if (!inventory.isAvailable(equippedItem)) {
             return;
         }
@@ -100,21 +98,6 @@ public class Alien extends Entity {
         }
     }
 
-    public boolean isVisible(int cameraX, int cameraY) {
-        if (!alive) {
-            return false;
-        }
-        int posX = getPosition().getX();
-        int posY = getPosition().getY();
-
-        int margin = 200;
-
-        return posX >= (cameraX - margin)
-                && posX <= (cameraX + GamePanel.DEFAULT_WIDTH + margin)
-                && posY >= (cameraY - margin)
-                && posY <= (cameraY + GamePanel.DEFAULT_HEIGHT + margin);
-    }
-
 
 ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
@@ -128,16 +111,21 @@ public class Alien extends Entity {
     public Team getTeam() {
         return team;
     }
+
     public int getAimAngle() {
         return aimAngle;
     }
 
     public Item getEquippedItem() {
-        return inventory.getWeapon(equippedItem);
+        return inventory.getWeapon(Inventory.ITEMS[selectedItemIndex]);
     }
 
-    public void setEquippedItem(Item.Type item) {
-        equippedItem = item;
+    public int getSelectedItemIndex() {
+        return selectedItemIndex;
+    }
+
+    public void setSelectedItemIndex(int index) {
+        this.selectedItemIndex = index;
     }
 
     public State getState() {

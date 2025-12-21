@@ -41,7 +41,7 @@ public class GamePanel extends JPanel {
     private int cameraX = 0;
     private int cameraY = 0;
 
-    private boolean inventoryVisible = true;
+    private boolean inventoryVisible = false;
 
     private List<ActiveAnimation> activeAnimations;
 
@@ -301,8 +301,12 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void toggleInventory(boolean visible) {
-        this.inventoryVisible = visible;
+    public boolean isInventoryVisible() {
+        return inventoryVisible;
+    }
+
+    public void toggleInventory() {
+        inventoryVisible = !inventoryVisible;
         repaint();
     }
 

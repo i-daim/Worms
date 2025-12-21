@@ -31,8 +31,6 @@ public class GameController {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
 
-        gamePanel.toggleInventory();
-
         addListeners();
         startGameLoop();
     }

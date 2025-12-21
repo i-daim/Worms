@@ -23,11 +23,7 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
-    private boolean inventoryVisible = true;
-
-    // Variables pour la gestion manuelle du TOGGLE (pour éviter la répétition)
-    private boolean iKeyWasPressed = false;
-    private boolean[] selectionKeysWasPressed = new boolean[5];
+    private boolean inventoryVisible = false;
 
     private volatile boolean running = true;
     private Thread gameThread;
@@ -108,6 +104,7 @@ public class GameController {
             }
         }
         lastAWasPressed = isAPressed;
+        keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
 
@@ -115,29 +112,18 @@ public class GameController {
     ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
 
-        boolean iIsPressed = keyHandler.isKeyPressed(KeyEvent.VK_I);
-
-        if (iIsPressed && !iKeyWasPressed) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
             inventoryVisible = !inventoryVisible;
-            gamePanel.setInventoryVisible(inventoryVisible);
+            gamePanel.toggleInventory(inventoryVisible);
         }
-        iKeyWasPressed = iIsPressed;
-
 
         if (inventoryVisible) {
             for (int i = 0; i < 5; i++) {
                 int keyCode = KeyEvent.VK_1 + i;
-                boolean keyIsPressed = keyHandler.isKeyPressed(keyCode);
 
-                if (keyIsPressed && !selectionKeysWasPressed[i]) {
+                if (keyHandler.isJustKeyPressed(keyCode)) {
                     gamePanel.setSelectedItemIndex(i);
-
                 }
-                selectionKeysWasPressed[i] = keyIsPressed;
-            }
-        } else {
-            for (int i = 0; i < 5; i++) {
-                selectionKeysWasPressed[i] = false;
             }
         }
 
@@ -146,7 +132,7 @@ public class GameController {
             return;
         }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
             activeAlien.jump();
         }
 
@@ -172,8 +158,7 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-
-        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
             Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
             gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
         }

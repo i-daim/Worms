@@ -45,6 +45,8 @@ public class ConsoleView {
 
     protected void renderHUD(GameManager gm) {
         StringBuilder sb = new StringBuilder();
+        sb.append("╔══════════════════════════════════════════════════════╗\n");
+
         // TODO: contenu
         System.out.println(sb.toString());
     }

@@ -8,13 +8,13 @@ import upc.model.jeu.Terrain;
 import java.util.Scanner;
 
 /**
- * Console view for Worms (Glorb26).
- * Handles buffered display and user input.
+ * Vue console pour Worms (Glorb26).
+ * Gère l'affichage bufferisé et les entrées utilisateur.
  */
 public class ConsoleView {
     private final Scanner scanner;
 
-    // Game window size
+    // Taille de la fenêtre de jeu
     private static final int MAX_WIDTH = 60;
     private static final int MAX_HEIGHT = 25;
 
@@ -23,7 +23,7 @@ public class ConsoleView {
     }
 
     /**
-     * Clears the screen (simulated with line breaks to avoid IDE bugs).
+     * Nettoie l'écran (simulé avec des sauts de ligne pour éviter les bugs d'IDE).
      */
     public void clearScreen() {
         System.out.println("\n".repeat(2));
@@ -37,7 +37,7 @@ public class ConsoleView {
     }
 
     /**
-     * Displays the full game state (HUD + Terrain).
+     * Affiche l'état complet du jeu (HUD + Terrain).
      */
     public void printGameState(GameManager gameManager) {
         System.out.println("\n--- TOUR EN COURS ---");
@@ -46,7 +46,7 @@ public class ConsoleView {
     }
 
     /**
-     * Renders the Head-Up Display (HUD) with stats.
+     * Affiche le bandeau d'informations (HUD) avec les statistiques.
      */
     protected void renderHUD(final GameManager gm) {
         Team activeTeam = gm.getActiveTeam();
@@ -55,15 +55,15 @@ public class ConsoleView {
         StringBuilder sb = new StringBuilder();
         sb.append("╔══════════════════════════════════════════════════════════╗\n");
 
-        // Team Line
+        // Ligne Équipe
         String teamName = (activeTeam != null) ? activeTeam.getName() : "Aucune";
         sb.append(String.format("║ ÉQUIPE : 🏴 %-45s ║\n", teamName));
 
-        // Alien & Health Line
+        // Ligne Alien & Santé
         String status = (activeAlien != null) ? "Vivant" : "Mort";
         int hp = (activeAlien != null) ? activeAlien.getHealthPoints() : 0;
 
-        // Visual Health Bar [████░░░░░░]
+        // Barre de vie visuelle [████░░░░░░]
         String healthBar = generateHealthBar(hp);
 
         sb.append(String.format("║ ALIEN  : 👽 %-10s | SANTÉ : ❤️ %03d %-16s ║\n",
@@ -79,15 +79,17 @@ public class ConsoleView {
     }
 
     /**
-     * Renders the terrain map in ASCII.
+     * Affiche la carte du terrain en ASCII.
      */
     public void printTerrain(GameManager gameManager) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n🗺️  CARTE (EAU Y=").append(Terrain.getWaterLevel()).append("):\n");
 
-        // Top Border
+        // Bordure haute
         sb.append("╔");
-        for(int i = 0; i < MAX_WIDTH; i++) sb.append("═");
+        for (int i = 0; i < MAX_WIDTH; i++) {
+            sb.append("═");
+        }
         sb.append("╗\n");
 
         Terrain terrain = gameManager.getTerrain();
@@ -102,9 +104,11 @@ public class ConsoleView {
             sb.append("║\n");
         }
 
-        // Bottom Border
+        // Bordure basse
         sb.append("╚");
-        for(int i = 0; i < MAX_WIDTH; i++) sb.append("═");
+        for (int i = 0; i < MAX_WIDTH; i++) {
+            sb.append("═");
+        }
         sb.append("╝\n");
 
         System.out.println(sb.toString());
@@ -124,7 +128,7 @@ public class ConsoleView {
         return '░';
     }
 
-    // --- Input Methods ---
+    // --- Méthodes d'entrée ---
 
     public String readKey() {
         System.out.print("\n💬 ORDRE > ");
@@ -134,21 +138,57 @@ public class ConsoleView {
         return "exit";
     }
 
-    public void close() { scanner.close(); }
+    public void close() {
+        scanner.close();
+    }
 
-    // --- Mock Methods for compatibility with current Controller ---
-    // (These prevent compilation errors until you update the Controller in Ticket 3)
+    // --- Méthodes "Mock" pour la compatibilité ---
 
-    public void printMovementResult(boolean b, String s, GameManager g) {}
-    public void printJumpResult(boolean b, GameManager g) {}
-    public void printAttackResult(Alien t, int x, int y, Team tm) {}
-    public void printTurnSkipped() {}
-    public void printGameAbandoned() {}
-    public void printUnknownCommand() {}
-    public void printAliensStats(GameManager g) {}
-    public void printStateAfterFall(GameManager g) {}
-    public void printGameOver(GameManager g) {}
-    public int chooseDamage() { return 10; }
-    public int chooseX() { return 0; }
-    public int chooseY() { return 0; }
+    public void printMovementResult(boolean b, String s, GameManager g) {
+        // Mock
+    }
+
+    public void printJumpResult(boolean b, GameManager g) {
+        // Mock
+    }
+
+    public void printAttackResult(Alien t, int x, int y, Team tm) {
+        // Mock
+    }
+
+    public void printTurnSkipped() {
+        // Mock
+    }
+
+    public void printGameAbandoned() {
+        // Mock
+    }
+
+    public void printUnknownCommand() {
+        // Mock
+    }
+
+    public void printAliensStats(GameManager g) {
+        // Mock
+    }
+
+    public void printStateAfterFall(GameManager g) {
+        // Mock
+    }
+
+    public void printGameOver(GameManager g) {
+        // Mock
+    }
+
+    public int chooseDamage() {
+        return 10;
+    }
+
+    public int chooseX() {
+        return 0;
+    }
+
+    public int chooseY() {
+        return 0;
+    }
 }

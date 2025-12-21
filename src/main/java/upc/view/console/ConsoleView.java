@@ -49,6 +49,8 @@ public class ConsoleView {
 
         StringBuilder sb = new StringBuilder();
         sb.append("╔══════════════════════════════════════════════════════╗\n");
+        sb.append(String.format("║ EQUIPE : %-20s                ║\n", equipeActive.getName()));
+
 
         // TODO: contenu
         System.out.println(sb.toString());

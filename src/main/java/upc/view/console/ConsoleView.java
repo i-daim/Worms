@@ -41,6 +41,11 @@ public class ConsoleView {
         System.out.println("─".repeat(60));
     }
 
+    /**
+     * Affiche le panneau d'informations (HUD).
+     * @param gm le gestionnaire de jeu
+     */
+
     protected void renderHUD(GameManager gm) {
         Team equipeActive = gm.getActiveTeam();
         Alien alienActif = gm.getActiveAlien();

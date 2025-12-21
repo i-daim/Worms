@@ -5,6 +5,7 @@ import upc.assets.AnimationManager;
 import upc.assets.ActiveAnimation;
 import upc.assets.Sound;
 import upc.model.entites.Alien;
+import upc.model.entites.Entity;
 import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
@@ -98,7 +99,7 @@ public class GamePanel extends JPanel {
 
         // Affichage de l'inventaire
         if (inventoryVisible) {
-            drawActiveAlienInventory(g2);
+            drawInventory(g2);
         }
 
         // Affichage des Projectiles
@@ -115,15 +116,15 @@ public class GamePanel extends JPanel {
         g2.dispose();
     }
 
-    private void drawActiveAlienInventory(Graphics2D g2) {
-        Alien alienActif = gameManager.getActiveAlien();
-        if (alienActif != null && alienActif.isAlive()) {
-            int alienPosX = alienActif.getPosition().getX();
+    private void drawInventory(Graphics2D g2) {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien != null && activeAlien.isAlive()) {
+            int alienPosX = activeAlien.getPosition().getX();
 
-            int inventoryY = alienActif.getPosition().getY() - INV_OFFSET_Y;
+            int inventoryY = activeAlien.getPosition().getY() - 80;
             int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
 
-            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, selectedItemIndex);
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, activeAlien.getSelectedItemIndex());
         }
     }
 
@@ -252,8 +253,6 @@ public class GamePanel extends JPanel {
 
     }
 
-    public void centralizeCamera(Alien alien) {
-        if (alien == null) {
 
 ////    AUTRES METHODES    ////
     public Point screenToWorld(Point screenPoint) {
@@ -262,10 +261,12 @@ public class GamePanel extends JPanel {
         return new Point((int) worldX, (int) worldY);
     }
 
+    public void centralizeCamera(Entity entity) {
+        if (entity == null) {
             return;
         }
-        int posX = alien.getPosition().getX();
-        int posY = alien.getPosition().getY();
+        int posX = entity.getPosition().getX();
+        int posY = entity.getPosition().getY();
 
         int viewX = posX - (int) (getWidth() / (2 * ZOOM));
         int viewY = posY - (int) (getHeight() / (2 * ZOOM));

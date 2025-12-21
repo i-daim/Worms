@@ -104,6 +104,10 @@ public class GameController {
 
     ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien == null || !activeAlien.isAlive()) {
+            return;
+        }
 
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
             gamePanel.toggleInventory();
@@ -114,14 +118,9 @@ public class GameController {
                 int keyCode = KeyEvent.VK_1 + i;
 
                 if (keyHandler.isJustKeyPressed(keyCode)) {
-                    gamePanel.setSelectedItemIndex(i);
+                    activeAlien.setSelectedItemIndex(i);
                 }
             }
-        }
-
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null || !activeAlien.isAlive()) {
-            return;
         }
 
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {

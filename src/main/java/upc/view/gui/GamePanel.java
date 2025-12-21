@@ -297,14 +297,6 @@ public class GamePanel extends JPanel {
         return cameraY;
     }
 
-    public void setSelectedItemIndex(int index) {
-        if (index >= 0 && index < InventoryPanel.INVENTORY_SLOTS) {
-            Alien activeAlien = gameManager.getActiveAlien();
-            activeAlien.setSelectedItemIndex(index);
-            repaint();
-        }
-    }
-
     public boolean isInventoryVisible() {
         return inventoryVisible;
     }

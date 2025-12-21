@@ -20,9 +20,7 @@ public class Alien extends Entity {
     private int shootPower = 50;
 
     private final Inventory inventory;
-    private Item.Type equippedItem;
-
-
+    private int selectedItemIndex = 0;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -46,7 +44,6 @@ public class Alien extends Entity {
 
         this.team = team;
         this.inventory = team.getInventory();
-        this.equippedItem = Item.Type.BAZOOKA;
 
         this.alive = true;
         this.state = State.IDLE;
@@ -80,6 +77,8 @@ public class Alien extends Entity {
 
 ////    Autres Méthodes    ////
     public void useEquippedItem() {
+        Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
+
         if (!inventory.isAvailable(equippedItem)) {
             return;
         }
@@ -118,11 +117,15 @@ public class Alien extends Entity {
     }
 
     public Item getEquippedItem() {
-        return inventory.getWeapon(equippedItem);
+        return inventory.getWeapon(Inventory.ITEMS[selectedItemIndex]);
     }
 
-    public void setEquippedItem(Item.Type item) {
-        equippedItem = item;
+    public int getSelectedItemIndex() {
+        return selectedItemIndex;
+    }
+
+    public void setSelectedItemIndex(int index) {
+        this.selectedItemIndex = index;
     }
 
     public State getState() {

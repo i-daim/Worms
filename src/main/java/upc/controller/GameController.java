@@ -23,18 +23,15 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
-    private boolean inventoryVisible = false;
-
     private volatile boolean running = true;
     private Thread gameThread;
-    private boolean lastAWasPressed = false;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
 
-        gamePanel.toggleInventory(inventoryVisible);
+        gamePanel.toggleInventory();
 
         addListeners();
         startGameLoop();
@@ -96,14 +93,12 @@ public class GameController {
             showGameOver();
             return;
         }
-        boolean isAPressed = keyHandler.isKeyPressed(KeyEvent.VK_A);
-        if (isAPressed && !lastAWasPressed) {  // ← EDGE DETECTION
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
             if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();  // ← Appelé UNE SEULE FOIS
+                activeAlien.useEquippedItem();
                 System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
             }
         }
-        lastAWasPressed = isAPressed;
         keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
@@ -113,11 +108,10 @@ public class GameController {
     private void handleControls() {
 
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
-            inventoryVisible = !inventoryVisible;
-            gamePanel.toggleInventory(inventoryVisible);
+            gamePanel.toggleInventory();
         }
 
-        if (inventoryVisible) {
+        if (gamePanel.isInventoryVisible()) {
             for (int i = 0; i < 5; i++) {
                 int keyCode = KeyEvent.VK_1 + i;
 

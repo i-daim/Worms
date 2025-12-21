@@ -37,7 +37,7 @@ public class ConsoleView {
         System.out.println("📊 " + gameManager.toString());
         System.out.println("─".repeat(60));
 
-        renderHUD(gameManager);
+        renderHUD(gameManager,0);
         System.out.println("─".repeat(60));
     }
 
@@ -46,7 +46,7 @@ public class ConsoleView {
      * @param gm le gestionnaire de jeu
      */
 
-    protected void renderHUD(GameManager gm) {
+    protected void renderHUD(GameManager gm, int vent) {
         Team equipeActive = gm.getActiveTeam();
         Alien alienActif = gm.getActiveAlien();
 

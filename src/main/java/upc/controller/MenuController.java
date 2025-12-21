@@ -19,7 +19,7 @@ public class MenuController {
 
     private void addListeners() {
         menuPanel.addNewGameListener(e -> {
-            GameManager gameManager = new GameManager("liberty");
+            GameManager gameManager = new GameManager();
             GamePanel gamePanel = new GamePanel(gameManager);
             new GameController(gamePanel, gameManager);
 

@@ -10,7 +10,7 @@ public class ControllerConsole {
     private boolean enCours;
 
     public ControllerConsole() {
-        this.gameManager = new GameManager("");
+        this.gameManager = new GameManager();
         this.vue = new LanternaView();
         this.enCours = true;
     }

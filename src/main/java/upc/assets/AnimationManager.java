@@ -18,6 +18,9 @@ public class AnimationManager {
 
         glorbs.put("idle_right", new Animation("characters/glorb/idle", 1, false));
         glorbs.put("idle_left", new Animation("characters/glorb/idle", 1, true));
+        glorbs.put("walk_right", new Animation("characters/glorb/walk", 5, false));
+        glorbs.put("walk_left", new Animation("characters/glorb/walk", 5, true));
+
 
         // Animations monde //
         animations.put("water", new Animation("animations/water/water", 8, false));

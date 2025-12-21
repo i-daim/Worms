@@ -10,13 +10,13 @@ import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 import upc.assets.SpriteManager;
 
-
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
 import java.util.List;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
@@ -32,7 +32,8 @@ public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
     public static final int DEFAULT_HEIGHT = 720;
-    public static final double ZOOM = 2;
+    public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+    public static final double ZOOM = 1.5 * SCREEN_WIDTH / DEFAULT_WIDTH;
 
     private final GameManager gameManager;
     private final Terrain terrain;
@@ -98,7 +99,10 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
-
+        // Affichage de l'inventaire
+        if (inventoryVisible) {
+            drawActiveAlienInventory(g2);
+        }
 
         // Affichage des Projectiles
         drawProjectiles(g2);

@@ -1,9 +1,11 @@
 package upc.controller;
+import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.jeu.Terrain;
 import upc.model.save.SaveInventory;
 import upc.model.save.SaveMap;
 import upc.model.save.SaveTeam;
@@ -253,14 +255,30 @@ public class GameController {
         //Crée un objet saveTeam
         //Sauvegarde des équipes dans deux fichiers dédiés
         SaveTeam saveTeam = new SaveTeam();
-        saveTeam.saveTeam(gameManager.getActiveTeam());
-        saveTeam.saveTeam(gameManager.getEnnemyTeam());
+        saveTeam.saveTeam(gameManager.getTeams()[0], gameManager.getTeams()[1]);
 
         //Crée un objet saveInventory
         //Sauvegarde des inventaires des équipes dans 2 fichier dédiés
         SaveInventory saveInventory = new SaveInventory();
         saveInventory.saveInventory(gameManager.getActiveTeam().getInventory());
         saveInventory.saveInventory(gameManager.getEnnemyTeam().getInventory());
+    }
+
+    public void loadGame() throws IOException {
+        SaveMap saveMap = new SaveMap();
+        Terrain terrain = saveMap.loadMap();
+
+        SaveTeam saveTeam = new SaveTeam();
+        Team team1 = saveTeam.loadTeam();
+        Team team2 = saveTeam.loadTeam();
+
+        SaveInventory saveInventory = new SaveInventory();
+        Inventory inventory1 = saveInventory.loadInventory();
+        Inventory inventory2 = saveInventory.loadInventory();
+
+        gameManager.setMap(terrain);
+        gameManager.setActiveTeam(team1);
+        gameManager.setgetEnnemy(team2);
     }
 
 }

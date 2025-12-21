@@ -4,11 +4,15 @@ import upc.model.jeu.Team;
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.save.SaveInventory;
+import upc.model.save.SaveMap;
+import upc.model.save.SaveTeam;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -236,6 +240,19 @@ public class GameController {
                 frame.repaint();
             }
         });
+    }
+
+    public void saveGame() throws IOException {
+        SaveMap saveMap = new SaveMap();
+        saveMap.saveMap(gameManager.getTerrain());
+
+        SaveTeam saveTeam = new SaveTeam();
+        saveTeam.saveTeam(gameManager.getActiveTeam());
+        saveTeam.saveTeam(gameManager.getEnnemyTeam());
+
+        SaveInventory saveInventory = new SaveInventory();
+        saveInventory.saveInventory(gameManager.getActiveTeam().getInventory());
+        saveInventory.saveInventory(gameManager.getEnnemyTeam().getInventory());
     }
 
 }

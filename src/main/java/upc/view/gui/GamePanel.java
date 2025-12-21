@@ -116,60 +116,8 @@ public class GamePanel extends JPanel {
         g2.dispose();
     }
 
-    private void drawInventory(Graphics2D g2) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            int alienPosX = activeAlien.getPosition().getX();
 
-            int inventoryY = activeAlien.getPosition().getY() - 80;
-            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
-
-            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, activeAlien.getSelectedItemIndex());
-        }
-    }
-
-    private void drawProjectiles(Graphics2D g2) {
-        var projectileList = gameManager.getWorld().getActiveProjectiles();
-        var projectiles = new ArrayList<>(projectileList);
-
-        for (Projectile p : projectiles) {
-            int x = p.getPosition().getX();
-            int y = p.getPosition().getY();
-            if (p instanceof Rocket) {
-                Animation rocketAnim = AnimationManager.getAnimation("rocket");
-                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
-                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
-                    BufferedImage frame = (BufferedImage) rocketAnim.getFrames().get(frameIndex);
-                    g2.drawImage(frame, x - frame.getWidth() / 2, y - frame.getHeight() / 2, null);
-                } else {
-                    g2.setColor(Color.ORANGE);
-                    g2.fillOval(x - 5, y - 5, 10, 10);
-                }
-            } else if (p instanceof Throwable) { // Grenade
-                g2.setColor(Color.GREEN);
-                g2.fillOval(x - 4, y - 4, 8, 8);
-            } else if (p instanceof Bullet) { // Uzi/Shotgun
-                g2.setColor(Color.YELLOW);
-                g2.fillOval(x - 2, y - 2, 4, 4);
-            } else if (p instanceof Trap) { // Mine
-                g2.setColor(Color.RED);
-                g2.fillRect(x - 5, y - 2, 10, 5);
-            }
-        }
-    }
-
-    public void drawAliens(Graphics2D g2) {
-        for (Alien alien : gameManager.getWorld().getActiveWorms()) {
-            if (alien != null && alien.isAlive()) {
-                if (alien.getTeam() == gameManager.getTeam(0)) {
-                    drawAlien(g2, alien, 0);
-                } else {
-                    drawAlien(g2, alien, 1);
-                }
-            }
-        }
-    }
-
+////    METHODES D'AFFICHAGE    ////
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
@@ -195,6 +143,18 @@ public class GamePanel extends JPanel {
         g2.drawImage(anim.getFrames().get(frameIndex), x, y, this);
     }
 
+    public void drawAliens(Graphics2D g2) {
+        for (Alien alien : gameManager.getWorld().getActiveWorms()) {
+            if (alien != null && alien.isAlive()) {
+                if (alien.getTeam() == gameManager.getTeam(0)) {
+                    drawAlien(g2, alien, 0);
+                } else {
+                    drawAlien(g2, alien, 1);
+                }
+            }
+        }
+    }
+
     public void drawAlien(Graphics2D g2, Alien alien, int type) {
         Animation animation;
         boolean direction = alien.getDirection();
@@ -217,39 +177,83 @@ public class GamePanel extends JPanel {
         int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
 
         drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+        drawAlienWeapon(g2, alien, direction, posX, posY);
+    }
 
+    public void drawAlienWeapon(Graphics2D g2, Alien alien, boolean direction,
+                                int posX, int posY) {
         Item currentItem = alien.getEquippedItem();
 
-        if (currentItem instanceof Bazooka) {
-            BufferedImage weaponSprite = SpriteManager.get("weapon_bazooka");
+        BufferedImage weaponImage = SpriteManager.get(currentItem.getName());
 
-            if (weaponSprite != null) {
-                AffineTransform oldTransform = g2.getTransform();
+        if (weaponImage != null) {
+            AffineTransform oldTransform = g2.getTransform();
 
-                double angleRad = Math.toRadians(alien.getAimAngle());
+            double angleRad = Math.toRadians(alien.getAimAngle());
 
-                if (!direction) {
-                    angleRad = Math.PI - angleRad;
-                }
+            if (!direction) {
+                angleRad = Math.PI - angleRad;
+            }
+            int pivotX = posX;
+            int pivotY = posY - 5;
+            g2.translate(pivotX, pivotY);
+            g2.rotate(-angleRad);
+            int weaponW = weaponImage.getWidth();
+            int weaponH = weaponImage.getHeight();
+            if (direction) {
+                g2.drawImage(weaponImage, 0, -weaponH / 2, null);
+            } else {
+                g2.scale(1, -1);
+                g2.drawImage(weaponImage, 0, -weaponH / 2, null);
+            }
 
-                int pivotX = posX;
-                int pivotY = posY - 5;
-                g2.translate(pivotX, pivotY);
-                g2.rotate(-angleRad);
-                int weaponW = weaponSprite.getWidth();
-                int weaponH = weaponSprite.getHeight();
-                if (direction) {
-                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+            // Restauration de la transformation
+            g2.setTransform(oldTransform);
+        }
+    }
+
+    private void drawProjectiles(Graphics2D g2) {
+        var projectileList = gameManager.getWorld().getActiveProjectiles();
+        var projectiles = new ArrayList<>(projectileList);
+
+        for (Projectile p : projectiles) {
+            int x = p.getPosition().getX();
+            int y = p.getPosition().getY();
+            if (p instanceof Rocket) {
+                Animation rocketAnim = AnimationManager.getAnimation("rocket");
+                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
+                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
+                    BufferedImage frame = rocketAnim.getFrames().get(frameIndex);
+                    g2.drawImage(frame, x - frame.getWidth() / 2, y - frame.getHeight() / 2, null);
                 } else {
-                    g2.scale(1, -1);
-                    g2.drawImage(weaponSprite, 0, -weaponH / 2, null);
+                    g2.setColor(Color.ORANGE);
+                    g2.fillOval(x - 5, y - 5, 10, 10);
                 }
-
-                // Restauration de la transformation
-                g2.setTransform(oldTransform);
+            } else if (p instanceof Throwable) { // Grenade
+                g2.setColor(Color.GREEN);
+                g2.fillOval(x - 4, y - 4, 8, 8);
+            } else if (p instanceof Bullet) { // Uzi/Shotgun
+                g2.setColor(Color.YELLOW);
+                g2.fillOval(x - 2, y - 2, 4, 4);
+            } else if (p instanceof Trap) { // Mine
+                g2.setColor(Color.RED);
+                g2.fillRect(x - 5, y - 2, 10, 5);
             }
         }
     }
+
+    private void drawInventory(Graphics2D g2) {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien != null && activeAlien.isAlive()) {
+            int alienPosX = activeAlien.getPosition().getX();
+
+            int inventoryY = activeAlien.getPosition().getY() - 80;
+            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
+
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY, activeAlien.getSelectedItemIndex());
+        }
+    }
+
 
 
 ////    AUTRES METHODES    ////

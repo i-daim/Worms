@@ -253,7 +253,7 @@ public class GameController {
         saveMap.saveMap(gameManager.getTerrain());
 
         //Crée un objet saveTeam
-        //Sauvegarde des équipes dans deux fichiers dédiés
+        //Sauvegarde des équipes dans un fichier dédiés
         SaveTeam saveTeam = new SaveTeam();
         saveTeam.saveTeam(gameManager.getTeams()[0], gameManager.getTeams()[1]);
 
@@ -269,16 +269,14 @@ public class GameController {
         Terrain terrain = saveMap.loadMap();
 
         SaveTeam saveTeam = new SaveTeam();
-        Team team1 = saveTeam.loadTeam();
-        Team team2 = saveTeam.loadTeam();
+        Team[] teams = saveTeam.loadTeam();
 
         SaveInventory saveInventory = new SaveInventory();
         Inventory inventory1 = saveInventory.loadInventory();
         Inventory inventory2 = saveInventory.loadInventory();
 
         gameManager.setMap(terrain);
-        gameManager.setActiveTeam(team1);
-        gameManager.setgetEnnemy(team2);
+        gameManager.setTeams(teams);
     }
 
 }

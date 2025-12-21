@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import upc.model.entites.Alien;
 import upc.model.jeu.Team;
-import upc.model.jeu.Terrain;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -43,7 +42,7 @@ public class SaveTeam {
     }
 
     /*Méthode permettant de charger l'objet Team*/
-    public Team loadTeam() throws IOException {
+    public Team loadTeam(Team equipe) throws IOException {
 
         //Permet de lire le fichier de sauvegarde de type Json
         try (FileReader file = new FileReader("Team.json")) {
@@ -55,13 +54,13 @@ public class SaveTeam {
             List<Alien> liste = gson.fromJson(file, type);
 
             //Recréation de l'équipe sauvegardé
-            Team equipe = new Team("", liste.size());
+            Team SaveEquipe = new Team(equipe.getName(), liste.size());
             for(int i = 0; i < liste.size(); i++){
-                equipe.getAliens()[i] = liste.get(i);
+                SaveEquipe.getAliens()[i] = liste.get(i);
             }
 
             //Renvoie l'équipe sauvegardé
-            return equipe;
+            return SaveEquipe;
         }
     }
 }

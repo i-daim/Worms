@@ -43,15 +43,12 @@ public class ConsoleView {
         System.out.println("─".repeat(60));
     }
 
-    private void renderHUD(GameManager gameManager) {
-        System.out.println("\n🏆 État des équipes:");
-
-        Team[] teams = gameManager.getTeams();
-        for (int i = 0; i < teams.length; i++) {
-            String indicateur = (i == gameManager.getActiveTeamIndex()) ? "►" : " ";
-            System.out.println(indicateur + "  " + teams[i].toString());
-        }
+    protected void renderHUD(GameManager gm) {
+        StringBuilder sb = new StringBuilder();
+        // TODO: contenu
+        System.out.println(sb.toString());
     }
+
 
     private void printActiveAlienStats(GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();

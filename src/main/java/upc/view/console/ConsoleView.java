@@ -38,8 +38,6 @@ public class ConsoleView {
         System.out.println("─".repeat(60));
 
         renderHUD(gameManager);
-        printActiveAlienStats(gameManager);
-
         System.out.println("─".repeat(60));
     }
 
@@ -56,28 +54,10 @@ public class ConsoleView {
         sb.append(String.format("║ SANTE  : %-3d PV                            ║\n", pv));
         sb.append("╚══════════════════════════════════════════════════════╝");
 
-
-
-
-
-        // TODO: contenu
         System.out.println(sb.toString());
     }
 
 
-    private void printActiveAlienStats(GameManager gameManager) {
-        Alien alien = gameManager.getActiveAlien();
-
-        if (alien != null) {
-            Position pos = alien.getPosition();
-            System.out.println("\n🐛 Alien actif (" + gameManager.getActiveTeam().getName() + "):");
-            System.out.printf("   Position: %s\n", pos);
-            System.out.printf("   PV: %d/100 ", alien.getHealthPoints());
-            printHealthBar(alien.getHealthPoints());
-        } else {
-            System.out.println("\n⚠️  Aucun alien actif");
-        }
-    }
 
     public void printAliensStats(GameManager gameManager) {
         System.out.println("\n" + "═".repeat(60));

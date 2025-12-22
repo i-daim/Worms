@@ -23,7 +23,7 @@ public class ConsoleView {
     }
 
     /**
-     * Nettoie l'écran (simulé avec des sauts de ligne pour éviter les bugs d'IDE).
+     * Nettoie l'écran.
      */
     public void clearScreen() {
         System.out.println("\n".repeat(2));
@@ -36,18 +36,12 @@ public class ConsoleView {
         System.out.println("Commandes : gauche, droite, sauter, attaquer, passer, exit\n");
     }
 
-    /**
-     * Affiche l'état complet du jeu (HUD + Terrain).
-     */
     public void printGameState(GameManager gameManager) {
         System.out.println("\n--- TOUR EN COURS ---");
         renderHUD(gameManager);
         printTerrain(gameManager);
     }
 
-    /**
-     * Affiche le bandeau d'informations (HUD) avec les statistiques.
-     */
     protected void renderHUD(final GameManager gm) {
         Team activeTeam = gm.getActiveTeam();
         Alien activeAlien = gm.getActiveAlien();
@@ -55,15 +49,11 @@ public class ConsoleView {
         StringBuilder sb = new StringBuilder();
         sb.append("╔══════════════════════════════════════════════════════════╗\n");
 
-        // Ligne Équipe
         String teamName = (activeTeam != null) ? activeTeam.getName() : "Aucune";
         sb.append(String.format("║ ÉQUIPE : 🏴 %-45s ║\n", teamName));
 
-        // Ligne Alien & Santé
         String status = (activeAlien != null) ? "Vivant" : "Mort";
         int hp = (activeAlien != null) ? activeAlien.getHealthPoints() : 0;
-
-        // Barre de vie visuelle [████░░░░░░]
         String healthBar = generateHealthBar(hp);
 
         sb.append(String.format("║ ALIEN  : 👽 %-10s | SANTÉ : ❤️ %03d %-16s ║\n",
@@ -78,19 +68,11 @@ public class ConsoleView {
         return "[" + "█".repeat(bars) + "░".repeat(10 - bars) + "]";
     }
 
-    /**
-     * Affiche la carte du terrain en ASCII.
-     */
     public void printTerrain(GameManager gameManager) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n🗺️  CARTE (EAU Y=").append(Terrain.getWaterLevel()).append("):\n");
 
-        // Bordure haute
-        sb.append("╔");
-        for (int i = 0; i < MAX_WIDTH; i++) {
-            sb.append("═");
-        }
-        sb.append("╗\n");
+        sb.append("╔").append("═".repeat(MAX_WIDTH)).append("╗\n");
 
         Terrain terrain = gameManager.getTerrain();
         int height = Math.min(terrain.getCollisionsHeight(), MAX_HEIGHT);
@@ -103,13 +85,7 @@ public class ConsoleView {
             }
             sb.append("║\n");
         }
-
-        // Bordure basse
-        sb.append("╚");
-        for (int i = 0; i < MAX_WIDTH; i++) {
-            sb.append("═");
-        }
-        sb.append("╝\n");
+        sb.append("╚").append("═".repeat(MAX_WIDTH)).append("╝\n");
 
         System.out.println(sb.toString());
     }
@@ -130,6 +106,22 @@ public class ConsoleView {
 
     // --- Méthodes d'entrée ---
 
+    public int requestInteger(String message) {
+        System.out.print(message);
+        while (!scanner.hasNextInt()) {
+            scanner.next();
+            System.out.print("⚠️ Veuillez entrer un nombre valide : ");
+        }
+        int value = scanner.nextInt();
+        scanner.nextLine();
+        return value;
+    }
+
+    public String requestCommand() {
+        return readKey();
+    }
+
+    // Méthode manquante rajoutée ici
     public String readKey() {
         System.out.print("\n💬 ORDRE > ");
         if (scanner.hasNextLine()) {
@@ -142,7 +134,7 @@ public class ConsoleView {
         scanner.close();
     }
 
-    // --- Méthodes "Mock" pour la compatibilité ---
+    // --- Méthodes "Mock" (Signatures corrigées) ---
 
     public void printMovementResult(boolean b, String s, GameManager g) {
         // Mock
@@ -178,17 +170,5 @@ public class ConsoleView {
 
     public void printGameOver(GameManager g) {
         // Mock
-    }
-
-    public int chooseDamage() {
-        return 10;
-    }
-
-    public int chooseX() {
-        return 0;
-    }
-
-    public int chooseY() {
-        return 0;
     }
 }

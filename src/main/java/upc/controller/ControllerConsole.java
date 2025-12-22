@@ -20,7 +20,7 @@ public class ControllerConsole {
 
         while (enCours && !gameManager.isOver()) {
             view.printGameState(gameManager);
-            String command = view.readKey();
+            String command = view.requestCommand();
             traiterCommande(command);
         }
 
@@ -29,37 +29,44 @@ public class ControllerConsole {
     }
 
     private void traiterCommande(String command) {
-        if (command == null) return;
+        if (command == null) {
+            return;
+        }
 
         switch (command) {
             case "gauche":
                 gameManager.getActiveAlien().moveLeft();
+                // Ajout de gameManager en 3ème argument
                 view.printMovementResult(true, "gauche", gameManager);
                 skipTurn();
                 break;
 
             case "droite":
                 gameManager.getActiveAlien().moveRight();
+                // Ajout de gameManager en 3ème argument
                 view.printMovementResult(true, "droite", gameManager);
                 skipTurn();
                 break;
 
             case "sauter":
                 gameManager.getActiveAlien().jump();
+                // Ajout de gameManager en 2ème argument
                 view.printJumpResult(true, gameManager);
                 skipTurn();
                 break;
 
             case "attaquer":
-                int degats = view.chooseDamage();
-                int x = view.chooseX();
-                int y = view.chooseY();
+                int degats = view.requestInteger("Puissance du tir (ex: 10) : ");
+                int x = view.requestInteger("Position X cible : ");
+                int y = view.requestInteger("Position Y cible : ");
+
                 Alien cible = gameManager.attackPosition(x, y, degats);
                 view.printAttackResult(cible, x, y, gameManager.getActiveTeam());
                 skipTurn();
                 break;
 
-            case "wait": // Commande pour passer son tour
+            case "wait":
+            case "passer":
                 skipTurn();
                 break;
 
@@ -86,6 +93,10 @@ public class ControllerConsole {
     }
 
     private void sleep(int ms) {
-        try { Thread.sleep(ms); } catch (InterruptedException e) {}
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            // Ignorer
+        }
     }
 }

@@ -35,6 +35,8 @@ public class GameController {
     private boolean iKeyWasPressed = false;
     private boolean[] selectionKeysWasPressed = new boolean[5];
 
+    private boolean f5WasPressed = false;
+
     private volatile boolean running = true;
     private Thread gameThread;
     private boolean lastAWasPressed = false;
@@ -128,6 +130,20 @@ public class GameController {
             gamePanel.setInventoryVisible(inventoryVisible);
         }
         iKeyWasPressed = iIsPressed;
+
+        boolean f5IsPressed = keyHandler.isKeyPressed(KeyEvent.VK_F5);
+
+        if (f5IsPressed && !f5WasPressed) {
+            try {
+                saveGame();
+                System.out.println("Jeu sauvegardé");
+            } catch (IOException e) {
+                System.err.println("Erreur lors de la sauvegarde de la game");
+                e.printStackTrace();
+            }
+        }
+
+        boolean f5WasPressed = f5IsPressed;
 
         if (inventoryVisible) {
             for (int i = 0; i < 5; i++) {

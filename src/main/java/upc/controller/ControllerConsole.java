@@ -21,14 +21,14 @@ public class ControllerConsole {
         while (enCours && !gameManager.isOver()) {
             view.printGameState(gameManager);
             String command = view.requestCommand();
-            traiterCommande(command);
+            requestCommand(command);
         }
 
         view.printGameOver(gameManager);
         view.close();
     }
 
-    private void traiterCommande(String command) {
+    private void requestCommand(String command) {
         if (command == null) {
             return;
         }

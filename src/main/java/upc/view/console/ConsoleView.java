@@ -24,13 +24,13 @@ public class ConsoleView {
         System.out.println("╔══════════════════════════════════════════════════════╗");
         System.out.println("║            BIENVENUE DANS WORMS (GLORB26)            ║");
         System.out.println("╚══════════════════════════════════════════════════════╝");
-        System.out.println("Commandes : gauche, droite, sauter, attaquer, passer, exit\n");
+        System.out.println("Commandes : gauche, droite, sauter, attaquer, passer, aliens, map, exit\n");
     }
 
     public void printGameState(GameManager gameManager) {
         System.out.println("\n--- TOUR EN COURS ---");
         renderHUD(gameManager);
-        printTerrain(gameManager);
+        System.out.println("💡 Tape 'map' pour afficher la carte");
     }
 
     protected void renderHUD(final GameManager gm) {
@@ -59,8 +59,48 @@ public class ConsoleView {
         return "[" + "█".repeat(bars) + "░".repeat(10 - bars) + "]";
     }
 
-    public void printTerrain(GameManager gameManager) {
+    public int requestInteger(String message) {
+        System.out.print(message);
+        while (!scanner.hasNextInt()) {
+            scanner.next();
+            System.out.print("⚠️ Veuillez entrer un nombre valide : ");
+        }
+        int value = scanner.nextInt();
+        scanner.nextLine();
+        return value;
+    }
+
+    /** NE CHANGE PAS LA SIGNATURE : ControllerConsole appelle requestCommand() sans argument. */
+    public String requestCommand() {
+        String cmd = readKey();
+
+        // gestion de la commande "map" ici
+        if ("map".equals(cmd)) {
+            // ici on ne peut pas accéder au GameManager directement,
+            // donc on affiche juste un message pour l'instant
+            System.out.println("⚠️ Affichage de la carte pas encore connecté au GameManager (il faut passer le GameManager ici).");
+            return requestCommand(); // redemande une vraie commande
+        }
+
+        return cmd;
+    }
+
+    private String readKey() {
+        System.out.print("\n💬 ORDRE > ");
+        if (scanner.hasNextLine()) {
+            return scanner.nextLine().toLowerCase().trim();
+        }
+        return "exit";
+    }
+
+    // Si plus tard tu passes GameManager ici, tu pourras utiliser cette version :
+    public void printFullMap(GameManager gameManager) {
         Terrain terrain = gameManager.getTerrain();
+        if (terrain == null) {
+            System.out.println("❌ Aucune carte chargée.");
+            return;
+        }
+
         int realWidth = terrain.getCollisionsWidth();
         int realHeight = terrain.getCollisionsHeight();
 
@@ -68,9 +108,8 @@ public class ConsoleView {
         int stepY = (int) Math.ceil((double) realHeight / MAX_HEIGHT);
         int step = Math.max(1, Math.max(stepX, stepY));
 
-        System.out.println("\n🗺️  VUE GLOBALE (1 car = " + step + "x" + step + " px) :");
-
-        System.out.println("+" + "-".repeat(realWidth / step) + "+");
+        System.out.println("\n🗺️  CARTE (1 car = " + step + "x" + step + " px) :");
+        System.out.println("+" + "-".repeat(Math.min(realWidth / step, MAX_WIDTH)) + "+");
 
         for (int y = 0; y < realHeight; y += step) {
             System.out.print("|");
@@ -81,7 +120,7 @@ public class ConsoleView {
             System.out.println("|");
         }
 
-        System.out.println("+" + "-".repeat(realWidth / step) + "+");
+        System.out.println("+" + "-".repeat(Math.min(realWidth / step, MAX_WIDTH)) + "+");
     }
 
     private char getSymbolForArea(int startX, int startY, int step, GameManager gm) {
@@ -104,72 +143,21 @@ public class ConsoleView {
         if (centerX >= terrain.getCollisionsWidth() || centerY >= terrain.getCollisionsHeight()) {
             return ' ';
         }
-
-        if (terrain.isWater(centerY)) {
-            return '~';
-        }
-
-        if (terrain.isCollision(centerX, centerY)) {
-            return '#';
-        }
-
+        if (terrain.isWater(centerY)) return '~';
+        if (terrain.isCollision(centerX, centerY)) return '#';
         return ' ';
     }
 
-    public int requestInteger(String message) {
-        System.out.print(message);
-        while (!scanner.hasNextInt()) {
-            scanner.next();
-            System.out.print("⚠️ Veuillez entrer un nombre valide : ");
-        }
-        int value = scanner.nextInt();
-        scanner.nextLine();
-        return value;
-    }
+    public void close() { scanner.close(); }
 
-    public String requestCommand() {
-        return readKey();
-    }
-
-    public String readKey() {
-        System.out.print("\n💬 ORDRE > ");
-        if (scanner.hasNextLine()) {
-            return scanner.nextLine().toLowerCase().trim();
-        }
-        return "exit";
-    }
-
-    public void close() {
-        scanner.close();
-    }
-
-    public void printMovementResult(boolean b, String s, GameManager g) {
-    }
-
-    public void printJumpResult(boolean b, GameManager g) {
-    }
-
-    public void printAttackResult(Alien t, int x, int y, Team tm) {
-    }
-
-    public void printTurnSkipped() {
-        System.out.println("⏭️ Tour passé.");
-    }
-
-    public void printGameAbandoned() {
-        System.out.println("❌ Partie abandonnée.");
-    }
-
-    public void printUnknownCommand() {
-        System.out.println("❓ Commande inconnue.");
-    }
-
-    public void printAliensStats(GameManager g) {
-    }
-
-    public void printStateAfterFall(GameManager g) {
-    }
-
+    public void printMovementResult(boolean b, String s, GameManager g) {}
+    public void printJumpResult(boolean b, GameManager g) {}
+    public void printAttackResult(Alien t, int x, int y, Team tm) {}
+    public void printTurnSkipped() { System.out.println("⏭️ Tour passé."); }
+    public void printGameAbandoned() { System.out.println("❌ Partie abandonnée."); }
+    public void printUnknownCommand() { System.out.println("❓ Commande inconnue."); }
+    public void printAliensStats(GameManager g) {}
+    public void printStateAfterFall(GameManager g) {}
     public void printGameOver(GameManager g) {
         System.out.println("\n🏁 PARTIE TERMINÉE !");
     }

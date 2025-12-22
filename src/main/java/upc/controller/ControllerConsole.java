@@ -24,6 +24,7 @@ public class ControllerConsole {
             requestCommand(command);
         }
 
+
         view.printGameOver(gameManager);
         view.close();
     }

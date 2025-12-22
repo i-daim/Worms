@@ -70,20 +70,17 @@ public class ConsoleView {
         return value;
     }
 
-    /** NE CHANGE PAS LA SIGNATURE : ControllerConsole appelle requestCommand() sans argument. */
-    public String requestCommand() {
+    public String requestCommand(GameManager gameManager) {
         String cmd = readKey();
-
-        // gestion de la commande "map" ici
         if ("map".equals(cmd)) {
-            // ici on ne peut pas accéder au GameManager directement,
-            // donc on affiche juste un message pour l'instant
-            System.out.println("⚠️ Affichage de la carte pas encore connecté au GameManager (il faut passer le GameManager ici).");
-            return requestCommand(); // redemande une vraie commande
+            printFullMap(gameManager);
+            System.out.println("⏎ Appuyez sur Entrée pour continuer...");
+            scanner.nextLine();
+            return requestCommand(gameManager);
         }
-
         return cmd;
     }
+
 
     private String readKey() {
         System.out.print("\n💬 ORDRE > ");
@@ -93,7 +90,6 @@ public class ConsoleView {
         return "exit";
     }
 
-    // Si plus tard tu passes GameManager ici, tu pourras utiliser cette version :
     public void printFullMap(GameManager gameManager) {
         Terrain terrain = gameManager.getTerrain();
         if (terrain == null) {
@@ -148,7 +144,9 @@ public class ConsoleView {
         return ' ';
     }
 
-    public void close() { scanner.close(); }
+    public void close() {
+        scanner.close();
+    }
 
     public void printMovementResult(boolean b, String s, GameManager g) {}
     public void printJumpResult(boolean b, GameManager g) {}

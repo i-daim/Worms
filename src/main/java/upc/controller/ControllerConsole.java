@@ -13,9 +13,10 @@
 
         public ControllerConsole() {
             this.gameManager = new GameManager();
-            this.vue = new LanternaView();
+            this.view = new ConsoleView(); // <-- Ici
             this.enCours = true;
         }
+
 
         public void start() {
             vue.printTerrain(gameManager);

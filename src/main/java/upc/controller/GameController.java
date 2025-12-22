@@ -271,9 +271,10 @@ public class GameController {
         Team[] teams = saveTeam.loadTeam();
 
         SaveInventory saveInventory = new SaveInventory();
-        Inventory inventory1 = saveInventory.loadInventory();
-        Inventory inventory2 = saveInventory.loadInventory();
+        Inventory[] inventory = saveInventory.loadInventory();
 
+        gameManager.getTeams()[0].setInventory(inventory[0]);
+        gameManager.getTeams()[1].setInventory(inventory[1]);
         gameManager.setMap(terrain);
         gameManager.setTeams(teams);
     }

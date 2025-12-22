@@ -263,20 +263,30 @@ public class GameController {
         saveInventory.saveInventory(gameManager.getTeams()[0].getInventory(), gameManager.getTeams()[1].getInventory() );
     }
 
+    /*Méthode permettant de charger la sauvegarde du jeu*/
     public void loadGame() throws IOException {
+
+        //Récupère la map sauvegardée
         SaveMap saveMap = new SaveMap();
         Terrain terrain = saveMap.loadMap();
 
+        //Récupère les équipes sauvegardées
         SaveTeam saveTeam = new SaveTeam();
         Team[] teams = saveTeam.loadTeam();
 
+        //Récupère les inventaire sauvegardés
         SaveInventory saveInventory = new SaveInventory();
         Inventory[] inventory = saveInventory.loadInventory();
 
+        //Charge les équipes sauvegardées
+        gameManager.setTeams(teams);
+
+        //Charge les inventaires de chaque équipes
         gameManager.getTeams()[0].setInventory(inventory[0]);
         gameManager.getTeams()[1].setInventory(inventory[1]);
+
+        //Charge la map
         gameManager.setMap(terrain);
-        gameManager.setTeams(teams);
     }
 
 }

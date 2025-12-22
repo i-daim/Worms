@@ -11,6 +11,10 @@ import java.io.IOException;
 public class ImageManager {
     private static final Map<String, BufferedImage> SPRITES = new HashMap<>();
 
+    static {
+        SpriteManager.load("Bazooka", "/Items/Bazooka2.png");
+    }
+
     public static void load(String name, String path) {
         try {
             var url = ImageManager.class.getResource(path);

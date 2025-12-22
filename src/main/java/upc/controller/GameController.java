@@ -23,22 +23,13 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
-    private boolean inventoryVisible = true;
-
-    // Variables pour la gestion manuelle du TOGGLE (pour éviter la répétition)
-    private boolean iKeyWasPressed = false;
-    private boolean[] selectionKeysWasPressed = new boolean[5];
-
     private volatile boolean running = true;
     private Thread gameThread;
-    private boolean lastAWasPressed = false;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
-
-        gamePanel.setInventoryVisible(inventoryVisible);
 
         addListeners();
         startGameLoop();
@@ -100,53 +91,39 @@ public class GameController {
             showGameOver();
             return;
         }
-        boolean isAPressed = keyHandler.isKeyPressed(KeyEvent.VK_A);
-        if (isAPressed && !lastAWasPressed) {  // ← EDGE DETECTION
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
             if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();  // ← Appelé UNE SEULE FOIS
+                activeAlien.useEquippedItem();
                 System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
             }
         }
-        lastAWasPressed = isAPressed;
+        keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
 
 
     ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
-
-        boolean iIsPressed = keyHandler.isKeyPressed(KeyEvent.VK_I);
-
-        if (iIsPressed && !iKeyWasPressed) {
-            inventoryVisible = !inventoryVisible;
-            gamePanel.setInventoryVisible(inventoryVisible);
-        }
-        iKeyWasPressed = iIsPressed;
-
-
-        if (inventoryVisible) {
-            for (int i = 0; i < 5; i++) {
-                int keyCode = KeyEvent.VK_1 + i;
-                boolean keyIsPressed = keyHandler.isKeyPressed(keyCode);
-
-                if (keyIsPressed && !selectionKeysWasPressed[i]) {
-                    gamePanel.setSelectedItemIndex(i);
-
-                }
-                selectionKeysWasPressed[i] = keyIsPressed;
-            }
-        } else {
-            for (int i = 0; i < 5; i++) {
-                selectionKeysWasPressed[i] = false;
-            }
-        }
-
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
+            gamePanel.toggleInventory();
+        }
+
+        if (gamePanel.isInventoryVisible()) {
+            for (int i = 0; i < 5; i++) {
+                int keyCode = KeyEvent.VK_1 + i;
+
+                if (keyHandler.isJustKeyPressed(keyCode)) {
+                    activeAlien.setSelectedItemIndex(i);
+                }
+            }
+        }
+
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
             activeAlien.jump();
         }
 
@@ -172,8 +149,7 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-
-        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
             Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
             gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
         }
@@ -215,7 +191,7 @@ public class GameController {
         running = false;
         if (gameThread != null) {
             try {
-                gameThread.join(1000);
+                gameThread.join(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

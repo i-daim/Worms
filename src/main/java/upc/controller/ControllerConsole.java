@@ -54,15 +54,10 @@
 
                 case "sauter":
                     gameManager.getActiveAlien().jump();
-
-                    //System.out.println("⏳ Le worm saute...");
-                    //for (int i = 0; i < 120; i++) {
-                    //    gameManager.update(1.0 / 60.0);
-                    //}
-
                     view.printJumpResult(true, gameManager);
-                    gameManager.skipTurn();
+                    skipTurn();
                     break;
+
 
                 case "attaquer":
                     int damage = view.chooseDamage();

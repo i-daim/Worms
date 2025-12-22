@@ -13,19 +13,19 @@ public class SpriteManager {
 
     static {
         SpriteManager.load("Bazooka", "/Items/Bazooka.png");
-        SpriteManager.load("Uzi", "Items/Uzi.png");
-        SpriteManager.load("Shotgun", "Items/Shotgun.png");
-        SpriteManager.load("Grenade", "Items/Grenade.png");
-        SpriteManager.load("Mine", "Items/Mine.png");
+        SpriteManager.load("Uzi", "/Items/Uzi.png");
+        SpriteManager.load("Shotgun", "/Items/Shotgun.png");
+        SpriteManager.load("Grenade", "/Items/Grenade.png");
+        SpriteManager.load("Mine", "/Items/Mine.png");
 
-        SpriteManager.load("Bazooka_Inv", "Items/Bazooka_Inv.png");
-        SpriteManager.load("Uzi_Inv", "Items/Uzi_Inv.png");
-        SpriteManager.load("Shotgun_Inv", "Items/Shotgun_Inv.png");
-        SpriteManager.load("Grenade_Inv", "Items/Grenade_Inv.png");
-        SpriteManager.load("Mine_Inv", "Items/Mine_Inv.png");
+        SpriteManager.load("Bazooka_Inv", "/Items/Bazooka_Inv.png");
+        SpriteManager.load("Uzi_Inv", "/Items/Uzi_Inv.png");
+        SpriteManager.load("Shotgun_Inv", "/Items/Shotgun_Inv.png");
+        SpriteManager.load("Grenade_Inv", "/Items/Grenade_Inv.png");
+        SpriteManager.load("Mine_Inv", "/Items/Mine_Inv.png");
 
-        SpriteManager.load("Bullet", "Items/Bullet.png");
-        SpriteManager.load("MiniBullet", "Items/MiniBullet.png");
+        SpriteManager.load("Bullet", "/Items/Bullet.png");
+        SpriteManager.load("MiniBullet", "/Items/MiniBullet.png");
     }
 
     public static void load(String name, String path) {

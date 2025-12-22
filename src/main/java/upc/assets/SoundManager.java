@@ -19,6 +19,14 @@ public class SoundManager {
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
 
+        EFFECTS.put("Explosion", loadEffect("explosion"));
+        EFFECTS.put("Bazooka", loadEffect("bazooka"));
+        EFFECTS.put("Rocket", loadEffect("rocket"));
+        EFFECTS.put("Shotgun", loadEffect("shotgun"));
+        EFFECTS.put("Uzi", loadEffect("uzi"));
+        EFFECTS.put("Mine", loadEffect("mine_deploy"));
+
+
     }
 
 ////    GETTERS POUR LES SONS    ////

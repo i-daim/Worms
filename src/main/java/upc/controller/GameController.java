@@ -14,7 +14,10 @@ import upc.view.gui.GamePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -35,6 +38,7 @@ public class GameController {
     private boolean iKeyWasPressed = false;
     private boolean[] selectionKeysWasPressed = new boolean[5];
 
+    //Varible pour la gestion manuelle de la sauvegarde (pour éviter la répétition)
     private boolean f5WasPressed = false;
 
     private volatile boolean running = true;
@@ -285,6 +289,16 @@ public class GameController {
         //Récupère la map sauvegardée
         SaveMap saveMap = new SaveMap();
         Terrain terrain = saveMap.loadMap();
+
+        String cheminBackground = "/resources/maps/" + terrain.getMapName() + "_background.png";
+        BufferedImage imageBackground = ImageIO.read(Objects.requireNonNull(
+                getClass().getResource(cheminBackground)));
+        terrain.setBackground(imageBackground);
+
+        String cheminImage = "/resources/maps/" + terrain.getMapName() + ".png";
+        BufferedImage image = ImageIO.read(Objects.requireNonNull(
+                getClass().getResource(cheminImage)));
+        terrain.setImage(image);
 
         //Récupère les équipes sauvegardées
         SaveTeam saveTeam = new SaveTeam();

@@ -2,11 +2,13 @@
 
     import upc.model.entites.Alien;
     import upc.model.jeu.GameManager;
+    import upc.view.console.ConsoleView;
     import upc.view.console.LanternaView;
 
     public class ControllerConsole {
         private final GameManager gameManager;
-        private final LanternaView vue;
+        private final ConsoleView view; // <-- Ici
+
         private boolean enCours;
 
         public ControllerConsole() {

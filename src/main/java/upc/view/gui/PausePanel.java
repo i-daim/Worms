@@ -7,6 +7,11 @@ import java.awt.Graphics2D;
 
 public class PausePanel extends JPanel {
 
+    private int menuX = (int) (20 * GamePanel.ZOOM);
+    private int menuY = (int) (15 * GamePanel.ZOOM);
+    private int menuWidth = (int) (250 * GamePanel.ZOOM);
+    private int menuHeight = (int) ((GamePanel.DEFAULT_HEIGHT - 300) * GamePanel.ZOOM);
+
     public PausePanel() {
         this.setBounds(0, 0, GamePanel.DEFAULT_WIDTH, GamePanel.DEFAULT_HEIGHT);
         this.setOpaque(false);
@@ -20,19 +25,11 @@ public class PausePanel extends JPanel {
         g2.setColor(new Color(0, 0, 0, 200));
         g2.fillRect(0, 0, getWidth(), getHeight());
 
-        drawMenu(g2);
-    }
-
-    private void drawMenu(Graphics2D g2) {
-        int width = (int) (250 * GamePanel.ZOOM);
-        int height = (int) ((GamePanel.DEFAULT_HEIGHT - 300) * GamePanel.ZOOM);
-
-        int x = (int) (20 * GamePanel.ZOOM);
-        int y = (int) (15 * GamePanel.ZOOM);
-
         g2.setColor(new Color(250, 250, 250, 100));
-        g2.fillRect(x, y, width + 10, height + 10);
+        g2.fillRect(menuX, menuY, menuWidth + 10, menuHeight + 10);
         g2.setColor(new Color(0, 0, 0, 150));
-        g2.fillRect(x + 5, y + 5, width, height);
+        g2.fillRect(menuX + 5, menuY + 5, menuWidth, menuHeight);
     }
+
+
 }

@@ -260,8 +260,7 @@ public class GameController {
         //Crée un objet saveInventory
         //Sauvegarde des inventaires des équipes dans 2 fichier dédiés
         SaveInventory saveInventory = new SaveInventory();
-        saveInventory.saveInventory(gameManager.getActiveTeam().getInventory());
-        saveInventory.saveInventory(gameManager.getEnnemyTeam().getInventory());
+        saveInventory.saveInventory(gameManager.getTeams()[0].getInventory(), gameManager.getTeams()[1].getInventory() );
     }
 
     public void loadGame() throws IOException {

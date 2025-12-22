@@ -24,7 +24,7 @@ public class GameController {
     private static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
-    private volatile boolean paused = false;
+    private boolean paused = false;
     private Thread gameThread;
 
     // Constructeur //
@@ -43,17 +43,15 @@ public class GameController {
 
         PausePanel pausePanel = gamePanel.getPausePanel();
         pausePanel.getResumeButton().addActionListener(e -> {
-            setPaused(false);
+            gamePanel.togglePauseMenu(false);
             gamePanel.requestFocusInWindow();
         });
 
-        pausePanel.getQuitButton().addActionListener(e -> {
-            System.exit(0);
-        });
+        pausePanel.getQuitButton().addActionListener(e -> System.exit(0));
     }
 
 
-    ////    GESTION DE LA BOUCLE DU JEU    ////
+////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -87,21 +85,17 @@ public class GameController {
 
     private void update() {
         handlePause();
-
         if (paused) {
             return;
         }
 
-        // Gestion de la caméra à travers mouseHandler
         handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier et de l'inventaire
         handleControls();
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             gamePanel.centralizeCamera(activeAlien);
         }
-
         gameManager.update(1.0 / 60.0);
 
         if (gameManager.isOver()) {
@@ -119,7 +113,7 @@ public class GameController {
     }
 
 
-    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
@@ -203,7 +197,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    ////    ARRET DU JEU    ////
+////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
             paused = !paused;

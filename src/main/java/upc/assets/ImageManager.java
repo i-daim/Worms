@@ -12,7 +12,7 @@ public class ImageManager {
     private static final Map<String, BufferedImage> SPRITES = new HashMap<>();
 
     static {
-        SpriteManager.load("Bazooka", "/Items/Bazooka2.png");
+        ImageManager.load("Bazooka", "/Items/Bazooka2.png");
     }
 
     public static void load(String name, String path) {

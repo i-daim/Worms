@@ -1,6 +1,5 @@
 package upc.model.jeu;
 
-import upc.assets.ImageManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;

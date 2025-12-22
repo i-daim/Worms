@@ -35,10 +35,6 @@ public class Sound {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public static void playSound(String name) {
-        new Sound("/sounds/" + name + ".wav").play();
-    }
-
     public void setVolume(float volume) {
         FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         if (volumeControl != null) {

@@ -19,35 +19,36 @@
 
 
         public void start() {
-            vue.printTerrain(gameManager);
+            view.printTerrain(gameManager);
 
             // Afficher l'état après la chute
-            vue.printStateAfterFall(gameManager);
+            view.printStateAfterFall(gameManager);
 
             while (enCours && !gameManager.isOver()) {
-                vue.printGameState(gameManager);
-                String command = vue.readKey();
-                traiterCommande(command, gameManager);
+                view.printGameState(gameManager); // 1. Afficher
+                String command = view.readKey();  // 2. Lire
+                traiterCommande(command);         // 3. Agir
             }
+
 
             if (gameManager.isOver()) {
-                vue.printGameOver(gameManager);
+                view.printGameOver(gameManager);
             }
 
-            vue.close();
+            view.close();
         }
 
         private void traiterCommande(String command, GameManager gameManager) {
             switch (command) {
                 case "gauche":
                     gameManager.getActiveAlien().moveLeft();
-                    vue.printMovementResult(true, "gauche", gameManager);
+                    view.printMovementResult(true, "gauche", gameManager);
                     gameManager.skipTurn();
                     break;
 
                 case "droite":
                     gameManager.getActiveAlien().moveRight();
-                    vue.printMovementResult(true, "droite", gameManager);
+                    view.printMovementResult(true, "droite", gameManager);
                     gameManager.skipTurn();
                     break;
 
@@ -59,19 +60,19 @@
                     //    gameManager.update(1.0 / 60.0);
                     //}
 
-                    vue.printJumpResult(true, gameManager);
+                    view.printJumpResult(true, gameManager);
                     gameManager.skipTurn();
                     break;
 
                 case "attaquer":
-                    int damage = vue.chooseDamage();
-                    int x = vue.chooseX();
-                    int y = vue.chooseY();
+                    int damage = view.chooseDamage();
+                    int x = view.chooseX();
+                    int y = view.chooseY();
 
                     Alien target = gameManager.attackPosition(x, y, damage);
-                    vue.printAttackResult(target, x, y, gameManager.getActiveTeam());
+                    view.printAttackResult(target, x, y, gameManager.getActiveTeam());
                     gameManager.skipTurn();
-                    vue.printTurnSkipped();
+                    view.printTurnSkipped();
 
                     if (target != null) {
                         gameManager.skipTurn();
@@ -80,29 +81,29 @@
 
                 case "passer":
                     gameManager.skipTurn();
-                    vue.printTurnSkipped();
+                    view.printTurnSkipped();
                     break;
 
                 case "info" :
-                    vue.printWelcome();
+                    view.printWelcome();
                     break;
 
                 case "aliens":
-                    vue.printAliensStats(gameManager);
+                    view.printAliensStats(gameManager);
                     break;
 
                 case "map":
-                    vue.printTerrain(gameManager);
-                    vue.printGameState(gameManager);
+                    view.printTerrain(gameManager);
+                    view.printGameState(gameManager);
                     break;
 
                 case "exit":
                     enCours = false;
-                    vue.printGameAbandoned();
+                    view.printGameAbandoned();
                     break;
 
                 case null:
-                    vue.printUnknownCommand();
+                    view.printUnknownCommand();
                     break;
 
                 default:

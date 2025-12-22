@@ -110,6 +110,13 @@
                     break;
             }
         }
+
+        private void skipTurn() {
+            gameManager.skipTurn();
+            view.printTurnSkipped();
+            wait(1000);
+        }
+
         private void wait (int ms) {
             try { Thread.sleep(ms); } catch (InterruptedException e) {}
         }

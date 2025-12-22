@@ -129,7 +129,6 @@ public class GameController {
         }
         iKeyWasPressed = iIsPressed;
 
-
         if (inventoryVisible) {
             for (int i = 0; i < 5; i++) {
                 int keyCode = KeyEvent.VK_1 + i;
@@ -260,7 +259,8 @@ public class GameController {
         //Crée un objet saveInventory
         //Sauvegarde des inventaires des équipes dans 2 fichier dédiés
         SaveInventory saveInventory = new SaveInventory();
-        saveInventory.saveInventory(gameManager.getTeams()[0].getInventory(), gameManager.getTeams()[1].getInventory() );
+        saveInventory.saveInventory(gameManager.getTeams()[0].getInventory(),
+                gameManager.getTeams()[1].getInventory());
     }
 
     /*Méthode permettant de charger la sauvegarde du jeu*/

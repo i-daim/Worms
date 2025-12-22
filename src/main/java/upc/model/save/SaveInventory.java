@@ -13,14 +13,14 @@ public class SaveInventory {
     private final Gson gson = new Gson();
 
     /*Méthode permettant la sauvegarde d'un objet inventaire*/
-    public void saveInventory(Inventory zlerpsinventaire, Inventory glorbsinventaire ) throws IOException {
+    public void saveInventory(Inventory zlinventory, Inventory glinventory) throws IOException {
 
         //Permet de créer le fichier de sauvegarde de type Json
         try (FileWriter file = new FileWriter("ZlerpsInventory.json")) {
 
             //Conversion de l'objet inventaire pour l'équipe zlerps en json
             // Et implémentation dans le fichier sauvegarde dédié
-            gson.toJson(zlerpsinventaire, file);
+            gson.toJson(zlinventory, file);
         }
 
         //Permet de créer le fichier de sauvegarde de type Json
@@ -28,7 +28,7 @@ public class SaveInventory {
 
             //Conversion de l'objet inventaire pour l'équipe glorbs en json
             // Et implémentation dans le fichier sauvegarde dédié
-            gson.toJson(glorbsinventaire, file);
+            gson.toJson(glinventory, file);
         }
     }
 

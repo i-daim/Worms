@@ -7,24 +7,15 @@ import upc.model.jeu.Terrain;
 
 import java.util.Scanner;
 
-/**
- * Vue console pour Worms (Glorb26).
- * Gère l'affichage bufferisé et les entrées utilisateur.
- */
 public class ConsoleView {
     private final Scanner scanner;
-
-    // Taille de la fenêtre de jeu
-    private static final int MAX_WIDTH = 60;
-    private static final int MAX_HEIGHT = 25;
+    private static final int MAX_WIDTH = 120;
+    private static final int MAX_HEIGHT = 40;
 
     public ConsoleView() {
         this.scanner = new Scanner(System.in);
     }
 
-    /**
-     * Nettoie l'écran.
-     */
     public void clearScreen() {
         System.out.println("\n".repeat(2));
     }
@@ -69,42 +60,61 @@ public class ConsoleView {
     }
 
     public void printTerrain(GameManager gameManager) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n🗺️  CARTE (EAU Y=").append(Terrain.getWaterLevel()).append("):\n");
-
-        sb.append("╔").append("═".repeat(MAX_WIDTH)).append("╗\n");
-
         Terrain terrain = gameManager.getTerrain();
-        int height = Math.min(terrain.getCollisionsHeight(), MAX_HEIGHT);
-        int width = Math.min(terrain.getCollisionsWidth(), MAX_WIDTH);
+        int realWidth = terrain.getCollisionsWidth();
+        int realHeight = terrain.getCollisionsHeight();
 
-        for (int y = 0; y < height; y++) {
-            sb.append("║");
-            for (int x = 0; x < width; x++) {
-                sb.append(calculateTileChar(x, y, gameManager));
+        int stepX = (int) Math.ceil((double) realWidth / MAX_WIDTH);
+        int stepY = (int) Math.ceil((double) realHeight / MAX_HEIGHT);
+        int step = Math.max(1, Math.max(stepX, stepY));
+
+        System.out.println("\n🗺️  VUE GLOBALE (1 car = " + step + "x" + step + " px) :");
+
+        System.out.println("+" + "-".repeat(realWidth / step) + "+");
+
+        for (int y = 0; y < realHeight; y += step) {
+            System.out.print("|");
+            for (int x = 0; x < realWidth; x += step) {
+                char symbol = getSymbolForArea(x, y, step, gameManager);
+                System.out.print(symbol);
             }
-            sb.append("║\n");
+            System.out.println("|");
         }
-        sb.append("╚").append("═".repeat(MAX_WIDTH)).append("╝\n");
 
-        System.out.println(sb.toString());
+        System.out.println("+" + "-".repeat(realWidth / step) + "+");
     }
 
-    private char calculateTileChar(int x, int y, GameManager gm) {
-        Alien w = gm.getAlienAtPosition(x, y);
-        if (w != null && w.isAlive()) {
-            return 'Ω';
+    private char getSymbolForArea(int startX, int startY, int step, GameManager gm) {
+        for (Team t : gm.getTeams()) {
+            for (Alien a : t.getAliens()) {
+                if (a != null && a.isAlive()) {
+                    int ax = a.getPosition().getX();
+                    int ay = a.getPosition().getY();
+                    if (ax >= startX && ax < startX + step && ay >= startY && ay < startY + step) {
+                        return (a == gm.getActiveAlien()) ? '@' : 'W';
+                    }
+                }
+            }
         }
-        if (gm.getTerrain().isCollision(x, y)) {
-            return '█';
-        }
-        if (gm.getTerrain().isWater(y)) {
-            return '≈';
-        }
-        return '░';
-    }
 
-    // --- Méthodes d'entrée ---
+        int centerX = startX + step / 2;
+        int centerY = startY + step / 2;
+        Terrain terrain = gm.getTerrain();
+
+        if (centerX >= terrain.getCollisionsWidth() || centerY >= terrain.getCollisionsHeight()) {
+            return ' ';
+        }
+
+        if (terrain.isWater(centerY)) {
+            return '~';
+        }
+
+        if (terrain.isCollision(centerX, centerY)) {
+            return '#';
+        }
+
+        return ' ';
+    }
 
     public int requestInteger(String message) {
         System.out.print(message);
@@ -121,7 +131,6 @@ public class ConsoleView {
         return readKey();
     }
 
-    // Méthode manquante rajoutée ici
     public String readKey() {
         System.out.print("\n💬 ORDRE > ");
         if (scanner.hasNextLine()) {
@@ -134,41 +143,29 @@ public class ConsoleView {
         scanner.close();
     }
 
-    // --- Méthodes "Mock" (Signatures corrigées) ---
+    public void printMovementResult(boolean b, String s, GameManager g) {}
 
-    public void printMovementResult(boolean b, String s, GameManager g) {
-        // Mock
-    }
+    public void printJumpResult(boolean b, GameManager g) {}
 
-    public void printJumpResult(boolean b, GameManager g) {
-        // Mock
-    }
-
-    public void printAttackResult(Alien t, int x, int y, Team tm) {
-        // Mock
-    }
+    public void printAttackResult(Alien t, int x, int y, Team tm) {}
 
     public void printTurnSkipped() {
-        // Mock
+        System.out.println("⏭️ Tour passé.");
     }
 
     public void printGameAbandoned() {
-        // Mock
+        System.out.println("❌ Partie abandonnée.");
     }
 
     public void printUnknownCommand() {
-        // Mock
+        System.out.println("❓ Commande inconnue.");
     }
 
-    public void printAliensStats(GameManager g) {
-        // Mock
-    }
+    public void printAliensStats(GameManager g) {}
 
-    public void printStateAfterFall(GameManager g) {
-        // Mock
-    }
+    public void printStateAfterFall(GameManager g) {}
 
     public void printGameOver(GameManager g) {
-        // Mock
+        System.out.println("\n🏁 PARTIE TERMINÉE !");
     }
 }

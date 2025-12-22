@@ -143,11 +143,14 @@ public class ConsoleView {
         scanner.close();
     }
 
-    public void printMovementResult(boolean b, String s, GameManager g) {}
+    public void printMovementResult(boolean b, String s, GameManager g) {
+    }
 
-    public void printJumpResult(boolean b, GameManager g) {}
+    public void printJumpResult(boolean b, GameManager g) {
+    }
 
-    public void printAttackResult(Alien t, int x, int y, Team tm) {}
+    public void printAttackResult(Alien t, int x, int y, Team tm) {
+    }
 
     public void printTurnSkipped() {
         System.out.println("⏭️ Tour passé.");
@@ -161,9 +164,11 @@ public class ConsoleView {
         System.out.println("❓ Commande inconnue.");
     }
 
-    public void printAliensStats(GameManager g) {}
+    public void printAliensStats(GameManager g) {
+    }
 
-    public void printStateAfterFall(GameManager g) {}
+    public void printStateAfterFall(GameManager g) {
+    }
 
     public void printGameOver(GameManager g) {
         System.out.println("\n🏁 PARTIE TERMINÉE !");

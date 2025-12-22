@@ -1,6 +1,7 @@
 package upc.view.gui;
 
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,10 +13,18 @@ public class PausePanel extends JPanel {
     private int menuWidth = (int) (250 * GamePanel.ZOOM);
     private int menuHeight = (int) ((GamePanel.DEFAULT_HEIGHT - 300) * GamePanel.ZOOM);
 
+    private final JButton resumeButton;
+    private final JButton quitButton;
+
     public PausePanel() {
-        this.setBounds(0, 0, GamePanel.DEFAULT_WIDTH, GamePanel.DEFAULT_HEIGHT);
+        this.setLayout(null);
         this.setOpaque(false);
         this.setVisible(false);
+
+        resumeButton = MenuPanel.createGameButton("Continue");
+        quitButton = MenuPanel.createGameButton("Quit Game");
+
+
     }
 
     @Override
@@ -31,5 +40,12 @@ public class PausePanel extends JPanel {
         g2.fillRect(menuX + 5, menuY + 5, menuWidth, menuHeight);
     }
 
+    public JButton getResumeButton() {
+        return resumeButton;
+    }
+
+    public JButton getQuitButton() {
+        return quitButton;
+    }
 
 }

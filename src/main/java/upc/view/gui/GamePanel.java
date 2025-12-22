@@ -31,12 +31,15 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
+    public static final int DEFAULT_HEIGHT = 720;
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final double ZOOM = 1.5 * SCREEN_WIDTH / DEFAULT_WIDTH;
 
     private final GameManager gameManager;
     private final Terrain terrain;
     private final HUDPanel hudPanel;
+    private final PausePanel pausePanel;
+
     private int cameraX = 0;
     private int cameraY = 0;
 
@@ -50,6 +53,10 @@ public class GamePanel extends JPanel {
         this.gameManager = gameManager;
         this.terrain = gameManager.getTerrain();
         this.hudPanel = new HUDPanel(gameManager);
+        this.pausePanel = new PausePanel();
+
+        this.setLayout(null); // Important pour superposer les panels
+        this.add(pausePanel); // Ajout du panel de pause
 
         activeAnimations = gameManager.getActiveAnimations();
         this.setDoubleBuffered(true);
@@ -268,6 +275,16 @@ public class GamePanel extends JPanel {
 
 
 ////    AUTRES METHODES    ////
+    public void togglePauseMenu(boolean paused) {
+        pausePanel.setVisible(paused);
+        if (paused) {
+            // Assure que le panel de pause couvre tout l'écran et est au premier plan
+            pausePanel.setBounds(0, 0, getWidth(), getHeight());
+            setComponentZOrder(pausePanel, 0);
+            pausePanel.repaint();
+        }
+    }
+
     public Point screenToWorld(Point screenPoint) {
         double worldX = (screenPoint.x / ZOOM) + cameraX;
         double worldY = (screenPoint.y / ZOOM) + cameraY;

@@ -21,13 +21,6 @@
         public void start() {
             vue.printTerrain(gameManager);
 
-            // Faire tomber les worms
-            System.out.println("\n⏳ Les worms tombent...\n");
-
-            //for (int i = 0; i < 180; i++) {
-                //gameManager.update(1.0 / 60.0);
-            //}
-
             // Afficher l'état après la chute
             vue.printStateAfterFall(gameManager);
 

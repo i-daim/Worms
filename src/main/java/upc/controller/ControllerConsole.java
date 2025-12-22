@@ -20,7 +20,7 @@ public class ControllerConsole {
 
         while (enCours && !gameManager.isOver()) {
             view.printGameState(gameManager);
-            String command = view.requestCommand();
+            String command = view.requestCommand(gameManager);
             requestCommand(command);
         }
 
@@ -36,21 +36,18 @@ public class ControllerConsole {
         switch (command) {
             case "gauche":
                 gameManager.getActiveAlien().moveLeft();
-                // Ajout de gameManager en 3ème argument
                 view.printMovementResult(true, "gauche", gameManager);
                 skipTurn();
                 break;
 
             case "droite":
                 gameManager.getActiveAlien().moveRight();
-                // Ajout de gameManager en 3ème argument
                 view.printMovementResult(true, "droite", gameManager);
                 skipTurn();
                 break;
 
             case "sauter":
                 gameManager.getActiveAlien().jump();
-                // Ajout de gameManager en 2ème argument
                 view.printJumpResult(true, gameManager);
                 skipTurn();
                 break;
@@ -96,7 +93,6 @@ public class ControllerConsole {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            // Ignorer
         }
     }
 }

@@ -33,13 +33,21 @@ public class SaveInventory {
     }
 
     /*Méthode permettant de charger l'objet inventaire*/
-    public Inventory loadInventory() throws IOException {
+    public Inventory[] loadInventory() throws IOException {
 
+        Inventory[] equipesinventaire = new Inventory[2];
         //Appel du fichier de sauvegarde de l'objet inventaire
-        try (FileReader file = new FileReader("saveInventory.json")) {
+        try (FileReader file = new FileReader("ZlerpsInventory.json")) {
 
             //Reconversion de l'objet au format initial
-            return gson.fromJson(file, Inventory.class);
+            equipesinventaire[0] = gson.fromJson(file, Inventory.class);
         }
+
+        try (FileReader file = new FileReader("GlorbsInventory.json")) {
+
+            equipesinventaire[1] = gson.fromJson(file, Inventory.class);
+        }
+
+        return equipesinventaire;
     }
 }

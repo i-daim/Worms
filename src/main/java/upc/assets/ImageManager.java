@@ -12,20 +12,20 @@ public class ImageManager {
     private static final Map<String, BufferedImage> SPRITES = new HashMap<>();
 
     static {
-        SpriteManager.load("Bazooka", "/Items/Bazooka.png");
-        SpriteManager.load("Uzi", "/Items/Uzi.png");
-        SpriteManager.load("Shotgun", "/Items/Shotgun.png");
-        SpriteManager.load("Grenade", "/Items/Grenade.png");
-        SpriteManager.load("Mine", "/Items/Mine.png");
+        ImageManager.load("Bazooka", "/Items/Bazooka.png");
+        ImageManager.load("Uzi", "/Items/Uzi.png");
+        ImageManager.load("Shotgun", "/Items/Shotgun.png");
+        ImageManager.load("Grenade", "/Items/Grenade.png");
+        ImageManager.load("Mine", "/Items/Mine.png");
 
-        SpriteManager.load("Bazooka_Inv", "/Items/Bazooka_Inv.png");
-        SpriteManager.load("Uzi_Inv", "/Items/Uzi_Inv.png");
-        SpriteManager.load("Shotgun_Inv", "/Items/Shotgun_Inv.png");
-        SpriteManager.load("Grenade_Inv", "/Items/Grenade_Inv.png");
-        SpriteManager.load("Mine_Inv", "/Items/Mine_Inv.png");
+        ImageManager.load("Bazooka_Inv", "/Items/Bazooka_Inv.png");
+        ImageManager.load("Uzi_Inv", "/Items/Uzi_Inv.png");
+        ImageManager.load("Shotgun_Inv", "/Items/Shotgun_Inv.png");
+        ImageManager.load("Grenade_Inv", "/Items/Grenade_Inv.png");
+        ImageManager.load("Mine_Inv", "/Items/Mine_Inv.png");
 
-        SpriteManager.load("Bullet", "/Items/Bullet.png");
-        SpriteManager.load("MiniBullet", "/Items/MiniBullet.png");
+        ImageManager.load("Bullet", "/Items/Bullet.png");
+        ImageManager.load("MiniBullet", "/Items/MiniBullet.png");
     }
 
     public static void load(String name, String path) {

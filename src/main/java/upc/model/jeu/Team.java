@@ -85,6 +85,9 @@ public class Team {
         return null;
     }
 
+    /**
+     * Modifie l'inventaire d'une équipe.
+     */
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }

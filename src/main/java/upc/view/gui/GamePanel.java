@@ -9,7 +9,7 @@ import upc.model.entites.Entity;
 import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
-import upc.assets.SpriteManager;
+import upc.assets.ImageManager;
 import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
 import upc.model.entites.projectiles.Projectile;
@@ -183,7 +183,7 @@ public class GamePanel extends JPanel {
                                 int posX, int posY) {
         Item currentItem = alien.getEquippedItem();
 
-        BufferedImage weaponImage = SpriteManager.get(currentItem.getName());
+        BufferedImage weaponImage = ImageManager.get(currentItem.getName());
 
         if (weaponImage != null) {
             AffineTransform oldTransform = g2.getTransform();
@@ -223,7 +223,18 @@ public class GamePanel extends JPanel {
                 if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
                     int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
                     BufferedImage frame = rocketAnim.getFrames().get(frameIndex);
-                    g2.drawImage(frame, x - frame.getWidth() / 2, y - frame.getHeight() / 2, null);
+                    AffineTransform oldTransform = g2.getTransform();
+                    double angle = 0;
+                    if (p.getBody() != null) {
+                        org.dyn4j.geometry.Vector2 velocity = p.getBody().getLinearVelocity();
+                        angle = Math.atan2(velocity.y, velocity.x);
+                    } else {
+                        angle = Math.toRadians(p.getShooter().getAimAngle());
+                    }
+                    g2.translate(x, y);
+                    g2.rotate(angle);
+                    g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2, null);
+                    g2.setTransform(oldTransform);
                 } else {
                     g2.setColor(Color.ORANGE);
                     g2.fillOval(x - 5, y - 5, 10, 10);

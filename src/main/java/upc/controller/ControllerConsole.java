@@ -80,6 +80,7 @@
 
                 case "aliens":
                     view.printAliensStats(gameManager);
+                    wait(2000);
                     break;
 
                 case "map":
@@ -97,6 +98,8 @@
                     break;
 
                 default:
+                    view.printUnknownCommand();
+                    wait(1000);
                     break;
             }
         }

@@ -1,6 +1,7 @@
 package upc.view.gui;
 
 import upc.assets.Sound;
+import upc.assets.SoundManager;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -21,7 +22,7 @@ import java.awt.Font;
 public class MenuPanel extends JPanel {
     private final JButton settingsButton = createGameButton("Settings");
 
-    private final Sound menuMusic = new Sound("/sounds/menu.wav");
+    private final Sound menuMusic = SoundManager.getMusic("Menu Theme");
 
     private Image background;
     private final JButton newGame = createGameButton("New Game");

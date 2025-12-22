@@ -4,6 +4,7 @@ import upc.assets.Animation;
 import upc.assets.AnimationManager;
 import upc.assets.ActiveAnimation;
 import upc.assets.Sound;
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Entity;
 import upc.model.items.Item;
@@ -43,8 +44,7 @@ public class GamePanel extends JPanel {
     private boolean inventoryVisible = false;
 
     private List<ActiveAnimation> activeAnimations;
-
-    private final Sound gameMusic = new Sound("/sounds/game_music.wav");
+    private Sound gameMusic;
 
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -53,6 +53,8 @@ public class GamePanel extends JPanel {
 
         activeAnimations = gameManager.getActiveAnimations();
         this.setDoubleBuffered(true);
+
+        gameMusic = SoundManager.getMusic("Game Theme");
         gameMusic.loop();
     }
 

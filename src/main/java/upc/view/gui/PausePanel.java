@@ -24,7 +24,7 @@ public class PausePanel extends JPanel {
         resumeButton = MenuPanel.createGameButton("Continue");
         quitButton = MenuPanel.createGameButton("Quit Game");
 
-
+        initButtons();
     }
 
     @Override
@@ -39,6 +39,23 @@ public class PausePanel extends JPanel {
         g2.setColor(new Color(0, 0, 0, 150));
         g2.fillRect(menuX + 5, menuY + 5, menuWidth, menuHeight);
     }
+
+    private void initButtons() {
+        int btnWidth = (int) (200 * GamePanel.ZOOM);
+        int btnHeight = (int) (50 * GamePanel.ZOOM);
+
+        // Pour centrer et espacer les boutons
+        int btnX = menuX + (menuWidth - btnWidth) / 2 + 5;
+        int btnY = menuY + 50;
+        int gap = (int) (20 * GamePanel.ZOOM);
+
+        resumeButton.setBounds(btnX, btnY, btnWidth, btnHeight);
+        quitButton.setBounds(btnX, btnY + btnHeight + gap, btnWidth, btnHeight);
+
+        this.add(resumeButton);
+        this.add(quitButton);
+    }
+
 
     public JButton getResumeButton() {
         return resumeButton;

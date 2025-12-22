@@ -8,7 +8,7 @@ import java.io.IOException;
 
 
 
-public class SpriteManager {
+public class ImageManager {
     private static final Map<String, BufferedImage> SPRITES = new HashMap<>();
 
     static {
@@ -30,7 +30,7 @@ public class SpriteManager {
 
     public static void load(String name, String path) {
         try {
-            var url = SpriteManager.class.getResource(path);
+            var url = ImageManager.class.getResource(path);
             if (url != null) {
                 SPRITES.put(name, ImageIO.read(url));
             } else {

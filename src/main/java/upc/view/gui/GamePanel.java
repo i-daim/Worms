@@ -344,4 +344,8 @@ public class GamePanel extends JPanel {
     public void stopMusic() {
         gameMusic.stop();
     }
+
+    public PausePanel getPausePanel() {
+        return pausePanel;
+    }
 }

@@ -1,11 +1,11 @@
 package upc.controller;
+
 import upc.model.jeu.Team;
-
-
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
+import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -24,7 +24,7 @@ public class GameController {
     private static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
-    private boolean paused = false;
+    private volatile boolean paused = false;
     private Thread gameThread;
 
     // Constructeur //
@@ -40,6 +40,16 @@ public class GameController {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
         gamePanel.setFocusable(true);
+
+        PausePanel pausePanel = gamePanel.getPausePanel();
+        pausePanel.getResumeButton().addActionListener(e -> {
+            setPaused(false);
+            gamePanel.requestFocusInWindow();
+        });
+
+        pausePanel.getQuitButton().addActionListener(e -> {
+            System.exit(0);
+        });
     }
 
 

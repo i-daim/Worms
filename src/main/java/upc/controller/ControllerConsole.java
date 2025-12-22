@@ -60,19 +60,14 @@
 
 
                 case "attaquer":
-                    int damage = view.chooseDamage();
+                    int degats = view.chooseDamage();
                     int x = view.chooseX();
                     int y = view.chooseY();
-
-                    Alien target = gameManager.attackPosition(x, y, damage);
-                    view.printAttackResult(target, x, y, gameManager.getActiveTeam());
-                    gameManager.skipTurn();
-                    view.printTurnSkipped();
-
-                    if (target != null) {
-                        gameManager.skipTurn();
-                    }
+                    Alien cible = gameManager.attackPosition(x, y, degats);
+                    view.printAttackResult(cible, x, y, gameManager.getActiveTeam());
+                    skipTurn();
                     break;
+
 
                 case "passer":
                     gameManager.skipTurn();

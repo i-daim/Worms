@@ -24,6 +24,7 @@ public class GameController {
     private static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
+    private boolean paused = false;
     private Thread gameThread;
 
     // Constructeur //
@@ -75,6 +76,12 @@ public class GameController {
     }
 
     private void update() {
+        handlePause();
+
+        if (paused) {
+            return;
+        }
+
         // Gestion de la caméra à travers mouseHandler
         handleCameraScroll(mouseHandler.getPosition());
         // Gestion des touches clavier et de l'inventaire
@@ -187,6 +194,16 @@ public class GameController {
     }
 
     ////    ARRET DU JEU    ////
+    public void handlePause() {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
+            paused = !paused;
+        }
+        gamePanel.togglePauseMenu(paused);
+        if (paused) {
+            keyHandler.clearJustPressed();
+        }
+    }
+
     public void stop() {
         running = false;
         if (gameThread != null) {

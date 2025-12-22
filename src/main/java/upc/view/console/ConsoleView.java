@@ -24,7 +24,8 @@ public class ConsoleView {
         System.out.println("╔══════════════════════════════════════════════════════╗");
         System.out.println("║            BIENVENUE DANS WORMS (GLORB26)            ║");
         System.out.println("╚══════════════════════════════════════════════════════╝");
-        System.out.println("Commandes : gauche, droite, sauter, attaquer, passer, aliens, map, exit\n");
+        System.out.println(
+                "Commandes : gauche, droite, sauter, attaquer, passer, aliens, map, exit\n");
     }
 
     public void printGameState(GameManager gameManager) {
@@ -81,7 +82,6 @@ public class ConsoleView {
         return cmd;
     }
 
-
     private String readKey() {
         System.out.print("\n💬 ORDRE > ");
         if (scanner.hasNextLine()) {
@@ -125,7 +125,8 @@ public class ConsoleView {
                 if (a != null && a.isAlive()) {
                     int ax = a.getPosition().getX();
                     int ay = a.getPosition().getY();
-                    if (ax >= startX && ax < startX + step && ay >= startY && ay < startY + step) {
+                    if (ax >= startX && ax < startX + step
+                            && ay >= startY && ay < startY + step) {
                         return (a == gm.getActiveAlien()) ? '@' : 'W';
                     }
                 }
@@ -136,11 +137,16 @@ public class ConsoleView {
         int centerY = startY + step / 2;
         Terrain terrain = gm.getTerrain();
 
-        if (centerX >= terrain.getCollisionsWidth() || centerY >= terrain.getCollisionsHeight()) {
+        if (centerX >= terrain.getCollisionsWidth()
+                || centerY >= terrain.getCollisionsHeight()) {
             return ' ';
         }
-        if (terrain.isWater(centerY)) return '~';
-        if (terrain.isCollision(centerX, centerY)) return '#';
+        if (terrain.isWater(centerY)) {
+            return '~';
+        }
+        if (terrain.isCollision(centerX, centerY)) {
+            return '#';
+        }
         return ' ';
     }
 
@@ -148,14 +154,33 @@ public class ConsoleView {
         scanner.close();
     }
 
-    public void printMovementResult(boolean b, String s, GameManager g) {}
-    public void printJumpResult(boolean b, GameManager g) {}
-    public void printAttackResult(Alien t, int x, int y, Team tm) {}
-    public void printTurnSkipped() { System.out.println("⏭️ Tour passé."); }
-    public void printGameAbandoned() { System.out.println("❌ Partie abandonnée."); }
-    public void printUnknownCommand() { System.out.println("❓ Commande inconnue."); }
-    public void printAliensStats(GameManager g) {}
-    public void printStateAfterFall(GameManager g) {}
+    public void printMovementResult(boolean b, String s, GameManager g) {
+    }
+
+    public void printJumpResult(boolean b, GameManager g) {
+    }
+
+    public void printAttackResult(Alien t, int x, int y, Team tm) {
+    }
+
+    public void printTurnSkipped() {
+        System.out.println("⏭️ Tour passé.");
+    }
+
+    public void printGameAbandoned() {
+        System.out.println("❌ Partie abandonnée.");
+    }
+
+    public void printUnknownCommand() {
+        System.out.println("❓ Commande inconnue.");
+    }
+
+    public void printAliensStats(GameManager g) {
+    }
+
+    public void printStateAfterFall(GameManager g) {
+    }
+
     public void printGameOver(GameManager g) {
         System.out.println("\n🏁 PARTIE TERMINÉE !");
     }

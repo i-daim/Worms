@@ -183,22 +183,10 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
-
-            if (body.getLinearVelocity().getMagnitude() < 0.5 && proj.getFrameCount() > 10) {
-                if (proj.isExplosive()) {
-                    proj.setState(Projectile.State.EXPLODED);
-                } else {
-                    world.removeBody(body);
-                    iterator.remove();
-                    continue;
-                }
-            }
-
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
-                continue;
             }
         }
     }
@@ -229,7 +217,6 @@ public class ProjectilePhysics {
         int radius = proj.getExplosionRadius();
         int damage = proj.getDamage();
 
-        Terrain terrain = physicsEngine.getTerrain();
         int pixelRadius = radius * 8;
         physicsEngine.getGameWorld().explode(
                 explosionX, explosionY, pixelRadius, 0

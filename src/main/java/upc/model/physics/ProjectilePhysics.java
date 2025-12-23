@@ -146,6 +146,7 @@ public class ProjectilePhysics {
      *
      * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
      */
+
     public void updateProjectiles(Terrain terrain) {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
@@ -154,7 +155,6 @@ public class ProjectilePhysics {
             Body body = proj.getBody();
 
             if (body == null) {
-                System.out.println("Projectile sans body !");
                 iterator.remove();
                 continue;
             }
@@ -166,6 +166,14 @@ public class ProjectilePhysics {
             int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
 
+            if (proj instanceof Throwable) {
+                Throwable t = (Throwable) proj;
+                t.decrementTimer();
+                if (t.isReadyToExplode()) {
+                    proj.setState(Projectile.State.EXPLODED);
+                }
+            }
+
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
 
@@ -175,12 +183,7 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
-            if (proj.getState() == Projectile.State.EXPLODED) {
-                explodeProjectile(proj);
-                world.removeBody(body);
-                iterator.remove();
-                continue;
-            }
+
             if (body.getLinearVelocity().getMagnitude() < 0.5 && proj.getFrameCount() > 10) {
                 if (proj.isExplosive()) {
                     proj.setState(Projectile.State.EXPLODED);
@@ -191,8 +194,16 @@ public class ProjectilePhysics {
                 }
             }
 
+            if (proj.getState() == Projectile.State.EXPLODED) {
+                explodeProjectile(proj);
+                world.removeBody(body);
+                iterator.remove();
+                continue;
+            }
         }
     }
+
+
     /**
      * Gère la logique d'explosion d'un projectile.
      * <p>

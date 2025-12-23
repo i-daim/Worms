@@ -1,7 +1,4 @@
 package upc.model.items;
-import upc.model.entites.Alien;
-import upc.model.entites.Position;
-import upc.model.entites.projectiles.Projectile;
 
 public abstract class Weapon implements Item {
 
@@ -16,8 +13,6 @@ public abstract class Weapon implements Item {
         this.nbOfShots = nbOfShots;
         this.speed = puissanceTir;
     }
-    public abstract Projectile createProjectile(Alien shooter, Position startPosition,
-                                                int angleDegrees, int powerPercent);
 
 ////    GETTERS    ////
     public String getName() {

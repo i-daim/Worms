@@ -1,6 +1,5 @@
 package upc.model.entites.projectiles;
 import upc.model.entites.Alien;
-import upc.model.entites.Position;
 import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
 
@@ -10,8 +9,14 @@ public class Trap extends Projectile {
     private final int activationRadius;
 
     public Trap(Weapon weapon, Alien shooter, int activationRadius, int explosionRadius) {
-        super(shooter, (shooter != null) ? shooter.getPosition() : new Position(0, 0),
-                weapon.getDamage(), explosionRadius, false, weapon.getSpeed(), weapon);
+        super(
+                shooter,
+                shooter.getPosition(),
+                weapon.getDamage(),
+                explosionRadius,
+                false,
+                weapon.getSpeed(),
+                weapon);
 
         this.activationRadius = activationRadius;
     }

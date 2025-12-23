@@ -4,6 +4,7 @@ import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
+import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
 import upc.model.jeu.GameWorld;
@@ -130,6 +131,15 @@ public class PhysicsEngine {
 
     public void explodeProjectile(Projectile proj) {
         projectilePhysics.explodeProjectile(proj);
+    }
+
+    public void handleBulletImpact(Bullet bullet, Body target) {
+        if(target!=null && target.getUserData()instanceof Alien){
+            Alien alien = (Alien)target.getUserData();
+            alien.receiveDmg(bullet.getDamage());
+
+            target.applyImpulse(5);
+        }
     }
 
 

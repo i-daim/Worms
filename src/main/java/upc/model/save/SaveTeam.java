@@ -86,7 +86,8 @@ public class SaveTeam {
             //Recréation de l'équipe sauvegardé zleprs
             Team savezlerps = new Team("Zlerps", liste.size());
             for (int i = 0; i < liste.size(); i++) {
-                savezlerps.getAliens()[i] = new Alien(liste.get(i), gameManager.getWorld(), savezlerps);
+                Alien zlerps = new Alien(liste.get(i), gameManager.getWorld(), savezlerps);
+                savezlerps.getAliens()[i] = zlerps;
             }
 
             teams[0] = savezlerps;
@@ -105,7 +106,8 @@ public class SaveTeam {
             //Recréation de l'équipe sauvegardé glorbs
             Team saveglorbs = new Team("Glorbs", liste.size());
             for (int i = 0; i < liste.size(); i++) {
-                saveglorbs.getAliens()[i] = new Alien(liste.get(i), gameManager.getWorld(), saveglorbs);
+                Alien glorbs = new Alien(liste.get(i), gameManager.getWorld(), saveglorbs);
+                saveglorbs.getAliens()[i] = glorbs;
             }
 
             teams[1] = saveglorbs;

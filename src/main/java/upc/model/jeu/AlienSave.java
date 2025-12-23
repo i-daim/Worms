@@ -2,7 +2,6 @@ package upc.model.jeu;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.items.Item;
 
 /*Classe permet de sauvegarder les informations minimal d'un alien*/
 public class AlienSave {

@@ -31,7 +31,7 @@ public class Alien extends Entity {
     private static final int INITIAL_HP = 100;
 
     //Constructeur pour charger un alien
-    public Alien(AlienSave alienSave, GameWorld gameWorld, Team team ) {
+    public Alien(AlienSave alienSave, GameWorld gameWorld, Team team) {
         super(alienSave.getPosition(), SPEED);
         this.world = gameWorld;
         this.alienPhysics = world.getPhysicsEngine().getAlienPhysics();

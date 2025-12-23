@@ -54,7 +54,7 @@ public class ConsoleView {
             String teamIcon = isVioletTeam ? "🟣" : "🟢";
             String heartAlive = isVioletTeam ? "💜" : "💚";
             String heartDead = "🖤";
-            String alienIcon = isVioletTeam ? "👾" : "👽"; // Space Invader vs Alien classique
+            String alienIcon = isVioletTeam ? "👾" : "👽";
 
             System.out.println("┌" + border + "┐");
             System.out.printf("│ 🏴 Équipe %d : %s %-43s │\n", (i + 1),

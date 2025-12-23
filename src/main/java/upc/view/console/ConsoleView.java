@@ -31,7 +31,43 @@ public class ConsoleView {
     public void printGameState(GameManager gameManager) {
         System.out.println("\n--- TOUR EN COURS ---");
         renderHUD(gameManager);
-        System.out.println("💡 Tape 'map' pour afficher la carte");
+        // On n'affiche pas la liste complète à chaque tour pour ne pas spammer,
+        // mais on indique qu'elle est disponible.
+        System.out.println("💡 Tape 'map' pour la carte, 'aliens' pour la liste des troupes.");
+    }
+
+    /**
+     * Affiche la liste stylée de tous les aliens et leurs positions.
+     */
+    public void printAliensList(GameManager gameManager) {
+        System.out.println("\n📊 ÉTAT DES TROUPES :");
+
+        Team[] teams = gameManager.getTeams();
+        String border = "─".repeat(60); // Largeur ajustée
+
+        for (Team team : teams) {
+            System.out.println("┌" + border + "┐");
+            System.out.printf("│ 🏴 Équipe : %-47s │\n", team.getName().toUpperCase());
+            System.out.println("├" + border + "┤");
+
+            for (Alien alien : team.getAliens()) {
+                if (alien != null) {
+                    String statusIcon = alien.isAlive() ? "💚" : "💀";
+                    String activePointer = (alien == gameManager.getActiveAlien()) ? "➤" : " ";
+                    // Format aligné propre
+                    System.out.printf("│ %s %s %-10s │ 📍 (%04d, %04d) │ %s %-3d PV       │\n",
+                            activePointer,
+                            statusIcon,
+                            "Alien",
+                            alien.getPosition().getX(),
+                            alien.getPosition().getY(),
+                            "❤️",
+                            alien.getHealthPoints()
+                    );
+                }
+            }
+            System.out.println("└" + border + "┘");
+        }
     }
 
     protected void renderHUD(final GameManager gm) {
@@ -71,15 +107,28 @@ public class ConsoleView {
         return value;
     }
 
+    // Modification ici pour gérer la commande "aliens"
     public String requestCommand(GameManager gameManager) {
         String cmd = readKey();
+
         if ("map".equals(cmd)) {
             printFullMap(gameManager);
-            System.out.println("⏎ Appuyez sur Entrée pour continuer...");
-            scanner.nextLine();
+            waitForEnter();
             return requestCommand(gameManager);
         }
+
+        if ("aliens".equals(cmd)) {
+            printAliensList(gameManager);
+            waitForEnter();
+            return requestCommand(gameManager);
+        }
+
         return cmd;
+    }
+
+    private void waitForEnter() {
+        System.out.println("⏎ Appuyez sur Entrée pour continuer...");
+        scanner.nextLine();
     }
 
     private String readKey() {

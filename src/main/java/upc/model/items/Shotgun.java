@@ -22,9 +22,4 @@ public class Shotgun extends Weapon {
             gameWorld.getPhysicsEngine().addProjectile(proj, baseAngle + spread, power);
         }
     }
-    @Override
-    public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees,
-                                       int powerPercent) {
-        return new Bullet(this, shooter);
-    }
 }

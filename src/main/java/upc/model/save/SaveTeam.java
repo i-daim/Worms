@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import upc.model.entites.Alien;
 import upc.model.jeu.AlienSave;
+import upc.model.jeu.GameManager;
 import upc.model.jeu.Team;
 
 import java.io.FileReader;
@@ -69,7 +70,7 @@ public class SaveTeam {
     }
 
     /*Méthode permettant de charger l'objet Team*/
-    public Team[] loadTeam() throws IOException {
+    public Team[] loadTeam(GameManager gameManager) throws IOException {
 
         Team[] teams = new Team[2];
 
@@ -85,7 +86,7 @@ public class SaveTeam {
             //Recréation de l'équipe sauvegardé zleprs
             Team savezlerps = new Team("Zlerps", liste.size());
             for (int i = 0; i < liste.size(); i++) {
-                savezlerps.getAliens()[i] = new Alien(liste.get(i));
+                savezlerps.getAliens()[i] = new Alien(liste.get(i), gameManager.getWorld(), savezlerps);
             }
 
             teams[0] = savezlerps;
@@ -104,7 +105,7 @@ public class SaveTeam {
             //Recréation de l'équipe sauvegardé glorbs
             Team saveglorbs = new Team("Glorbs", liste.size());
             for (int i = 0; i < liste.size(); i++) {
-                saveglorbs.getAliens()[i] = new Alien(liste.get(i));
+                saveglorbs.getAliens()[i] = new Alien(liste.get(i), gameManager.getWorld(), saveglorbs);
             }
 
             teams[1] = saveglorbs;

@@ -14,7 +14,6 @@ public class AlienSave {
     private int aimAngle;
     private int shootPower;
 
-    private Item.Type equippedItem;
     private Position position;
 
     //Constructeur
@@ -24,7 +23,6 @@ public class AlienSave {
         this.direction = alien.getDirection();
         this.aimAngle = alien.getAimAngle();
         this.shootPower = alien.getShootPower();
-        this.equippedItem = alien.getEquippedItem();
         this.position = alien.getPosition();
 
     }
@@ -51,9 +49,6 @@ public class AlienSave {
         return shootPower;
     }
 
-    public Item.Type getEquippedItem() {
-        return equippedItem;
-    }
 
     public Position getPosition() {
         return position;

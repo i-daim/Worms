@@ -1,11 +1,11 @@
 package upc.controller;
+
 import upc.model.jeu.Team;
-
-
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
+import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -24,6 +24,7 @@ public class GameController {
     private static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
+    private boolean paused = false;
     private Thread gameThread;
 
     // Constructeur //
@@ -39,10 +40,18 @@ public class GameController {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
         gamePanel.setFocusable(true);
+
+        PausePanel pausePanel = gamePanel.getPausePanel();
+        pausePanel.getResumeButton().addActionListener(e -> {
+            gamePanel.togglePauseMenu(false);
+            gamePanel.requestFocusInWindow();
+        });
+
+        pausePanel.getQuitButton().addActionListener(e -> System.exit(0));
     }
 
 
-    ////    GESTION DE LA BOUCLE DU JEU    ////
+////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -75,16 +84,18 @@ public class GameController {
     }
 
     private void update() {
-        // Gestion de la caméra à travers mouseHandler
+        handlePause();
+        if (paused) {
+            return;
+        }
+
         handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier et de l'inventaire
         handleControls();
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             gamePanel.centralizeCamera(activeAlien);
         }
-
         gameManager.update(1.0 / 60.0);
 
         if (gameManager.isOver()) {
@@ -102,7 +113,7 @@ public class GameController {
     }
 
 
-    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
@@ -186,7 +197,17 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    ////    ARRET DU JEU    ////
+////    ARRET DU JEU    ////
+    public void handlePause() {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
+            paused = !paused;
+        }
+        gamePanel.togglePauseMenu(paused);
+        if (paused) {
+            keyHandler.clearJustPressed();
+        }
+    }
+
     public void stop() {
         running = false;
         if (gameThread != null) {

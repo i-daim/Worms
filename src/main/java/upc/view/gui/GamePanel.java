@@ -31,12 +31,15 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
+    public static final int DEFAULT_HEIGHT = 720;
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final double ZOOM = 1.5 * SCREEN_WIDTH / DEFAULT_WIDTH;
 
     private final GameManager gameManager;
     private final Terrain terrain;
     private final HUDPanel hudPanel;
+    private final PausePanel pausePanel;
+
     private int cameraX = 0;
     private int cameraY = 0;
 
@@ -50,6 +53,11 @@ public class GamePanel extends JPanel {
         this.gameManager = gameManager;
         this.terrain = gameManager.getTerrain();
         this.hudPanel = new HUDPanel(gameManager);
+        this.pausePanel = new PausePanel();
+
+        this.setLayout(null); // Pour "superposer" les JPnaels
+        this.add(pausePanel);
+        this.add(hudPanel);
 
         activeAnimations = gameManager.getActiveAnimations();
         this.setDoubleBuffered(true);
@@ -110,7 +118,6 @@ public class GamePanel extends JPanel {
 
         // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setSize(getWidth(), 100);
-        hudPanel.paintComponent(g2);
 
         g2.dispose();
     }
@@ -268,6 +275,19 @@ public class GamePanel extends JPanel {
 
 
 ////    AUTRES METHODES    ////
+    public void togglePauseMenu(boolean paused) {
+        pausePanel.setVisible(paused);
+        hudPanel.setVisible(!paused);
+
+        if (paused) {
+            // Pour mettre le pausePanel au premier plan (et en plein écran)
+            pausePanel.setBounds(0, 0, getWidth(), getHeight());
+            setComponentZOrder(pausePanel, 0);
+
+            pausePanel.repaint();
+        }
+    }
+
     public Point screenToWorld(Point screenPoint) {
         double worldX = (screenPoint.x / ZOOM) + cameraX;
         double worldY = (screenPoint.y / ZOOM) + cameraY;
@@ -323,5 +343,9 @@ public class GamePanel extends JPanel {
 
     public void stopMusic() {
         gameMusic.stop();
+    }
+
+    public PausePanel getPausePanel() {
+        return pausePanel;
     }
 }

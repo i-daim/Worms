@@ -240,9 +240,6 @@ public class ConsoleView {
     public void printAliensStats(GameManager g) {
     }
 
-    public void printStateAfterFall(GameManager g) {
-    }
-
     public void printGameOver(GameManager g) {
         System.out.println("\n🏁 PARTIE TERMINÉE !");
     }

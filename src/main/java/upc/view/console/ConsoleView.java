@@ -37,31 +37,42 @@ public class ConsoleView {
     }
 
     /**
-     * Affiche la liste stylée de tous les aliens et leurs positions.
+     * Affiche la liste des aliens avec un thème couleur alterné (Violet/Vert).
      */
     public void printAliensList(GameManager gameManager) {
         System.out.println("\n📊 ÉTAT DES TROUPES :");
 
         Team[] teams = gameManager.getTeams();
-        String border = "─".repeat(60); // Largeur ajustée
+        String border = "─".repeat(60);
 
-        for (Team team : teams) {
+        for (int i = 0; i < teams.length; i++) {
+            Team team = teams[i];
+
+            // Alternance des couleurs : Team 0 = Violet, Team 1 = Vert
+            boolean isVioletTeam = (i % 2 == 0);
+
+            String teamIcon = isVioletTeam ? "🟣" : "🟢";
+            String heartAlive = isVioletTeam ? "💜" : "💚";
+            String heartDead = "🖤";
+            String alienIcon = isVioletTeam ? "👾" : "👽"; // Space Invader vs Alien classique
+
             System.out.println("┌" + border + "┐");
-            System.out.printf("│ 🏴 Équipe : %-47s │\n", team.getName().toUpperCase());
+            System.out.printf("│ 🏴 Équipe %d : %s %-43s │\n", (i + 1), teamIcon, team.getName().toUpperCase());
             System.out.println("├" + border + "┤");
 
             for (Alien alien : team.getAliens()) {
                 if (alien != null) {
-                    String statusIcon = alien.isAlive() ? "💚" : "💀";
+                    String statusIcon = alien.isAlive() ? alienIcon : "💀";
+                    String heartIcon = alien.isAlive() ? heartAlive : heartDead;
                     String activePointer = (alien == gameManager.getActiveAlien()) ? "➤" : " ";
-                    // Format aligné propre
+
                     System.out.printf("│ %s %s %-10s │ 📍 (%04d, %04d) │ %s %-3d PV       │\n",
                             activePointer,
                             statusIcon,
                             "Alien",
                             alien.getPosition().getX(),
                             alien.getPosition().getY(),
-                            "❤️",
+                            heartIcon,
                             alien.getHealthPoints()
                     );
                 }
@@ -69,6 +80,7 @@ public class ConsoleView {
             System.out.println("└" + border + "┘");
         }
     }
+
 
     protected void renderHUD(final GameManager gm) {
         Team activeTeam = gm.getActiveTeam();

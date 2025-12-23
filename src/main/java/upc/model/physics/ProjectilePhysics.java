@@ -146,6 +146,7 @@ public class ProjectilePhysics {
      *
      * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
      */
+
     public void updateProjectiles(Terrain terrain) {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
@@ -154,7 +155,6 @@ public class ProjectilePhysics {
             Body body = proj.getBody();
 
             if (body == null) {
-                System.out.println("Projectile sans body !");
                 iterator.remove();
                 continue;
             }
@@ -165,6 +165,14 @@ public class ProjectilePhysics {
             int x = Converter.toPixels(pos.x);
             int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
+
+            if (proj instanceof Throwable) {
+                Throwable t = (Throwable) proj;
+                t.decrementTimer();
+                if (t.isReadyToExplode()) {
+                    proj.setState(Projectile.State.EXPLODED);
+                }
+            }
 
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
@@ -179,18 +187,11 @@ public class ProjectilePhysics {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
-                continue;
-            }
-            if (!(proj instanceof Rocket)
-                    && body.getLinearVelocity().getMagnitude() < 1.0
-                    && proj.getFrameCount() > 100) {
-                proj.setState(Projectile.State.EXPLODED);
-                explodeProjectile(proj);
-                world.removeBody(body);
-                iterator.remove();
             }
         }
     }
+
+
     /**
      * Gère la logique d'explosion d'un projectile.
      * <p>
@@ -206,6 +207,9 @@ public class ProjectilePhysics {
      * @param proj Le projectile qui vient d'exploser.
      */
     public void explodeProjectile(Projectile proj) {
+        if (proj instanceof Bullet) {
+            return;
+        }
         //Récupère les coordonnées du centre de l'explosion
         // (position actuelle du/des projectiles en pixels)
         int explosionX = proj.getPosition().getX();
@@ -213,7 +217,6 @@ public class ProjectilePhysics {
         int radius = proj.getExplosionRadius();
         int damage = proj.getDamage();
 
-        Terrain terrain = physicsEngine.getTerrain();
         int pixelRadius = radius * 8;
         physicsEngine.getGameWorld().explode(
                 explosionX, explosionY, pixelRadius, 0
@@ -247,6 +250,18 @@ public class ProjectilePhysics {
                 }
             }
         }
+    }
+
+    public void handleBulletImpact(Bullet bullet, Body target) {
+        if (target == null || target.getUserData() instanceof Bullet) {
+            return;
+        }
+        if (target.getUserData() instanceof Alien) {
+            Alien alien = (Alien) target.getUserData();
+            alien.receiveDmg(bullet.getDamage());
+            target.applyImpulse(5);
+        }
+        bullet.setState(Projectile.State.EXPLODED);
     }
 
     public List<Projectile> getActiveProjectiles() {

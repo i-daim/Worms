@@ -57,7 +57,8 @@ public class ConsoleView {
             String alienIcon = isVioletTeam ? "👾" : "👽"; // Space Invader vs Alien classique
 
             System.out.println("┌" + border + "┐");
-            System.out.printf("│ 🏴 Équipe %d : %s %-43s │\n", (i + 1), teamIcon, team.getName().toUpperCase());
+            System.out.printf("│ 🏴 Équipe %d : %s %-43s │\n", (i + 1),
+                    teamIcon, team.getName().toUpperCase());
             System.out.println("├" + border + "┤");
 
             for (Alien alien : team.getAliens()) {

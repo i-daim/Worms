@@ -181,14 +181,16 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
-            if (!(proj instanceof Rocket)
-                    && body.getLinearVelocity().getMagnitude() < 1.0
-                    && proj.getFrameCount() > 100) {
-                proj.setState(Projectile.State.EXPLODED);
-                explodeProjectile(proj);
-                world.removeBody(body);
-                iterator.remove();
+            if (body.getLinearVelocity().getMagnitude() < 0.5 && proj.getFrameCount() > 10) {
+                if (proj.isExplosive()) {
+                    proj.setState(Projectile.State.EXPLODED);
+                } else {
+                    world.removeBody(body);
+                    iterator.remove();
+                    continue;
+                }
             }
+
         }
     }
     /**

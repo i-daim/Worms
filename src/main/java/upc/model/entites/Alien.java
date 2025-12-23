@@ -2,6 +2,7 @@ package upc.model.entites;
 
 import upc.model.items.Item;
 import upc.model.items.Weapon;
+import upc.model.jeu.AlienSave;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
@@ -28,6 +29,25 @@ public class Alien extends Entity {
     // Champs statiques
     private static final int SPEED = 5;
     private static final int INITIAL_HP = 100;
+
+    //Constructeur pour charger un alien
+    public Alien(AlienSave alienSave, GameWorld gameWorld, Team team ) {
+        super(alienSave.getPosition(), SPEED);
+        this.world = gameWorld;
+        this.alienPhysics = world.getPhysicsEngine().getAlienPhysics();
+
+        this.team = team;
+        this.inventory = team.getInventory();
+
+        this.healthPoints = alienSave.getHealthPoints();
+        this.alive = alienSave.getAlive();
+        this.direction = alienSave.getDirection();
+        this.aimAngle = alienSave.getAimAngle();
+        this.shootPower = alienSave.getShootPower();
+        this.equippedItem = alienSave.getEquippedItem();
+
+        this.state = State.IDLE;
+    }
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {

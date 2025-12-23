@@ -284,7 +284,7 @@ public class GameController {
     }
 
     /*Méthode permettant de charger la sauvegarde du jeu*/
-    public void loadGame() throws IOException {
+    public void loadGame(GameManager gameManager) throws IOException {
 
         //Récupère la map sauvegardée
         SaveMap saveMap = new SaveMap();
@@ -305,7 +305,7 @@ public class GameController {
 
         //Récupère les équipes sauvegardées
         SaveTeam saveTeam = new SaveTeam();
-        Team[] teams = saveTeam.loadTeam();
+        Team[] teams = saveTeam.loadTeam(gameManager);
 
         //Récupère les inventaire sauvegardés
         SaveInventory saveInventory = new SaveInventory();

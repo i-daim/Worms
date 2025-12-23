@@ -129,20 +129,6 @@ public class PhysicsEngine {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
 
-    public void explodeProjectile(Projectile proj) {
-        projectilePhysics.explodeProjectile(proj);
-    }
-
-    public void handleBulletImpact(Bullet bullet, Body target) {
-        if(target!=null && target.getUserData()instanceof Alien){
-            Alien alien = (Alien)target.getUserData();
-            alien.receiveDmg(bullet.getDamage());
-
-            target.applyImpulse(5);
-        }
-    }
-
-
 ////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {
         return world;

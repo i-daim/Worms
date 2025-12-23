@@ -262,6 +262,20 @@ public class ProjectilePhysics {
         }
     }
 
+    public void handleBulletImpact(Bullet bullet, Body target) {
+        if (target == null) {
+            return;
+        }
+        if (target.getUserData() instanceof Alien) {
+            Alien alien = (Alien) target.getUserData();
+            alien.receiveDmg(bullet.getDamage());
+
+            target.applyImpulse(5);
+        } else {
+            bullet.setState(Projectile.State.EXPLODED);
+        }
+    }
+
     public List<Projectile> getActiveProjectiles() {
         return activeProjectiles;
     }

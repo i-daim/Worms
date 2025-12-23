@@ -3,6 +3,7 @@ package upc.model.save;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import upc.model.entites.Alien;
+import upc.model.jeu.AlienSave;
 import upc.model.jeu.Team;
 
 import java.io.FileReader;
@@ -25,15 +26,16 @@ public class SaveTeam {
         try (FileWriter file = new FileWriter("zlerps.json")) {
 
             //Liste représentant les aliens vivants dans l'équipe zlerps
-            List<Alien> list = new ArrayList<Alien>();
+            List<AlienSave> list = new ArrayList<AlienSave>();
 
             //Boucle
             for (Alien alien : zlerps.getAliens()) {
 
-                //Si alien vivant ajout dans la liste
                 if (alien.isAlive()) {
-                    list.add(alien);
+                    AlienSave alienSave = new AlienSave(alien);
+                    list.add(alienSave);
                 }
+
             }
 
             //Conversion de la liste des aliens vivants en json
@@ -46,14 +48,15 @@ public class SaveTeam {
         try (FileWriter file = new FileWriter("glorbs.json")) {
 
             //Liste représentant les aliens vivants dans l'équipe glorbs
-            List<Alien> list = new ArrayList<Alien>();
+            List<AlienSave> list = new ArrayList<AlienSave>();
 
             //Boucle
             for (Alien alien : glorbs.getAliens()) {
 
                 //Si alien vivant ajout dans la liste
                 if (alien.isAlive()) {
-                    list.add(alien);
+                    AlienSave alienSave = new AlienSave(alien);
+                    list.add(alienSave);
                 }
             }
 
@@ -74,15 +77,15 @@ public class SaveTeam {
         try (FileReader file = new FileReader("zlerps.json")) {
 
             //Permet de convertir la list<Alien> dans un format compréhensible par Gson
-            Type type = new TypeToken<List<Alien>>() { }.getType();
+            Type type = new TypeToken<List<AlienSave>>() { }.getType();
 
             //Liste des aliens vivants de l'équipe zlerps
-            List<Alien> liste = gson.fromJson(file, type);
+            List<AlienSave> liste = gson.fromJson(file, type);
 
             //Recréation de l'équipe sauvegardé zleprs
             Team savezlerps = new Team("Zlerps", liste.size());
             for (int i = 0; i < liste.size(); i++) {
-                savezlerps.getAliens()[i] = liste.get(i);
+                savezlerps.getAliens()[i] = new Alien(liste.get(i));
             }
 
             teams[0] = savezlerps;
@@ -93,15 +96,15 @@ public class SaveTeam {
         try (FileReader file = new FileReader("glorbs.json")) {
 
             //Permet de convertir la list<Alien> dans un format compréhensible par Gson
-            Type type = new TypeToken<List<Alien>>() { }.getType();
+            Type type = new TypeToken<List<AlienSave>>() { }.getType();
 
             //Liste des aliens vivants de l'équipe glorbs
-            List<Alien> liste = gson.fromJson(file, type);
+            List<AlienSave> liste = gson.fromJson(file, type);
 
             //Recréation de l'équipe sauvegardé glorbs
             Team saveglorbs = new Team("Glorbs", liste.size());
             for (int i = 0; i < liste.size(); i++) {
-                saveglorbs.getAliens()[i] = liste.get(i);
+                saveglorbs.getAliens()[i] = new Alien(liste.get(i));
             }
 
             teams[1] = saveglorbs;

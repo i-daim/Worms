@@ -217,9 +217,8 @@ public class ProjectilePhysics {
         int radius = proj.getExplosionRadius();
         int damage = proj.getDamage();
 
-        int pixelRadius = radius * 8;
         physicsEngine.getGameWorld().explode(
-                explosionX, explosionY, pixelRadius, 0
+                explosionX, explosionY, radius, 0
         );
 
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
@@ -231,9 +230,9 @@ public class ProjectilePhysics {
             Position wormPos = alien.getPosition();
             double distance = wormPos.distance(explosionX, explosionY);
 
-            if (distance <= Converter.toPixels(radius)) {
+            if (distance <= radius) {
                 // Calcul de l'atténuation des dégâts (Falloff linéaire)
-                double damageRatio = 1.0 - (distance / Converter.toPixels(radius));
+                double damageRatio = 1.0 - (distance / radius);
                 int finalDamage = (int) (damage * damageRatio);
 
                 if (finalDamage > 0) {

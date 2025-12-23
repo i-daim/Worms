@@ -63,11 +63,15 @@ public class PhysicsEngine {
                     return;
                 }
             }
-            if (p.isActive() && p instanceof Rocket && p.getState() == Projectile.State.FLYING) {
+            if (!p.isActive()) {
+                return;
+            }
+            if (p instanceof Rocket) {
                 p.setState(Projectile.State.EXPLODED);
-                projectilePhysics.explodeProjectile(p);
-                world.removeBody(p.getBody());
-                projectilePhysics.getActiveProjectiles().remove(p);
+            } else if (p instanceof Bullet) {
+                if (b2 != null) {
+                    projectilePhysics.handleBulletImpact((Bullet) p, b2);
+                }
             }
         }
     }

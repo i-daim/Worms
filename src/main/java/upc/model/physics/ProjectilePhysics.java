@@ -219,6 +219,9 @@ public class ProjectilePhysics {
      * @param proj Le projectile qui vient d'exploser.
      */
     public void explodeProjectile(Projectile proj) {
+        if (proj instanceof Bullet) {
+            return;
+        }
         //Récupère les coordonnées du centre de l'explosion
         // (position actuelle du/des projectiles en pixels)
         int explosionX = proj.getPosition().getX();
@@ -271,6 +274,8 @@ public class ProjectilePhysics {
             alien.receiveDmg(bullet.getDamage());
 
             target.applyImpulse(5);
+        } else if (target.getUserData() instanceof Bullet) {
+            return;
         } else {
             bullet.setState(Projectile.State.EXPLODED);
         }

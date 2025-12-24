@@ -1,10 +1,10 @@
 package upc.view.gui;
 
+import upc.assets.ImageManager;
 import upc.assets.Sound;
 import upc.assets.SoundManager;
 
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -13,29 +13,22 @@ import java.awt.Image;
 import java.awt.event.ActionListener;
 
 public class MenuPanel extends JPanel {
-    private final JButton settingsButton = createGameButton("Settings");
 
-    private final Sound menuMusic = SoundManager.getMusic("Menu Theme");
+    private final Image background = ImageManager.get("menu_background");
+
     private final JButton newGame = ButtonManager.createGameButton("New Game");
     private final JButton loadGame = ButtonManager.createGameButton("Load Game");
+    private final JButton settingsButton = ButtonManager.createGameButton("Settings");
     private final JButton quitGame = ButtonManager.createGameButton("Quit");
 
-    private Image background;
+    private Sound menuMusic;
+
 
     public MenuPanel() {
-        // Chargement de l'image d'arrière plan
-        try {
-            background = new ImageIcon(
-                    getClass().getResource("/menu/background.png")).getImage();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Erreur lors du chargement de l'image");
-        }
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(Box.createVerticalGlue());
-
         this.add(newGame);
         this.add(Box.createVerticalStrut(20));
         this.add(loadGame);
@@ -46,6 +39,7 @@ public class MenuPanel extends JPanel {
         this.add(Box.createVerticalStrut(20));
         this.add(Box.createVerticalGlue());
 
+        menuMusic = SoundManager.getMusic("Menu Theme");
         menuMusic.setVolume(-10);
         menuMusic.loop();
     }

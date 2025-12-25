@@ -56,7 +56,7 @@ public class ButtonManager {
 
         return btn;
     }
-    
+
     public static JButton createGameButton(String text, ActionListener listener) {
         JButton btn = createGameButton(text);
         btn.addActionListener(listener);

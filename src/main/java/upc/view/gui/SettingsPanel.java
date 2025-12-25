@@ -34,7 +34,7 @@ public class SettingsPanel extends JPanel {
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
         title.setAlignmentY(Component.TOP_ALIGNMENT);
         title.setForeground(Color.WHITE);
-        backButton = MenuPanel.createGameButton("Back");
+        backButton = ButtonManager.createGameButton("Back");
         backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         backButton.setAlignmentY(Component.TOP_ALIGNMENT);
 

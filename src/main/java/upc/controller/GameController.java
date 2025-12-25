@@ -20,6 +20,7 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
+    private final PauseActions pauseActions;
 
     private static final int CAMERA_SPEED = 10;
 
@@ -31,6 +32,7 @@ public class GameController {
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
+        this.pauseActions = new PauseActions(gamePanel);
 
         addListeners();
         startGameLoop();
@@ -42,12 +44,10 @@ public class GameController {
         gamePanel.setFocusable(true);
 
         PausePanel pausePanel = gamePanel.getPausePanel();
-        pausePanel.getResumeButton().addActionListener(e -> {
-            gamePanel.togglePauseMenu(false);
-            gamePanel.requestFocusInWindow();
-        });
-
-        pausePanel.getQuitButton().addActionListener(e -> System.exit(0));
+        pausePanel.getResumeButton().addActionListener(pauseActions.getResumeAction());
+        pausePanel.getNewGameButton().addActionListener(pauseActions.getNewGameAction());
+        pausePanel.getSettingsButton().addActionListener(pauseActions.getSettingsAction());
+        pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
 

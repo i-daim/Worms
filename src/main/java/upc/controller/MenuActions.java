@@ -24,8 +24,6 @@ public class MenuActions {
             GamePanel gamePanel = new GamePanel(gameManager);
             new GameController(gamePanel, gameManager);
 
-            menuPanel.stopMusic();
-
             mainFrame.setContentPane(gamePanel);
             mainFrame.revalidate();
             mainFrame.repaint();

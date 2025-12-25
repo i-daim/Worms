@@ -1,5 +1,6 @@
 package upc.controller;
 
+import upc.assets.SoundManager;
 import upc.view.gui.GamePanel;
 import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
@@ -29,7 +30,7 @@ public class PauseActions {
             if (mainFrame != null) {
                 MenuPanel menuPanel = new MenuPanel();
 
-                gamePanel.stopMusic();
+                SoundManager.playMusic("Menu Theme");
 
                 mainFrame.setContentPane(menuPanel);
                 mainFrame.revalidate();

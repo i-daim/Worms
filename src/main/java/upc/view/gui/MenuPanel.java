@@ -1,7 +1,6 @@
 package upc.view.gui;
 
 import upc.assets.ImageManager;
-import upc.assets.Sound;
 import upc.assets.SoundManager;
 
 import javax.swing.Box;
@@ -21,8 +20,6 @@ public class MenuPanel extends JPanel {
     private final JButton settingsButton = ButtonManager.createGameButton("Settings");
     private final JButton quitGame = ButtonManager.createGameButton("Quit");
 
-    private Sound menuMusic;
-
 
     public MenuPanel() {
 
@@ -39,9 +36,7 @@ public class MenuPanel extends JPanel {
         this.add(Box.createVerticalStrut(20));
         this.add(Box.createVerticalGlue());
 
-        menuMusic = SoundManager.getMusic("Menu Theme");
-        menuMusic.setVolume(-10);
-        menuMusic.loop();
+        SoundManager.playMusic("Menu Theme");
     }
 
     @Override
@@ -69,6 +64,6 @@ public class MenuPanel extends JPanel {
     }
 
     public void stopMusic() {
-        menuMusic.stop();
+        SoundManager.stopMusic();
     }
 }

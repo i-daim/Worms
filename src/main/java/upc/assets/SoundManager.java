@@ -7,6 +7,7 @@ public class SoundManager {
     private static final HashMap<String, Sound> MUSICS = new HashMap<>();
     private static final HashMap<String, Sound> EFFECTS = new HashMap<>();
     private static Sound[] voices;
+    private static Sound currentMusic;
 
     static {
         loadVoices(11);
@@ -29,21 +30,30 @@ public class SoundManager {
 
     }
 
-////    GETTERS POUR LES SONS    ////
-    public static Sound getMusic(String name) {
-        return MUSICS.get(name);
+
+////    CONTROLES POUR LA MUSIQUE    ////
+    public static void playMusic(String name) {
+        if (currentMusic != null) {
+            currentMusic.stop();
+        }
+        currentMusic = getMusic(name);
+        if (currentMusic != null) {
+            currentMusic.loop();
+        }
     }
 
-    public static Sound getEffect(String name) {
-        return EFFECTS.get(name);
+    public static void stopMusic() {
+        if (currentMusic != null) {
+            currentMusic.stop();
+        }
     }
 
-    public static Sound getRandomVoice() {
-        int index = (int) (Math.random() * 11);
-        return voices[index];
+    public static Sound getCurrentMusic() {
+        return currentMusic;
     }
 
-////    METHODES POUR CHARGER LES SONS    ////
+
+////    LOADERS    ////
     public static void loadVoices(int number) {
         voices = new Sound[number];
         for (int i = 0; i < number; i++) {
@@ -57,5 +67,24 @@ public class SoundManager {
 
     public static Sound loadEffect(String name) {
         return new Sound("/sounds/effects/" + name + ".wav");
+    }
+
+
+////    GETTERS    ////
+    public static Sound getMusic(String name) {
+        return MUSICS.get(name);
+    }
+
+    public static Sound getEffect(String name) {
+        return EFFECTS.get(name);
+    }
+
+    public static Sound getRandomVoice() {
+        int index = (int) (Math.random() * 11);
+        return voices[index];
+    }
+
+    public static String[] getMusicsSelection() {
+        return MUSICS.keySet().toArray(new String[0]);
     }
 }

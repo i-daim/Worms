@@ -12,7 +12,8 @@ public class ImageManager {
     private static final Map<String, BufferedImage> IMAGES = new HashMap<>();
 
     static {
-        ImageManager.load("menu_background", "/menu/background.png");
+        ImageManager.load("menu_background", "/menu/menu_background.png");
+        ImageManager.load("settings_background", "/menu/settings_background.png");
 
         ImageManager.load("Bazooka", "/Items/Bazooka.png");
         ImageManager.load("Uzi", "/Items/Uzi.png");

@@ -48,15 +48,21 @@ public class SaveInventory {
         //Appel du fichier de sauvegarde de l'objet inventaire zlerps
         try (FileReader file = new FileReader("ZlerpsInventory.json")) {
 
+            //Recrée un inventaire pour l'équipe zlerps
+            Inventory zlerpsInventory = new Inventory(gson.fromJson(file, InventorySave.class));
+
             //Ajout inventaire sauvegardé de l'équipe zlerps
-            equipesinventaire[0] = gson.fromJson(file, Inventory.class);
+            equipesinventaire[0] = zlerpsInventory;
         }
 
         //Appel du fichier de sauvegarde de l'objet inventaire glorbs
         try (FileReader file = new FileReader("GlorbsInventory.json")) {
 
+            //Recrée un inventaire pour l'équipe glorbs
+            Inventory glorbsInventory = new Inventory(gson.fromJson(file, InventorySave.class));
+
             //Ajout inventaire sauvegardé de l'équipe glorbs
-            equipesinventaire[1] = gson.fromJson(file, Inventory.class);
+            equipesinventaire[1] = glorbsInventory;
         }
 
         //Renvoie le tableau des inventaires

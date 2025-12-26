@@ -74,7 +74,7 @@ public class SettingsPanel extends JPanel {
         volumeLabel.setForeground(Color.WHITE);
         volumeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        volumeSlider = new JSlider(0, 100, 50); 
+        volumeSlider = new JSlider(0, 100, 50);
         volumeSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
         volumeSlider.setOpaque(false);
         volumeSlider.setMaximumSize(new Dimension(300, 50));

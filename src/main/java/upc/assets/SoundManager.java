@@ -38,9 +38,14 @@ public class SoundManager {
         return EFFECTS.get(name);
     }
 
-    public static Sound getRandomVoice() {
+    public static void playVoice() {
         int index = (int) (Math.random() * 11);
-        return voices[index];
+        voices[index].play();
+    }
+    public static void playVoice(int index) {
+        if (index >= 0 && index < voices.length && voices[index] != null) {
+            voices[index].play();
+        }
     }
 
 ////    METHODES POUR CHARGER LES SONS    ////

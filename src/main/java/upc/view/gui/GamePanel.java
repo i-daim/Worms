@@ -310,10 +310,31 @@ public class GamePanel extends JPanel {
         double maxX = terrain.getWidth() - getWidth() / ZOOM;
         double maxY = terrain.getHeight() - getHeight() / ZOOM;
 
+        double targetCamX = Math.max(0, Math.min(viewX, maxX));
+        double targetCamY = Math.max(0, Math.min(viewY, maxY));
 
         int camX = Math.max(0, Math.min(viewX, maxX));
         int camY = Math.max(0, Math.min(viewY, maxY));
         setCamera(camX, camY);
+    }
+
+    public boolean isCameraCentered(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
+        int posX = entity.getPosition().getX();
+        int posY = entity.getPosition().getY();
+
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
+
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+
+        double camX = Math.max(0, Math.min(viewX, maxX));
+        double camY = Math.max(0, Math.min(viewY, maxY));
+
+        return (Math.abs(camX - cameraX) < 8) && (Math.abs(camY - cameraY) < 8);
     }
 
 

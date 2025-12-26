@@ -18,17 +18,24 @@ public class SaveInventory {
         //Permet de créer le fichier de sauvegarde de type Json
         try (FileWriter file = new FileWriter("ZlerpsInventory.json")) {
 
+            //Crée un objet de sauvegarde minimal pour l'inventaire des zlerps
+            InventorySave zlinventorySave = new InventorySave(zlinventory);
+
             //Conversion de l'objet inventaire pour l'équipe zlerps en json
             // Et implémentation dans le fichier sauvegarde dédié
-            gson.toJson(zlinventory, file);
+            gson.toJson(zlinventorySave, file);
         }
 
         //Permet de créer le fichier de sauvegarde de type Json
         try (FileWriter file = new FileWriter("GlorbsInventory.json")) {
 
+            //Crée un objet de sauvegarde minimal pour l'inventaire des glorbs
+            InventorySave glinventorySave = new InventorySave(glinventory);
+
             //Conversion de l'objet inventaire pour l'équipe glorbs en json
             // Et implémentation dans le fichier sauvegarde dédié
-            gson.toJson(glinventory, file);
+            gson.toJson(glinventorySave, file);
+
         }
     }
 

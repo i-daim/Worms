@@ -1,5 +1,6 @@
 package upc.model.entites;
 
+import upc.assets.SoundManager;
 import upc.model.items.Item;
 import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
@@ -92,6 +93,7 @@ public class Alien extends Entity {
             return;
         }
         healthPoints -= Math.max(0, damage);
+        SoundManager.playEffect("Damage");
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;

@@ -19,6 +19,7 @@ public class SoundManager {
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
 
+        EFFECTS.put("Damage", loadEffect("damage"));
         EFFECTS.put("Explosion", loadEffect("explosion"));
         EFFECTS.put("Bazooka", loadEffect("bazooka"));
         EFFECTS.put("Rocket", loadEffect("rocket"));
@@ -34,8 +35,11 @@ public class SoundManager {
         return MUSICS.get(name);
     }
 
-    public static Sound getEffect(String name) {
-        return EFFECTS.get(name);
+    public static void playEffect(String name) {
+        Sound effect = EFFECTS.get(name);
+        if (effect != null) {
+            effect.play();
+        }
     }
 
     public static void playVoice() {

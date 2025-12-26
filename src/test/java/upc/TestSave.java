@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.jeu.GameManager;
+import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
+import upc.model.save.SaveAlien;
+import upc.model.save.SaveInventory;
 import upc.model.save.SaveTeam;
 
 import java.io.IOException;
@@ -14,9 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestSave {
 
-    public Team zlerps;
-    public Team glorbs;
+    private Team zlerps;
+    private Team glorbs;
     private SaveTeam saveTeam;
+
+    private Inventory zlerpsInventory;
+    private Inventory glorbsInventory;
+    private SaveInventory saveInventory;
+
     private GameManager gameManager;
 
     @BeforeEach
@@ -24,6 +32,11 @@ public class TestSave {
         zlerps = new Team("Zlerps", 5);
         glorbs = new Team("Glorbs", 5);
         saveTeam = new SaveTeam();
+
+        zlerpsInventory = new Inventory();
+        glorbsInventory = new  Inventory();
+        saveInventory = new SaveInventory();
+
         gameManager = new GameManager();
     }
 
@@ -51,5 +64,14 @@ public class TestSave {
         assertEquals(teams[1].getName(), glorbs.getName());
         assertEquals(teams[1].getAliens().length, glorbs.getAliens().length);
         assertEquals(teams[1].getActiveAlienIndex(), glorbs.getActiveAlienIndex());
+    }
+
+    @Test
+    public void testSaveInventory() throws IOException {
+        saveInventory.saveInventory(zlerpsInventory, glorbsInventory);
+        Inventory[]  inventories = saveInventory.loadInventory();
+
+        assertEquals(inventories[0].getAmmoStock(), zlerpsInventory.getAmmoStock());
+        assertEquals(inventories[1].getAmmoStock(), glorbsInventory.getAmmoStock());
     }
 }

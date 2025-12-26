@@ -225,6 +225,9 @@ public class GamePanel extends JPanel {
         var projectiles = new ArrayList<>(projectileList);
 
         for (Projectile p : projectiles) {
+            if (p == null) {
+                continue;
+            }
             int x = p.getPosition().getX();
             int y = p.getPosition().getY();
             if (p instanceof Rocket) {
@@ -297,7 +300,7 @@ public class GamePanel extends JPanel {
     }
 
     public void centralizeCamera(Entity entity) {
-        if (entity == null) {
+        if (entity == null || isCameraCentered(entity)) {
             return;
         }
 
@@ -313,9 +316,15 @@ public class GamePanel extends JPanel {
         double targetCamX = Math.max(0, Math.min(viewX, maxX));
         double targetCamY = Math.max(0, Math.min(viewY, maxY));
 
-        int camX = Math.max(0, Math.min(viewX, maxX));
-        int camY = Math.max(0, Math.min(viewY, maxY));
-        setCamera(camX, camY);
+        cameraX += (targetCamX - cameraX) * 0.1;
+        cameraY += (targetCamY - cameraY) * 0.1;
+
+        if (Math.abs(targetCamX - cameraX) < 0.1) {
+            cameraX = targetCamX;
+        }
+        if (Math.abs(targetCamY - cameraY) < 0.1) {
+            cameraY = targetCamY;
+        }
     }
 
     public boolean isCameraCentered(Entity entity) {

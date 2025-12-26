@@ -1,4 +1,4 @@
-package upc.model.jeu;
+package upc.model.save;
 
 import upc.model.entites.Alien;
 import upc.model.entites.Position;

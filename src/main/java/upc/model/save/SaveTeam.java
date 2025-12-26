@@ -3,7 +3,6 @@ package upc.model.save;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import upc.model.entites.Alien;
-import upc.model.jeu.AlienSave;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Team;
 

@@ -2,7 +2,7 @@ package upc.model.entites;
 
 import upc.model.items.Item;
 import upc.model.items.Weapon;
-import upc.model.jeu.AlienSave;
+import upc.model.save.AlienSave;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;

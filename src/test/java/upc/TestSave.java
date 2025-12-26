@@ -27,12 +27,14 @@ public class TestSave {
         gameManager = new GameManager();
     }
 
+   /*Méthode permettant la création d'alien pour test*/
     private Alien createTestAlien(GameManager gameManager, Team team, int x, int y) {
         Position position = new Position(x, y);
         return new Alien(gameManager.getWorld(), team, position);
     }
 
     @Test
+    /*Méthode test permettant de tester la classe SaveTeam*/
     public void testSaveTeam() throws IOException {
         for (int i =0; i < 5; i++) {
             zlerps.getAliens()[i] = createTestAlien(gameManager, zlerps, i, i + 1);
@@ -42,13 +44,11 @@ public class TestSave {
         Team[] teams = saveTeam.loadTeam(gameManager);
 
         assertEquals(teams[0].getName(), zlerps.getName());
-        //assertEquals(teams[0].getInventory(), zlerps.getInventory());
         assertEquals(teams[0].getAliens().length, zlerps.getAliens().length);
         assertEquals(teams[0].getActiveAlienIndex(), zlerps.getActiveAlienIndex());
 
 
         assertEquals(teams[1].getName(), glorbs.getName());
-        //assertEquals(teams[1].getInventory(), glorbs.getInventory());
         assertEquals(teams[1].getAliens().length, glorbs.getAliens().length);
         assertEquals(teams[1].getActiveAlienIndex(), glorbs.getActiveAlienIndex());
     }

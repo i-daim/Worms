@@ -171,8 +171,8 @@ public class GameController {
         int height = gamePanel.getHeight();
         int limit = (int) (50 * GamePanel.ZOOM);
 
-        int camX = gamePanel.getCameraX();
-        int camY = gamePanel.getCameraY();
+        double camX = gamePanel.getCameraX();
+        double camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
 

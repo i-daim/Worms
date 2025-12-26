@@ -41,8 +41,8 @@ public class GamePanel extends JPanel {
     private final HUDPanel hudPanel;
     private final PausePanel pausePanel;
 
-    private int cameraX = 0;
-    private int cameraY = 0;
+    private double cameraX = 0;
+    private double cameraY = 0;
 
     private boolean inventoryVisible = false;
 
@@ -300,14 +300,16 @@ public class GamePanel extends JPanel {
         if (entity == null) {
             return;
         }
+
         int posX = entity.getPosition().getX();
         int posY = entity.getPosition().getY();
 
-        int viewX = posX - (int) (getWidth() / (2 * ZOOM));
-        int viewY = posY - (int) (getHeight() / (2 * ZOOM));
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
 
-        int maxX = (int) (terrain.getWidth() - getWidth() / ZOOM);
-        int maxY = (int) (terrain.getHeight() - getHeight() / ZOOM);
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+
 
         int camX = Math.max(0, Math.min(viewX, maxX));
         int camY = Math.max(0, Math.min(viewY, maxY));
@@ -316,17 +318,17 @@ public class GamePanel extends JPanel {
 
 
 ////    SETTERS & GETTERS    ////
-    public void setCamera(int x, int y) {
+    public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;
         repaint();
     }
 
-    public int getCameraX() {
+    public double getCameraX() {
         return cameraX;
     }
 
-    public int getCameraY() {
+    public double getCameraY() {
         return cameraY;
     }
 

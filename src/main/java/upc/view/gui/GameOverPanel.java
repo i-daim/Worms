@@ -4,6 +4,7 @@ import upc.assets.ActiveAnimation;
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
 import upc.assets.SoundManager;
+import upc.controller.MenuController;
 import upc.model.jeu.Team;
 
 
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.SwingUtilities;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.BorderLayout;
@@ -55,6 +57,8 @@ public class GameOverPanel extends JPanel {
         centerPanel.add(Box.createVerticalStrut(20));
         centerPanel.add(createStatsLabel());
         centerPanel.add(Box.createVerticalStrut(50));
+        centerPanel.add(createBackButton());
+        centerPanel.add(Box.createVerticalStrut(20));
         centerPanel.add(createQuitButton());
         centerPanel.add(Box.createVerticalGlue());
 
@@ -126,8 +130,28 @@ public class GameOverPanel extends JPanel {
         return label;
     }
 
+    private JButton createBackButton() {
+        JButton button = ButtonManager.createGameButton("Back To Menu");
+
+        button.addActionListener(e -> {
+            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            if (mainFrame != null) {
+                MenuPanel menuPanel = new MenuPanel();
+                new MenuController(mainFrame, menuPanel);
+
+                mainFrame.setContentPane(menuPanel);
+                mainFrame.revalidate();
+                mainFrame.repaint();
+            }
+        });
+
+        button.setBackground(QUIT_BUTTON_COLOR);
+        button.setForeground(Color.WHITE);
+        return button;
+    }
+
     private JButton createQuitButton() {
-        JButton button = ButtonManager.createGameButton("Quitter le jeu", e -> System.exit(0));
+        JButton button = ButtonManager.createGameButton("Quit Game", e -> System.exit(0));
         button.setBackground(QUIT_BUTTON_COLOR);
         button.setForeground(Color.WHITE);
         return button;

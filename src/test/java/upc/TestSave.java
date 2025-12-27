@@ -89,22 +89,12 @@ public class TestSave {
     }
 
     @Test
-    /*Méthode permettant de tester la classe SaveMAp*/
+    /*Méthode permettant de tester la classe SaveMap*/
     public void testSaveMap() throws IOException {
         saveMap.saveMap(terrain);
         Terrain saveTerrain = saveMap.loadMap();
 
-        //Permet de récupérer l'image de fond de la map
-        String cheminBackground = "/maps/" + saveTerrain.getMapName() + "_background.png";
-        BufferedImage imageBackground = ImageIO.read(Objects.requireNonNull(
-                getClass().getResource(cheminBackground)));
-        saveTerrain.setBackground(imageBackground);
-
-        //Permet de récupérer l'image de la map
-        String cheminImage = "/maps/" + saveTerrain.getMapName() + ".png";
-        BufferedImage image = ImageIO.read(Objects.requireNonNull(
-                getClass().getResource(cheminImage)));
-        saveTerrain.setImage(image);
+        saveMap.loadImage(saveTerrain);
 
         assertEquals(terrain.getMapName(), saveTerrain.getMapName());
         assertEquals(terrain.getWidth(), saveTerrain.getWidth());

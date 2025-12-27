@@ -1,8 +1,8 @@
 package upc.controller;
+
+
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
-
-
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
@@ -11,6 +11,7 @@ import upc.model.save.SaveMap;
 import upc.model.save.SaveTeam;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
+import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -29,25 +30,17 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
-    private boolean inventoryVisible = true;
-
-    // Variables pour la gestion manuelle du TOGGLE (pour éviter la répétition)
-    private boolean iKeyWasPressed = false;
-    private boolean[] selectionKeysWasPressed = new boolean[5];
-
     //Varible pour la gestion manuelle de la sauvegarde (pour éviter la répétition)
     private boolean f5WasPressed = false;
 
     private volatile boolean running = true;
+    private boolean paused = false;
     private Thread gameThread;
-    private boolean lastAWasPressed = false;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
-
-        gamePanel.setInventoryVisible(inventoryVisible);
 
         addListeners();
         startGameLoop();
@@ -57,10 +50,18 @@ public class GameController {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
         gamePanel.setFocusable(true);
+
+        PausePanel pausePanel = gamePanel.getPausePanel();
+        pausePanel.getResumeButton().addActionListener(e -> {
+            gamePanel.togglePauseMenu(false);
+            gamePanel.requestFocusInWindow();
+        });
+
+        pausePanel.getQuitButton().addActionListener(e -> System.exit(0));
     }
 
 
-    ////    GESTION DE LA BOUCLE DU JEU    ////
+////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -93,45 +94,37 @@ public class GameController {
     }
 
     private void update() {
-        // Gestion de la caméra à travers mouseHandler
+        handlePause();
+        if (paused) {
+            return;
+        }
+
         handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier et de l'inventaire
         handleControls();
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             gamePanel.centralizeCamera(activeAlien);
         }
-
         gameManager.update(1.0 / 60.0);
 
         if (gameManager.isOver()) {
             showGameOver();
             return;
         }
-        boolean isAPressed = keyHandler.isKeyPressed(KeyEvent.VK_A);
-        if (isAPressed && !lastAWasPressed) {  // ← EDGE DETECTION
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
             if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();  // ← Appelé UNE SEULE FOIS
+                activeAlien.useEquippedItem();
                 System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
             }
         }
-        lastAWasPressed = isAPressed;
+        keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
 
 
-    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
-
-        boolean iIsPressed = keyHandler.isKeyPressed(KeyEvent.VK_I);
-
-        if (iIsPressed && !iKeyWasPressed) {
-            inventoryVisible = !inventoryVisible;
-            gamePanel.setInventoryVisible(inventoryVisible);
-        }
-        iKeyWasPressed = iIsPressed;
-
         boolean f5IsPressed = keyHandler.isKeyPressed(KeyEvent.VK_F5);
 
         if (f5IsPressed && !f5WasPressed) {
@@ -144,31 +137,28 @@ public class GameController {
             }
         }
 
-        boolean f5WasPressed = f5IsPressed;
-
-        if (inventoryVisible) {
-            for (int i = 0; i < 5; i++) {
-                int keyCode = KeyEvent.VK_1 + i;
-                boolean keyIsPressed = keyHandler.isKeyPressed(keyCode);
-
-                if (keyIsPressed && !selectionKeysWasPressed[i]) {
-                    gamePanel.setSelectedItemIndex(i);
-
-                }
-                selectionKeysWasPressed[i] = keyIsPressed;
-            }
-        } else {
-            for (int i = 0; i < 5; i++) {
-                selectionKeysWasPressed[i] = false;
-            }
-        }
+        f5WasPressed = f5IsPressed;
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
+            gamePanel.toggleInventory();
+        }
+
+        if (gamePanel.isInventoryVisible()) {
+            for (int i = 0; i < 5; i++) {
+                int keyCode = KeyEvent.VK_1 + i;
+
+                if (keyHandler.isJustKeyPressed(keyCode)) {
+                    activeAlien.setSelectedItemIndex(i);
+                }
+            }
+        }
+
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
             activeAlien.jump();
         }
 
@@ -194,8 +184,7 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-
-        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
             Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
             gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
         }
@@ -232,7 +221,17 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    ////    ARRET DU JEU    ////
+////    ARRET DU JEU    ////
+    public void handlePause() {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
+            paused = !paused;
+        }
+        gamePanel.togglePauseMenu(paused);
+        if (paused) {
+            keyHandler.clearJustPressed();
+        }
+    }
+
     public void stop() {
         running = false;
         if (gameThread != null) {

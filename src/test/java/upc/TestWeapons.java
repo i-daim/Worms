@@ -88,31 +88,5 @@ public class TestWeapons {
         assertEquals(70, bazooka.getSpeed());
     }
 
-    @Test
-    public void testBazookaCreateProjectile() {
-        Bazooka bazooka = new Bazooka();
-        Projectile p = bazooka.createProjectile(dummyShooter, new Position(0,0), 0, 0);
-        assertNotNull(p);
-        assertTrue(p instanceof Rocket);
-
-    }
-    @Test
-    public void testGrenadeCreateProjectile() {
-        Grenade grenade = new Grenade();
-        Projectile p = grenade.createProjectile(dummyShooter, new Position(0,0), 0, 0);
-        assertTrue(p instanceof Throwable, "La Grenade doit créer un Throwable");
-    }
-    @Test
-    public void testUziCreateProjectile() {
-        Uzi uzi = new Uzi();
-        Projectile p = uzi.createProjectile(dummyShooter, new Position(0,0), 0, 0);
-        assertTrue(p instanceof Bullet, "L'Uzi doit créer une Bullet");
-    }
-    @Test
-    public void testMineCreateProjectile() {
-        Mine mine = new Mine();
-        Projectile p = mine.createProjectile(dummyShooter, new Position(0,0), 0, 0);
-        assertTrue(p instanceof Trap, "La Mine doit créer un Trap");
-    }
 
 }

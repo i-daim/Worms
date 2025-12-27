@@ -4,6 +4,7 @@ import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
+import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
 import upc.model.jeu.GameWorld;
@@ -62,11 +63,15 @@ public class PhysicsEngine {
                     return;
                 }
             }
-            if (p.isActive() && p instanceof Rocket && p.getState() == Projectile.State.FLYING) {
+            if (!p.isActive()) {
+                return;
+            }
+            if (p instanceof Rocket) {
                 p.setState(Projectile.State.EXPLODED);
-                projectilePhysics.explodeProjectile(p);
-                world.removeBody(p.getBody());
-                projectilePhysics.getActiveProjectiles().remove(p);
+            } else if (p instanceof Bullet) {
+                if (b2 != null) {
+                    projectilePhysics.handleBulletImpact((Bullet) p, b2);
+                }
             }
         }
     }
@@ -127,11 +132,6 @@ public class PhysicsEngine {
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
-
-    public void explodeProjectile(Projectile proj) {
-        projectilePhysics.explodeProjectile(proj);
-    }
-
 
 ////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {

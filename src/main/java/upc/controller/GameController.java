@@ -291,17 +291,8 @@ public class GameController {
         Terrain terrain = saveMap.loadMap();
 
 
-        //Permet de récupérer l'image de fond de la map
-        String cheminBackground = "/resources/maps/" + terrain.getMapName() + "_background.png";
-        BufferedImage imageBackground = ImageIO.read(Objects.requireNonNull(
-                getClass().getResource(cheminBackground)));
-        terrain.setBackground(imageBackground);
-
-        //Permet de récupérer l'image de la map
-        String cheminImage = "/resources/maps/" + terrain.getMapName() + ".png";
-        BufferedImage image = ImageIO.read(Objects.requireNonNull(
-                getClass().getResource(cheminImage)));
-        terrain.setImage(image);
+        //Permet de récupérer les images de la map
+        saveMap.loadImage(terrain);
 
         //Récupère les équipes sauvegardées
         SaveTeam saveTeam = new SaveTeam();

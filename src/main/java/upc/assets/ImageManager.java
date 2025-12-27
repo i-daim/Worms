@@ -9,9 +9,12 @@ import java.io.IOException;
 
 
 public class ImageManager {
-    private static final Map<String, BufferedImage> SPRITES = new HashMap<>();
+    private static final Map<String, BufferedImage> IMAGES = new HashMap<>();
 
     static {
+        ImageManager.load("menu_background", "/menu/menu_background.png");
+        ImageManager.load("settings_background", "/menu/settings_background.png");
+
         ImageManager.load("Bazooka", "/Items/Bazooka.png");
         ImageManager.load("Uzi", "/Items/Uzi.png");
         ImageManager.load("Shotgun", "/Items/Shotgun.png");
@@ -32,7 +35,7 @@ public class ImageManager {
         try {
             var url = ImageManager.class.getResource(path);
             if (url != null) {
-                SPRITES.put(name, ImageIO.read(url));
+                IMAGES.put(name, ImageIO.read(url));
             } else {
                 System.err.println("Sprite introuvable : " + path);
             }
@@ -42,6 +45,6 @@ public class ImageManager {
     }
 
     public static BufferedImage get(String name) {
-        return SPRITES.get(name);
+        return IMAGES.get(name);
     }
 }

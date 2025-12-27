@@ -20,6 +20,7 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
+    private final PauseActions pauseActions;
 
     private static final int CAMERA_SPEED = 10;
 
@@ -31,6 +32,7 @@ public class GameController {
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
+        this.pauseActions = new PauseActions(this, gamePanel);
 
         addListeners();
         startGameLoop();
@@ -42,12 +44,10 @@ public class GameController {
         gamePanel.setFocusable(true);
 
         PausePanel pausePanel = gamePanel.getPausePanel();
-        pausePanel.getResumeButton().addActionListener(e -> {
-            gamePanel.togglePauseMenu(false);
-            gamePanel.requestFocusInWindow();
-        });
-
-        pausePanel.getQuitButton().addActionListener(e -> System.exit(0));
+        pausePanel.getResumeButton().addActionListener(pauseActions.getResumeAction());
+        pausePanel.getMainMenuButton().addActionListener(pauseActions.getMainMenuAction());
+        pausePanel.getSettingsButton().addActionListener(pauseActions.getSettingsAction());
+        pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
 
@@ -200,12 +200,16 @@ public class GameController {
 ////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
-            paused = !paused;
+            togglePause();
         }
         gamePanel.togglePauseMenu(paused);
         if (paused) {
             keyHandler.clearJustPressed();
         }
+    }
+
+    public void togglePause() {
+        paused = !paused;
     }
 
     public void stop() {

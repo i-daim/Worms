@@ -45,7 +45,7 @@ public class GameController {
 
         PausePanel pausePanel = gamePanel.getPausePanel();
         pausePanel.getResumeButton().addActionListener(pauseActions.getResumeAction());
-        pausePanel.getNewGameButton().addActionListener(pauseActions.getNewGameAction());
+        pausePanel.getMainMenuButton().addActionListener(pauseActions.getMainMenuAction());
         pausePanel.getSettingsButton().addActionListener(pauseActions.getSettingsAction());
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }

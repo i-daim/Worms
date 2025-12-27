@@ -24,11 +24,12 @@ public class PauseActions {
         };
     }
 
-    public ActionListener getNewGameAction() {
+    public ActionListener getMainMenuAction() {
         return e -> {
             MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(gamePanel);
             if (mainFrame != null) {
                 MenuPanel menuPanel = new MenuPanel();
+                new MenuController(mainFrame, menuPanel);
 
                 SoundManager.playMusic("Menu Theme");
 

@@ -32,7 +32,7 @@ public class GameController {
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
-        this.pauseActions = new PauseActions(gamePanel);
+        this.pauseActions = new PauseActions(this, gamePanel);
 
         addListeners();
         startGameLoop();
@@ -200,12 +200,16 @@ public class GameController {
 ////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
-            paused = !paused;
+            togglePause();
         }
         gamePanel.togglePauseMenu(paused);
         if (paused) {
             keyHandler.clearJustPressed();
         }
+    }
+
+    public void togglePause() {
+        paused = !paused;
     }
 
     public void stop() {

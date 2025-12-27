@@ -11,14 +11,17 @@ import java.awt.event.ActionListener;
 
 public class PauseActions {
 
+    private final GameController gameController;
     private final GamePanel gamePanel;
 
-    public PauseActions(GamePanel gamePanel) {
+    public PauseActions(GameController gameController, GamePanel gamePanel) {
+        this.gameController = gameController;
         this.gamePanel = gamePanel;
     }
 
     public ActionListener getResumeAction() {
         return e -> {
+            gameController.togglePause();
             gamePanel.togglePauseMenu(false);
             gamePanel.requestFocusInWindow();
         };

@@ -10,7 +10,7 @@ public class Rocket extends Projectile {
                 shooter,
                 startPos,
                 weapon.getDamage(),
-                45,
+                30,
                 true,
                 weapon.getSpeed(),
                 weapon

@@ -12,7 +12,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Dimension;
 
 
 public class GameOverPanel extends JPanel {
@@ -51,15 +50,9 @@ public class GameOverPanel extends JPanel {
         centerPanel.add(statsLabel);
         centerPanel.add(Box.createVerticalStrut(50));
 
-        JButton quitButton = new JButton("Quitter le jeu");
-        quitButton.setFont(new Font("Arial", Font.BOLD, 24));
-        quitButton.setPreferredSize(new Dimension(250, 60));
-        quitButton.setMaximumSize(new Dimension(250, 60));
-        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        quitButton.setFocusPainted(false);
+        JButton quitButton = ButtonManager.createGameButton("Quitter le jeu", e -> System.exit(0));
         quitButton.setBackground(new Color(180, 50, 50));
         quitButton.setForeground(Color.WHITE);
-        quitButton.addActionListener(e -> System.exit(0));
 
         centerPanel.add(quitButton);
         centerPanel.add(Box.createVerticalGlue());

@@ -52,7 +52,7 @@ public class AlienPhysics {
             }
             boolean isOnGround = isOnGround(body);
 
-            checkFallDamage(alien, body);
+            checkFallDamage(alien, body,isOnGround);
             checkAirFriction(body,isOnGround);
 
             Vector2 v = body.getTransform().getTranslation();
@@ -137,10 +137,10 @@ public class AlienPhysics {
         }
     }
 
-    public void checkFallDamage(Alien alien, Body body) {
+    public void checkFallDamage(Alien alien, Body body,boolean isOnGround) {
         Vector2 currentVel = body.getLinearVelocity();
         double currentVelY = currentVel.y;
-        boolean isOnGround = isOnGround(body);
+
 
         boolean wasAirborne = wasInAir.getOrDefault(alien, false);
         double maxSpeed = maxFallSpeed.getOrDefault(alien, 0.0);

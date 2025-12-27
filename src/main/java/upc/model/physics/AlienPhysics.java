@@ -149,7 +149,7 @@ public class AlienPhysics {
         double maxSpeed = maxFallSpeed.getOrDefault(alien, 0.0);
         double prevVelY = previousVelocities.getOrDefault(alien, 0.0);
 
-        if (wasAirborne && isOnGround && prevVelY > 0) {
+        if (wasAirborne && isOnGround && prevVelY > 0 && maxSpeed > SAFE_FALL_SPEED) {
             if (maxSpeed > SAFE_FALL_SPEED) {
                 int degats = (int) ((maxSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
                 if (degats > 0) {

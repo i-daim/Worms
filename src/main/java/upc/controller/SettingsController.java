@@ -2,41 +2,41 @@ package upc.controller;
 
 import upc.assets.Sound;
 import upc.assets.SoundManager;
+import upc.view.gui.MainFrame;
+import upc.view.gui.MenuPanel;
 import upc.view.gui.SettingsPanel;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SettingsController {
 
     private final SettingsPanel settingsPanel;
+    private final MainFrame mainFrame;
+    private final MenuPanel menuPanel;
 
-    public SettingsController(SettingsPanel settingsPanel) {
+    public SettingsController(SettingsPanel settingsPanel,
+                              MainFrame mainFrame, MenuPanel menuPanel) {
         this.settingsPanel = settingsPanel;
+        this.mainFrame = mainFrame;
+        this.menuPanel = menuPanel;
         initListeners();
     }
 
     private void initListeners() {
-        settingsPanel.getMusicSelection().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedMusicName = (String)
-                        settingsPanel.getMusicSelection().getSelectedItem();
+        settingsPanel.getMusicSelection().addActionListener(e -> {
+            String selectedMusicName = (String)
+                    settingsPanel.getMusicSelection().getSelectedItem();
 
-                if (selectedMusicName != null) {
-                    SoundManager.playMusic(selectedMusicName);
-                    updateVolume();
-                }
+            if (selectedMusicName != null) {
+                SoundManager.playMusic(selectedMusicName);
+                updateVolume();
             }
         });
 
-        settingsPanel.getVolumeSlider().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                updateVolume();
-            }
+        settingsPanel.getVolumeSlider().addChangeListener(e -> updateVolume());
+
+        settingsPanel.getBackButton().addActionListener(e -> {
+            mainFrame.setContentPane(menuPanel);
+            mainFrame.revalidate();
+            mainFrame.repaint();
         });
     }
 

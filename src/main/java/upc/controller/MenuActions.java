@@ -39,13 +39,7 @@ public class MenuActions {
     public ActionListener getSettingsAction() {
         return e -> {
             SettingsPanel settingsPanel = new SettingsPanel();
-            new SettingsController(settingsPanel);
-
-            settingsPanel.getBackButton().addActionListener(ev -> {
-                mainFrame.setContentPane(menuPanel);
-                mainFrame.revalidate();
-                mainFrame.repaint();
-            });
+            new SettingsController(settingsPanel, mainFrame, menuPanel);
 
             mainFrame.setContentPane(settingsPanel);
             mainFrame.revalidate();

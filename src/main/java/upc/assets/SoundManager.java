@@ -19,6 +19,7 @@ public class SoundManager {
         MUSICS.put("Free Glirb", loadMusic("free_glirb"));
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
+        MUSICS.put("Victory Music", loadMusic("victory_music"));
 
         EFFECTS.put("Damage", loadEffect("damage"));
         EFFECTS.put("Explosion", loadEffect("explosion"));
@@ -32,6 +33,9 @@ public class SoundManager {
 
 ////    CONTROLES POUR LA MUSIQUE    ////
     public static void playMusic(String name) {
+        if (isAudioDisabled()) {
+            return;
+        }
         if (currentMusic != null) {
             currentMusic.stop();
         }
@@ -48,6 +52,9 @@ public class SoundManager {
     }
 
     public static void playEffect(String name) {
+        if (isAudioDisabled()) {
+            return;
+        }
         Sound effect = EFFECTS.get(name);
         if (effect != null) {
             effect.play();
@@ -56,9 +63,12 @@ public class SoundManager {
 
     public static void playVoice() {
         int index = (int) (Math.random() * 11);
-        voices[index].play();
+        playVoice(index);
     }
     public static void playVoice(int index) {
+        if (isAudioDisabled()) {
+            return;
+        }
         if (index >= 0 && index < voices.length && voices[index] != null) {
             voices[index].play();
         }
@@ -93,5 +103,14 @@ public class SoundManager {
 
     public static String[] getMusicsSelection() {
         return MUSICS.keySet().toArray(new String[0]);
+    }
+
+    private static boolean isAudioDisabled() {
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            if (element.getClassName().startsWith("org.junit")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

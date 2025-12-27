@@ -25,11 +25,13 @@ public class AnimationManager {
         // Animations monde //
         animations.put("water", new Animation("animations/water/water", 8, false));
         animations.put("explosion", new Animation("animations/explosion/explosion", 7, false));
-        try {
-            animations.put("rocket", new Animation("animations/Rocket/Rocket", 9, false));
-        } catch (Exception e) {
-            System.err.println("⚠️  Erreur chargement animation Rocket : " + e.getMessage());
-        }
+        animations.put("rocket", new Animation("animations/Rocket/Rocket", 9, false));
+
+        // Autres //
+        animations.put("victory_glorbs",
+                new Animation("animations/victory/glorb/victory_glorb", 45, false));
+        animations.put("victory_zlerps",
+                new Animation("animations/victory/zlerp/victory_zlerp", 45, false));
     }
 
     public static Animation getAnimation(String name) {

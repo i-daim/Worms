@@ -5,6 +5,7 @@ import upc.model.jeu.Terrain;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,8 +19,14 @@ public class SaveMap {
     /*Méthode permettant la sauvegarde d'un objet terrain*/
     public void saveMap(Terrain terrain) throws IOException {
 
+        //Ajout d'un répertoire pour fichiers de sauvegarde
+        File saveDir = new  File("saveData");
+        if (!saveDir.exists()) {
+            saveDir.mkdir();
+        }
+
         //Permet de créer le fichier de sauvegarde de type Json
-        try (FileWriter file = new FileWriter("saveMap.json")) {
+        try (FileWriter file = new FileWriter("saveData/saveMap.json")) {
 
             //Conversion de l'objet terrain en json
             // Et implémentation dans le fichier sauvegarde dédié
@@ -31,7 +38,7 @@ public class SaveMap {
     public Terrain loadMap() throws IOException {
 
         //Appel du fichier de sauvegarde de l'objet terrain
-        try (FileReader file = new FileReader("saveMap.json")) {
+        try (FileReader file = new FileReader("saveData/saveMap.json")) {
 
             //Reconversion de l'objet au format initial
             return gson.fromJson(file, Terrain.class);

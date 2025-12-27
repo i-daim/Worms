@@ -6,6 +6,7 @@ import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Team;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,9 +22,15 @@ public class SaveTeam {
     /*Méthode permettant la sauvegarde d'un objet équipe*/
     public void saveTeam(Team zlerps, Team glorbs) throws IOException {
 
+        //Ajout d'un répertoire pour fichiers de sauvegarde
+        File saveDir = new  File("saveData");
+        if (!saveDir.exists()) {
+            saveDir.mkdir();
+        }
+
         //Permet de créer le fichier de sauvegarde de type Json
         //Pour l'équipe zlerps
-        try (FileWriter file = new FileWriter("zlerps.json")) {
+        try (FileWriter file = new FileWriter("saveData/zlerps.json")) {
 
             //Liste représentant les aliens vivants dans l'équipe zlerps
             List<AlienSave> list = new ArrayList<AlienSave>();
@@ -45,7 +52,7 @@ public class SaveTeam {
 
         //Permet de créer le fichier de sauvegarde de type Json
         //Pour l'équipe glorps
-        try (FileWriter file = new FileWriter("glorbs.json")) {
+        try (FileWriter file = new FileWriter("saveData/glorbs.json")) {
 
             //Liste représentant les aliens vivants dans l'équipe glorbs
             List<AlienSave> list = new ArrayList<AlienSave>();
@@ -74,7 +81,7 @@ public class SaveTeam {
         Team[] teams = new Team[2];
 
         //Permet de lire le fichier de sauvegarde de type Json
-        try (FileReader file = new FileReader("zlerps.json")) {
+        try (FileReader file = new FileReader("saveData/zlerps.json")) {
 
             //Permet de convertir la list<Alien> dans un format compréhensible par Gson
             Type type = new TypeToken<List<AlienSave>>() { }.getType();
@@ -94,7 +101,7 @@ public class SaveTeam {
         }
 
         //Permet de lire le fichier de sauvegarde de type Json
-        try (FileReader file = new FileReader("glorbs.json")) {
+        try (FileReader file = new FileReader("saveData/glorbs.json")) {
 
             //Permet de convertir la list<Alien> dans un format compréhensible par Gson
             Type type = new TypeToken<List<AlienSave>>() { }.getType();

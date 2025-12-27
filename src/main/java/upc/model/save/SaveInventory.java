@@ -3,6 +3,7 @@ package upc.model.save;
 import com.google.gson.Gson;
 import upc.model.jeu.Inventory;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,8 +16,14 @@ public class SaveInventory {
     /*Méthode permettant la sauvegarde d'un objet inventaire*/
     public void saveInventory(Inventory zlinventory, Inventory glinventory) throws IOException {
 
+        //Ajout d'un répertoire pour fichiers de sauvegarde
+        File saveDir = new  File("saveData");
+        if (!saveDir.exists()) {
+            saveDir.mkdir();
+        }
+
         //Permet de créer le fichier de sauvegarde de type Json
-        try (FileWriter file = new FileWriter("ZlerpsInventory.json")) {
+        try (FileWriter file = new FileWriter("saveData/ZlerpsInventory.json")) {
 
             //Crée un objet de sauvegarde minimal pour l'inventaire des zlerps
             InventorySave zlinventorySave = new InventorySave(zlinventory);
@@ -27,7 +34,7 @@ public class SaveInventory {
         }
 
         //Permet de créer le fichier de sauvegarde de type Json
-        try (FileWriter file = new FileWriter("GlorbsInventory.json")) {
+        try (FileWriter file = new FileWriter("saveData/GlorbsInventory.json")) {
 
             //Crée un objet de sauvegarde minimal pour l'inventaire des glorbs
             InventorySave glinventorySave = new InventorySave(glinventory);
@@ -46,7 +53,7 @@ public class SaveInventory {
         Inventory[] equipesinventaire = new Inventory[2];
 
         //Appel du fichier de sauvegarde de l'objet inventaire zlerps
-        try (FileReader file = new FileReader("ZlerpsInventory.json")) {
+        try (FileReader file = new FileReader("saveData/ZlerpsInventory.json")) {
 
             //Recrée un inventaire pour l'équipe zlerps
             Inventory zlerpsInventory = new Inventory(gson.fromJson(file, InventorySave.class));
@@ -56,7 +63,7 @@ public class SaveInventory {
         }
 
         //Appel du fichier de sauvegarde de l'objet inventaire glorbs
-        try (FileReader file = new FileReader("GlorbsInventory.json")) {
+        try (FileReader file = new FileReader("saveData/GlorbsInventory.json")) {
 
             //Recrée un inventaire pour l'équipe glorbs
             Inventory glorbsInventory = new Inventory(gson.fromJson(file, InventorySave.class));

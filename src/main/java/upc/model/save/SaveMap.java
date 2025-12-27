@@ -3,9 +3,12 @@ package upc.model.save;
 import com.google.gson.Gson;
 import upc.model.jeu.Terrain;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 
 public class SaveMap {
 
@@ -33,6 +36,23 @@ public class SaveMap {
             //Reconversion de l'objet au format initial
             return gson.fromJson(file, Terrain.class);
         }
+    }
+
+    /*Méthode permettant de récuperér les images de la map*/
+    public void loadImage(Terrain terrain) throws IOException {
+
+        //Permet de récupérer l'image de fond de la map
+        String cheminBackground = "/maps/" + terrain.getMapName() + "_background.png";
+        BufferedImage imageBackground = ImageIO.read(Objects.requireNonNull(
+                getClass().getResource(cheminBackground)));
+        terrain.setBackground(imageBackground);
+
+        //Permet de récupérer l'image de la map
+        String cheminImage = "/maps/" + terrain.getMapName() + ".png";
+        BufferedImage image = ImageIO.read(Objects.requireNonNull(
+                getClass().getResource(cheminImage)));
+        terrain.setImage(image);
+
     }
 
 }

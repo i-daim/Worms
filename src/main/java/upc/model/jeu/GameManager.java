@@ -1,5 +1,6 @@
 package upc.model.jeu;
 
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;
@@ -68,6 +69,8 @@ public class GameManager {
         this.timeLeft = ROUND_TIME;
         this.gameOver = false;
         this.actionDone = false;
+
+        SoundManager.playVoice(0);
     }
 
 
@@ -91,6 +94,8 @@ public class GameManager {
 
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
+        } else {
+            SoundManager.playVoice();
         }
     }
 

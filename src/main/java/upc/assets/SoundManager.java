@@ -20,14 +20,13 @@ public class SoundManager {
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
 
+        EFFECTS.put("Damage", loadEffect("damage"));
         EFFECTS.put("Explosion", loadEffect("explosion"));
         EFFECTS.put("Bazooka", loadEffect("bazooka"));
         EFFECTS.put("Rocket", loadEffect("rocket"));
         EFFECTS.put("Shotgun", loadEffect("shotgun"));
         EFFECTS.put("Uzi", loadEffect("uzi"));
         EFFECTS.put("Mine", loadEffect("mine_deploy"));
-
-
     }
 
 
@@ -48,8 +47,21 @@ public class SoundManager {
         }
     }
 
-    public static Sound getCurrentMusic() {
-        return currentMusic;
+    public static void playEffect(String name) {
+        Sound effect = EFFECTS.get(name);
+        if (effect != null) {
+            effect.play();
+        }
+    }
+
+    public static void playVoice() {
+        int index = (int) (Math.random() * 11);
+        voices[index].play();
+    }
+    public static void playVoice(int index) {
+        if (index >= 0 && index < voices.length && voices[index] != null) {
+            voices[index].play();
+        }
     }
 
 
@@ -75,13 +87,8 @@ public class SoundManager {
         return MUSICS.get(name);
     }
 
-    public static Sound getEffect(String name) {
-        return EFFECTS.get(name);
-    }
-
-    public static Sound getRandomVoice() {
-        int index = (int) (Math.random() * 11);
-        return voices[index];
+    public static Sound getCurrentMusic() {
+        return currentMusic;
     }
 
     public static String[] getMusicsSelection() {

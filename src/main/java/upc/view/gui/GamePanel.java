@@ -40,8 +40,8 @@ public class GamePanel extends JPanel {
     private final HUDPanel hudPanel;
     private final PausePanel pausePanel;
 
-    private int cameraX = 0;
-    private int cameraY = 0;
+    private double cameraX = 0;
+    private double cameraY = 0;
 
     private boolean inventoryVisible = false;
 
@@ -222,6 +222,9 @@ public class GamePanel extends JPanel {
         var projectiles = new ArrayList<>(projectileList);
 
         for (Projectile p : projectiles) {
+            if (p == null) {
+                continue;
+            }
             int x = p.getPosition().getX();
             int y = p.getPosition().getY();
             if (p instanceof Rocket) {
@@ -294,36 +297,65 @@ public class GamePanel extends JPanel {
     }
 
     public void centralizeCamera(Entity entity) {
-        if (entity == null) {
+        if (entity == null || isCameraCentered(entity)) {
             return;
+        }
+
+        int posX = entity.getPosition().getX();
+        int posY = entity.getPosition().getY();
+
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
+
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+
+        double targetCamX = Math.max(0, Math.min(viewX, maxX));
+        double targetCamY = Math.max(0, Math.min(viewY, maxY));
+
+        cameraX += (targetCamX - cameraX) * 0.1;
+        cameraY += (targetCamY - cameraY) * 0.1;
+
+        if (Math.abs(targetCamX - cameraX) < 0.1) {
+            cameraX = targetCamX;
+        }
+        if (Math.abs(targetCamY - cameraY) < 0.1) {
+            cameraY = targetCamY;
+        }
+    }
+
+    public boolean isCameraCentered(Entity entity) {
+        if (entity == null) {
+            return false;
         }
         int posX = entity.getPosition().getX();
         int posY = entity.getPosition().getY();
 
-        int viewX = posX - (int) (getWidth() / (2 * ZOOM));
-        int viewY = posY - (int) (getHeight() / (2 * ZOOM));
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
 
-        int maxX = (int) (terrain.getWidth() - getWidth() / ZOOM);
-        int maxY = (int) (terrain.getHeight() - getHeight() / ZOOM);
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
 
-        int camX = Math.max(0, Math.min(viewX, maxX));
-        int camY = Math.max(0, Math.min(viewY, maxY));
-        setCamera(camX, camY);
+        double camX = Math.max(0, Math.min(viewX, maxX));
+        double camY = Math.max(0, Math.min(viewY, maxY));
+
+        return (Math.abs(camX - cameraX) < 8) && (Math.abs(camY - cameraY) < 8);
     }
 
 
 ////    SETTERS & GETTERS    ////
-    public void setCamera(int x, int y) {
+    public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;
         repaint();
     }
 
-    public int getCameraX() {
+    public double getCameraX() {
         return cameraX;
     }
 
-    public int getCameraY() {
+    public double getCameraY() {
         return cameraY;
     }
 

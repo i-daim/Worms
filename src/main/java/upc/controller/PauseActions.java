@@ -49,8 +49,9 @@ public class PauseActions {
              MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(gamePanel);
              if (mainFrame != null) {
                  SettingsPanel settingsPanel = new SettingsPanel();
+                 new SettingsController(settingsPanel, mainFrame, null);
 
-                 settingsPanel.getBackButton().addActionListener(ev -> {
+                 settingsPanel.getBackButton().addActionListener(e2 -> {
                      mainFrame.setContentPane(gamePanel);
                      mainFrame.revalidate();
                      mainFrame.repaint();

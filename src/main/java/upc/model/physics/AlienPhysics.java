@@ -158,8 +158,10 @@ public class AlienPhysics {
         }
 
         if (!isOnGround) {
-            double newMaxSpeed = Math.max(maxSpeed, Math.abs(currentVelY));
-            maxFallSpeed.put(alien, newMaxSpeed);
+            if (currentVelY > 0) {
+                double newMaxSpeed = Math.max(maxSpeed, currentVelY);
+                maxFallSpeed.put(alien, newMaxSpeed);
+            }
         }
 
         wasInAir.put(alien, !isOnGround);

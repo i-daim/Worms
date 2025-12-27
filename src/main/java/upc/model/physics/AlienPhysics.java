@@ -174,14 +174,13 @@ public class AlienPhysics {
             int feetY = centerY + (pixelHeight / 2) + 2 ; // Petite Tolerance
             int tileY = feetY / TerrainGenerator.TILE_SIZE;
             boolean[][] collisions = terrain.getCollisions();
-            int height = collisions.length;
-            if (tileY < 0 || tileY >= height) {
+            if (tileY < 0 || tileY >= collisions.length) {
                 return false;
             }
-            int leftX = centerX - (pixelWidth / 2);
-            int rightX = centerX + (pixelWidth / 2);
+            int leftX = centerX - (pixelWidth / 2) + 1 ;
+            int rightX = centerX + (pixelWidth / 2) - 1 ;
 
-            int[] checkXs = new int[] {leftX + 1, centerX, rightX - 1 };
+            int[] checkXs = new int[] {leftX , centerX, rightX  };
             int width = collisions[0].length;
             for (int px : checkXs) {
                 int tileX = px / TerrainGenerator.TILE_SIZE;

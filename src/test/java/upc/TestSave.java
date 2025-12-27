@@ -8,15 +8,13 @@ import upc.model.jeu.GameManager;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.jeu.Terrain;
-import upc.model.save.SaveAlien;
 import upc.model.save.SaveInventory;
 import upc.model.save.SaveMap;
 import upc.model.save.SaveTeam;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
 import java.io.IOException;
-import java.util.Objects;
+
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

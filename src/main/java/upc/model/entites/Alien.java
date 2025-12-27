@@ -41,7 +41,6 @@ public class Alien extends Entity {
         this.direction = alienSave.getDirection();
         this.aimAngle = alienSave.getAimAngle();
         this.shootPower = alienSave.getShootPower();
-        this.equippedItem = Item.Type.BAZOOKA;
 
         this.state = State.IDLE;
     }

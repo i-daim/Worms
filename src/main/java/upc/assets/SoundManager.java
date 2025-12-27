@@ -19,6 +19,7 @@ public class SoundManager {
         MUSICS.put("Free Glirb", loadMusic("free_glirb"));
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
+        MUSICS.put("Victory Music", loadMusic("victory_music"));
 
         EFFECTS.put("Damage", loadEffect("damage"));
         EFFECTS.put("Explosion", loadEffect("explosion"));

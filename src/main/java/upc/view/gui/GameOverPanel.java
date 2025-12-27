@@ -26,6 +26,8 @@ public class GameOverPanel extends JPanel {
 
         initializeUI();
         initializeAnimation();
+
+        SoundManager.playMusic("Victory Music");
     }
 
 

@@ -27,8 +27,6 @@ public class SoundManager {
         EFFECTS.put("Shotgun", loadEffect("shotgun"));
         EFFECTS.put("Uzi", loadEffect("uzi"));
         EFFECTS.put("Mine", loadEffect("mine_deploy"));
-
-
     }
 
 
@@ -49,10 +47,6 @@ public class SoundManager {
         }
     }
 
-    public static Sound getCurrentMusic() {
-        return currentMusic;
-    }
-
     public static void playEffect(String name) {
         Sound effect = EFFECTS.get(name);
         if (effect != null) {
@@ -69,6 +63,7 @@ public class SoundManager {
             voices[index].play();
         }
     }
+
 
 ////    LOADERS    ////
     public static void loadVoices(int number) {
@@ -92,13 +87,8 @@ public class SoundManager {
         return MUSICS.get(name);
     }
 
-    public static Sound getEffect(String name) {
-        return EFFECTS.get(name);
-    }
-
-    public static Sound getRandomVoice() {
-        int index = (int) (Math.random() * 11);
-        return voices[index];
+    public static Sound getCurrentMusic() {
+        return currentMusic;
     }
 
     public static String[] getMusicsSelection() {

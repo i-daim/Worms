@@ -123,6 +123,8 @@ public class AlienPhysics {
     public void jumpAlien(Alien alien) {
         Body body = alienBodies.get(alien);
         if (body != null && isOnGround(body) && !hasJumped.getOrDefault(alien, false)) {
+            maxFallSpeed.put(alien, 0.0);
+            wasInAir.put(alien, true);
             body.applyImpulse(new Vector2(0, -45.0));
             body.setAtRest(false);
             hasJumped.put(alien, true);

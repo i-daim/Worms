@@ -52,8 +52,8 @@ public class AlienPhysics {
             }
             boolean isOnGround = isOnGround(body);
 
-            checkFallDamage(alien, body,isOnGround);
-            checkAirFriction(body,isOnGround);
+            checkFallDamage(alien, body, isOnGround);
+            checkAirFriction(body, isOnGround);
 
             Vector2 v = body.getTransform().getTranslation();
             int pixelX = Converter.toPixels(v.x);
@@ -137,7 +137,7 @@ public class AlienPhysics {
         }
     }
 
-    public void checkFallDamage(Alien alien, Body body,boolean isOnGround) {
+    public void checkFallDamage(Alien alien, Body body, boolean isOnGround) {
         Vector2 currentVel = body.getLinearVelocity();
         double currentVelY = currentVel.y;
 
@@ -172,16 +172,16 @@ public class AlienPhysics {
             int centerY = Converter.toPixels(pos.y);
             int pixelWidth = Converter.toPixels(ALIEN_WIDTH);
             int pixelHeight = Converter.toPixels(ALIEN_HEIGHT);
-            int feetY = centerY + (pixelHeight / 2) + 2 ; // Petite Tolerance
+            int feetY = centerY + (pixelHeight / 2) + 2; // Petite Tolerance
             int tileY = feetY / TerrainGenerator.TILE_SIZE;
             boolean[][] collisions = terrain.getCollisions();
             if (tileY < 0 || tileY >= collisions.length) {
                 return false;
             }
-            int leftX = centerX - (pixelWidth / 2) + 1 ;
-            int rightX = centerX + (pixelWidth / 2) - 1 ;
+            int leftX = centerX - (pixelWidth / 2) + 1;
+            int rightX = centerX + (pixelWidth / 2) - 1;
 
-            int[] checkXs = new int[] {leftX , centerX, rightX  };
+            int[] checkXs = new int[] {leftX, centerX, rightX};
             int width = collisions[0].length;
             for (int px : checkXs) {
                 int tileX = px / TerrainGenerator.TILE_SIZE;

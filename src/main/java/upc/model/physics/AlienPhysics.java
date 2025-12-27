@@ -50,9 +50,10 @@ public class AlienPhysics {
             if (!alien.isAlive()) {
                 continue;
             }
+            boolean isOnGround = isOnGround(body);
 
             checkFallDamage(alien, body);
-            checkAirFriction(body);
+            checkAirFriction(body,isOnGround);
 
             Vector2 v = body.getTransform().getTranslation();
             int pixelX = Converter.toPixels(v.x);
@@ -128,8 +129,8 @@ public class AlienPhysics {
         }
     }
 
-    private void checkAirFriction(Body body) {
-        if (!isOnGround(body)) {
+    private void checkAirFriction(Body body, boolean isOnGround) {
+        if (!isOnGround) {
             body.setLinearDamping(0.5);
         } else {
             body.setLinearDamping(LINEAR_DAMPING);

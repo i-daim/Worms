@@ -166,13 +166,12 @@ public class AlienPhysics {
 
 
     private boolean isOnGround(Body body) {
-
             Vector2 pos = body.getTransform().getTranslation();
             int centerX = Converter.toPixels(pos.x);
             int centerY = Converter.toPixels(pos.y);
             int pixelWidth = Converter.toPixels(ALIEN_WIDTH);
             int pixelHeight = Converter.toPixels(ALIEN_HEIGHT);
-            int feetY = centerY + (pixelHeight / 2) + 1;
+            int feetY = centerY + (pixelHeight / 2) + 2 ; // Petite Tolerance
             int tileY = feetY / TerrainGenerator.TILE_SIZE;
             boolean[][] collisions = terrain.getCollisions();
             int height = collisions.length;

@@ -6,8 +6,18 @@ import upc.assets.AnimationManager;
 import upc.assets.SoundManager;
 import upc.model.jeu.Team;
 
-import javax.swing.*;
-import java.awt.*;
+
+import javax.swing.Box;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class GameOverPanel extends JPanel {
@@ -93,7 +103,7 @@ public class GameOverPanel extends JPanel {
     }
 
     private JLabel createTitleLabel() {
-        JLabel label = new JLabel("🎉 VICTOIRE ! 🎉");
+        JLabel label = new JLabel("VICTOIRE !");
         label.setFont(new Font("Arial", Font.BOLD, 72));
         label.setForeground(TITLE_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);

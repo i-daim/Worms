@@ -140,7 +140,8 @@ public class AlienPhysics {
         Body body = alienBodies.get(alien);
         if (body != null && groundBuffer.getOrDefault(alien, 0) > 0) {
             if (!hasJumped.getOrDefault(alien, false)) {
-                body.applyImpulse(new Vector2(0, -45.0));
+                Vector2 vel = body.getLinearVelocity();
+                body.setLinearVelocity(vel.x, -20.0);
                 body.setAtRest(false);
                 hasJumped.put(alien, true);
                 isFalling.put(alien, false);
@@ -181,7 +182,7 @@ public class AlienPhysics {
         }
 
 
-        if (!isOnGround && currentVelY > SAFE_FALL_SPEED) {
+        if (!isOnGround && currentVelY > SAFE_FALL_SPEED ) {
             isFalling.put(alien, true);
             double newMaxSpeed = Math.max(maxSpeed, currentVelY);
             maxFallSpeed.put(alien, newMaxSpeed);

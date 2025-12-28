@@ -183,7 +183,7 @@ public class AlienPhysics {
 
 
         wasInAir.put(alien, !isOnGround);
-        groundBuffer.put(alien, GROUND_BUFFER_FRAMES);
+
     }
 
 

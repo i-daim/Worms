@@ -135,15 +135,15 @@ public class AlienPhysics {
 
     public void jumpAlien(Alien alien) {
         Body body = alienBodies.get(alien);
-        if (body != null && groundBuffer.getOrDefault(alien, 0) > 0 && !hasJumped.getOrDefault(alien, false)) {
-            maxFallSpeed.put(alien, 0.0);
-            wasInAir.put(alien, true);
-            previousVelocities.put(alien, 0.0);
-            body.applyImpulse(new Vector2(0, -45.0));
-            body.setAtRest(false);
-            hasJumped.put(alien, true);
-            isFalling.put(alien, false);
-
+        if (body != null && groundBuffer.getOrDefault(alien, 0) > 0) {
+            if (!hasJumped.getOrDefault(alien, false)) {
+                body.applyImpulse(new Vector2(0, -45.0));
+                body.setAtRest(false);
+                hasJumped.put(alien, true);
+                isFalling.put(alien, false);
+            }
+        } else {
+            hasJumped.put(alien, false);
         }
     }
 

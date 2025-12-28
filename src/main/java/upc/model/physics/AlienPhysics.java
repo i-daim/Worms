@@ -183,9 +183,6 @@ public class AlienPhysics {
             maxFallSpeed.put(alien, newMaxSpeed);
         }
 
-
-        wasInAir.put(alien, !isOnGround);
-
     }
 
 

@@ -171,12 +171,12 @@ public class AlienPhysics {
             hasJumped.put(alien, false);
         }
 
-        if (!isOnGround) {
-            if (currentVelY > 0) {
-                double newMaxSpeed = Math.max(maxSpeed, currentVelY);
-                maxFallSpeed.put(alien, newMaxSpeed);
-            }
+        if (!isOnGround && currentVelY > 0) {
+            isFalling.put(alien, true);
+            double newMaxSpeed = Math.max(maxSpeed, currentVelY);
+            maxFallSpeed.put(alien, newMaxSpeed);
         }
+
 
         wasInAir.put(alien, !isOnGround);
         groundBuffer.put(alien, GROUND_BUFFER_FRAMES);

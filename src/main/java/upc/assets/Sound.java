@@ -23,26 +23,36 @@ public class Sound {
     }
 
     public void play() {
+        if (clip == null) {
+            return;
+        }
+        if (clip.isRunning()) {
+            clip.stop();
+        }
+        clip.setFramePosition(0);
         clip.start();
-
     }
 
     public void stop() {
-        clip.stop();
+        if (clip != null) {
+            clip.stop();
+        }
     }
 
     public void loop() {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-
-    public static void playSound(String name) {
-        new Sound("/sounds/" + name + ".wav").play();
+        if (clip != null) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 
     public void setVolume(float volume) {
-        FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        if (volumeControl != null) {
-            volumeControl.setValue(volume);
+        if (clip != null) {
+            FloatControl volumeControl = (FloatControl)
+                    clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            if (volumeControl != null) {
+                volumeControl.setValue(volume);
+            }
         }
     }
 }

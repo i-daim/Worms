@@ -1,12 +1,12 @@
 package upc.model.entites;
 
+import upc.assets.SoundManager;
 import upc.model.items.Item;
 import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
-import upc.view.gui.GamePanel;
 
 public class Alien extends Entity {
     // Attributs
@@ -21,7 +21,7 @@ public class Alien extends Entity {
     private int shootPower = 50;
 
     private final Inventory inventory;
-    private Item.Type equippedItem;
+    private int selectedItemIndex = 0;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -45,11 +45,11 @@ public class Alien extends Entity {
 
         this.team = team;
         this.inventory = team.getInventory();
-        this.equippedItem = Item.Type.UZI;
 
         this.alive = true;
         this.state = State.IDLE;
         this.direction = true;
+        this.aimAngle = 0;
     }
 
 ////    Mouvements de l'alien    ////
@@ -78,6 +78,8 @@ public class Alien extends Entity {
 
 ////    Autres Méthodes    ////
     public void useEquippedItem() {
+        Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
+
         if (!inventory.isAvailable(equippedItem)) {
             return;
         }
@@ -91,25 +93,11 @@ public class Alien extends Entity {
             return;
         }
         healthPoints -= Math.max(0, damage);
+        SoundManager.playEffect("Damage");
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;
         }
-    }
-
-    public boolean isVisible(int cameraX, int cameraY) {
-        if (!alive) {
-            return false;
-        }
-        int posX = getPosition().getX();
-        int posY = getPosition().getY();
-
-        int margin = 200;
-
-        return posX >= (cameraX - margin)
-                && posX <= (cameraX + GamePanel.DEFAULT_WIDTH + margin)
-                && posY >= (cameraY - margin)
-                && posY <= (cameraY + GamePanel.DEFAULT_HEIGHT + margin);
     }
 
 
@@ -126,12 +114,20 @@ public class Alien extends Entity {
         return team;
     }
 
-    public Item getEquippedItem() {
-        return inventory.getWeapon(equippedItem);
+    public int getAimAngle() {
+        return aimAngle;
     }
 
-    public void setEquippedItem(Item.Type item) {
-        equippedItem = item;
+    public Item getEquippedItem() {
+        return inventory.getWeapon(Inventory.ITEMS[selectedItemIndex]);
+    }
+
+    public int getSelectedItemIndex() {
+        return selectedItemIndex;
+    }
+
+    public void setSelectedItemIndex(int index) {
+        this.selectedItemIndex = index;
     }
 
     public State getState() {
@@ -148,10 +144,6 @@ public class Alien extends Entity {
 
     public void setDirection(boolean direction) {
         this.direction = direction;
-    }
-
-    public int getAimAngle() {
-    return aimAngle;
     }
 
     public int getShootPower() {

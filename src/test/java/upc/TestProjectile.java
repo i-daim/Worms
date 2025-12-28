@@ -18,7 +18,7 @@ public class TestProjectile {
 
     @BeforeEach
     public void setUp() {
-        GameManager manager = new GameManager("");
+        GameManager manager = new GameManager();
         world = manager.getWorld();
     }
 

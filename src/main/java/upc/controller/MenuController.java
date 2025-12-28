@@ -1,52 +1,23 @@
 package upc.controller;
 
-import upc.model.jeu.GameManager;
-import upc.view.gui.GamePanel;
 import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
-import upc.view.gui.SettingsPanel;
 
 public class MenuController {
 
-    private final MainFrame mainFrame;
     private final MenuPanel menuPanel;
+    private final MenuActions menuActions;
 
     public MenuController(MainFrame mainFrame, MenuPanel menuPanel) {
-        this.mainFrame = mainFrame;
         this.menuPanel = menuPanel;
+        this.menuActions = new MenuActions(mainFrame, menuPanel);
         addListeners();
     }
 
     private void addListeners() {
-        menuPanel.addNewGameListener(e -> {
-            GameManager gameManager = new GameManager("liberty");
-            GamePanel gamePanel = new GamePanel(gameManager);
-            new GameController(gamePanel, gameManager);
-
-            menuPanel.stopMusic();
-
-            mainFrame.setContentPane(gamePanel);
-            mainFrame.revalidate();
-            mainFrame.repaint();
-
-            gamePanel.requestFocusInWindow();
-        });
-        menuPanel.addLoadGameListener(e -> {
-            System.out.println("Load Game non implémenté pour le moment.");
-        });
-        menuPanel.addSettingsListener(e -> {
-            SettingsPanel settingsPanel = new SettingsPanel();
-
-            settingsPanel.getBackButton().addActionListener(ev -> {
-                mainFrame.setContentPane(menuPanel);
-                mainFrame.revalidate();
-                mainFrame.repaint();
-            });
-
-            mainFrame.setContentPane(settingsPanel);
-            mainFrame.revalidate();
-            mainFrame.repaint();
-        });
-        menuPanel.addQuitterListener(e -> System.exit(0));
+        menuPanel.addNewGameListener(menuActions.getNewGameAction());
+        menuPanel.addLoadGameListener(menuActions.getLoadGameAction());
+        menuPanel.addSettingsListener(menuActions.getSettingsAction());
+        menuPanel.addQuitterListener(menuActions.getQuitAction());
     }
 }

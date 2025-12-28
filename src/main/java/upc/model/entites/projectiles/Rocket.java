@@ -4,12 +4,13 @@ import upc.model.items.Weapon;
 import  upc.model.entites.Position;
 
 public class Rocket extends Projectile {
-    public Rocket(Weapon weapon, Alien shooter) {
+
+    public Rocket(Weapon weapon, Alien shooter, Position startPos) {
         super(
                 shooter,
-                (shooter != null) ? shooter.getPosition() : new Position(0, 0),
+                startPos,
                 weapon.getDamage(),
-                45,
+                30,
                 true,
                 weapon.getSpeed(),
                 weapon

@@ -4,13 +4,21 @@ import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
+import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
+import org.dyn4j.world.listener.ContactListenerAdapter;
+import org.dyn4j.world.ContactCollisionData;
+import org.dyn4j.dynamics.contact.Contact;
 
 import java.util.List;
 import java.util.Map;
 
 public class PhysicsEngine {
+
+    private final GameWorld gameWorld;
     private final Terrain terrain;
     private final World<Body> world;
 
@@ -23,10 +31,21 @@ public class PhysicsEngine {
     private final Vector2 gravity = new Vector2(0, 60.0);
 
 ////    CONSTRUCTEUR    ////
-    public PhysicsEngine(Terrain terrain) {
-        this.terrain = terrain;
+    public PhysicsEngine(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+        this.terrain = gameWorld.getTerrain();
         this.world = new World<>();
         this.world.setGravity(gravity);
+
+        this.world.addContactListener(new ContactListenerAdapter<Body>() {
+            @Override
+            public void begin(ContactCollisionData<Body> collision, Contact contact) {
+                Body body1 = collision.getBody1();
+                Body body2 = collision.getBody2();
+                checkProjectileCollision(body1, body2);
+                checkProjectileCollision(body2, body1);
+            }
+        });
 
         this.alienPhysics = new AlienPhysics(world, terrain);
         this.projectilePhysics = new ProjectilePhysics(this);
@@ -34,6 +53,32 @@ public class PhysicsEngine {
 
         terrainPhysics.rebuildTerrain();
     }
+    private void checkProjectileCollision(Body b1, Body b2) {
+        if (b1 != null && b1.getUserData() instanceof Projectile) {
+            Projectile p = (Projectile) b1.getUserData();
+
+            if (b2 != null && b2.getUserData() instanceof Alien) {
+                Alien alienTouche = (Alien) b2.getUserData();
+                if (p.getShooter() == alienTouche && p.getFrameCount() < 30) {
+                    return;
+                }
+            }
+            if (!p.isActive()) {
+                return;
+            }
+            if (p instanceof Rocket) {
+                p.setState(Projectile.State.EXPLODED);
+            } else if (p instanceof Bullet) {
+                if (b2 != null) {
+                    projectilePhysics.handleBulletImpact((Bullet) p, b2);
+                }
+            }
+        }
+    }
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
 
 ////    UPDATE DES PHYSIQUES    ////
     public void update() {
@@ -88,11 +133,6 @@ public class PhysicsEngine {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
 
-    public void explodeProjectile(Projectile proj) {
-        projectilePhysics.explodeProjectile(proj);
-    }
-
-
 ////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {
         return world;
@@ -126,4 +166,7 @@ public class PhysicsEngine {
         return alienPhysics;
     }
 
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 }

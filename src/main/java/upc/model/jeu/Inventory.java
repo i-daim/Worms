@@ -11,9 +11,15 @@ import upc.model.items.Uzi;
 import upc.model.items.Weapon;
 
 public class Inventory {
+
+    public static final Item.Type[] ITEMS = {
+            Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
+            Item.Type.GRENADE, Item.Type.MINE};
+
     // Stock des armes et des munitions de l'équipe
     private final HashMap<Item.Type, Weapon> weaponStock;
     private final HashMap<Item.Type, Integer> ammoStock;
+    private Item.Type currentWeaponType;
 
     // Constructeur
     public Inventory() {
@@ -32,6 +38,7 @@ public class Inventory {
         weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
         weaponStock.put(Item.Type.GRENADE, new Grenade());
         weaponStock.put(Item.Type.MINE, new Mine());
+        this.currentWeaponType = Item.Type.BAZOOKA;
     }
 
     private void initializeAmmo() {
@@ -77,6 +84,13 @@ public class Inventory {
 
     public int getAmmo(Item.Type w) {
         return ammoStock.getOrDefault(w, 0);
+    }
+
+    public Weapon getCurrentWeapon() {
+        if (currentWeaponType == null) {
+            return null;
+        }
+        return (Weapon) weaponStock.get(currentWeaponType);
     }
 
 }

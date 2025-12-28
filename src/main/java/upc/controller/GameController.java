@@ -1,11 +1,11 @@
 package upc.controller;
+
 import upc.model.jeu.Team;
-
-
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
+import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -20,16 +20,19 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
+    private final PauseActions pauseActions;
 
     private static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
+    private boolean paused = false;
     private Thread gameThread;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
+        this.pauseActions = new PauseActions(this, gamePanel);
 
         addListeners();
         startGameLoop();
@@ -39,6 +42,12 @@ public class GameController {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
         gamePanel.setFocusable(true);
+
+        PausePanel pausePanel = gamePanel.getPausePanel();
+        pausePanel.getResumeButton().addActionListener(pauseActions.getResumeAction());
+        pausePanel.getMainMenuButton().addActionListener(pauseActions.getMainMenuAction());
+        pausePanel.getSettingsButton().addActionListener(pauseActions.getSettingsAction());
+        pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
 
@@ -75,23 +84,31 @@ public class GameController {
     }
 
     private void update() {
-        // Gestion de la caméra à travers mouseHandler
+        handlePause();
+        if (paused) {
+            return;
+        }
+
         handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier
         handleControls();
 
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien != null && activeAlien.isAlive()) {
             gamePanel.centralizeCamera(activeAlien);
         }
-
         gameManager.update(1.0 / 60.0);
 
         if (gameManager.isOver()) {
             showGameOver();
             return;
         }
-
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+            if (!gameManager.isActionDone() && activeAlien != null) {
+                activeAlien.useEquippedItem();
+                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
+            }
+        }
+        keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
 
@@ -103,7 +120,21 @@ public class GameController {
             return;
         }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
+            gamePanel.toggleInventory();
+        }
+
+        if (gamePanel.isInventoryVisible()) {
+            for (int i = 0; i < 5; i++) {
+                int keyCode = KeyEvent.VK_1 + i;
+
+                if (keyHandler.isJustKeyPressed(keyCode)) {
+                    activeAlien.setSelectedItemIndex(i);
+                }
+            }
+        }
+
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
             activeAlien.jump();
         }
 
@@ -129,8 +160,7 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-
-        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
             Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
             gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
         }
@@ -141,8 +171,8 @@ public class GameController {
         int height = gamePanel.getHeight();
         int limit = (int) (50 * GamePanel.ZOOM);
 
-        int camX = gamePanel.getCameraX();
-        int camY = gamePanel.getCameraY();
+        double camX = gamePanel.getCameraX();
+        double camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
 
@@ -168,11 +198,25 @@ public class GameController {
     }
 
 ////    ARRET DU JEU    ////
+    public void handlePause() {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
+            togglePause();
+        }
+        gamePanel.togglePauseMenu(paused);
+        if (paused) {
+            keyHandler.clearJustPressed();
+        }
+    }
+
+    public void togglePause() {
+        paused = !paused;
+    }
+
     public void stop() {
         running = false;
         if (gameThread != null) {
             try {
-                gameThread.join(1000);
+                gameThread.join(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

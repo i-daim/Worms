@@ -93,8 +93,16 @@ public class ProjectilePhysics {
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
-
         double angleRad = Math.toRadians(angleDegrees);
+
+        Alien shooter = projectile.getShooter();
+        boolean facingRight = shooter.getDirection();
+
+        if (!facingRight) {
+            angleRad = Math.PI - angleRad;
+        }
+
+
         double baseVelocity = projectile.getWeapon().getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
@@ -138,6 +146,7 @@ public class ProjectilePhysics {
      *
      * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
      */
+
     public void updateProjectiles(Terrain terrain) {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
@@ -157,25 +166,32 @@ public class ProjectilePhysics {
             int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
 
-            if (
-                    y > terrain.getCollisionsHeight() + 100
-                            || x < -50
-                            || x > terrain.getCollisionsWidth() + 50
-            ) {
+            if (proj instanceof Throwable) {
+                Throwable t = (Throwable) proj;
+                t.decrementTimer();
+                if (t.isReadyToExplode()) {
+                    proj.setState(Projectile.State.EXPLODED);
+                }
+            }
+
+            int mapWidth = terrain.getWidth();
+            int mapHeight = terrain.getHeight();
+
+            if (y > mapHeight + 100 || x < -500 || x > mapWidth + 500) {
                 proj.setState(Projectile.State.OUT_OF_BOUNDS);
                 world.removeBody(body);
                 iterator.remove();
                 continue;
             }
-
-            if (body.getLinearVelocity().getMagnitude() < 1.0 && proj.getFrameCount() > 10) {
-                proj.setState(Projectile.State.EXPLODED);
+            if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
             }
         }
     }
+
+
     /**
      * Gère la logique d'explosion d'un projectile.
      * <p>
@@ -191,12 +207,19 @@ public class ProjectilePhysics {
      * @param proj Le projectile qui vient d'exploser.
      */
     public void explodeProjectile(Projectile proj) {
+        if (proj instanceof Bullet) {
+            return;
+        }
         //Récupère les coordonnées du centre de l'explosion
         // (position actuelle du/des projectiles en pixels)
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
         int damage = proj.getDamage();
+
+        physicsEngine.getGameWorld().explode(
+                explosionX, explosionY, radius, 0
+        );
 
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
             // Ignore les aliens déjà morts (pas besoin de les blesser ou de les propulser)
@@ -207,9 +230,9 @@ public class ProjectilePhysics {
             Position wormPos = alien.getPosition();
             double distance = wormPos.distance(explosionX, explosionY);
 
-            if (distance <= Converter.toPixels(radius)) {
+            if (distance <= radius) {
                 // Calcul de l'atténuation des dégâts (Falloff linéaire)
-                double damageRatio = 1.0 - (distance / Converter.toPixels(radius));
+                double damageRatio = 1.0 - (distance / radius);
                 int finalDamage = (int) (damage * damageRatio);
 
                 if (finalDamage > 0) {
@@ -226,6 +249,18 @@ public class ProjectilePhysics {
                 }
             }
         }
+    }
+
+    public void handleBulletImpact(Bullet bullet, Body target) {
+        if (target == null || target.getUserData() instanceof Bullet) {
+            return;
+        }
+        if (target.getUserData() instanceof Alien) {
+            Alien alien = (Alien) target.getUserData();
+            alien.receiveDmg(bullet.getDamage());
+            target.applyImpulse(5);
+        }
+        bullet.setState(Projectile.State.EXPLODED);
     }
 
     public List<Projectile> getActiveProjectiles() {

@@ -3,10 +3,18 @@ package upc.view.gui;
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
 import upc.assets.ActiveAnimation;
-import upc.assets.Sound;
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
+import upc.model.entites.Entity;
+import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
+import upc.assets.ImageManager;
+import upc.model.entites.projectiles.Bullet;
+import upc.model.entites.projectiles.Trap;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Throwable;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -14,32 +22,45 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
 import java.util.List;
+import java.awt.Color;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
     public static final int DEFAULT_HEIGHT = 720;
-    public static final double ZOOM = 2;
+    public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+    public static final double ZOOM = 1.5 * SCREEN_WIDTH / DEFAULT_WIDTH;
 
     private final GameManager gameManager;
     private final Terrain terrain;
     private final HUDPanel hudPanel;
-    private int cameraX = 0;
-    private int cameraY = 0;
+    private final PausePanel pausePanel;
+
+    private double cameraX = 0;
+    private double cameraY = 0;
+
+    private boolean inventoryVisible = false;
 
     private List<ActiveAnimation> activeAnimations;
-
-    private final Sound gameMusic = new Sound("/sounds/game_music.wav");
 
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
         this.terrain = gameManager.getTerrain();
         this.hudPanel = new HUDPanel(gameManager);
+        this.pausePanel = new PausePanel();
+
+        this.setLayout(null); // Pour "superposer" les JPnaels
+        this.add(pausePanel);
+        this.add(hudPanel);
 
         activeAnimations = gameManager.getActiveAnimations();
         this.setDoubleBuffered(true);
-        gameMusic.loop();
+
+        SoundManager.playMusic("Game Theme");
     }
 
     @Override
@@ -82,36 +103,26 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
+        // Affichage de l'inventaire
+        if (inventoryVisible) {
+            drawInventory(g2);
+        }
+
+        // Affichage des Projectiles
+        drawProjectiles(g2);
+
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
 
         // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setSize(getWidth(), 100);
-        hudPanel.paintComponent(g2);
 
         g2.dispose();
     }
 
-    public Point screenToWorld(Point screenPoint) {
-        double worldX = (screenPoint.x / ZOOM) + cameraX;
-        double worldY = (screenPoint.y / ZOOM) + cameraY;
-        return new Point((int) worldX, (int) worldY);
-    }
 
-
-    public void drawAliens(Graphics2D g2) {
-        for (Alien alien : gameManager.getWorld().getActiveWorms()) {
-            if (alien != null && alien.isAlive() && alien.isVisible(cameraX, cameraY)) {
-                if (alien.getTeam() == gameManager.getTeam(0)) {
-                    drawAlien(g2, alien, 0);
-                } else {
-                    drawAlien(g2, alien, 1);
-                }
-            }
-        }
-    }
-
+////    METHODES D'AFFICHAGE    ////
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
@@ -137,6 +148,18 @@ public class GamePanel extends JPanel {
         g2.drawImage(anim.getFrames().get(frameIndex), x, y, this);
     }
 
+    public void drawAliens(Graphics2D g2) {
+        for (Alien alien : gameManager.getWorld().getActiveWorms()) {
+            if (alien != null && alien.isAlive()) {
+                if (alien.getTeam() == gameManager.getTeam(0)) {
+                    drawAlien(g2, alien, 0);
+                } else {
+                    drawAlien(g2, alien, 1);
+                }
+            }
+        }
+    }
+
     public void drawAlien(Graphics2D g2, Alien alien, int type) {
         Animation animation;
         boolean direction = alien.getDirection();
@@ -159,39 +182,190 @@ public class GamePanel extends JPanel {
         int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
 
         drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+        drawAlienWeapon(g2, alien, direction, posX, posY);
     }
 
-    public void centralizeCamera(Alien alien) {
-        if (alien == null) {
+    public void drawAlienWeapon(Graphics2D g2, Alien alien, boolean direction,
+                                int posX, int posY) {
+        Item currentItem = alien.getEquippedItem();
+
+        BufferedImage weaponImage = ImageManager.get(currentItem.getName());
+
+        if (weaponImage != null) {
+            AffineTransform oldTransform = g2.getTransform();
+
+            double angleRad = Math.toRadians(alien.getAimAngle());
+
+            if (!direction) {
+                angleRad = Math.PI - angleRad;
+            }
+            int pivotX = posX;
+            int pivotY = posY - 5;
+            g2.translate(pivotX, pivotY);
+            g2.rotate(-angleRad);
+            int weaponW = weaponImage.getWidth();
+            int weaponH = weaponImage.getHeight();
+            if (direction) {
+                g2.drawImage(weaponImage, 0, -weaponH / 2, null);
+            } else {
+                g2.scale(1, -1);
+                g2.drawImage(weaponImage, 0, -weaponH / 2, null);
+            }
+
+            // Restauration de la transformation
+            g2.setTransform(oldTransform);
+        }
+    }
+
+    private void drawProjectiles(Graphics2D g2) {
+        var projectileList = gameManager.getWorld().getActiveProjectiles();
+        var projectiles = new ArrayList<>(projectileList);
+
+        for (Projectile p : projectiles) {
+            if (p == null) {
+                continue;
+            }
+            int x = p.getPosition().getX();
+            int y = p.getPosition().getY();
+            if (p instanceof Rocket) {
+                Animation rocketAnim = AnimationManager.getAnimation("rocket");
+                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
+                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
+                    BufferedImage frame = rocketAnim.getFrames().get(frameIndex);
+                    AffineTransform oldTransform = g2.getTransform();
+                    double angle = 0;
+                    if (p.getBody() != null) {
+                        org.dyn4j.geometry.Vector2 velocity = p.getBody().getLinearVelocity();
+                        angle = Math.atan2(velocity.y, velocity.x);
+                    } else {
+                        angle = Math.toRadians(p.getShooter().getAimAngle());
+                    }
+                    g2.translate(x, y);
+                    g2.rotate(angle);
+                    g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2, null);
+                    g2.setTransform(oldTransform);
+                } else {
+                    g2.setColor(Color.ORANGE);
+                    g2.fillOval(x - 5, y - 5, 10, 10);
+                }
+            } else if (p instanceof Throwable) { // Grenade
+                g2.setColor(Color.GREEN);
+                g2.fillOval(x - 4, y - 4, 8, 8);
+            } else if (p instanceof Bullet) { // Uzi/Shotgun
+                g2.setColor(Color.YELLOW);
+                g2.fillOval(x - 2, y - 2, 4, 4);
+            } else if (p instanceof Trap) { // Mine
+                g2.setColor(Color.RED);
+                g2.fillRect(x - 5, y - 2, 10, 5);
+            }
+        }
+    }
+
+    private void drawInventory(Graphics2D g2) {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien != null && activeAlien.isAlive()) {
+            int alienPosX = activeAlien.getPosition().getX();
+
+            int inventoryY = activeAlien.getPosition().getY() - 80;
+            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
+
+            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY,
+                    activeAlien.getSelectedItemIndex());
+        }
+    }
+
+
+
+////    AUTRES METHODES    ////
+    public void togglePauseMenu(boolean paused) {
+        pausePanel.setVisible(paused);
+        hudPanel.setVisible(!paused);
+
+        if (paused) {
+            // Pour mettre le pausePanel au premier plan (et en plein écran)
+            pausePanel.setBounds(0, 0, getWidth(), getHeight());
+            setComponentZOrder(pausePanel, 0);
+
+            pausePanel.repaint();
+        }
+    }
+
+    public Point screenToWorld(Point screenPoint) {
+        double worldX = (screenPoint.x / ZOOM) + cameraX;
+        double worldY = (screenPoint.y / ZOOM) + cameraY;
+        return new Point((int) worldX, (int) worldY);
+    }
+
+    public void centralizeCamera(Entity entity) {
+        if (entity == null || isCameraCentered(entity)) {
             return;
         }
-        int posX = alien.getPosition().getX();
-        int posY = alien.getPosition().getY();
 
-        int viewX = posX - (int) (getWidth() / (2 * ZOOM));
-        int viewY = posY - (int) (getHeight() / (2 * ZOOM));
+        int posX = entity.getPosition().getX();
+        int posY = entity.getPosition().getY();
 
-        int maxX = (int) (terrain.getWidth() - getWidth() / ZOOM);
-        int maxY = (int) (terrain.getHeight() - getHeight() / ZOOM);
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
 
-        int camX = Math.max(0, Math.min(viewX, maxX));
-        int camY = Math.max(0, Math.min(viewY, maxY));
-        setCamera(camX, camY);
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+
+        double targetCamX = Math.max(0, Math.min(viewX, maxX));
+        double targetCamY = Math.max(0, Math.min(viewY, maxY));
+
+        cameraX += (targetCamX - cameraX) * 0.1;
+        cameraY += (targetCamY - cameraY) * 0.1;
+
+        if (Math.abs(targetCamX - cameraX) < 0.1) {
+            cameraX = targetCamX;
+        }
+        if (Math.abs(targetCamY - cameraY) < 0.1) {
+            cameraY = targetCamY;
+        }
+    }
+
+    public boolean isCameraCentered(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
+        int posX = entity.getPosition().getX();
+        int posY = entity.getPosition().getY();
+
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
+
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+
+        double camX = Math.max(0, Math.min(viewX, maxX));
+        double camY = Math.max(0, Math.min(viewY, maxY));
+
+        return (Math.abs(camX - cameraX) < 8) && (Math.abs(camY - cameraY) < 8);
     }
 
 
-    public void setCamera(int x, int y) {
+////    SETTERS & GETTERS    ////
+    public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;
         repaint();
     }
 
-    public int getCameraX() {
+    public double getCameraX() {
         return cameraX;
     }
 
-    public int getCameraY() {
+    public double getCameraY() {
         return cameraY;
+    }
+
+    public boolean isInventoryVisible() {
+        return inventoryVisible;
+    }
+
+    public void toggleInventory() {
+        inventoryVisible = !inventoryVisible;
+        repaint();
     }
 
     public Terrain getTerrain() {
@@ -199,6 +373,10 @@ public class GamePanel extends JPanel {
     }
 
     public void stopMusic() {
-        gameMusic.stop();
+        SoundManager.stopMusic();
+    }
+
+    public PausePanel getPausePanel() {
+        return pausePanel;
     }
 }

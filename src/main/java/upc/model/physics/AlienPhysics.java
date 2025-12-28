@@ -118,6 +118,8 @@ public class AlienPhysics {
         maxFallSpeed.remove(alien);
         hasJumped.remove(alien);
         previousVelocities.remove(alien);
+        groundBuffer.remove(alien);
+        isFalling.remove(alien);
         alienBodies.remove(alien);
     }
 

@@ -140,6 +140,7 @@ public class AlienPhysics {
             body.applyImpulse(new Vector2(0, -45.0));
             body.setAtRest(false);
             hasJumped.put(alien, true);
+            isFalling.put(alien, false);
         }
     }
 

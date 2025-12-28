@@ -182,7 +182,7 @@ public class AlienPhysics {
         }
 
 
-        if (!isOnGround && currentVelY > SAFE_FALL_SPEED ) {
+        if (!isOnGround && currentVelY > SAFE_FALL_SPEED && currentVelY > prevVelY) {
             isFalling.put(alien, true);
             double newMaxSpeed = Math.max(maxSpeed, currentVelY);
             maxFallSpeed.put(alien, newMaxSpeed);

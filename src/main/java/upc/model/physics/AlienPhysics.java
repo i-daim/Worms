@@ -25,10 +25,12 @@ public class AlienPhysics {
     private final Map<Alien, Double> maxFallSpeed = new HashMap<>();
     private final Map<Alien, Boolean> hasJumped = new HashMap<>();
     private final Map<Alien, Double> previousVelocities = new HashMap<>();
+    private final Map<Alien, Integer> groundBuffer = new HashMap<>();
 
     private static final double SAFE_FALL_SPEED = 15.0;
     private static final double MAX_FALL_SPEED = 20.0;
     private static final int DMG_MULTIPLIER = 1;
+    private static final int GROUND_BUFFER_FRAMES = 5;
 
     private static final double FRICTION = 0.0;
     private static final double DENSITY = 1.2;
@@ -100,6 +102,7 @@ public class AlienPhysics {
         this.maxFallSpeed.put(alien, 0.0);
         this.hasJumped.put(alien, false);
         this.previousVelocities.put(alien, 0.0);
+        groundBuffer.put(alien, 0);
     }
 
     public void removeAlien(Alien alien) {

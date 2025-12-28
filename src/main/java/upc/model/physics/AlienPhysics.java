@@ -56,6 +56,9 @@ public class AlienPhysics {
             }
             boolean isOnGround = isOnGround(body);
             if (isOnGround) {
+                hasJumped.put(alien, false);
+            }
+            if (isOnGround) {
                 groundBuffer.put(alien, GROUND_BUFFER_FRAMES);
             } else {
                 groundBuffer.put(alien, Math.max(0, groundBuffer.get(alien) - 1));

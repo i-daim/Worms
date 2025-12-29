@@ -59,7 +59,12 @@ public class TestAlien {
         assertEquals(Alien.State.WALK, alien.getState());
         assertFalse(alien.getDirection());
     }
-    
+    @Test
+    void testIdle() {
+        alien.idle();
+        assertEquals(Alien.State.IDLE, alien.getState());
+    }
+
 
 
 

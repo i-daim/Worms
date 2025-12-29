@@ -23,20 +23,20 @@ public class AlienPhysics {
 
     // Les Maps sont remplacés par une classe qui rassemble les valeurs par alien
     private static class AlienState {
-        final Body body;
-        boolean hasJumped = false;
-        double previousVelocityY = 0.0;
-        int groundBuffer = 0;
+        private final Body body;
+        private boolean hasJumped = false;
+        private double previousVelocityY = 0.0;
+        private int groundBuffer = 0;
 
         AlienState(Body body) {
             this.body = body;
         }
     }
 
-    private static final double SAFE_FALL_SPEED = 15.0;
-    private static final double MAX_FALL_SPEED = 20.0;
     private final Map<Alien, AlienState> alienStates = new HashMap<>();
 
+    private static final double SAFE_FALL_SPEED = 17.5;
+    private static final double MAX_FALL_SPEED = 35.0;
     private static final int DMG_MULTIPLIER = 1;
     private static final int GROUND_BUFFER_FRAMES = 5;
 
@@ -150,11 +150,7 @@ public class AlienPhysics {
     }
 
     private void checkAirFriction(Body body, boolean isOnGround) {
-        if (!isOnGround) {
-            body.setLinearDamping(0.5);
-        } else {
-            body.setLinearDamping(LINEAR_DAMPING);
-        }
+        body.setLinearDamping(isOnGround ? LINEAR_DAMPING : 0.5);
     }
 
     private void checkFallDamage(Alien alien, AlienState state, boolean isOnGround) {
@@ -176,9 +172,9 @@ public class AlienPhysics {
         double feetY = pos.y + (ALIEN_HEIGHT / 2) + Converter.toMeters(2);
         double halfWidth = ALIEN_WIDTH / 2;
 
-        return isSolid(x, feetY) ||
-               isSolid(x - halfWidth + Converter.toMeters(1), feetY) ||
-               isSolid(x + halfWidth - Converter.toMeters(1), feetY);
+        return isSolid(x, feetY)
+                || isSolid(x - halfWidth + Converter.toMeters(1), feetY)
+                || isSolid(x + halfWidth - Converter.toMeters(1), feetY);
     }
 
     private boolean isSolid(double x, double y) {
@@ -186,8 +182,8 @@ public class AlienPhysics {
         int tileY = Converter.toPixels(y) / TerrainGenerator.TILE_SIZE;
         boolean[][] collisions = terrain.getCollisions();
 
-        if (tileY >= 0 && tileY < collisions.length &&
-            tileX >= 0 && tileX < collisions[0].length) {
+        if (tileY >= 0 && tileY < collisions.length
+                && tileX >= 0 && tileX < collisions[0].length) {
             return collisions[tileY][tileX];
         }
         return false;
@@ -209,7 +205,7 @@ public class AlienPhysics {
         }
         return bodies;
     }
-    
+
     public Set<Alien> getAliens() {
         return alienStates.keySet();
     }

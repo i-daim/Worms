@@ -26,7 +26,6 @@ public class AlienPhysics {
         private final Body body;
         private boolean hasJumped = false;
         private double previousVelocityY = 0.0;
-        private int groundBuffer = 0;
 
         AlienState(Body body) {
             this.body = body;
@@ -37,8 +36,7 @@ public class AlienPhysics {
 
     private static final double SAFE_FALL_SPEED = 17.5;
     private static final double MAX_FALL_SPEED = 35.0;
-    private static final int DMG_MULTIPLIER = 1;
-    private static final int GROUND_BUFFER_FRAMES = 5;
+    private static final double DMG_MULTIPLIER = 0.75;
 
     private static final double FRICTION = 0.0;
     private static final double DENSITY = 2;
@@ -64,9 +62,6 @@ public class AlienPhysics {
             boolean isOnGround = isOnGround(body);
             if (isOnGround) {
                 state.hasJumped = false;
-                state.groundBuffer = GROUND_BUFFER_FRAMES;
-            } else {
-                state.groundBuffer = Math.max(0, state.groundBuffer - 1);
             }
 
             checkFallDamage(alien, state, isOnGround);
@@ -137,15 +132,13 @@ public class AlienPhysics {
 
     public void jumpAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
-        if (state != null && state.groundBuffer > 0) {
+        if (state != null) {
             if (!state.hasJumped) {
                 Vector2 vel = state.body.getLinearVelocity();
                 state.body.setLinearVelocity(vel.x, -20.0);
                 state.body.setAtRest(false);
                 state.hasJumped = true;
             }
-        } else if (state != null) {
-            state.hasJumped = false;
         }
     }
 

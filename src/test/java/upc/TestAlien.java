@@ -39,6 +39,12 @@ public class TestAlien {
         assertEquals(75, alien.getHealthPoints());
         assertTrue(alien.isAlive());
     }
+    @Test
+    void testMortAlien() {
+        alien.receiveDmg(200);
+        assertEquals(0, alien.getHealthPoints());
+        assertFalse(alien.isAlive());
+    }
 
 
 }

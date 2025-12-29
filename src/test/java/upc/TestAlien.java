@@ -64,6 +64,11 @@ public class TestAlien {
         alien.idle();
         assertEquals(Alien.State.IDLE, alien.getState());
     }
+    @Test
+    void testJump() {
+        alien.jump();
+        assertEquals(Alien.State.JUMP, alien.getState());
+    }
 
 
 

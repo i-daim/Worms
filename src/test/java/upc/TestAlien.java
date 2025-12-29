@@ -26,5 +26,12 @@ public class TestAlien {
         assertNotNull(team);
         assertNotNull(alien);
     }
+    @Test
+    void testEtatInitialAlien() {
+        assertTrue(alien.isAlive());
+        assertEquals(100, alien.getHealthPoints());
+        assertEquals(Alien.State.IDLE, alien.getState());
+        assertTrue(alien.getDirection());
+    }
 
 }

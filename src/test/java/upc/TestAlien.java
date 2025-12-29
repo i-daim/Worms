@@ -50,7 +50,7 @@ public class TestAlien {
     void testMoveRight(){
         alien.moveRight() ;
         assertEquals(Alien.State.WALK, alien.getState());
-        assertTrue(alien.isAlive());
+        assertTrue(alien.getDirection());
     }
 
     @Test

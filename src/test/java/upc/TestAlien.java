@@ -46,5 +46,13 @@ public class TestAlien {
         assertFalse(alien.isAlive());
     }
 
+    @Test
+    void testMoveRight(){
+        alien.moveRight() ;
+        assertEquals(Alien.State.WALK, alien.getState());
+        assertTrue(alien.isAlive());
+    }
+
+
 
 }

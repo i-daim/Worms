@@ -33,5 +33,12 @@ public class TestAlien {
         assertEquals(Alien.State.IDLE, alien.getState());
         assertTrue(alien.getDirection());
     }
+    @Test
+    void testReceiveDamage() {
+        alien.receiveDmg(25);
+        assertEquals(75, alien.getHealthPoints());
+        assertTrue(alien.isAlive());
+    }
+
 
 }

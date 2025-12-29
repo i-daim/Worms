@@ -84,6 +84,10 @@ public class TestAlien {
         alien.setSelectedItemIndex(0);
         assertEquals(0, alien.getSelectedItemIndex());
     }
+    @Test
+    void testGetTeam() {
+        assertEquals(team, alien.getTeam());
+    }
 
 
 

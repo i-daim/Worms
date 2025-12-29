@@ -244,16 +244,38 @@ public class GamePanel extends JPanel {
                     g2.rotate(angle);
                     g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2, null);
                     g2.setTransform(oldTransform);
-                } else {
+                }
+                else {
                     g2.setColor(Color.ORANGE);
                     g2.fillOval(x - 5, y - 5, 10, 10);
                 }
             } else if (p instanceof Throwable) { // Grenade
-                g2.setColor(Color.GREEN);
-                g2.fillOval(x - 4, y - 4, 8, 8);
+                BufferedImage grenadeImg = ImageManager.get("Grenade"); // Nom défini dans ImageManager.java
+                if (grenadeImg != null) {
+                    AffineTransform oldTransform = g2.getTransform();
+                    g2.translate(x, y);
+                    // On peut faire tourner la grenade lentement en fonction du temps
+                    g2.rotate(p.getFrameCount() * 0.1);
+                    g2.drawImage(grenadeImg, -grenadeImg.getWidth() / 2, -grenadeImg.getHeight() / 2, null);
+                    g2.setTransform(oldTransform);
+                } else {
+                    // Fallback
+                    g2.setColor(Color.GREEN);
+                    g2.fillOval(x - 4, y - 4, 8, 8);
+                }
             } else if (p instanceof Bullet) { // Uzi/Shotgun
-                g2.setColor(Color.YELLOW);
-                g2.fillOval(x - 2, y - 2, 4, 4);
+                BufferedImage bulletImg = ImageManager.get("Bullet");
+
+                if (bulletImg != null) {
+                    AffineTransform oldTransform = g2.getTransform();
+                    g2.translate(x, y);
+                    g2.drawImage(bulletImg, -bulletImg.getWidth() / 2, -bulletImg.getHeight() / 2, null);
+                    g2.setTransform(oldTransform);
+                } else {
+                    // Fallback
+                    g2.setColor(Color.YELLOW);
+                    g2.fillOval(x - 2, y - 2, 4, 4);
+                }
             } else if (p instanceof Trap) { // Mine
                 g2.setColor(Color.RED);
                 g2.fillRect(x - 5, y - 2, 10, 5);

@@ -188,6 +188,28 @@ public class ProjectilePhysics {
                 world.removeBody(body);
                 iterator.remove();
             }
+            if (proj instanceof Throwable || proj instanceof Trap) {
+                double triggerDistancePixels = 20.0;
+                boolean exploded = false;
+                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
+                    if (!alien.isAlive()) continue;
+                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
+                        continue;
+                    }
+                    Position alienPos = alien.getPosition();
+                    double dx = alienPos.getX() - x;
+                    double dy = alienPos.getY() - y;
+                    double distSq = dx * dx + dy * dy;
+                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
+                        proj.setState(Projectile.State.EXPLODED);
+                        explodeProjectile(proj);
+                        world.removeBody(body);
+                        iterator.remove();
+                        exploded = true;
+                    }
+                }
+                if (exploded) continue;
+            }
         }
     }
 

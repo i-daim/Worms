@@ -79,6 +79,12 @@ public class TestAlien {
         alien.setShootPower(90);
         assertEquals(90, alien.getShootPower());
     }
+    @Test
+    void testSelectedItemIndex() {
+        alien.setSelectedItemIndex(0);
+        assertEquals(0, alien.getSelectedItemIndex());
+    }
+
 
 
 

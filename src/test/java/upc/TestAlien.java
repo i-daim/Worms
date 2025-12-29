@@ -69,6 +69,11 @@ public class TestAlien {
         alien.jump();
         assertEquals(Alien.State.JUMP, alien.getState());
     }
+    @Test
+    void testAimAngle() {
+        alien.setAimAngle(30);
+        assertEquals(30, alien.getAimAngle());
+    }
 
 
 

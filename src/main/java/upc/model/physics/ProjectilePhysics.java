@@ -76,7 +76,6 @@ public class ProjectilePhysics {
             fixture.setDensity(10.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
-
         } else if (projectile instanceof Rocket) {
             // Cas 4 : projectile de type Rocket (roquette)
             double radius = Converter.toMeters(5);

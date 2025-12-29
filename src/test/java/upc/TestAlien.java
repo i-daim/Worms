@@ -74,6 +74,11 @@ public class TestAlien {
         alien.setAimAngle(30);
         assertEquals(30, alien.getAimAngle());
     }
+    @Test
+    void testShootPower() {
+        alien.setShootPower(90);
+        assertEquals(90, alien.getShootPower());
+    }
 
 
 

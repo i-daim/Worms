@@ -40,7 +40,12 @@ public class GameWorld {
     public void explode(int x, int y, int radius, int damage) {
         for (Alien a : aliensInRadius(x, y, radius)) {
             if (a != null && a.isAlive()) {
-                a.receiveDmg(damage);
+                double distance = a.getPosition().distance(x, y);
+                if (distance < radius) {
+                    double ratio = 1.0 - (distance / radius);
+                    int computedDamage = Math.max((int) (damage * ratio), 0);
+                    a.receiveDmg(computedDamage);
+                }
             }
         }
         getTerrain().makeHole(x, y, radius);

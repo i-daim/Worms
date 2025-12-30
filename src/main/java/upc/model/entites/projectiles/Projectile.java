@@ -57,6 +57,19 @@ public class Projectile extends Entity {
     public boolean isExplosiveProjectile() {
         return explosive && explosionRadius > 0;
     }
+    public int computeDamageFromDistance(double distance) {
+        if (!isExplosiveProjectile()) {
+            return damage;
+        }
+
+        if (distance >= explosionRadius) {
+            return 0;
+        }
+
+        double ratio = 1.0 - (distance / explosionRadius);
+        return Math.max((int) (damage * ratio), 0);
+    }
+
 
 
     /// /    GETTERS    ////

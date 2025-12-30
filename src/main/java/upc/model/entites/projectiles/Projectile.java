@@ -76,6 +76,13 @@ public class Projectile extends Entity {
         double distance = getPosition().distance(entity.getPosition().getX(), entity.getPosition().getY());
         return getDamageForDistance(distance);
     }
+    public int getDamageForDistance(double distance) {
+        if (!isExplosiveProjectile()) {
+            return damage;
+        }
+
+        return computeDamageFromDistance(distance);
+    }
 
 
 
@@ -114,13 +121,7 @@ public class Projectile extends Entity {
     public int getAngle() {
         return angle;
     }
-    public int getDamageForDistance(double distance) {
-        if (!isExplosiveProjectile()) {
-            return damage;
-        }
 
-        return computeDamageFromDistance(distance);
-    }
 
 
 

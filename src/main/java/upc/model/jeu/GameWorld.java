@@ -37,12 +37,13 @@ public class GameWorld {
         return aliens;
     }
 
-    public void explode(int x, int y, int radius, Projectile projectile) {
+    public void explode(int x, int y, Projectile projectile) {
+        int radius = projectile.getExplosionRadius();
+
         for (Alien a : aliensInRadius(x, y, radius)) {
             if (a != null && a.isAlive()) {
                 double distance = a.getPosition().distance(x, y);
-                int dmg = projectile.computeDamageFromDistance(distance);
-                a.receiveDmg(dmg);
+                a.receiveDmg(projectile.getDamageForDistance(distance));
             }
         }
 
@@ -50,6 +51,7 @@ public class GameWorld {
         getPhysicsEngine().getTerrainPhysics().setModified(true);
         gameManager.addActiveAnimation("explosion", x, y);
     }
+
 
     public Terrain getTerrain() {
         return gameManager.getTerrain();

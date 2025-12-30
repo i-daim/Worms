@@ -107,6 +107,9 @@ public class Projectile extends Entity {
     public int getAngle() {
         return angle;
     }
+    public int getDamageForDistance(double distance) {
+        return computeDamageFromDistance(distance);
+    }
 
 
 

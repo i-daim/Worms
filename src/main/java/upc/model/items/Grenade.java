@@ -9,7 +9,7 @@ public class Grenade extends Weapon {
     public Grenade() {
         super("Grenade", 50, 3, 50);
     }
-
+    private static final int EXPLOSION_RADIUS = 40;
     public void useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();

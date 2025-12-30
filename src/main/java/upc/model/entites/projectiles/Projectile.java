@@ -62,7 +62,7 @@ public class Projectile extends Entity {
             return damage;
         }
 
-        if (distance >= explosionRadius) {
+        if (distance >= explosionRadius || distance < 0 ) {
             return 0;
         }
 

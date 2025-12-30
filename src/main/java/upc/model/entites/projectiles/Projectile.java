@@ -54,6 +54,9 @@ public class Projectile extends Entity {
                       double speed) {
         this(shooter, position, damage, explosionRadius, explosive, speed, null);
     }
+    public boolean isExplosiveProjectile() {
+        return explosive && explosionRadius > 0;
+    }
 
 
     /// /    GETTERS    ////

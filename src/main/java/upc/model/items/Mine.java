@@ -8,7 +8,7 @@ import upc.model.entites.projectiles.Projectile;
 public class Mine extends Weapon {
 
     public static final int DAMAGE = 45;
-    public static final int EXPLOSION_RADIUS = 30;
+    public static final int EXPLOSION_RADIUS = 35;
     public static final int ACTIVATION_RADIUS = 3;
 
     public Mine() {

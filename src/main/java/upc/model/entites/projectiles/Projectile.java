@@ -69,6 +69,10 @@ public class Projectile extends Entity {
         double ratio = 1.0 - (distance / explosionRadius);
         return Math.max((int) (damage * ratio), 0);
     }
+    public int getDamageFor(Entity entity) {
+        double distance = getPosition().distance(entity.getPosition().getX(), entity.getPosition().getY());
+        return getDamageForDistance(distance);
+    }
 
 
 

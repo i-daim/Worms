@@ -115,6 +115,10 @@ public class Projectile extends Entity {
         return angle;
     }
     public int getDamageForDistance(double distance) {
+        if (!isExplosiveProjectile()) {
+            return damage;
+        }
+
         return computeDamageFromDistance(distance);
     }
 

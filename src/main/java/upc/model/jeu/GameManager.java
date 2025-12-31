@@ -92,6 +92,7 @@ public class GameManager {
 
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
+        // Pour passer au prochain alien vivant si l'actif est mort
         if (!getActiveTeam().isEliminated()) {
             while (!getActiveAlien().isAlive()) {
                 getActiveTeam().skipToNextAlien();
@@ -100,8 +101,8 @@ public class GameManager {
 
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
-        } else {
-            SoundManager.playVoice();
+        } else if (getActiveAlien().isAlive() && getActiveAlien() != null) {
+                SoundManager.playVoice();
         }
     }
 

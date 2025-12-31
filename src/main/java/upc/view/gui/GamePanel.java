@@ -289,8 +289,14 @@ public class GamePanel extends JPanel {
                     g2.fillOval(x - 3, y - 3, 6, 6);
                 }
             } else if (p instanceof Trap) { // Mine
-                g2.setColor(Color.RED);
-                g2.fillRect(x - 5, y - 2, 10, 5);
+                BufferedImage mineImg = ImageManager.get("Mine");
+                if (mineImg != null) {
+                    g2.drawImage(mineImg, x - mineImg.getWidth() / 2, y - mineImg.getHeight() / 2, null);
+
+                } else {
+                    g2.setColor(Color.RED);
+                    g2.fillRect(x - 5, y - 2, 10, 5);
+                }
             }
         }
     }

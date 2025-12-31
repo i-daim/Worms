@@ -160,10 +160,6 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
-            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
-            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
-        }
     }
 
     private void handleCameraScroll(Point mousePos) {

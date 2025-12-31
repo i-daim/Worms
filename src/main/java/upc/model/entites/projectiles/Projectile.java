@@ -54,6 +54,7 @@ public class Projectile extends Entity {
                       double speed) {
         this(shooter, position, damage, explosionRadius, explosive, speed, null);
     }
+
     public boolean isExplosiveProjectile() {
         return explosive && explosionRadius > 0;
     }
@@ -69,22 +70,6 @@ public class Projectile extends Entity {
         double ratio = 1.0 - (distance / explosionRadius);
         return Math.max((int) (damage * ratio), 0);
     }
-    public int getDamageFor(Entity entity) {
-        if (!isExplosiveProjectile()) {
-            return damage;
-        }
-        double distance = getPosition().distance(entity.getPosition().getX(), entity.getPosition().getY());
-        return getDamageForDistance(distance);
-    }
-    public int getDamageForDistance(double distance) {
-        if (!isExplosiveProjectile()) {
-            return damage;
-        }
-
-        return computeDamageFromDistance(distance);
-    }
-
-
 
     /// /    GETTERS    ////
     public Alien getShooter() {
@@ -120,6 +105,9 @@ public class Projectile extends Entity {
     }
     public int getAngle() {
         return angle;
+    }
+    public Position getExplosionCenter() {
+        return getPosition();
     }
 
 

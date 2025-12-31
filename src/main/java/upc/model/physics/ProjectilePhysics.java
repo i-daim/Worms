@@ -15,6 +15,8 @@ import upc.model.entites.projectiles.UziBullet;
 import upc.model.entites.projectiles.Rocket;
 import upc.model.entites.projectiles.Trap;
 import upc.model.jeu.Terrain;
+import upc.model.entites.projectiles.Bullet;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;

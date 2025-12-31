@@ -8,8 +8,12 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.entites.projectiles.*;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.ShotgunBullet;
 import upc.model.entites.projectiles.Throwable;
+import upc.model.entites.projectiles.UziBullet;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Trap;
 import upc.model.jeu.Terrain;
 
 import java.util.ArrayList;
@@ -199,7 +203,9 @@ public class ProjectilePhysics {
                 double triggerDistancePixels = 20.0;
                 boolean exploded = false;
                 for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-                    if (!alien.isAlive()) continue;
+                    if (!alien.isAlive()) {
+                        continue;
+                    }
                     if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
                         continue;
                     }
@@ -215,7 +221,9 @@ public class ProjectilePhysics {
                         exploded = true;
                     }
                 }
-                if (exploded) continue;
+                if (exploded) {
+                    continue;
+                }
             }
         }
     }

@@ -3,7 +3,6 @@ package upc.model.items;
 import upc.model.entites.Alien;
 import upc.model.entites.projectiles.UziBullet;
 import upc.model.jeu.GameWorld;
-import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Projectile;
 
 public class Uzi extends Weapon {

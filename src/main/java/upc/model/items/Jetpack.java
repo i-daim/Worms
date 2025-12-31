@@ -11,7 +11,7 @@ public class Jetpack extends Weapon {
 
     @Override
     public void useItem(GameWorld gameWorld, Alien alienActif) {
-        // Le jetpack ne tire pas, l'action sera gérée via méthode fly() (à finir)
+        // Le jetpack ne tire pas, l'action sera gérée via méthode fly()
 
     }
 }

@@ -272,9 +272,21 @@ public class GamePanel extends JPanel {
                     g2.drawImage(uziImg, -uziImg.getWidth() / 2, -uziImg.getHeight() / 2, null);
                     g2.setTransform(oldTransform);
                 } else {
-                    // Fallback
                     g2.setColor(Color.YELLOW);
                     g2.fillOval(x - 2, y - 2, 4, 4);
+                }
+            } else if (p instanceof ShotgunBullet) {
+                BufferedImage shotgunImg = ImageManager.get("Bullet");
+
+                if (shotgunImg != null) {
+                    AffineTransform oldTransform = g2.getTransform();
+                    g2.translate(x, y);
+                    g2.rotate(angle);
+                    g2.drawImage(shotgunImg, -shotgunImg.getWidth() / 2, -shotgunImg.getHeight() / 2, null);
+                    g2.setTransform(oldTransform);
+                } else {
+                    g2.setColor(Color.GRAY);
+                    g2.fillOval(x - 3, y - 3, 6, 6);
                 }
             } else if (p instanceof Trap) { // Mine
                 g2.setColor(Color.RED);

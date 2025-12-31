@@ -102,12 +102,7 @@ public class GameController {
             showGameOver();
             return;
         }
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-            if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();
-                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
-            }
-        }
+
         keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
@@ -122,6 +117,12 @@ public class GameController {
 
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
             gamePanel.toggleInventory();
+        }
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+            if (!gameManager.isActionDone() && activeAlien != null) {
+                activeAlien.useEquippedItem();
+                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
+            }
         }
 
         if (gamePanel.isInventoryVisible()) {

@@ -92,6 +92,12 @@ public class GameManager {
 
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
+        if (!getActiveTeam().isEliminated()) {
+            while (!getActiveAlien().isAlive()) {
+                getActiveTeam().skipToNextAlien();
+            }
+        }
+
         if (getActiveTeam().isEliminated()) {
             gameOver = true;
         } else {

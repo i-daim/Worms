@@ -87,22 +87,20 @@ public class GameManager {
     }
 
     private void nextTurn() {
-        //Permet de passer à un vers actif à un autre
+        // Passe à l'alien suivant avant de changer d'équipe, pour le prochain tour
         getActiveTeam().skipToNextAlien();
 
+        // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        // Pour passer au prochain alien vivant si l'actif est mort
         if (!getActiveTeam().isEliminated()) {
-            while (!getActiveAlien().isAlive()) {
+            // Pour passer au prochain alien vivant si l'actif est mort
+            while (getActiveAlien() != null && !getActiveAlien().isAlive()) {
                 getActiveTeam().skipToNextAlien();
             }
-        }
-
-        if (getActiveTeam().isEliminated()) {
+            SoundManager.playVoice();
+        } else {
             gameOver = true;
-        } else if (getActiveAlien().isAlive() && getActiveAlien() != null) {
-                SoundManager.playVoice();
         }
     }
 

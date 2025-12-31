@@ -21,7 +21,6 @@ public class AlienPhysics {
     private final World<Body> world;
     private final Terrain terrain;
 
-    // Les Maps sont remplacés par une classe qui rassemble les valeurs par alien
     private static class AlienState {
         private final Body body;
         private boolean hasJumped = false;
@@ -139,6 +138,16 @@ public class AlienPhysics {
                 state.body.setAtRest(false);
                 state.hasJumped = true;
             }
+        }
+    }
+
+    public void flyAlien(Alien alien) {
+        AlienState state = alienStates.get(alien);
+        if (state != null) {
+            Vector2 vel = state.body.getLinearVelocity();
+            state.body.setLinearVelocity(vel.x, -10.0);
+            state.body.setAtRest(false);
+            state.hasJumped = true;
         }
     }
 

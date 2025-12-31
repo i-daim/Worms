@@ -72,6 +72,18 @@ public class ProjectilePhysics {
             fixture.setDensity(10.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
+
+        }  else if (projectile instanceof ShotgunBullet) {
+            double radius = Converter.toMeters(3);
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(10.0);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(5.0);
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
+            body.setLinearDamping(0.8);
+            body.setBullet(true);
+
         } else if (projectile instanceof Rocket) {
             // Cas 4 : projectile de type Rocket (roquette)
             double radius = Converter.toMeters(5);

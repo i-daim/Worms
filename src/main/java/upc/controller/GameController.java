@@ -3,6 +3,7 @@ package upc.controller;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.PausePanel;
@@ -11,7 +12,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 
 public class GameController {
 
@@ -28,7 +28,6 @@ public class GameController {
     private boolean paused = false;
     private Thread gameThread;
 
-    // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
@@ -50,8 +49,6 @@ public class GameController {
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
-
-////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -105,15 +102,12 @@ public class GameController {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
             if (!gameManager.isActionDone() && activeAlien != null) {
                 activeAlien.useEquippedItem();
-                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
             }
         }
         keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
 
-
-////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
@@ -125,7 +119,7 @@ public class GameController {
         }
 
         if (gamePanel.isInventoryVisible()) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 6; i++) {
                 int keyCode = KeyEvent.VK_1 + i;
 
                 if (keyHandler.isJustKeyPressed(keyCode)) {
@@ -134,8 +128,12 @@ public class GameController {
             }
         }
 
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
-            activeAlien.jump();
+        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+            if (activeAlien.getEquippedItem() instanceof Jetpack) {
+                activeAlien.fly();
+            } else if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
+                activeAlien.jump();
+            }
         }
 
         if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
@@ -197,7 +195,6 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
             togglePause();
@@ -238,5 +235,4 @@ public class GameController {
             }
         });
     }
-
 }

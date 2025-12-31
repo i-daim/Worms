@@ -9,6 +9,8 @@ import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
 
 public class Alien extends Entity {
+
+    // Attributs
     private final GameWorld world;
     private final AlienPhysics alienPhysics;
     private final Team team;
@@ -22,9 +24,13 @@ public class Alien extends Entity {
     private final Inventory inventory;
     private int selectedItemIndex = 0;
 
+
+    // Champs statiques
     private static final int SPEED = 5;
     private static final int INITIAL_HP = 100;
 
+
+    // Etat de l'alien (pour la partie graphique)
     public enum State {
         IDLE,
         WALK,
@@ -32,6 +38,8 @@ public class Alien extends Entity {
     }
     private State state;
 
+
+    // Constructeur
     public Alien(GameWorld gameWorld, Team team, Position position) {
         super(position, SPEED);
         this.healthPoints = INITIAL_HP;
@@ -47,6 +55,8 @@ public class Alien extends Entity {
         this.aimAngle = 0;
     }
 
+
+    ////    Mouvements de l'alien    ////
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
         setState(State.WALK);
@@ -64,6 +74,12 @@ public class Alien extends Entity {
         setState(State.JUMP);
     }
 
+    public void idle() {
+        alienPhysics.moveAlien(this, 0);
+        setState(State.IDLE);
+    }
+    ////    Autres Méthodes    ////
+
     public void fly() {
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
         if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
@@ -71,11 +87,6 @@ public class Alien extends Entity {
             inventory.useAmmo(equippedItem, 1);
             setState(State.JUMP);
         }
-    }
-
-    public void idle() {
-        alienPhysics.moveAlien(this, 0);
-        setState(State.IDLE);
     }
 
     public void useEquippedItem() {
@@ -101,6 +112,7 @@ public class Alien extends Entity {
         }
     }
 
+    ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
         return healthPoints;
     }

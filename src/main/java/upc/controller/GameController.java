@@ -28,6 +28,7 @@ public class GameController {
     private boolean paused = false;
     private Thread gameThread;
 
+    // CONSTRUCTEUR //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
@@ -49,6 +50,7 @@ public class GameController {
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
+    ////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -108,6 +110,7 @@ public class GameController {
         gamePanel.repaint();
     }
 
+    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
@@ -195,6 +198,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
+    ////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
             togglePause();

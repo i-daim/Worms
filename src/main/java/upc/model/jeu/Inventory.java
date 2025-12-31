@@ -17,10 +17,12 @@ public class Inventory {
             Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
             Item.Type.GRENADE, Item.Type.MINE, Item.Type.JETPACK};
 
+    // Stock des armes et des munitions de l'équipe
     private final HashMap<Item.Type, Weapon> weaponStock;
     private final HashMap<Item.Type, Integer> ammoStock;
     private Item.Type currentWeaponType;
 
+    // Constructeur
     public Inventory() {
         this.weaponStock = new HashMap<>();
         this.ammoStock = new HashMap<>();
@@ -29,6 +31,7 @@ public class Inventory {
         initializeAmmo();
     }
 
+    //// Méthode pour initialiser l'inventaire ////
     private void initializeWeapons() {
         weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
         weaponStock.put(Item.Type.UZI, new Uzi());
@@ -48,6 +51,7 @@ public class Inventory {
         addAmmo(Item.Type.JETPACK, 250);
     }
 
+    //// Modifications des munitions ////
     public void addAmmo(Item.Type weapon, int qty) {
         if (qty <= 0 || getAmmo(weapon) < 0) {
             return;
@@ -62,6 +66,7 @@ public class Inventory {
         ammoStock.put(weapon, Math.max(getAmmo(weapon) - qty, 0));
     }
 
+    //// Autres méthodes ////
     public boolean isAvailable(Item.Type w) {
         int amount = ammoStock.getOrDefault(w, 0);
         return amount > 0 || amount == -1;

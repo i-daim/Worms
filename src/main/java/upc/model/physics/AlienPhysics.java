@@ -21,6 +21,8 @@ public class AlienPhysics {
     private final World<Body> world;
     private final Terrain terrain;
 
+
+    // Les Maps sont remplacés par une classe qui rassemble les valeurs par alien
     private static class AlienState {
         private final Body body;
         private boolean hasJumped = false;

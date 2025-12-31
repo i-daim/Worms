@@ -7,7 +7,6 @@ public class Trap extends Projectile {
 
     private boolean active = true;
     private final int activationRadius;
-    private static final int EXPLOSION_RADIUS = 25;
 
     public Trap(Weapon weapon, Alien shooter, int activationRadius, int explosionRadius) {
         super(
@@ -33,8 +32,7 @@ public class Trap extends Projectile {
 
         for (Alien w : gameWorld.aliensInRadius(posX, posY, activationRadius)) {
             if (w.isAlive() && w != getShooter()) {
-                gameWorld.explode(posX, posY, getExplosionRadius(), getDamage());
-                setActive(false);
+                gameWorld.explode(posX, posY, this);
             }
         }
     }

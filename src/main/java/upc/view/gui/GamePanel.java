@@ -10,7 +10,6 @@ import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 import upc.assets.ImageManager;
-import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Trap;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
@@ -251,16 +250,15 @@ public class GamePanel extends JPanel {
                     g2.fillOval(x - 5, y - 5, 10, 10);
                 }
             } else if (p instanceof Throwable) { // Grenade
-                BufferedImage grenadeImg = ImageManager.get("Grenade"); // Nom défini dans ImageManager.java
+                BufferedImage grenadeImg = ImageManager.get("Grenade");
                 if (grenadeImg != null) {
                     AffineTransform oldTransform = g2.getTransform();
                     g2.translate(x, y);
-                    // On peut faire tourner la grenade lentement en fonction du temps
                     g2.rotate(p.getFrameCount() * 0.1);
-                    g2.drawImage(grenadeImg, -grenadeImg.getWidth() / 2, -grenadeImg.getHeight() / 2, null);
+                    g2.drawImage(grenadeImg, -grenadeImg.getWidth() / 2,
+                            -grenadeImg.getHeight() / 2, null);
                     g2.setTransform(oldTransform);
                 } else {
-                    // Fallback
                     g2.setColor(Color.GREEN);
                     g2.fillOval(x - 4, y - 4, 8, 8);
                 }
@@ -282,7 +280,8 @@ public class GamePanel extends JPanel {
                     AffineTransform oldTransform = g2.getTransform();
                     g2.translate(x, y);
                     g2.rotate(angle);
-                    g2.drawImage(shotgunImg, -shotgunImg.getWidth() / 2, -shotgunImg.getHeight() / 2, null);
+                    g2.drawImage(shotgunImg, -shotgunImg.getWidth() / 2,
+                            -shotgunImg.getHeight() / 2, null);
                     g2.setTransform(oldTransform);
                 } else {
                     g2.setColor(Color.GRAY);
@@ -291,7 +290,8 @@ public class GamePanel extends JPanel {
             } else if (p instanceof Trap) { // Mine
                 BufferedImage mineImg = ImageManager.get("Mine");
                 if (mineImg != null) {
-                    g2.drawImage(mineImg, x - mineImg.getWidth() / 2, y - mineImg.getHeight() / 2, null);
+                    g2.drawImage(mineImg, x - mineImg.getWidth() / 2,
+                            y - mineImg.getHeight() / 2, null);
 
                 } else {
                     g2.setColor(Color.RED);

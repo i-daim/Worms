@@ -8,12 +8,9 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.entites.projectiles.Projectile;
-import upc.model.jeu.Terrain;
-import upc.model.entites.projectiles.Bullet;
-import upc.model.entites.projectiles.Trap;
+import upc.model.entites.projectiles.*;
 import upc.model.entites.projectiles.Throwable;
-import upc.model.entites.projectiles.Rocket;
+import upc.model.jeu.Terrain;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,13 +52,12 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        } else if (projectile instanceof Bullet) {
-            // Cas 2 : projectile de type Bullet (balle, tir rapide)
+        } else if (projectile instanceof UziBullet) {
             double radius = Converter.toMeters(2);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
-            fixture.setFriction(0.0);
-            fixture.setRestitution(0.0);
-            fixture.setDensity(0.5);
+            fixture.setFriction(0.1);
+            fixture.setRestitution(0.1);
+            fixture.setDensity(1.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
             body.setBullet(true);

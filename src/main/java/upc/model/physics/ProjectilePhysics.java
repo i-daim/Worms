@@ -218,8 +218,7 @@ public class ProjectilePhysics {
         int damage = proj.getDamage();
 
         physicsEngine.getGameWorld().explode(
-                explosionX, explosionY, radius, 0
-        );
+                explosionX, explosionY, proj);
 
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
             // Ignore les aliens déjà morts (pas besoin de les blesser ou de les propulser)

@@ -31,4 +31,12 @@ public class Throwable extends Projectile {
     public boolean isReadyToExplode() {
         return timer <= 0;
     }
+
+    public void update() {
+        decrementTimer();
+
+        if (isReadyToExplode() && getState() == State.FLYING) {
+            setState(State.EXPLODED);
+        }
+    }
 }

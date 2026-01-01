@@ -9,7 +9,8 @@ public interface Item {
         UZI,
         BAZOOKA,
         GRENADE,
-        MINE
+        MINE,
+        JETPACK
     }
 
     void useItem(GameWorld gameWorld, Alien alienActif);

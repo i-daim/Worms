@@ -33,6 +33,27 @@ public class GameSetupPanel extends JPanel{
         teamSizeSlider.setForeground(Color.WHITE);
         wormPanel.add(teamSizeSlider);
 
+        JPanel weaponPanel = new JPanel();
+        weaponPanel.setOpaque(false);
+        weaponPanel.setBorder(BorderFactory.createTitledBorder(null, "Armes autorisées", 0, 0, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+
+        chkBazooka = new JCheckBox("Bazooka", true);
+        chkUzi = new JCheckBox("Uzi", true);
+        chkShotgun = new JCheckBox("Shotgun", true);
+        chkGrenade = new JCheckBox("Grenade", true);
+        chkMine = new JCheckBox("Mine", true);
+
+        styleCheckBox(chkBazooka); styleCheckBox(chkUzi); styleCheckBox(chkShotgun);
+        styleCheckBox(chkGrenade); styleCheckBox(chkMine);
+
+        weaponPanel.add(chkBazooka);
+        weaponPanel.add(chkUzi);
+        weaponPanel.add(chkShotgun);
+        weaponPanel.add(chkGrenade);
+        weaponPanel.add(chkMine);
+
+
+
     }
     private void styleCheckBox(JCheckBox box) {
         box.setOpaque(false);

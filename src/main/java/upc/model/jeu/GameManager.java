@@ -41,8 +41,8 @@ public class GameManager {
 
         initializeGame();
     }
-    public GameManager(int width, int height) {
-        this.terrain = TerrainGenerator.createEmptyTerrain(width, height);
+    public GameManager(String mapNameInput) {
+        this.terrain = TerrainGenerator.createTerrain(mapNameInput);
         this.mapName = terrain.getMapName();
 
         this.teams = new Team[2];
@@ -50,7 +50,6 @@ public class GameManager {
         this.teams[1] = new Team("Glorbs", TEAM_SIZE);
 
         this.gameWorld = new GameWorld(this, this.terrain);
-
         this.activeAnimations = new CopyOnWriteArrayList<>();
 
         initializeGame();

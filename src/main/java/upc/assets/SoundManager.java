@@ -41,6 +41,7 @@ public class SoundManager {
         }
         currentMusic = getMusic(name);
         if (currentMusic != null) {
+            currentMusic.play();
             currentMusic.loop();
         }
     }

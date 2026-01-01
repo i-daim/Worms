@@ -39,14 +39,9 @@ public class GameWorld {
     }
 
     public void explode(int x, int y, Projectile projectile) {
+        Position center = projectile.getExplosionCenter();
         int radius = projectile.getExplosionRadius();
-
-        for (Alien a : aliensInRadius(x, y, radius)) {
-            if (a != null && a.isAlive()) {
-                double distance = a.getPosition().distance(x, y);
-                a.receiveDmg(projectile.computeDamageFromDistance(distance));
-            }
-        }
+        projectile.applyExplosionDamage(this);
 
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);

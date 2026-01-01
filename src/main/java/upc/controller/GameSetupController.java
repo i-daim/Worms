@@ -27,6 +27,7 @@ public class GameSetupController {
     public GameSetupController(GameSetupPanel view, MainFrame mainFrame) {
         this.view = view;
         this.mainFrame = mainFrame;
+        initListeners();
     }
     private void initListeners() {
         view.getBackButton().addActionListener(e -> {

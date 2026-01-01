@@ -1,5 +1,6 @@
 package upc.model.jeu;
 
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;
@@ -14,6 +15,9 @@ public class GameManager {
     public static final int TEAM_SIZE = 2;
 
     private Terrain terrain;
+
+    private final String mapName;
+
     private final GameWorld gameWorld;
     private Team[] teams;
 
@@ -22,8 +26,6 @@ public class GameManager {
     private int timeLeft;
     private boolean gameOver;
     private boolean actionDone;
-
-    private final String mapName;
 
     private final List<ActiveAnimation> activeAnimations;
 
@@ -36,11 +38,24 @@ public class GameManager {
         this.teams[1] = new Team("Glorbs", TEAM_SIZE);
 
         this.gameWorld = new GameWorld(this, this.terrain);
-
         this.activeAnimations = new CopyOnWriteArrayList<>();
 
         initializeGame();
     }
+    public GameManager(String mapName) {
+        this.terrain = TerrainGenerator.createTerrain(mapName);
+        this.mapName = mapName;
+
+        this.teams = new Team[2];
+        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
+        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+
+        this.gameWorld = new GameWorld(this, this.terrain);
+        this.activeAnimations = new CopyOnWriteArrayList<>();
+
+        initializeGame();
+    }
+
 
     public void update(double elapsedTime) {
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
@@ -68,6 +83,8 @@ public class GameManager {
         this.timeLeft = ROUND_TIME;
         this.gameOver = false;
         this.actionDone = false;
+
+        SoundManager.playVoice(0);
     }
 
 
@@ -84,12 +101,19 @@ public class GameManager {
     }
 
     private void nextTurn() {
-        //Permet de passer à un vers actif à un autre
+        // Passe à l'alien suivant avant de changer d'équipe, pour le prochain tour
         getActiveTeam().skipToNextAlien();
 
+        // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        if (getActiveTeam().isEliminated()) {
+        if (!getActiveTeam().isEliminated()) {
+            // Pour passer au prochain alien vivant si l'actif est mort
+            while (getActiveAlien() != null && !getActiveAlien().isAlive()) {
+                getActiveTeam().skipToNextAlien();
+            }
+            SoundManager.playVoice();
+        } else {
             gameOver = true;
         }
     }
@@ -160,7 +184,7 @@ public class GameManager {
     }
 
 
-    /* GETTERS */
+////    GETTERS    ////
 
     public Terrain getTerrain() {
         return terrain;

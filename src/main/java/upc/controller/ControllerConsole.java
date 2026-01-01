@@ -2,115 +2,105 @@ package upc.controller;
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
-import upc.view.console.LanternaView;
+import upc.view.console.ConsoleView;
 
 public class ControllerConsole {
     private final GameManager gameManager;
-    private final LanternaView vue;
+    private final ConsoleView view;
     private boolean enCours;
 
     public ControllerConsole() {
-        this.gameManager = new GameManager();
-        this.vue = new LanternaView();
+        this.gameManager = new GameManager(); // Jeu normal
+        this.view = new ConsoleView();
         this.enCours = true;
     }
 
-    public void start() {
-        vue.printTerrain(gameManager);
-
-        // Faire tomber les worms
-        System.out.println("\n⏳ Les worms tombent...\n");
-
-        //for (int i = 0; i < 180; i++) {
-            //gameManager.update(1.0 / 60.0);
-        //}
-
-        // Afficher l'état après la chute
-        vue.printStateAfterFall(gameManager);
-
-        while (enCours && !gameManager.isOver()) {
-            vue.printGameState(gameManager);
-            String command = vue.readKey();
-            traiterCommande(command, gameManager);
-        }
-
-        if (gameManager.isOver()) {
-            vue.printGameOver(gameManager);
-        }
-
-        vue.close();
+    public ControllerConsole(GameManager gameManager) {
+        this.gameManager = gameManager; // Jeu injecté (map plate)
+        this.view = new ConsoleView();
+        this.enCours = true;
     }
 
-    private void traiterCommande(String command, GameManager gameManager) {
+
+    public void start() {
+        view.printWelcome();
+
+        while (enCours && !gameManager.isOver()) {
+            view.printGameState(gameManager);
+            String command = view.requestCommand(gameManager);
+            requestCommand(command);
+        }
+
+
+        view.printGameOver(gameManager);
+        view.close();
+    }
+
+    private void requestCommand(String command) {
+        if (command == null) {
+            return;
+        }
+
         switch (command) {
             case "gauche":
                 gameManager.getActiveAlien().moveLeft();
-                vue.printMovementResult(true, "gauche", gameManager);
-                gameManager.skipTurn();
+                view.printMovementResult(true, "gauche", gameManager);
+                skipTurn();
                 break;
 
             case "droite":
                 gameManager.getActiveAlien().moveRight();
-                vue.printMovementResult(true, "droite", gameManager);
-                gameManager.skipTurn();
+                view.printMovementResult(true, "droite", gameManager);
+                skipTurn();
                 break;
 
             case "sauter":
                 gameManager.getActiveAlien().jump();
-
-                //System.out.println("⏳ Le worm saute...");
-                //for (int i = 0; i < 120; i++) {
-                //    gameManager.update(1.0 / 60.0);
-                //}
-
-                vue.printJumpResult(true, gameManager);
-                gameManager.skipTurn();
+                view.printJumpResult(true, gameManager);
+                skipTurn();
                 break;
 
             case "attaquer":
-                int damage = vue.chooseDamage();
-                int x = vue.chooseX();
-                int y = vue.chooseY();
+                int degats = view.requestInteger("Puissance du tir (ex: 10) : ");
+                int x = view.requestInteger("Position X cible : ");
+                int y = view.requestInteger("Position Y cible : ");
 
-                Alien target = gameManager.attackPosition(x, y, damage);
-                vue.printAttackResult(target, x, y, gameManager.getActiveTeam());
-                gameManager.skipTurn();
-                vue.printTurnSkipped();
-
-                if (target != null) {
-                    gameManager.skipTurn();
-                }
+                Alien cible = gameManager.attackPosition(x, y, degats);
+                view.printAttackResult(cible, x, y, gameManager.getActiveTeam());
+                skipTurn();
                 break;
 
+            case "wait":
             case "passer":
-                gameManager.skipTurn();
-                vue.printTurnSkipped();
-                break;
-
-            case "info" :
-                vue.printWelcome();
+                skipTurn();
                 break;
 
             case "aliens":
-                vue.printAliensStats(gameManager);
-                break;
-
-            case "map":
-                vue.printTerrain(gameManager);
-                vue.printGameState(gameManager);
+                view.printAliensStats(gameManager);
+                sleep(2000);
                 break;
 
             case "exit":
                 enCours = false;
-                vue.printGameAbandoned();
-                break;
-
-            case null:
-                vue.printUnknownCommand();
+                view.printGameAbandoned();
                 break;
 
             default:
-                break;
+                view.printUnknownCommand();
+                sleep(1000);
+        }
+    }
+
+    private void skipTurn() {
+        gameManager.skipTurn();
+        view.printTurnSkipped();
+        sleep(1000);
+    }
+
+    private void sleep(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
         }
     }
 }

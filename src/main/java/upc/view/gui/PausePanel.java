@@ -14,6 +14,8 @@ public class PausePanel extends JPanel {
     private int menuHeight = (int) ((GamePanel.DEFAULT_HEIGHT - 300) * GamePanel.ZOOM);
 
     private final JButton resumeButton;
+    private final JButton settingsButton;
+    private final JButton mainMenuButton;
     private final JButton quitButton;
 
     public PausePanel() {
@@ -21,8 +23,10 @@ public class PausePanel extends JPanel {
         this.setOpaque(false);
         this.setVisible(false);
 
-        resumeButton = MenuPanel.createGameButton("Continue");
-        quitButton = MenuPanel.createGameButton("Quit Game");
+        resumeButton = ButtonManager.createGameButton("Continue");
+        settingsButton = ButtonManager.createGameButton("Settings");
+        mainMenuButton = ButtonManager.createGameButton("Return to menu");
+        quitButton = ButtonManager.createGameButton("Quit Game");
 
         initButtons();
     }
@@ -47,18 +51,31 @@ public class PausePanel extends JPanel {
         // Pour centrer et espacer les boutons
         int btnX = menuX + (menuWidth - btnWidth) / 2 + 5;
         int btnY = menuY + 50;
-        int gap = (int) (20 * GamePanel.ZOOM);
+        int gap = (int) (20 * GamePanel.ZOOM) + btnHeight;
 
         resumeButton.setBounds(btnX, btnY, btnWidth, btnHeight);
-        quitButton.setBounds(btnX, btnY + btnHeight + gap, btnWidth, btnHeight);
+        settingsButton.setBounds(btnX, btnY + gap, btnWidth, btnHeight);
+        mainMenuButton.setBounds(btnX, btnY + gap * 2, btnWidth, btnHeight);
+        quitButton.setBounds(btnX, btnY + gap * 3, btnWidth, btnHeight);
+
 
         this.add(resumeButton);
+        this.add(settingsButton);
+        this.add(mainMenuButton);
         this.add(quitButton);
     }
 
 
     public JButton getResumeButton() {
         return resumeButton;
+    }
+
+    public JButton getMainMenuButton() {
+        return mainMenuButton;
+    }
+
+    public JButton getSettingsButton() {
+        return settingsButton;
     }
 
     public JButton getQuitButton() {

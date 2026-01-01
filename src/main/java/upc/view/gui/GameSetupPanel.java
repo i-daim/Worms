@@ -52,6 +52,12 @@ public class GameSetupPanel extends JPanel{
         weaponPanel.add(chkGrenade);
         weaponPanel.add(chkMine);
 
+        startButton = ButtonManager.createGameButton("LANCER LA PARTIE !");
+        backButton = ButtonManager.createGameButton("Retour");
+
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
 
     }

@@ -230,7 +230,6 @@ public class ProjectilePhysics {
         if (proj instanceof Bullet) {
             return;
         }
-        // Position de l'explosion (en pixels)
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();

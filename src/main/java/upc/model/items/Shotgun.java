@@ -1,15 +1,15 @@
 package upc.model.items;
 import upc.model.entites.Alien;
-import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
 
+import upc.model.entites.projectiles.ShotgunBullet;
 import upc.model.jeu.GameWorld;
 
 public class Shotgun extends Weapon {
 
     public Shotgun() {
-        super("Shotgun", 35, 8, 60);
+        super("Shotgun", 35, 8, 80);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class Shotgun extends Weapon {
             Position startPos = new Position(startX, startY);
             int angle = baseAngle + spread;
 
-            Projectile proj = new Bullet(this, shooter, startPos);
+            Projectile proj = new ShotgunBullet(this, shooter, startPos);
             gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
         }
     }

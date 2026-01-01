@@ -10,11 +10,7 @@ import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 import upc.assets.ImageManager;
-import upc.model.entites.projectiles.Bullet;
-import upc.model.entites.projectiles.Trap;
 import upc.model.entites.projectiles.Projectile;
-import upc.model.entites.projectiles.Rocket;
-import upc.model.entites.projectiles.Throwable;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -227,36 +223,25 @@ public class GamePanel extends JPanel {
             }
             int x = p.getPosition().getX();
             int y = p.getPosition().getY();
-            if (p instanceof Rocket) {
-                Animation rocketAnim = AnimationManager.getAnimation("rocket");
-                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
-                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
-                    BufferedImage frame = rocketAnim.getFrames().get(frameIndex);
-                    AffineTransform oldTransform = g2.getTransform();
-                    double angle = 0;
-                    if (p.getBody() != null) {
-                        org.dyn4j.geometry.Vector2 velocity = p.getBody().getLinearVelocity();
-                        angle = Math.atan2(velocity.y, velocity.x);
-                    } else {
-                        angle = Math.toRadians(p.getShooter().getAimAngle());
-                    }
-                    g2.translate(x, y);
-                    g2.rotate(angle);
-                    g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2, null);
-                    g2.setTransform(oldTransform);
+            double angle;
+            Animation anim = AnimationManager.getProjectile(p);
+            if (anim != null && !anim.getFrames().isEmpty()) {
+                int frameIndex = p.getFrameCount() % anim.getFrames().size();
+                BufferedImage frame = anim.getFrames().get(frameIndex);
+                AffineTransform oldTransform = g2.getTransform();
+                if (p.getBody() != null) {
+                    org.dyn4j.geometry.Vector2 velocity = p.getBody().getLinearVelocity();
+                    angle = Math.atan2(velocity.y, velocity.x);
                 } else {
-                    g2.setColor(Color.ORANGE);
-                    g2.fillOval(x - 5, y - 5, 10, 10);
+                    angle = Math.toRadians(p.getShooter().getAimAngle());
                 }
-            } else if (p instanceof Throwable) { // Grenade
-                g2.setColor(Color.GREEN);
-                g2.fillOval(x - 4, y - 4, 8, 8);
-            } else if (p instanceof Bullet) { // Uzi/Shotgun
-                g2.setColor(Color.YELLOW);
-                g2.fillOval(x - 2, y - 2, 4, 4);
-            } else if (p instanceof Trap) { // Mine
-                g2.setColor(Color.RED);
-                g2.fillRect(x - 5, y - 2, 10, 5);
+                g2.translate(x, y);
+                g2.rotate(angle);
+                g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2, null);
+                g2.setTransform(oldTransform);
+            } else {
+                g2.setColor(Color.ORANGE);
+                g2.fillOval(x - 5, y - 5, 10, 10);
             }
         }
     }

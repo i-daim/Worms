@@ -1,10 +1,7 @@
 package upc.controller;
 
 import upc.model.jeu.GameManager;
-import upc.view.gui.GamePanel;
-import upc.view.gui.MainFrame;
-import upc.view.gui.MenuPanel;
-import upc.view.gui.SettingsPanel;
+import upc.view.gui.*;
 
 import java.awt.event.ActionListener;
 
@@ -20,15 +17,13 @@ public class MenuActions {
 
     public ActionListener getNewGameAction() {
         return e -> {
-            GameManager gameManager = new GameManager();
-            GamePanel gamePanel = new GamePanel(gameManager);
-            new GameController(gamePanel, gameManager);
+            GameSetupPanel setupPanel = new GameSetupPanel(mainFrame);
 
-            mainFrame.setContentPane(gamePanel);
+            mainFrame.setContentPane(setupPanel);
             mainFrame.revalidate();
             mainFrame.repaint();
 
-            gamePanel.requestFocusInWindow();
+            setupPanel.requestFocusInWindow();
         };
     }
 

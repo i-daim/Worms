@@ -1,5 +1,6 @@
 package upc.controller;
 
+import upc.model.items.Item;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
@@ -23,6 +24,9 @@ public class GameController {
     private final PauseActions pauseActions;
 
     private static final int CAMERA_SPEED = 10;
+
+    private long lastUziShotTime = 0;
+    private static final long UZI_COOLDOWN = 50;
 
     private volatile boolean running = true;
     private boolean paused = false;
@@ -161,6 +165,25 @@ public class GameController {
             }
             if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
                 activeAlien.useEquippedItem();
+            }
+        }
+        Item equipped = activeAlien.getEquippedItem();
+        boolean canShoot = !gameManager.isActionDone();
+
+        if (canShoot && equipped != null) {
+            if (equipped instanceof upc.model.items.Uzi) {
+                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                    long now = System.currentTimeMillis();
+                    if (now - lastUziShotTime >= UZI_COOLDOWN) {
+                        activeAlien.useEquippedItem();
+                        lastUziShotTime = now;
+                    }
+                }
+            } else {
+                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                    System.out.println("🎯 Tir coup par coup !");
+                }
             }
         }
     }

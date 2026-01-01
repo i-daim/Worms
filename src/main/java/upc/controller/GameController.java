@@ -186,8 +186,6 @@ public class GameController {
                 }
             }
         }
-        Item equipped = activeAlien.getEquippedItem();
-        boolean canShoot = !gameManager.isActionDone();
 
         if (canShoot && equipped != null) {
             if (equipped instanceof upc.model.items.Uzi) {

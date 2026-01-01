@@ -79,7 +79,7 @@ public class Projectile extends Entity {
         explosionDamageApplied = true;
 
         Position center = getExplosionCenter();
-        for (Alien alien : world.getActiveWorms()) {
+        for (Alien alien : world.getActiveAliens()) {
             if (alien != null && alien.isAlive()) {
                 double distance = alien.getPosition()
                         .distance(center.getX(), center.getY());

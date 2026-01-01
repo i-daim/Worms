@@ -3,7 +3,6 @@ package upc.view.gui;
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
 import upc.assets.ActiveAnimation;
-import upc.assets.Sound;
 import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Entity;
@@ -11,11 +10,7 @@ import upc.model.items.Item;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Terrain;
 import upc.assets.ImageManager;
-import upc.model.entites.projectiles.Bullet;
-import upc.model.entites.projectiles.Trap;
 import upc.model.entites.projectiles.Projectile;
-import upc.model.entites.projectiles.Rocket;
-import upc.model.entites.projectiles.Throwable;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -41,13 +36,12 @@ public class GamePanel extends JPanel {
     private final HUDPanel hudPanel;
     private final PausePanel pausePanel;
 
-    private int cameraX = 0;
-    private int cameraY = 0;
+    private double cameraX = 0;
+    private double cameraY = 0;
 
     private boolean inventoryVisible = false;
 
     private List<ActiveAnimation> activeAnimations;
-    private Sound gameMusic;
 
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -62,8 +56,7 @@ public class GamePanel extends JPanel {
         activeAnimations = gameManager.getActiveAnimations();
         this.setDoubleBuffered(true);
 
-        gameMusic = SoundManager.getMusic("Game Theme");
-        gameMusic.loop();
+        SoundManager.playMusic("Game Theme");
     }
 
     @Override
@@ -225,38 +218,30 @@ public class GamePanel extends JPanel {
         var projectiles = new ArrayList<>(projectileList);
 
         for (Projectile p : projectiles) {
+            if (p == null) {
+                continue;
+            }
             int x = p.getPosition().getX();
             int y = p.getPosition().getY();
-            if (p instanceof Rocket) {
-                Animation rocketAnim = AnimationManager.getAnimation("rocket");
-                if (rocketAnim != null && !rocketAnim.getFrames().isEmpty()) {
-                    int frameIndex = p.getFrameCount() % rocketAnim.getFrames().size();
-                    BufferedImage frame = rocketAnim.getFrames().get(frameIndex);
-                    AffineTransform oldTransform = g2.getTransform();
-                    double angle = 0;
-                    if (p.getBody() != null) {
-                        org.dyn4j.geometry.Vector2 velocity = p.getBody().getLinearVelocity();
-                        angle = Math.atan2(velocity.y, velocity.x);
-                    } else {
-                        angle = Math.toRadians(p.getShooter().getAimAngle());
-                    }
-                    g2.translate(x, y);
-                    g2.rotate(angle);
-                    g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2, null);
-                    g2.setTransform(oldTransform);
+            double angle;
+            Animation anim = AnimationManager.getProjectile(p);
+            if (anim != null && !anim.getFrames().isEmpty()) {
+                int frameIndex = p.getFrameCount() % anim.getFrames().size();
+                BufferedImage frame = anim.getFrames().get(frameIndex);
+                AffineTransform oldTransform = g2.getTransform();
+                if (p.getBody() != null) {
+                    org.dyn4j.geometry.Vector2 velocity = p.getBody().getLinearVelocity();
+                    angle = Math.atan2(velocity.y, velocity.x);
                 } else {
-                    g2.setColor(Color.ORANGE);
-                    g2.fillOval(x - 5, y - 5, 10, 10);
+                    angle = Math.toRadians(p.getShooter().getAimAngle());
                 }
-            } else if (p instanceof Throwable) { // Grenade
-                g2.setColor(Color.GREEN);
-                g2.fillOval(x - 4, y - 4, 8, 8);
-            } else if (p instanceof Bullet) { // Uzi/Shotgun
-                g2.setColor(Color.YELLOW);
-                g2.fillOval(x - 2, y - 2, 4, 4);
-            } else if (p instanceof Trap) { // Mine
-                g2.setColor(Color.RED);
-                g2.fillRect(x - 5, y - 2, 10, 5);
+                g2.translate(x, y);
+                g2.rotate(angle);
+                g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2, null);
+                g2.setTransform(oldTransform);
+            } else {
+                g2.setColor(Color.ORANGE);
+                g2.fillOval(x - 5, y - 5, 10, 10);
             }
         }
     }
@@ -297,36 +282,65 @@ public class GamePanel extends JPanel {
     }
 
     public void centralizeCamera(Entity entity) {
-        if (entity == null) {
+        if (entity == null || isCameraCentered(entity)) {
             return;
+        }
+
+        int posX = entity.getPosition().getX();
+        int posY = entity.getPosition().getY();
+
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
+
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+
+        double targetCamX = Math.max(0, Math.min(viewX, maxX));
+        double targetCamY = Math.max(0, Math.min(viewY, maxY));
+
+        cameraX += (targetCamX - cameraX) * 0.1;
+        cameraY += (targetCamY - cameraY) * 0.1;
+
+        if (Math.abs(targetCamX - cameraX) < 0.1) {
+            cameraX = targetCamX;
+        }
+        if (Math.abs(targetCamY - cameraY) < 0.1) {
+            cameraY = targetCamY;
+        }
+    }
+
+    public boolean isCameraCentered(Entity entity) {
+        if (entity == null) {
+            return false;
         }
         int posX = entity.getPosition().getX();
         int posY = entity.getPosition().getY();
 
-        int viewX = posX - (int) (getWidth() / (2 * ZOOM));
-        int viewY = posY - (int) (getHeight() / (2 * ZOOM));
+        double viewX = posX - (getWidth() / (2 * ZOOM));
+        double viewY = posY - (getHeight() / (2 * ZOOM));
 
-        int maxX = (int) (terrain.getWidth() - getWidth() / ZOOM);
-        int maxY = (int) (terrain.getHeight() - getHeight() / ZOOM);
+        double maxX = terrain.getWidth() - getWidth() / ZOOM;
+        double maxY = terrain.getHeight() - getHeight() / ZOOM;
 
-        int camX = Math.max(0, Math.min(viewX, maxX));
-        int camY = Math.max(0, Math.min(viewY, maxY));
-        setCamera(camX, camY);
+        double camX = Math.max(0, Math.min(viewX, maxX));
+        double camY = Math.max(0, Math.min(viewY, maxY));
+
+        return (Math.abs(camX - cameraX) < 8) && (Math.abs(camY - cameraY) < 8);
     }
 
 
 ////    SETTERS & GETTERS    ////
-    public void setCamera(int x, int y) {
+    public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;
         repaint();
     }
 
-    public int getCameraX() {
+    public double getCameraX() {
         return cameraX;
     }
 
-    public int getCameraY() {
+    public double getCameraY() {
         return cameraY;
     }
 
@@ -344,7 +358,7 @@ public class GamePanel extends JPanel {
     }
 
     public void stopMusic() {
-        gameMusic.stop();
+        SoundManager.stopMusic();
     }
 
     public PausePanel getPausePanel() {

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import upc.model.items.Bazooka;
 import upc.model.items.Grenade;
 import upc.model.items.Item;
+import upc.model.items.Jetpack;
 import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
@@ -15,10 +16,10 @@ public class Inventory {
 
     public static final Item.Type[] ITEMS = {
             Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
-            Item.Type.GRENADE, Item.Type.MINE};
+            Item.Type.GRENADE, Item.Type.MINE, Item.Type.JETPACK};
 
     // Stock des armes et des munitions de l'équipe
-    private final HashMap<Item.Type, Weapon> weaponStock;
+    private final HashMap<Item.Type, Item> weaponStock;
     private final HashMap<Item.Type, Integer> ammoStock;
     private Item.Type currentWeaponType;
 
@@ -42,12 +43,14 @@ public class Inventory {
 
 
 ////    Méthodes pour initialiser l'inventaire    ////
+    //// Méthode pour initialiser l'inventaire ////
     private void initializeWeapons() {
         weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
         weaponStock.put(Item.Type.UZI, new Uzi());
         weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
         weaponStock.put(Item.Type.GRENADE, new Grenade());
         weaponStock.put(Item.Type.MINE, new Mine());
+        weaponStock.put(Item.Type.JETPACK, new Jetpack());
         this.currentWeaponType = Item.Type.BAZOOKA;
     }
 
@@ -57,10 +60,10 @@ public class Inventory {
         addAmmo(Item.Type.UZI, 50);
         addAmmo(Item.Type.GRENADE, 50);
         addAmmo(Item.Type.BAZOOKA, 50);
+        addAmmo(Item.Type.JETPACK, 250);
     }
 
-
-////    Modification des munitions    ////
+    //// Modifications des munitions ////
     public void addAmmo(Item.Type weapon, int qty) {
         if (qty <= 0 || getAmmo(weapon) < 0) {
             return;
@@ -75,20 +78,17 @@ public class Inventory {
         ammoStock.put(weapon, Math.max(getAmmo(weapon) - qty, 0));
     }
 
-
-////    Autres méthodes    ////
+    //// Autres méthodes ////
     public boolean isAvailable(Item.Type w) {
         int amount = ammoStock.getOrDefault(w, 0);
         return amount > 0 || amount == -1;
     }
 
-
-////    Getters    ////
     public HashMap<Item.Type, Integer> getAmmoStock() {
         return ammoStock;
     }
 
-    public Weapon getWeapon(Item.Type w) {
+    public Item getItem(Item.Type w) {
         return weaponStock.get(w);
     }
 
@@ -102,5 +102,4 @@ public class Inventory {
         }
         return (Weapon) weaponStock.get(currentWeaponType);
     }
-
 }

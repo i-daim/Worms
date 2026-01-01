@@ -7,6 +7,7 @@ public class SoundManager {
     private static final HashMap<String, Sound> MUSICS = new HashMap<>();
     private static final HashMap<String, Sound> EFFECTS = new HashMap<>();
     private static Sound[] voices;
+    private static Sound currentMusic;
 
     static {
         loadVoices(11);
@@ -18,32 +19,64 @@ public class SoundManager {
         MUSICS.put("Free Glirb", loadMusic("free_glirb"));
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
+        MUSICS.put("Victory Music", loadMusic("victory_music"));
 
+        EFFECTS.put("Damage", loadEffect("damage"));
         EFFECTS.put("Explosion", loadEffect("explosion"));
         EFFECTS.put("Bazooka", loadEffect("bazooka"));
         EFFECTS.put("Rocket", loadEffect("rocket"));
         EFFECTS.put("Shotgun", loadEffect("shotgun"));
         EFFECTS.put("Uzi", loadEffect("uzi"));
         EFFECTS.put("Mine", loadEffect("mine_deploy"));
-
-
     }
 
-////    GETTERS POUR LES SONS    ////
-    public static Sound getMusic(String name) {
-        return MUSICS.get(name);
+
+////    CONTROLES POUR LA MUSIQUE    ////
+    public static void playMusic(String name) {
+        if (isAudioDisabled()) {
+            return;
+        }
+        if (currentMusic != null) {
+            currentMusic.stop();
+        }
+        currentMusic = getMusic(name);
+        if (currentMusic != null) {
+            currentMusic.play();
+            currentMusic.loop();
+        }
     }
 
-    public static Sound getEffect(String name) {
-        return EFFECTS.get(name);
+    public static void stopMusic() {
+        if (currentMusic != null) {
+            currentMusic.stop();
+        }
     }
 
-    public static Sound getRandomVoice() {
+    public static void playEffect(String name) {
+        if (isAudioDisabled()) {
+            return;
+        }
+        Sound effect = EFFECTS.get(name);
+        if (effect != null) {
+            effect.play();
+        }
+    }
+
+    public static void playVoice() {
         int index = (int) (Math.random() * 11);
-        return voices[index];
+        playVoice(index);
+    }
+    public static void playVoice(int index) {
+        if (isAudioDisabled()) {
+            return;
+        }
+        if (index >= 0 && index < voices.length && voices[index] != null) {
+            voices[index].play();
+        }
     }
 
-////    METHODES POUR CHARGER LES SONS    ////
+
+////    LOADERS    ////
     public static void loadVoices(int number) {
         voices = new Sound[number];
         for (int i = 0; i < number; i++) {
@@ -57,5 +90,28 @@ public class SoundManager {
 
     public static Sound loadEffect(String name) {
         return new Sound("/sounds/effects/" + name + ".wav");
+    }
+
+
+////    GETTERS    ////
+    public static Sound getMusic(String name) {
+        return MUSICS.get(name);
+    }
+
+    public static Sound getCurrentMusic() {
+        return currentMusic;
+    }
+
+    public static String[] getMusicsSelection() {
+        return MUSICS.keySet().toArray(new String[0]);
+    }
+
+    private static boolean isAudioDisabled() {
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            if (element.getClassName().startsWith("org.junit")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -24,6 +24,15 @@ public class GameSetupPanel extends JPanel{
         mapSelector = new JComboBox<>(maps);
         mapPanel.add(mapSelector);
 
+        JPanel wormPanel = createRow("Vers par équipe : ");
+        teamSizeSlider = new JSlider(1, 5, 2); // Min 1, Max 5, Défaut 2
+        teamSizeSlider.setMajorTickSpacing(1);
+        teamSizeSlider.setPaintTicks(true);
+        teamSizeSlider.setPaintLabels(true);
+        teamSizeSlider.setOpaque(false);
+        teamSizeSlider.setForeground(Color.WHITE);
+        wormPanel.add(teamSizeSlider);
+
     }
     private JPanel createRow(String text) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));

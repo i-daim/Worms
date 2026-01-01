@@ -3,6 +3,7 @@ package upc.controller;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.PausePanel;
@@ -11,7 +12,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 
 public class GameController {
 
@@ -28,7 +28,7 @@ public class GameController {
     private boolean paused = false;
     private Thread gameThread;
 
-    // Constructeur //
+    // CONSTRUCTEUR //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
@@ -49,7 +49,6 @@ public class GameController {
         pausePanel.getSettingsButton().addActionListener(pauseActions.getSettingsAction());
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
-
 
 ////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
@@ -102,16 +101,10 @@ public class GameController {
             showGameOver();
             return;
         }
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-            if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();
-                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
-            }
-        }
+
         keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
-
 
 ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
@@ -120,12 +113,12 @@ public class GameController {
             return;
         }
 
+        // Gestion de l'inventaire
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
             gamePanel.toggleInventory();
         }
-
         if (gamePanel.isInventoryVisible()) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 6; i++) {
                 int keyCode = KeyEvent.VK_1 + i;
 
                 if (keyHandler.isJustKeyPressed(keyCode)) {
@@ -134,10 +127,10 @@ public class GameController {
             }
         }
 
+        // Gestion des mouvements
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
             activeAlien.jump();
         }
-
         if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
             activeAlien.moveLeft();
         } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
@@ -146,6 +139,7 @@ public class GameController {
             activeAlien.idle();
         }
 
+        // Gestion de la visée
         if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
             int angle = activeAlien.getAimAngle() + 2;
             if (angle > 80) {
@@ -160,9 +154,14 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
-            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
-            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        // Utilisation de l'item
+        if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+            if (activeAlien.getEquippedItem() instanceof Jetpack) {
+                activeAlien.useEquippedItem();
+            }
+            if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                activeAlien.useEquippedItem();
+            }
         }
     }
 
@@ -238,5 +237,4 @@ public class GameController {
             }
         });
     }
-
 }

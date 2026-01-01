@@ -3,6 +3,7 @@ package upc.controller;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.PausePanel;
@@ -25,6 +26,8 @@ public class GameController {
 
     private volatile boolean running = true;
     private boolean paused = false;
+    private boolean actionUsedThisTurn = false;
+    private Alien lastAlien = null;
     private Thread gameThread;
 
     // CONSTRUCTEUR //
@@ -49,7 +52,7 @@ public class GameController {
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
-////    GESTION DE LA BOUCLE DU JEU    ////
+    ////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -105,9 +108,13 @@ public class GameController {
         gamePanel.repaint();
     }
 
-////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien != lastAlien) {
+            actionUsedThisTurn = false;
+            lastAlien = activeAlien;
+        }
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
@@ -116,13 +123,6 @@ public class GameController {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
             gamePanel.toggleInventory();
         }
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-            if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();
-                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
-            }
-        }
-
         if (gamePanel.isInventoryVisible()) {
             for (int i = 0; i < 6; i++) {
                 int keyCode = KeyEvent.VK_1 + i;
@@ -160,6 +160,19 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
+        // Utilisation de l'item
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A) && !actionUsedThisTurn) {
+            activeAlien.useEquippedItem();
+            actionUsedThisTurn = true;
+        }
+
+// Jetpack : utilisation continue tant que la touche est maintenue
+        if (keyHandler.isKeyPressed(KeyEvent.VK_A)
+                && activeAlien.getEquippedItem() instanceof Jetpack) {
+            activeAlien.useEquippedItem();
+        }
+
+
     }
 
     private void handleCameraScroll(Point mousePos) {
@@ -193,7 +206,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-////    ARRET DU JEU    ////
+    ////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
             togglePause();

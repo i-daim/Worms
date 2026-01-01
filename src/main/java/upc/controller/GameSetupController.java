@@ -28,6 +28,17 @@ public class GameSetupController {
         this.view = view;
         this.mainFrame = mainFrame;
     }
+    private void initListeners() {
+        view.getBackButton().addActionListener(e -> {
+            MenuPanel menuPanel = new MenuPanel();
+            new MenuController(mainFrame, menuPanel);
+            mainFrame.setContentPane(menuPanel);
+            mainFrame.revalidate();
+            mainFrame.repaint();
+        });
+
+        view.getStartButton().addActionListener(e -> startGame());
+    }
 
     private void startGame() {
         Set<Item.Type> allowed = new HashSet<>();

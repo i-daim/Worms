@@ -2,11 +2,9 @@ package upc.model.entites;
 
 import upc.assets.SoundManager;
 import upc.model.items.Item;
-<<<<<<< HEAD
-import upc.model.items.Weapon;
+
 import upc.model.save.AlienSave;
-=======
->>>>>>> origin/mainDev
+
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;

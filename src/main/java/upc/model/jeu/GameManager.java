@@ -14,12 +14,10 @@ public class GameManager {
     public static final int ROUND_TIME = 60;
     public static final int TEAM_SIZE = 2;
 
-<<<<<<< HEAD
     private Terrain terrain;
-=======
+
     private final String mapName;
-    private final Terrain terrain;
->>>>>>> origin/mainDev
+
     private final GameWorld gameWorld;
     private Team[] teams;
 

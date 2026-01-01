@@ -10,10 +10,17 @@ public class ControllerConsole {
     private boolean enCours;
 
     public ControllerConsole() {
-        this.gameManager = new GameManager();
+        this.gameManager = new GameManager(); // Jeu normal
         this.view = new ConsoleView();
         this.enCours = true;
     }
+
+    public ControllerConsole(GameManager gameManager) {
+        this.gameManager = gameManager; // Jeu injecté (map plate)
+        this.view = new ConsoleView();
+        this.enCours = true;
+    }
+
 
     public void start() {
         view.printWelcome();

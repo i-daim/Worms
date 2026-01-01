@@ -24,4 +24,18 @@ public class GameSetupController {
     private JSlider teamSizeSlider;
     private JCheckBox chkBazooka, chkUzi, chkShotgun, chkGrenade, chkMine;
 
+    public GameSetupController(GameSetupPanel view, MainFrame mainFrame) {
+        this.view = view;
+        this.mainFrame = mainFrame;
+    }
+
+    private void startGame() {
+        Set<Item.Type> allowed = new HashSet<>();
+        if (view.isBazookaEnabled()) allowed.add(Item.Type.BAZOOKA);
+        if (view.isUziEnabled()) allowed.add(Item.Type.UZI);
+        if (view.isShotgunEnabled()) allowed.add(Item.Type.SHOTGUN);
+        if (view.isGrenadeEnabled()) allowed.add(Item.Type.GRENADE);
+        if (view.isMineEnabled()) allowed.add(Item.Type.MINE);
+
+    }
 }

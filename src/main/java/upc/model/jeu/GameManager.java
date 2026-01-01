@@ -41,6 +41,21 @@ public class GameManager {
 
         initializeGame();
     }
+    public GameManager(int width, int height) {
+        this.terrain = TerrainGenerator.createEmptyTerrain(width, height);
+        this.mapName = terrain.getMapName();
+
+        this.teams = new Team[2];
+        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
+        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+
+        this.gameWorld = new GameWorld(this, this.terrain);
+
+        this.activeAnimations = new CopyOnWriteArrayList<>();
+
+        initializeGame();
+    }
+
 
     public void update(double elapsedTime) {
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire

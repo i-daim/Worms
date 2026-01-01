@@ -3,7 +3,6 @@ package upc.controller;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
-import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.PausePanel;

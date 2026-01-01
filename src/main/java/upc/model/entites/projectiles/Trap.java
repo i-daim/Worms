@@ -31,27 +31,13 @@ public class Trap extends Projectile {
         int posY = getPosition().getY();
 
 
-
             for (Alien alien : gameWorld.getActiveAliens()) {
                 if (alien != null && alien.isAlive() && alien != getShooter()) {
                     double distance = alien.getPosition().distance(posX, posY);
 
                     if (distance <= activationRadius) {
-                        setState(State.EXPLODED);
                         setActive(false);
-
-                        // dégâts progressifs
-                        applyExplosionDamage(gameWorld);
-
-                        // terrain + animation
-                        gameWorld.getTerrain().makeHole(posX, posY, getExplosionRadius());
-                        gameWorld.getPhysicsEngine()
-                                .getTerrainPhysics()
-                                .setModified(true);
-
-                        gameWorld.getGameManager()
-                                .addActiveAnimation("explosion", posX, posY);
-
+                        setState(State.EXPLODED);
                         return; // explosion une seule fois
                     }
                 }

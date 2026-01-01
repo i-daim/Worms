@@ -44,7 +44,7 @@ public class GameWorld {
         return gameManager.getTerrain();
     }
 
-    public ArrayList<Alien> getActiveWorms() {
+    public ArrayList<Alien> getActiveAliens() {
         ArrayList<Alien> living = new ArrayList<>();
         for (Alien a : activeAliens) {
             if (a != null && a.isAlive()) {

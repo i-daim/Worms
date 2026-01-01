@@ -14,7 +14,7 @@ public class Grenade extends Weapon {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
-        Projectile proj = new Throwable(this, shooter, 3,EXPLOSION_RADIUS);
+        Projectile proj = new Throwable(this, shooter, 3, EXPLOSION_RADIUS);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
     }
 }

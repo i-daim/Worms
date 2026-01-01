@@ -5,7 +5,7 @@ import upc.model.entites.Alien;
 import upc.model.entites.Entity;
 import upc.model.entites.Position;
 import upc.model.items.Weapon;
-import upc.model.jeu.GameWorld ;
+import upc.model.jeu.GameWorld;
 
 public class Projectile extends Entity {
 
@@ -31,7 +31,7 @@ public class Projectile extends Entity {
     private int frameCount;
     private final Weapon weapon;
     private int angle;
-    private boolean explosionDamageApplied = false ;
+    private boolean explosionDamageApplied = false;
 
 
     /// /    CONSTRUCTOR    ////
@@ -65,7 +65,7 @@ public class Projectile extends Entity {
             return damage;
         }
 
-        if (distance >= explosionRadius || distance < 0 ) {
+        if (distance >= explosionRadius || distance < 0) {
             return 0;
         }
 

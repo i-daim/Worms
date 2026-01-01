@@ -37,5 +37,18 @@ public class GameSetupController {
         if (view.isGrenadeEnabled()) allowed.add(Item.Type.GRENADE);
         if (view.isMineEnabled()) allowed.add(Item.Type.MINE);
 
+        Inventory.ALLOWED_WEAPONS = allowed;
+
+        String map = view.getSelectedMap();
+        int teamSize = view.getTeamSize();
+
+        GameManager gameManager = new GameManager(map, teamSize);
+        GamePanel gamePanel = new GamePanel(gameManager);
+        new GameController(gamePanel, gameManager);
+
+        mainFrame.setContentPane(gamePanel);
+        gamePanel.requestFocusInWindow();
+        mainFrame.revalidate();
+        mainFrame.repaint();
     }
 }

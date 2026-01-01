@@ -1,14 +1,9 @@
 package upc.controller;
 
-
-import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
-import upc.model.jeu.Terrain;
-import upc.model.save.SaveInventory;
-import upc.model.save.SaveMap;
-import upc.model.save.SaveTeam;
+import upc.model.save.GameSave;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.PausePanel;
@@ -29,9 +24,6 @@ public class GameController {
     private final GameManager gameManager;
 
     private static final int CAMERA_SPEED = 10;
-
-    //Varible pour la gestion manuelle de la sauvegarde (pour éviter la répétition)
-    private boolean f5WasPressed = false;
 
     private volatile boolean running = true;
     private boolean paused = false;
@@ -125,20 +117,6 @@ public class GameController {
 
 ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
-        boolean f5IsPressed = keyHandler.isKeyPressed(KeyEvent.VK_F5);
-
-        if (f5IsPressed && !f5WasPressed) {
-            try {
-                saveGame();
-                System.out.println("Jeu sauvegardé");
-            } catch (IOException e) {
-                System.err.println("Erreur lors de la sauvegarde de la game");
-                e.printStackTrace();
-            }
-        }
-
-        f5WasPressed = f5IsPressed;
-
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
@@ -187,6 +165,14 @@ public class GameController {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
             Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
             gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        }
+
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_F5)) {
+            try {
+                saveGame();
+            } catch (IOException e) {
+                System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
+            }
         }
     }
 
@@ -259,54 +245,11 @@ public class GameController {
         });
     }
 
-    /*Méthode permettant la sauvegarde du jeu*/
+    /**
+     * Méthode permettant la sauvegarde du jeu
+     */
     public void saveGame() throws IOException {
-
-        //Crée un objet saveMap
-        //Sauvegarde de la map dans un fichier dédié
-        SaveMap saveMap = new SaveMap();
-        saveMap.saveMap(gameManager.getTerrain());
-
-        //Crée un objet saveTeam
-        //Sauvegarde des équipes dans un fichier dédiés
-        SaveTeam saveTeam = new SaveTeam();
-        saveTeam.saveTeam(gameManager.getTeams()[0], gameManager.getTeams()[1]);
-
-        //Crée un objet saveInventory
-        //Sauvegarde des inventaires des équipes dans 2 fichier dédiés
-        SaveInventory saveInventory = new SaveInventory();
-        saveInventory.saveInventory(gameManager.getTeams()[0].getInventory(),
-                gameManager.getTeams()[1].getInventory());
+        GameSave gameSave = new GameSave(gameManager);
+        gameSave.save();
     }
-
-    /*Méthode permettant de charger la sauvegarde du jeu*/
-    public void loadGame(GameManager gameManager) throws IOException {
-
-        //Récupère la map sauvegardée
-        SaveMap saveMap = new SaveMap();
-        Terrain terrain = saveMap.loadMap();
-
-
-        //Permet de récupérer les images de la map
-        saveMap.loadImage(terrain);
-
-        //Récupère les équipes sauvegardées
-        SaveTeam saveTeam = new SaveTeam();
-        Team[] teams = saveTeam.loadTeam(gameManager);
-
-        //Récupère les inventaire sauvegardés
-        SaveInventory saveInventory = new SaveInventory();
-        Inventory[] inventory = saveInventory.loadInventory();
-
-        //Charge les équipes sauvegardées
-        gameManager.setTeams(teams);
-
-        //Charge les inventaires de chaque équipes
-        gameManager.getTeams()[0].setInventory(inventory[0]);
-        gameManager.getTeams()[1].setInventory(inventory[1]);
-
-        //Charge la map
-        gameManager.setMap(terrain);
-    }
-
 }

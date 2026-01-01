@@ -27,8 +27,8 @@ public class GameManager {
 
     private final List<ActiveAnimation> activeAnimations;
 
-    public GameManager() {
-        this.terrain = TerrainGenerator.chooseRandomMap();
+    public GameManager(Terrain terrain, int teamSize) {
+        this.terrain = terrain;
         this.mapName = terrain.getMapName();
 
         this.teams = new Team[2];

@@ -9,11 +9,14 @@ import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.ShotgunBullet;
+import upc.model.entites.projectiles.Throwable;
+import upc.model.entites.projectiles.UziBullet;
+import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Trap;
 import upc.model.jeu.Terrain;
 import upc.model.entites.projectiles.Bullet;
-import upc.model.entites.projectiles.Trap;
-import upc.model.entites.projectiles.Throwable;
-import upc.model.entites.projectiles.Rocket;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,13 +58,12 @@ public class ProjectilePhysics {
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
 
-        } else if (projectile instanceof Bullet) {
-            // Cas 2 : projectile de type Bullet (balle, tir rapide)
+        } else if (projectile instanceof UziBullet) {
             double radius = Converter.toMeters(2);
             BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
-            fixture.setFriction(0.0);
-            fixture.setRestitution(0.0);
-            fixture.setDensity(0.5);
+            fixture.setFriction(0.1);
+            fixture.setRestitution(0.1);
+            fixture.setDensity(1.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
             body.setBullet(true);
@@ -76,6 +78,17 @@ public class ProjectilePhysics {
             fixture.setDensity(10.0);
             body.addFixture(fixture);
             body.setMass(MassType.NORMAL);
+
+        }  else if (projectile instanceof ShotgunBullet) {
+            double radius = Converter.toMeters(3);
+            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(10.0);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(5.0);
+            body.addFixture(fixture);
+            body.setMass(MassType.NORMAL);
+            body.setLinearDamping(0.8);
+            body.setBullet(true);
 
         } else if (projectile instanceof Rocket) {
             // Cas 4 : projectile de type Rocket (roquette)
@@ -207,6 +220,32 @@ public class ProjectilePhysics {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
+            }
+            if (proj instanceof Throwable || proj instanceof Trap) {
+                double triggerDistancePixels = 20.0;
+                boolean exploded = false;
+                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
+                    if (!alien.isAlive()) {
+                        continue;
+                    }
+                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
+                        continue;
+                    }
+                    Position alienPos = alien.getPosition();
+                    double dx = alienPos.getX() - x;
+                    double dy = alienPos.getY() - y;
+                    double distSq = dx * dx + dy * dy;
+                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
+                        proj.setState(Projectile.State.EXPLODED);
+                        explodeProjectile(proj);
+                        world.removeBody(body);
+                        iterator.remove();
+                        exploded = true;
+                    }
+                }
+                if (exploded) {
+                    continue;
+                }
             }
         }
     }

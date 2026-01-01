@@ -2,7 +2,6 @@ package upc.model.entites;
 
 import upc.assets.SoundManager;
 import upc.model.items.Item;
-import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
@@ -35,7 +34,6 @@ public class Alien extends Entity {
     }
     private State state;
 
-
     // Constructeur
     public Alien(GameWorld gameWorld, Team team, Position position) {
         super(position, SPEED);
@@ -51,6 +49,7 @@ public class Alien extends Entity {
         this.direction = true;
         this.aimAngle = 0;
     }
+
 
 ////    Mouvements de l'alien    ////
     public void moveRight() {
@@ -83,9 +82,13 @@ public class Alien extends Entity {
         if (!inventory.isAvailable(equippedItem)) {
             return;
         }
-        Weapon weapon = inventory.getWeapon(equippedItem);
-        weapon.useItem(world, this);
-        inventory.useAmmo(equippedItem, weapon.getNbOfShots());
+        Item item = inventory.getItem(equippedItem);
+        item.useItem(world, this);
+        inventory.useAmmo(equippedItem, 1);
+        if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
+            alienPhysics.flyAlien(this);
+            setState(State.JUMP);
+        }
     }
 
     public void receiveDmg(int damage) {
@@ -99,7 +102,6 @@ public class Alien extends Entity {
             alive = false;
         }
     }
-
 
 ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
@@ -119,7 +121,7 @@ public class Alien extends Entity {
     }
 
     public Item getEquippedItem() {
-        return inventory.getWeapon(Inventory.ITEMS[selectedItemIndex]);
+        return inventory.getItem(Inventory.ITEMS[selectedItemIndex]);
     }
 
     public int getSelectedItemIndex() {
@@ -151,10 +153,10 @@ public class Alien extends Entity {
     }
 
     public void setShootPower(int power) {
-    this.shootPower = power;
+        this.shootPower = power;
     }
 
     public void setAimAngle(int angle) {
-    this.aimAngle = angle;
+        this.aimAngle = angle;
     }
 }

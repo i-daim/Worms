@@ -10,6 +10,7 @@ public class Grenade extends Weapon {
         super("Grenade", 50, 3, 50);
     }
 
+    @Override
     public void useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();

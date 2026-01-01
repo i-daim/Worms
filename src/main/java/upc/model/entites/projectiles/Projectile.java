@@ -72,7 +72,25 @@ public class Projectile extends Entity {
         double ratio = 1.0 - (distance / explosionRadius);
         return Math.max((int) (damage * ratio), 0);
     }
+    public void applyExplosionDamage(GameWorld world) {
+        if (!isExplosiveProjectile() || explosionDamageApplied) {
+            return;
+        }
+        explosionDamageApplied = true;
 
+        Position center = getExplosionCenter();
+        for (Alien alien : world.getActiveWorms()) {
+            if (alien != null && alien.isAlive()) {
+                double distance = alien.getPosition()
+                        .distance(center.getX(), center.getY());
+
+                int dmg = computeDamageFromDistance(distance);
+                if (dmg > 0) {
+                    alien.receiveDmg(dmg);
+                }
+            }
+        }
+    }
 
     /// /    GETTERS    ////
     public Alien getShooter() {

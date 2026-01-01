@@ -1,6 +1,9 @@
 package upc.model.jeu;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Arrays;
 
 import upc.model.items.Bazooka;
 import upc.model.items.Grenade;
@@ -12,7 +15,8 @@ import upc.model.items.Uzi;
 import upc.model.items.Weapon;
 
 public class Inventory {
-
+    public static Set<Item.Type> ALLOWED_WEAPONS = new HashSet<>
+            (Arrays.asList(Item.Type.values()));
     public static final Item.Type[] ITEMS = {
             Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
             Item.Type.GRENADE, Item.Type.MINE, Item.Type.JETPACK};

@@ -31,7 +31,10 @@ public class GameSetupPanel extends JPanel{
         mapPanel.add(mapSelector);
 
         JPanel wormPanel = createRow("Vers par équipe : ");
-        teamSizeSlider = new JSlider(1, 5, 2); // Min 1, Max 5, Défaut 2
+        teamSizeSlider = new JSlider(1, 5, 2);
+        teamSizeSlider.setOpaque(false);
+        teamSizeSlider.setForeground(Color.CYAN);
+        teamSizeSlider.setFont(new Font("Arial", Font.BOLD, 14));
         teamSizeSlider.setMajorTickSpacing(1);
         teamSizeSlider.setPaintTicks(true);
         teamSizeSlider.setPaintLabels(true);
@@ -40,9 +43,16 @@ public class GameSetupPanel extends JPanel{
         wormPanel.add(teamSizeSlider);
 
         JPanel weaponPanel = new JPanel();
-        weaponPanel.setOpaque(false);
-        weaponPanel.setBorder(BorderFactory.createTitledBorder(null, "Armes autorisées", 0, 0, new Font("Arial", Font.BOLD, 14), Color.WHITE));
-
+        weaponPanel.setBackground(new Color(30, 30, 30, 200));
+        weaponPanel.setOpaque(true);
+        weaponPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.GRAY, 2), // Cadre gris
+                " Armes Autorisées ",
+                javax.swing.border.TitledBorder.CENTER,
+                javax.swing.border.TitledBorder.TOP,
+                new Font("Arial", Font.BOLD, 16),
+                new Color(100, 255, 100) // Vert fluo pour le titre
+        ));
         chkBazooka = new JCheckBox("Bazooka", true);
         chkUzi = new JCheckBox("Uzi", true);
         chkShotgun = new JCheckBox("Shotgun", true);
@@ -86,14 +96,14 @@ public class GameSetupPanel extends JPanel{
     private void styleCheckBox(JCheckBox box) {
         box.setOpaque(false);
         box.setForeground(Color.WHITE);
-        box.setFont(new Font("Arial", Font.PLAIN, 14));
+        box.setFont(new Font("Arial", Font.BOLD, 15));
     }
     private JPanel createRow(String text) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
         p.setOpaque(false);
         JLabel l = new JLabel(text);
-        l.setFont(new Font("Arial", Font.BOLD, 16));
-        l.setForeground(Color.WHITE);
+        l.setFont(new Font("Arial", Font.BOLD, 18));
+        l.setForeground(new Color(255, 200, 100));
         p.add(l);
         return p;
     }

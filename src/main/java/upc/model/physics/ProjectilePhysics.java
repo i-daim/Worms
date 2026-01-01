@@ -230,41 +230,32 @@ public class ProjectilePhysics {
         if (proj instanceof Bullet) {
             return;
         }
-        //Récupère les coordonnées du centre de l'explosion
-        // (position actuelle du/des projectiles en pixels)
+        // Position de l'explosion (en pixels)
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
-        int damage = proj.getDamage();
-
-        physicsEngine.getGameWorld().explode(
-                explosionX, explosionY, proj);
-
+        physicsEngine.getGameWorld().explode(explosionX, explosionY, proj);
         for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-            // Ignore les aliens déjà morts (pas besoin de les blesser ou de les propulser)
             if (!alien.isAlive()) {
                 continue;
             }
 
-            Position wormPos = alien.getPosition();
-            double distance = wormPos.distance(explosionX, explosionY);
+            Position alienPos = alien.getPosition();
+            double distance = alienPos.distance(explosionX, explosionY);
 
-            if (distance <= radius) {
-                // Calcul de l'atténuation des dégâts (Falloff linéaire)
-                double damageRatio = 1.0 - (distance / radius);
-                int finalDamage = (int) (damage * damageRatio);
+            if (distance <= radius && distance > 0) {
 
-                if (finalDamage > 0) {
-                    alien.receiveDmg(finalDamage);
-                }
+                double ratio = 1.0 - (distance / radius);
+                double knockbackForce = 50.0 * ratio;
 
-                Body wormBody = physicsEngine.getAlienBodies().get(alien);
-                if (wormBody != null && distance > 0) {
-                    double knockbackForce = 50.0 * damageRatio;
-                    double dx = (wormPos.getX() - explosionX) / distance;
-                    double dy = (wormPos.getY() - explosionY) / distance;
-                    // Applique une impulsion immédiate au corps physique pour le projeter en l'air
-                    wormBody.applyImpulse(new Vector2(dx * knockbackForce, dy * knockbackForce));
+                double dx = (alienPos.getX() - explosionX) / distance;
+                double dy = (alienPos.getY() - explosionY) / distance;
+
+                Body alienBody = physicsEngine.getAlienBodies().get(alien);
+                if (alienBody != null) {
+                    alienBody.applyImpulse(
+                            new Vector2(dx * knockbackForce, dy * knockbackForce)
+                    );
                 }
             }
         }

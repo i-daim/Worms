@@ -11,6 +11,7 @@ public class Uzi extends Weapon {
         super("Uzi", 10, 30, 80);
     }
 
+    @Override
     public void useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();

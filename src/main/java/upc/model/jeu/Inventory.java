@@ -37,13 +37,18 @@ public class Inventory {
 
     //// Méthode pour initialiser l'inventaire ////
     private void initializeWeapons() {
-        weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
-        weaponStock.put(Item.Type.UZI, new Uzi());
-        weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
-        weaponStock.put(Item.Type.GRENADE, new Grenade());
-        weaponStock.put(Item.Type.MINE, new Mine());
-        weaponStock.put(Item.Type.JETPACK, new Jetpack());
-        this.currentWeaponType = Item.Type.BAZOOKA;
+        if (ALLOWED_WEAPONS.contains(Item.Type.SHOTGUN)) weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
+        if (ALLOWED_WEAPONS.contains(Item.Type.UZI)) weaponStock.put(Item.Type.UZI, new Uzi());
+        if (ALLOWED_WEAPONS.contains(Item.Type.BAZOOKA)) weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
+        if (ALLOWED_WEAPONS.contains(Item.Type.GRENADE)) weaponStock.put(Item.Type.GRENADE, new Grenade());
+        if (ALLOWED_WEAPONS.contains(Item.Type.MINE)) weaponStock.put(Item.Type.MINE, new Mine());
+
+        for (Item.Type t : ITEMS) {
+            if (weaponStock.containsKey(t)) {
+                this.currentWeaponType = t;
+                break;
+            }
+        }
     }
 
     private void initializeAmmo() {

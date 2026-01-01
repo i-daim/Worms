@@ -28,15 +28,6 @@ public class GameWorld {
 
     }
 
-    public ArrayList<Alien> aliensInRadius(int x, int y, int radius) {
-        ArrayList<Alien> aliens = new ArrayList<>();
-        for (Alien a : this.activeAliens) {
-            if (a.getPosition().distance(x, y) <= radius) {
-                aliens.add(a);
-            }
-        }
-        return aliens;
-    }
 
     public void explode(int x, int y, Projectile projectile) {
         Position center = projectile.getExplosionCenter();

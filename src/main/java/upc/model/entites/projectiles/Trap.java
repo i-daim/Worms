@@ -69,5 +69,9 @@ public class Trap extends Projectile {
     public void setActive(boolean active) {
         this.active = active;
     }
+    public int getActivationRadius() {
+        return activationRadius;
+    }
+
 }
 

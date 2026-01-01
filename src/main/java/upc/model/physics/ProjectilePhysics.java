@@ -183,6 +183,26 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
+            if (proj instanceof Trap) {
+                Trap trap = (Trap) proj;
+                if (trap.isActive()) {
+                    int trapX = proj.getPosition().getX();
+                    int trapY = proj.getPosition().getY();
+                    for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
+                        if (!alien.isAlive() || alien == proj.getShooter()) {
+                            continue;
+                        }
+                        double distance =
+                                alien.getPosition().distance(trapX, trapY);
+
+                        if (distance <= trap.getActivationRadius()) {
+                            trap.setActive(false);
+                            trap.setState(Projectile.State.EXPLODED);
+                            break;
+                        }
+                    }
+                }
+            }
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);

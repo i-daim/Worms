@@ -20,6 +20,15 @@ public class GameSetupPanel extends JPanel{
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
     }
+    private JPanel createRow(String text) {
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        p.setOpaque(false);
+        JLabel l = new JLabel(text);
+        l.setFont(new Font("Arial", Font.BOLD, 16));
+        l.setForeground(Color.WHITE);
+        p.add(l);
+        return p;
+    }
     public JButton getStartButton() {
         return startButton;
     }

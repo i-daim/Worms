@@ -2,10 +2,11 @@ package upc.assets;
 
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Rocket;
-import upc.model.entites.projectiles.ShotgunBullet;
-import upc.model.entites.projectiles.Throwable;
-import upc.model.entites.projectiles.Trap;
-import upc.model.entites.projectiles.UziBullet;
+import upc.model.items.Grenade;
+import upc.model.items.Mine;
+import upc.model.items.Shotgun;
+import upc.model.items.Uzi;
+import upc.model.items.Weapon;
 
 import java.util.HashMap;
 
@@ -88,13 +89,19 @@ public class AnimationManager {
     }
 
     public static Animation getProjectile(Projectile p) {
-        return switch (p) {
-            case Rocket rocket -> animations.get("rocket");
-            case UziBullet bullet -> animations.get("bullet");
-            case ShotgunBullet shotgunBullet -> animations.get("mini_bullet");
-            case Throwable grenade -> animations.get("grenade");
-            case Trap mine -> animations.get("mine");
-            default -> null;
-        };
+        Weapon weapon = p.getWeapon();
+
+        if (p instanceof Rocket) {
+            return getAnimation("rocket");
+        } else if (weapon instanceof Uzi) {
+            return getAnimation("bullet");
+        } else if (weapon instanceof Shotgun) {
+            return getAnimation("mini_bullet");
+        } else if (weapon instanceof Grenade) {
+            return getAnimation("grenade");
+        } else if (weapon instanceof Mine) {
+            return getAnimation("mine");
+        }
+        return getAnimation("bullet");
     }
 }

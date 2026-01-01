@@ -20,4 +20,19 @@ public class GameSetupPanel extends JPanel{
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
     }
+    public JButton getStartButton() {
+        return startButton;
+    }
+
+    public JButton getBackButton() {
+        return backButton;
+    }
+
+    public String getSelectedMap() {
+        return (String) mapSelector.getSelectedItem();
+    }
+
+    public int getTeamSize() {
+        return teamSizeSlider.getValue();
+    }
 }

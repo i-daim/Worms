@@ -75,6 +75,12 @@ public class GameManager {
 
 
     public void skipTurn() {
+
+        // ne rien faire si la partie est terminée
+        if (gameOver) {
+            return;
+        }
+
         actionDone = false;
 
         if (getTeam(0).isActiveLastAlien() && getTeam(1).isActiveLastAlien()) {

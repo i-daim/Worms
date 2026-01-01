@@ -76,4 +76,7 @@ public class GameWorld {
     public List<Projectile> getActiveProjectiles() {
         return physicsEngine.getActiveProjectiles();
     }
+    public GameManager getGameManager() {
+        return gameManager;
+    }
 }

@@ -9,7 +9,6 @@ import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,12 +16,6 @@ import java.util.Set;
 public class GameSetupController {
     private final GameSetupPanel view;
     private final MainFrame mainFrame;
-
-    private JButton startButton;
-    private JButton backButton;
-    private JComboBox<String> mapSelector;
-    private JSlider teamSizeSlider;
-    private JCheckBox chkBazooka, chkUzi, chkShotgun, chkGrenade, chkMine;
 
     public GameSetupController(GameSetupPanel view, MainFrame mainFrame) {
         this.view = view;

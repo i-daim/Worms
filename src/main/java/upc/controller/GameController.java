@@ -101,11 +101,7 @@ public class GameController {
             showGameOver();
             return;
         }
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-            if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();
-            }
-        }
+
         keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
@@ -161,9 +157,10 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
-            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
-            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+            if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                activeAlien.useEquippedItem();
+            }
         }
     }
 

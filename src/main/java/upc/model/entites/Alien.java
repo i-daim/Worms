@@ -2,14 +2,12 @@ package upc.model.entites;
 
 import upc.assets.SoundManager;
 import upc.model.items.Item;
-import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
 
 public class Alien extends Entity {
-
     // Attributs
     private final GameWorld world;
     private final AlienPhysics alienPhysics;
@@ -24,11 +22,9 @@ public class Alien extends Entity {
     private final Inventory inventory;
     private int selectedItemIndex = 0;
 
-
     // Champs statiques
     private static final int SPEED = 5;
     private static final int INITIAL_HP = 100;
-
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {
@@ -37,7 +33,6 @@ public class Alien extends Entity {
         JUMP
     }
     private State state;
-
 
     // Constructeur
     public Alien(GameWorld gameWorld, Team team, Position position) {
@@ -56,7 +51,7 @@ public class Alien extends Entity {
     }
 
 
-    ////    Mouvements de l'alien    ////
+////    Mouvements de l'alien    ////
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
         setState(State.WALK);
@@ -78,26 +73,22 @@ public class Alien extends Entity {
         alienPhysics.moveAlien(this, 0);
         setState(State.IDLE);
     }
-    ////    Autres Méthodes    ////
 
-    public void fly() {
-        Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
-        if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
-            alienPhysics.flyAlien(this);
-            inventory.useAmmo(equippedItem, 1);
-            setState(State.JUMP);
-        }
-    }
 
+////    Autres Méthodes    ////
     public void useEquippedItem() {
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
 
         if (!inventory.isAvailable(equippedItem)) {
             return;
         }
-        Weapon weapon = inventory.getWeapon(equippedItem);
-        weapon.useItem(world, this);
-        inventory.useAmmo(equippedItem, weapon.getNbOfShots());
+        Item item = inventory.getItem(equippedItem);
+        item.useItem(world, this);
+        inventory.useAmmo(equippedItem, 1);
+        if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
+            alienPhysics.flyAlien(this);
+            setState(State.JUMP);
+        }
     }
 
     public void receiveDmg(int damage) {
@@ -112,7 +103,7 @@ public class Alien extends Entity {
         }
     }
 
-    ////    GETTERS & SETTERS    ////
+////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
         return healthPoints;
     }
@@ -130,7 +121,7 @@ public class Alien extends Entity {
     }
 
     public Item getEquippedItem() {
-        return inventory.getWeapon(Inventory.ITEMS[selectedItemIndex]);
+        return inventory.getItem(Inventory.ITEMS[selectedItemIndex]);
     }
 
     public int getSelectedItemIndex() {

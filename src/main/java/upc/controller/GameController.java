@@ -50,7 +50,7 @@ public class GameController {
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
-    ////    GESTION DE LA BOUCLE DU JEU    ////
+////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -101,26 +101,22 @@ public class GameController {
             showGameOver();
             return;
         }
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-            if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();
-            }
-        }
+
         keyHandler.clearJustPressed();
         gamePanel.repaint();
     }
 
-    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
 
+        // Gestion de l'inventaire
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
             gamePanel.toggleInventory();
         }
-
         if (gamePanel.isInventoryVisible()) {
             for (int i = 0; i < 6; i++) {
                 int keyCode = KeyEvent.VK_1 + i;
@@ -131,14 +127,10 @@ public class GameController {
             }
         }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
-            if (activeAlien.getEquippedItem() instanceof Jetpack) {
-                activeAlien.fly();
-            } else if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
-                activeAlien.jump();
-            }
+        // Gestion des mouvements
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
+            activeAlien.jump();
         }
-
         if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
             activeAlien.moveLeft();
         } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
@@ -147,6 +139,7 @@ public class GameController {
             activeAlien.idle();
         }
 
+        // Gestion de la visée
         if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
             int angle = activeAlien.getAimAngle() + 2;
             if (angle > 80) {
@@ -161,9 +154,14 @@ public class GameController {
             activeAlien.setAimAngle(angle);
         }
 
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_E)) {
-            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
-            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        // Utilisation de l'item
+        if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+            if (activeAlien.getEquippedItem() instanceof Jetpack) {
+                activeAlien.useEquippedItem();
+            }
+            if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                activeAlien.useEquippedItem();
+            }
         }
     }
 
@@ -198,7 +196,7 @@ public class GameController {
         gamePanel.setCamera(camX, camY);
     }
 
-    ////    ARRET DU JEU    ////
+////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
             togglePause();

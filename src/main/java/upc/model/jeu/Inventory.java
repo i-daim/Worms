@@ -18,7 +18,7 @@ public class Inventory {
             Item.Type.GRENADE, Item.Type.MINE, Item.Type.JETPACK};
 
     // Stock des armes et des munitions de l'équipe
-    private final HashMap<Item.Type, Weapon> weaponStock;
+    private final HashMap<Item.Type, Item> weaponStock;
     private final HashMap<Item.Type, Integer> ammoStock;
     private Item.Type currentWeaponType;
 
@@ -76,7 +76,7 @@ public class Inventory {
         return ammoStock;
     }
 
-    public Weapon getWeapon(Item.Type w) {
+    public Item getItem(Item.Type w) {
         return weaponStock.get(w);
     }
 

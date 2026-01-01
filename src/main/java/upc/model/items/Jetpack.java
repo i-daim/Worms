@@ -3,10 +3,10 @@ package upc.model.items;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameWorld;
 
-public class Jetpack extends Weapon {
+public class Jetpack extends Tool {
 
     public Jetpack() {
-        super("Jetpack", 0, 1, 0);
+        super("Jetpack");
     }
 
     @Override

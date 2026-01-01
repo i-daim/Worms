@@ -19,6 +19,11 @@ public class GameSetupPanel extends JPanel{
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        JPanel mapPanel = createRow("Carte : ");
+        String[] maps = {"Aléatoire", "Liberty", "Spaceship"}; // Ajoutez vos noms de maps ici
+        mapSelector = new JComboBox<>(maps);
+        mapPanel.add(mapSelector);
+
     }
     private JPanel createRow(String text) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));

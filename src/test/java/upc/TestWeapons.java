@@ -60,7 +60,7 @@ public class TestWeapons {
         assertEquals("Shotgun", shotgun.getName());
         assertEquals(35, shotgun.getDamage());
         assertEquals(8, shotgun.getNbOfShots());
-        assertEquals(60, shotgun.getSpeed());
+        assertEquals(80, shotgun.getSpeed());
     }
     @Test
     public void testMineConstantes() {

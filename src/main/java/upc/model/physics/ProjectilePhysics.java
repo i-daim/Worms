@@ -6,14 +6,20 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
+
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
-import upc.model.jeu.Terrain;
-import upc.model.entites.projectiles.Bullet;
-import upc.model.entites.projectiles.Trap;
 import upc.model.entites.projectiles.Throwable;
 import upc.model.entites.projectiles.Rocket;
+import upc.model.entites.projectiles.Trap;
+import upc.model.items.Grenade;
+import upc.model.items.Mine;
+import upc.model.items.Shotgun;
+import upc.model.items.Uzi;
+import upc.model.items.Weapon;
+import upc.model.jeu.Terrain;
+import upc.model.entites.projectiles.Bullet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,54 +47,56 @@ public class ProjectilePhysics {
      * @param projectile    le projectile à lancer
      * @param angleDegrees  l'angle de tir en degrés (0° vers la droite, 90° vers le haut)
      * @param powerPercent  la puissance du tir en pourcentage (0 à 100)
-     * @return le corps physique (Body) associé au projectile
      */
-    public Body addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
+    public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         Body body = new Body();
-        // Cas 1 : projectile « Throwable » (grenades, etc.)
-        if (projectile instanceof Throwable) {
+        BodyFixture fixture = null;
+
+        Weapon weapon = projectile.getWeapon();
+
+        if (weapon instanceof Grenade) {
             double radius = Converter.toMeters(5);
-            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(1.0);
             fixture.setRestitution(0.5);
             fixture.setDensity(2.0);
-            body.addFixture(fixture);
-            body.setMass(MassType.NORMAL);
 
-        } else if (projectile instanceof Bullet) {
-            // Cas 2 : projectile de type Bullet (balle, tir rapide)
+        } else if (weapon instanceof Uzi) {
             double radius = Converter.toMeters(2);
-            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
-            fixture.setFriction(0.0);
-            fixture.setRestitution(0.0);
-            fixture.setDensity(0.5);
-            body.addFixture(fixture);
-            body.setMass(MassType.NORMAL);
+            fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(0.1);
+            fixture.setRestitution(0.1);
+            fixture.setDensity(1.0);
             body.setBullet(true);
 
-        } else if (projectile instanceof Trap) {
-            // Cas 3 : projectile de type Trap (mine, piège posé au sol)
+        } else if (weapon instanceof Mine) {
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);
-            BodyFixture fixture = new BodyFixture(Geometry.createRectangle(width, height));
+            fixture = new BodyFixture(Geometry.createRectangle(width, height));
             fixture.setFriction(5.0);
             fixture.setRestitution(0.0);
             fixture.setDensity(10.0);
-            body.addFixture(fixture);
-            body.setMass(MassType.NORMAL);
+
+        }  else if (weapon instanceof Shotgun) {
+            double radius = Converter.toMeters(3);
+            fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture.setFriction(10.0);
+            fixture.setRestitution(0.0);
+            fixture.setDensity(5.0);
+            body.setLinearDamping(0.8);
+            body.setBullet(true);
 
         } else if (projectile instanceof Rocket) {
-            // Cas 4 : projectile de type Rocket (roquette)
             double radius = Converter.toMeters(5);
-            BodyFixture fixture = new BodyFixture(Geometry.createCircle(radius));
+            fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);
             fixture.setRestitution(0.0);
             fixture.setDensity(2.5);
-            body.addFixture(fixture);
-            body.setMass(MassType.NORMAL);
             body.setBullet(true);
         }
 
+        body.addFixture(fixture);
+        body.setMass(MassType.NORMAL);
 
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
@@ -102,7 +110,6 @@ public class ProjectilePhysics {
             angleRad = Math.PI - angleRad;
         }
 
-
         double baseVelocity = projectile.getWeapon().getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 
@@ -115,9 +122,6 @@ public class ProjectilePhysics {
         projectile.setBody(body);
         world.addBody(body);
         activeProjectiles.add(projectile);
-
-        return body;
-
     }
 
     private void applyWindToProjectiles() {
@@ -131,6 +135,8 @@ public class ProjectilePhysics {
             }
         }
     }
+
+
     /**
      * Met à jour l'état de tous les projectiles actifs à chaque frame.
      * <p>
@@ -146,7 +152,6 @@ public class ProjectilePhysics {
      *
      * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
      */
-
     public void updateProjectiles(Terrain terrain) {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
@@ -166,8 +171,7 @@ public class ProjectilePhysics {
             int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
 
-            if (proj instanceof Throwable) {
-                Throwable t = (Throwable) proj;
+            if (proj instanceof Throwable t) {
                 t.decrementTimer();
                 if (t.isReadyToExplode()) {
                     proj.setState(Projectile.State.EXPLODED);
@@ -187,6 +191,28 @@ public class ProjectilePhysics {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
+            }
+            if (proj instanceof Throwable || proj instanceof Trap) {
+                double triggerDistancePixels = 20.0;
+
+                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
+                    if (!alien.isAlive()) {
+                        continue;
+                    }
+                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
+                        continue;
+                    }
+                    Position alienPos = alien.getPosition();
+                    double dx = alienPos.getX() - x;
+                    double dy = alienPos.getY() - y;
+                    double distSq = dx * dx + dy * dy;
+                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
+                        proj.setState(Projectile.State.EXPLODED);
+                        explodeProjectile(proj);
+                        world.removeBody(body);
+                        iterator.remove();
+                    }
+                }
             }
         }
     }
@@ -255,8 +281,7 @@ public class ProjectilePhysics {
         if (target == null || target.getUserData() instanceof Bullet) {
             return;
         }
-        if (target.getUserData() instanceof Alien) {
-            Alien alien = (Alien) target.getUserData();
+        if (target.getUserData() instanceof Alien alien) {
             alien.receiveDmg(bullet.getDamage());
             target.applyImpulse(5);
         }

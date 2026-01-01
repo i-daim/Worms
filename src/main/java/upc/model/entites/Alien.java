@@ -2,7 +2,7 @@ package upc.model.entites;
 
 import upc.model.items.Item;
 import upc.model.items.Weapon;
-import upc.model.save.AlienSave;
+import upc.model.save.GameSave;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
@@ -28,7 +28,7 @@ public class Alien extends Entity {
     private static final int INITIAL_HP = 100;
 
     //Constructeur pour charger un alien
-    public Alien(AlienSave alienSave, GameWorld gameWorld, Team team) {
+    public Alien(GameSave.AlienSave alienSave, GameWorld gameWorld, Team team) {
         super(alienSave.getPosition(), SPEED);
         this.world = gameWorld;
         this.alienPhysics = world.getPhysicsEngine().getAlienPhysics();

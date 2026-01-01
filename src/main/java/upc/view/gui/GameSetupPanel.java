@@ -34,6 +34,11 @@ public class GameSetupPanel extends JPanel{
         wormPanel.add(teamSizeSlider);
 
     }
+    private void styleCheckBox(JCheckBox box) {
+        box.setOpaque(false);
+        box.setForeground(Color.WHITE);
+        box.setFont(new Font("Arial", Font.PLAIN, 14));
+    }
     private JPanel createRow(String text) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
         p.setOpaque(false);

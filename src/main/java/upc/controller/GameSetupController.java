@@ -51,10 +51,19 @@ public class GameSetupController {
 
         Inventory.ALLOWED_WEAPONS = allowed;
 
-        String map = view.getSelectedMap();
+        String mapName = view.getSelectedMap();
         int teamSize = view.getTeamSize();
 
-        GameManager gameManager = new GameManager(map, teamSize);
+        upc.model.jeu.Terrain terrain;
+
+        if (mapName.equalsIgnoreCase("Aléatoire")) {
+            terrain = upc.model.jeu.TerrainGenerator.chooseRandomMap();
+        } else {
+
+            terrain = upc.model.jeu.TerrainGenerator.createTerrain(mapName.toLowerCase());
+        }
+
+        GameManager gameManager = new GameManager(terrain, teamSize);
         GamePanel gamePanel = new GamePanel(gameManager);
         new GameController(gamePanel, gameManager);
 

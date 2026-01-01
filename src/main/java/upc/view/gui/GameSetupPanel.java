@@ -3,17 +3,23 @@ package upc.view.gui;
 import upc.assets.ImageManager;
 import javax.swing.*;
 import java.awt.*;
+
+import upc.controller.GameSetupController;
 import upc.model.items.Item;
 
 public class GameSetupPanel extends JPanel{
     private final Image background = ImageManager.get("menu_background"); // Ou autre image
     private final MainFrame mainFrame;
 
+    private JComboBox<String> mapSelector;
+    private JSlider teamSizeSlider;
+    private JCheckBox chkBazooka, chkUzi, chkShotgun, chkGrenade, chkMine;
+    private JButton startButton, backButton;
+
     public GameSetupPanel(MainFrame frame) {
         this.mainFrame = frame;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Titre
         JLabel title = new JLabel("Paramètres de la Partie");
         title.setFont(new Font("Arial", Font.BOLD, 30));
         title.setForeground(Color.WHITE);

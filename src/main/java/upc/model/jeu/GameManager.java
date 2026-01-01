@@ -14,6 +14,7 @@ public class GameManager {
     public static final int ROUND_TIME = 60;
     public static final int TEAM_SIZE = 2;
 
+    private final String mapName;
     private final Terrain terrain;
     private final GameWorld gameWorld;
     private final Team[] teams;
@@ -23,8 +24,6 @@ public class GameManager {
     private int timeLeft;
     private boolean gameOver;
     private boolean actionDone;
-
-    private final String mapName;
 
     private final List<ActiveAnimation> activeAnimations;
 
@@ -37,11 +36,24 @@ public class GameManager {
         this.teams[1] = new Team("Glorbs", TEAM_SIZE);
 
         this.gameWorld = new GameWorld(this, this.terrain);
-
         this.activeAnimations = new CopyOnWriteArrayList<>();
 
         initializeGame();
     }
+    public GameManager(String mapName) {
+        this.terrain = TerrainGenerator.createTerrain(mapName);
+        this.mapName = mapName;
+
+        this.teams = new Team[2];
+        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
+        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+
+        this.gameWorld = new GameWorld(this, this.terrain);
+        this.activeAnimations = new CopyOnWriteArrayList<>();
+
+        initializeGame();
+    }
+
 
     public void update(double elapsedTime) {
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
@@ -165,7 +177,7 @@ public class GameManager {
     }
 
 
-    /* GETTERS */
+////    GETTERS    ////
 
     public Terrain getTerrain() {
         return terrain;

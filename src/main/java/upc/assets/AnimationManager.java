@@ -25,7 +25,14 @@ public class AnimationManager {
         // Animations monde //
         animations.put("water", new Animation("animations/water/water", 8, false));
         animations.put("explosion", new Animation("animations/explosion/explosion", 7, false));
-        animations.put("rocket", new Animation("animations/Rocket/Rocket", 9, false));
+
+        // Projectiles //
+        animations.put("rocket", new Animation("animations/projectiles/rocket", 9, false));
+        animations.put("bullet", new Animation("animations/projectiles/bullet", 1, false));
+        animations.put("grenade", new Animation("animations/projectiles/grenade", 1, false));
+        animations.put("mini_bullet", new Animation("animations/projectiles/mini_bullet", 1, false));
+        animations.put("mine", new Animation("animations/projectiles/mine", 1, false));
+
 
         // Autres //
         animations.put("victory_glorbs",

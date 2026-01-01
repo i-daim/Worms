@@ -4,6 +4,7 @@ import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.physics.PhysicsEngine;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class GameWorld {
         for (Alien a : aliensInRadius(x, y, radius)) {
             if (a != null && a.isAlive()) {
                 double distance = a.getPosition().distance(x, y);
-                a.receiveDmg(projectile.getDamageForDistance(distance));
+                a.receiveDmg(projectile.computeDamageFromDistance(distance));
             }
         }
 

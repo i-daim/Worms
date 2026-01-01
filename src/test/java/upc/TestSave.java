@@ -8,9 +8,7 @@ import upc.model.jeu.GameManager;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import upc.model.jeu.Terrain;
-import upc.model.save.SaveInventory;
-import upc.model.save.SaveMap;
-import upc.model.save.SaveTeam;
+import upc.model.save.GameSave;
 
 
 import java.io.IOException;
@@ -23,14 +21,11 @@ public class TestSave {
 
     private Team zlerps;
     private Team glorbs;
-    private SaveTeam saveTeam;
 
     private Inventory zlerpsInventory;
     private Inventory glorbsInventory;
-    private SaveInventory saveInventory;
 
     private Terrain terrain;
-    private SaveMap saveMap;
 
     private GameManager gameManager;
 
@@ -38,16 +33,13 @@ public class TestSave {
     void setup() {
         zlerps = new Team("Zlerps", 5);
         glorbs = new Team("Glorbs", 5);
-        saveTeam = new SaveTeam();
 
         zlerpsInventory = new Inventory();
         glorbsInventory = new Inventory();
-        saveInventory = new SaveInventory();
 
         gameManager = new GameManager();
 
         terrain = gameManager.getTerrain();
-        saveMap = new SaveMap();
     }
 
    /*Méthode permettant la création d'alien pour test*/
@@ -58,49 +50,58 @@ public class TestSave {
 
     @Test
     /*Méthode test permettant de tester la classe SaveTeam*/
-    public void testSaveTeam() throws IOException {
+    public void testSaveTeam() {
         for (int i =0; i < 5; i++) {
             zlerps.getAliens()[i] = createTestAlien(gameManager, zlerps, i, i + 1);
             glorbs.getAliens()[i] = createTestAlien(gameManager, zlerps, i + 1, i);
         }
-        saveTeam.saveTeam(zlerps,glorbs);
-        Team[] teams = saveTeam.loadTeam(gameManager);
 
-        assertEquals(teams[0].getName(), zlerps.getName());
-        assertEquals(teams[0].getAliens().length, zlerps.getAliens().length);
-        assertEquals(teams[0].getActiveAlienIndex(), zlerps.getActiveAlienIndex());
+        GameSave.TeamSave teamSaveZlerps = new GameSave.TeamSave(zlerps);
+        GameSave.TeamSave teamSaveGlorbs = new GameSave.TeamSave(glorbs);
 
+        Team loadedZlerps = teamSaveZlerps.toTeam(gameManager.getWorld());
+        Team loadedGlorbs = teamSaveGlorbs.toTeam(gameManager.getWorld());
 
-        assertEquals(teams[1].getName(), glorbs.getName());
-        assertEquals(teams[1].getAliens().length, glorbs.getAliens().length);
-        assertEquals(teams[1].getActiveAlienIndex(), glorbs.getActiveAlienIndex());
+        assertEquals(loadedZlerps.getName(), zlerps.getName());
+        assertEquals(loadedZlerps.getAliens().length, zlerps.getAliens().length);
+        assertEquals(loadedZlerps.getActiveAlienIndex(), zlerps.getActiveAlienIndex());
+
+        assertEquals(loadedGlorbs.getName(), glorbs.getName());
+        assertEquals(loadedGlorbs.getAliens().length, glorbs.getAliens().length);
+        assertEquals(loadedGlorbs.getActiveAlienIndex(), glorbs.getActiveAlienIndex());
     }
 
     @Test
     /*Méthode permettant de tester la classe SaveInventory*/
-    public void testSaveInventory() throws IOException {
-        saveInventory.saveInventory(zlerpsInventory, glorbsInventory);
-        Inventory[]  inventories = saveInventory.loadInventory();
+    public void testSaveInventory() {
+        GameSave.InventorySave inventorySaveZlerps = new GameSave.InventorySave(zlerpsInventory);
+        GameSave.InventorySave inventorySaveGlorbs = new GameSave.InventorySave(glorbsInventory);
 
-        assertEquals(inventories[0].getAmmoStock(), zlerpsInventory.getAmmoStock());
-        assertEquals(inventories[1].getAmmoStock(), glorbsInventory.getAmmoStock());
+        Inventory loadedZlerpsInventory = inventorySaveZlerps.toInventory();
+        Inventory loadedGlorbsInventory = inventorySaveGlorbs.toInventory();
+
+        assertEquals(loadedZlerpsInventory.getAmmoStock(), zlerpsInventory.getAmmoStock());
+        assertEquals(loadedGlorbsInventory.getAmmoStock(), glorbsInventory.getAmmoStock());
     }
 
     @Test
     /*Méthode permettant de tester la classe SaveMap*/
     public void testSaveMap() throws IOException {
-        saveMap.saveMap(terrain);
-        Terrain saveTerrain = saveMap.loadMap();
+        GameSave gameSave = new GameSave(gameManager);
+        gameSave.save();
 
-        saveMap.loadImage(saveTerrain);
+        GameSave loadedGameSave = GameSave.load();
+        GameManager loadedGameManager = new GameManager();
+        loadedGameSave.applyTo(loadedGameManager);
 
-        assertEquals(terrain.getMapName(), saveTerrain.getMapName());
-        assertEquals(terrain.getWidth(), saveTerrain.getWidth());
-        assertEquals(terrain.getHeight(), saveTerrain.getHeight());
-        assertArrayEquals(terrain.getCollisions(), saveTerrain.getCollisions());
-        assertEquals(terrain.getCollisionsWidth(), saveTerrain.getCollisionsWidth());
-        assertEquals(terrain.getCollisionsHeight(), saveTerrain.getCollisionsHeight());
+        Terrain loadedTerrain = loadedGameManager.getTerrain();
 
+        assertEquals(terrain.getMapName(), loadedTerrain.getMapName());
+        assertEquals(terrain.getWidth(), loadedTerrain.getWidth());
+        assertEquals(terrain.getHeight(), loadedTerrain.getHeight());
+        assertArrayEquals(terrain.getCollisions(), loadedTerrain.getCollisions());
+        assertEquals(terrain.getCollisionsWidth(), loadedTerrain.getCollisionsWidth());
+        assertEquals(terrain.getCollisionsHeight(), loadedTerrain.getCollisionsHeight());
     }
 
 }

@@ -10,7 +10,7 @@ import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
 import upc.model.items.Weapon;
-import upc.model.save.InventorySave;
+import upc.model.save.GameSave;
 
 public class Inventory {
 
@@ -33,12 +33,11 @@ public class Inventory {
     }
 
     //Constructeur pour charger un inventaire sauvegardé
-    public Inventory(InventorySave inventorySave) {
+    public Inventory(GameSave.InventorySave inventorySave) {
         this.weaponStock =  new HashMap<>();
         this.ammoStock = inventorySave.getAmmoStock();
 
         initializeWeapons();
-
     }
 
 

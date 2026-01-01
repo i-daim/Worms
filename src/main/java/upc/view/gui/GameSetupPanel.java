@@ -70,7 +70,9 @@ public class GameSetupPanel extends JPanel{
         this.add(startButton);
         this.add(Box.createVerticalStrut(10));
         this.add(backButton);
-        
+
+        new GameSetupController(this, mainFrame);
+
 
 
 

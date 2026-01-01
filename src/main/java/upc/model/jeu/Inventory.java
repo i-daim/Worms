@@ -52,12 +52,11 @@ public class Inventory {
     }
 
     private void initializeAmmo() {
-        addAmmo(Item.Type.SHOTGUN, 50);
-        addAmmo(Item.Type.MINE, 50);
-        addAmmo(Item.Type.UZI, 50);
-        addAmmo(Item.Type.GRENADE, 50);
-        addAmmo(Item.Type.BAZOOKA, 50);
-        addAmmo(Item.Type.JETPACK, 250);
+        if (ALLOWED_WEAPONS.contains(Item.Type.SHOTGUN)) addAmmo(Item.Type.SHOTGUN, 50);
+        if (ALLOWED_WEAPONS.contains(Item.Type.MINE)) addAmmo(Item.Type.MINE, 50);
+        if (ALLOWED_WEAPONS.contains(Item.Type.UZI)) addAmmo(Item.Type.UZI, 500);
+        if (ALLOWED_WEAPONS.contains(Item.Type.GRENADE)) addAmmo(Item.Type.GRENADE, 50);
+        if (ALLOWED_WEAPONS.contains(Item.Type.BAZOOKA)) addAmmo(Item.Type.BAZOOKA, 50);
     }
 
     //// Modifications des munitions ////

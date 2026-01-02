@@ -59,14 +59,15 @@ public class GameSetupPanel extends JPanel {
         JPanel wormPanel = createRow("Vers par équipe : ");
         teamSizeSlider = new JSlider(1, 5, 2);
         teamSizeSlider.setOpaque(false);
-        teamSizeSlider.setForeground(Color.CYAN);
-        teamSizeSlider.setFont(new Font("Arial", Font.BOLD, 14));
+        teamSizeSlider.setForeground(Color.WHITE);
+        teamSizeSlider.setFont(new Font("Arial", Font.BOLD, 20));
+
         teamSizeSlider.setMajorTickSpacing(1);
         teamSizeSlider.setPaintTicks(true);
         teamSizeSlider.setPaintLabels(true);
-        teamSizeSlider.setOpaque(false);
-        teamSizeSlider.setForeground(Color.WHITE);
+        teamSizeSlider.setPreferredSize(new Dimension(300, 60));
         wormPanel.add(teamSizeSlider);
+
 
         JPanel weaponPanel = new JPanel();
         weaponPanel.setBackground(new Color(30, 30, 30, 200));

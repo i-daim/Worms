@@ -47,9 +47,6 @@ public class Inventory {
         initializeWeapons();
     }
 
-
-////    Méthodes pour initialiser l'inventaire    ////
->>>>>>> src/main/java/upc/model/jeu/Inventory.java
     //// Méthode pour initialiser l'inventaire ////
     private void initializeWeapons() {
         if (allowedWeapons.contains(Item.Type.SHOTGUN)) {
@@ -77,7 +74,7 @@ public class Inventory {
     }
 
     private void initializeAmmo() {
-<<<<<<< src/main/java/upc/model/jeu/Inventory.java
+
         if (allowedWeapons.contains(Item.Type.SHOTGUN)) {
             addAmmo(Item.Type.SHOTGUN, 50);
         }
@@ -93,14 +90,13 @@ public class Inventory {
         if (allowedWeapons.contains(Item.Type.BAZOOKA)) {
             addAmmo(Item.Type.BAZOOKA, 50);
         }
-=======
         addAmmo(Item.Type.SHOTGUN, 50);
         addAmmo(Item.Type.MINE, 50);
         addAmmo(Item.Type.UZI, 500);
         addAmmo(Item.Type.GRENADE, 50);
         addAmmo(Item.Type.BAZOOKA, 50);
         addAmmo(Item.Type.JETPACK, 250);
->>>>>>> src/main/java/upc/model/jeu/Inventory.java
+
     }
 
     //// Modifications des munitions ////

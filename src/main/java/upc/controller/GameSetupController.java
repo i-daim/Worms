@@ -36,13 +36,23 @@ public class GameSetupController {
 
     private void startGame() {
         Set<Item.Type> allowed = new HashSet<>();
-        if (view.isBazookaEnabled()) allowed.add(Item.Type.BAZOOKA);
-        if (view.isUziEnabled()) allowed.add(Item.Type.UZI);
-        if (view.isShotgunEnabled()) allowed.add(Item.Type.SHOTGUN);
-        if (view.isGrenadeEnabled()) allowed.add(Item.Type.GRENADE);
-        if (view.isMineEnabled()) allowed.add(Item.Type.MINE);
+        if (view.isBazookaEnabled()) {
+            allowed.add(Item.Type.BAZOOKA);
+        }
+        if (view.isUziEnabled()) {
+            allowed.add(Item.Type.UZI);
+        }
+        if (view.isShotgunEnabled()) {
+            allowed.add(Item.Type.SHOTGUN);
+        }
+        if (view.isGrenadeEnabled()) {
+            allowed.add(Item.Type.GRENADE);
+        }
+        if (view.isMineEnabled()) {
+            allowed.add(Item.Type.MINE);
+        }
 
-        Inventory.ALLOWED_WEAPONS = allowed;
+        Inventory.setAllowedWeapons(allowed);
 
         String mapName = view.getSelectedMap();
         int teamSize = view.getTeamSize();

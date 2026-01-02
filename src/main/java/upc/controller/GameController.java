@@ -186,18 +186,6 @@ public class GameController {
                 System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
             }
         }
-        if (canShoot && equipped != null) {
-            if (equipped instanceof upc.model.items.Uzi) {
-                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
-                }
-            } else {
-                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
-                    System.out.println("🎯 TIR COUP PAR COUP !");
-                }
-            }
-        }
     }
 
     private void handleCameraScroll(Point mousePos) {

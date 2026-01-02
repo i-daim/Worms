@@ -186,23 +186,6 @@ public class GameController {
                 }
             }
         }
-
-        if (canShoot && equipped != null) {
-            if (equipped instanceof upc.model.items.Uzi) {
-                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-                    long now = System.currentTimeMillis();
-                    if (now - lastUziShotTime >= UZI_COOLDOWN) {
-                        activeAlien.useEquippedItem();
-                        lastUziShotTime = now;
-                    }
-                }
-            } else {
-                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
-                    System.out.println("🎯 Tir coup par coup !");
-                }
-            }
-        }
     }
 
     private void handleCameraScroll(Point mousePos) {

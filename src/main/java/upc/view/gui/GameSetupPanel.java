@@ -51,12 +51,15 @@ public class GameSetupPanel extends JPanel {
         title.setFont(new Font("Arial", Font.BOLD, 45));
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setBorder(BorderFactory.createEmptyBorder(300, 10, 10, 1850));
+        title.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 0));
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
 
+        JPanel topSettingsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 0));
+        topSettingsPanel.setOpaque(false);
+        topSettingsPanel.setMaximumSize(new Dimension(1000, 100));
 
         JPanel mapPanel = createRow("Carte : ");
         String[] maps = {"Aléatoire", "Liberty", "Spaceship"};

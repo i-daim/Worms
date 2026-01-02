@@ -136,11 +136,14 @@ public class GameSetupPanel extends JPanel {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        centerPanel.add(Box.createVerticalStrut(300));
+
+        this.add(Box.createVerticalStrut(30));
+        this.add(title);
+        centerPanel.add(Box.createVerticalStrut(50));
         centerPanel.add(topSettingsPanel);
         centerPanel.add(Box.createVerticalStrut(50));
         centerPanel.add(weaponPanel);
-        centerPanel.add(Box.createVerticalStrut(30));
+        centerPanel.add(Box.createVerticalStrut(80));
         centerPanel.add(startButton);
         centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(backButton);

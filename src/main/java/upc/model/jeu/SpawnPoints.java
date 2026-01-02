@@ -45,7 +45,7 @@ public class SpawnPoints {
     private static final HashMap<Integer, List<Position>> ICE_SPAWNS = new HashMap<>();
 
     static {
-        // Equipe 1 (Haut / Gauche)
+        // Equipe 1
         ICE_SPAWNS.put(0, Arrays.asList(
                 new Position(424, 142),
                 new Position(132, 453),
@@ -53,7 +53,7 @@ public class SpawnPoints {
                 new Position(446, 442)
         ));
 
-        // Equipe 2 (Bas / Droite)
+        // Equipe 2
         ICE_SPAWNS.put(1, Arrays.asList(
                 new Position(1151, 254),
                 new Position(1584, 149),
@@ -61,6 +61,29 @@ public class SpawnPoints {
                 new Position(1042, 375)
         ));
     }
+
+    // SPAWNS POUR LA MAP POISON //
+    private static final HashMap<Integer, List<Position>> POISON_SPAWNS = new HashMap<>();
+
+    static {
+        // Equipe 1
+        POISON_SPAWNS.put(0, Arrays.asList(
+                new Position(385, 235),
+                new Position(375, 464),
+                new Position(281, 450),
+                new Position(541, 410)
+        ));
+
+        // Equipe 2
+        POISON_SPAWNS.put(1, Arrays.asList(
+                new Position(1431, 285),
+                new Position(1253, 151),
+                new Position(1302, 469),
+                new Position(1539, 348)
+        ));
+    }
+
+
 
 
 

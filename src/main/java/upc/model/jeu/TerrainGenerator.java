@@ -16,7 +16,7 @@ public class TerrainGenerator {
      */
     public static final int TILE_SIZE = 4;
 
-    private static final String[] MAPS = {"ice"};
+    private static final String[] MAPS = {"poison"};
 
     public static Terrain chooseRandomMap() {
         int index = (int) (Math.random() * MAPS.length);

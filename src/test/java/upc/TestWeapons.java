@@ -26,7 +26,8 @@ public class TestWeapons {
     @BeforeEach
     public void setUp() {
         // Crée un environnement minimal pour construire un Alien valide
-        GameManager manager = new GameManager();
+        upc.model.jeu.Terrain terrainTest = upc.model.jeu.TerrainGenerator.createEmptyTerrain(100, 50);
+        GameManager manager = new GameManager(terrainTest, 2);
         GameWorld world = manager.getWorld();
         Team team = new Team("TestTeam", 1);
         // Position arbitraire (0,0)

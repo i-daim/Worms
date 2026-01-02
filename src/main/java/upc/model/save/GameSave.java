@@ -122,7 +122,11 @@ public class GameSave {
         }
     }
 
+
+    //Classe permettant de générér un alien avec les informations minimales à sauvegarder
     public static class AlienSave {
+
+        //Attributs minimal pour la sauvegarde d'un alien
         private final int healthPoints;
         private final boolean alive;
         private final boolean direction;
@@ -130,6 +134,7 @@ public class GameSave {
         private final int shootPower;
         private final Position position;
 
+        //Constructeur
         public AlienSave(Alien alien) {
             this.healthPoints = alien.getHealthPoints();
             this.alive = alien.isAlive();
@@ -139,9 +144,12 @@ public class GameSave {
             this.position = alien.getPosition();
         }
 
+        /* Méthode permettant de convertier un alienSave en alien */
         public Alien toAlien(GameWorld world, Team team) {
             return new Alien(this, world, team);
         }
+
+        /// Getters ///
 
         public int getHealthPoints() {
             return healthPoints;

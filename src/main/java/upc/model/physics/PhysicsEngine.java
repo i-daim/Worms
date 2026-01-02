@@ -80,19 +80,6 @@ public class PhysicsEngine {
         alienPhysics.addAlienBody(alien);
     }
 
-    public void removeAlien(Alien alien) {
-        alienPhysics.removeAlien(alien);
-    }
-
-    public void jumpAlien(Alien alien) {
-        alienPhysics.jumpAlien(alien);
-    }
-
-
-    public void moveAlien(Alien alien, double direction) {
-        alienPhysics.moveAlien(alien, direction);
-    }
-
 ////    FONCTIONS POUR PROJECTILES    ////
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
@@ -137,5 +124,9 @@ public class PhysicsEngine {
 
     public GameWorld getGameWorld() {
         return gameWorld;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
     }
 }

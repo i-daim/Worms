@@ -173,18 +173,18 @@ public class GameSetupPanel extends JPanel {
         box.setOpaque(false);
         box.setFocusPainted(false);
         box.setContentAreaFilled(false);
-        box.setBorderPainted(false); // On enlève les bordures par défaut
+        box.setBorderPainted(false);
 
         box.setForeground(Color.WHITE);
         box.setFont(new Font("Arial", Font.BOLD, 20));
-        box.setIconTextGap(15); // Espace entre l'image et le texte
+        box.setIconTextGap(15);
 
         Image originalImg = ImageManager.get(imageName);
         if (originalImg == null) {
             return;
         }
 
-        int size = 60; // Taille de l'icône
+        int size = 60;
 
         BufferedImage unselectedImg = new BufferedImage(
                 size, size, BufferedImage.TYPE_INT_ARGB);
@@ -199,14 +199,14 @@ public class GameSetupPanel extends JPanel {
         g3.drawImage(originalImg, 0, 0, size, size, null);
 
         // On dessine un cadre autour
-        g3.setColor(new Color(50, 255, 50)); // Vert clair
-        g3.setStroke(new BasicStroke(3)); // Épaisseur du trait
+        g3.setColor(new Color(224, 185, 145));
+        g3.setStroke(new BasicStroke(3));
         g3.drawRoundRect(1, 1, size - 2, size - 2, 10, 10); // Cadre arrondi
         g3.dispose();
 
-        box.setIcon(new ImageIcon(unselectedImg));       // Image quand PAS choisi
-        box.setSelectedIcon(new ImageIcon(selectedImg)); // Image quand CHOISI
-        box.setPressedIcon(new ImageIcon(selectedImg));  // Image quand on clique
+        box.setIcon(new ImageIcon(unselectedImg));
+        box.setSelectedIcon(new ImageIcon(selectedImg));
+        box.setPressedIcon(new ImageIcon(selectedImg));
     }
     private JPanel createRow(String text) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));

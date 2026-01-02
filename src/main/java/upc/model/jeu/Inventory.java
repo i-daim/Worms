@@ -90,12 +90,6 @@ public class Inventory {
         if (allowedWeapons.contains(Item.Type.BAZOOKA)) {
             addAmmo(Item.Type.BAZOOKA, 50);
         }
-        addAmmo(Item.Type.SHOTGUN, 50);
-        addAmmo(Item.Type.MINE, 50);
-        addAmmo(Item.Type.UZI, 500);
-        addAmmo(Item.Type.GRENADE, 50);
-        addAmmo(Item.Type.BAZOOKA, 50);
-        addAmmo(Item.Type.JETPACK, 250);
 
     }
 

@@ -33,28 +33,12 @@ public class Inventory {
         initializeAmmo();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static Item.Type getItemTypeAt(int index) {
         if (index >= 0 && index < ITEMS.length) {
             return ITEMS[index];
         }
         return null;
     }
-
 
     //// Méthode pour initialiser l'inventaire ////
     private void initializeWeapons() {

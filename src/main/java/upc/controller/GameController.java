@@ -165,12 +165,16 @@ public class GameController {
         }
 
         // Utilisation de l'item
-        if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-            if (activeAlien.getEquippedItem() instanceof Jetpack) {
-                activeAlien.useEquippedItem();
+        if (equipped != null && canShoot) {
+            if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
+                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
             }
-            if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                activeAlien.useEquippedItem();
+            else {
+                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
             }
         }
 

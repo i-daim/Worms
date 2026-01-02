@@ -30,7 +30,7 @@ public class Projectile extends Entity {
     private State state;
     private int frameCount;
     private final Weapon weapon;
-    private int angle;
+    private final int angle;
     private boolean explosionDamageApplied = false;
 
 
@@ -45,55 +45,34 @@ public class Projectile extends Entity {
         this.state = State.FLYING;
         this.weapon = weapon;
         this.angle = shooter.getAimAngle();
-
-
-    }
-    public Projectile(Alien shooter,
-                      Position position,
-                      int damage,
-                      int explosionRadius,
-                      boolean explosive,
-                      double speed) {
-        this(shooter, position, damage, explosionRadius, explosive, speed, null);
     }
 
-    public boolean isExplosiveProjectile() {
-        return explosive && explosionRadius > 0;
-    }
     public int computeDamageFromDistance(double distance) {
-        if (!isExplosiveProjectile()) {
+        if (!isExplosive()) {
             return damage;
         }
-
-        if (distance >= explosionRadius || distance < 0) {
-            return 0;
-        }
-
         double ratio = 1.0 - (distance / explosionRadius);
-        int maxDamage = weapon != null ? weapon.getDamage() : damage;
         return Math.max((int) (damage * ratio), 0);
     }
+
     public void applyExplosionDamage(GameWorld world) {
-        if (!isExplosiveProjectile() || explosionDamageApplied) {
+        if (!isExplosive() || explosionDamageApplied) {
             return;
         }
+
         explosionDamageApplied = true;
 
-        Position center = getExplosionCenter();
-        for (Alien alien : world.getActiveAliens()) {
-            if (alien != null && alien.isAlive()) {
-                double distance = alien.getPosition()
-                        .distance(center.getX(), center.getY());
+        Position pos = getPosition();
+        for (Alien alien : world.aliensInRadius(pos.getX(), pos.getY(), explosionRadius)) {
 
-                int dmg = computeDamageFromDistance(distance);
-                if (dmg > 0) {
-                    alien.receiveDmg(dmg);
-                }
-            }
+            double distance = alien.getPosition().distance(pos.getX(), pos.getY());
+
+            int dmg = computeDamageFromDistance(distance);
+            alien.receiveDmg(dmg);
         }
     }
 
-    /// /    GETTERS    ////
+    ////    GETTERS    ////
     public Alien getShooter() {
         return shooter;
     }
@@ -128,15 +107,9 @@ public class Projectile extends Entity {
     public int getAngle() {
         return angle;
     }
-    public Position getExplosionCenter() {
-        return getPosition();
-    }
 
 
-
-
-
-    /// /    SETTERS    ////
+    ////    SETTERS    ////
     public void setBody(Body body) {
         this.body = body;
     }

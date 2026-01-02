@@ -24,9 +24,11 @@ import java.util.Objects;
 
 public class GameSave {
 
+    //Attribut minimal pour sauvegarder le jeu
     private final TeamSave[] teams;
     private final Terrain terrain;
 
+    //Constructeur
     public GameSave(GameManager gameManager) {
         this.teams = new TeamSave[gameManager.getTeams().length];
         for (int i = 0; i < gameManager.getTeams().length; i++) {
@@ -35,19 +37,30 @@ public class GameSave {
         this.terrain = gameManager.getTerrain();
     }
 
+    /** Méthode permettant de sauvegarder le jeu
+     */
     public void save() throws IOException {
+
+        //Crée un répertoire saveData contenant les fichiers de sauvegarde
         File saveDir = new File("saveData");
         if (!saveDir.exists()) {
             saveDir.mkdir();
         }
 
+        //Permet l'implémentation d'une classe de configuration setPrettyPrinting()
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        //Implémente un fichier de sauvegarde saveGame dans le répertoire saveData avec GameSave
         try (FileWriter writer = new FileWriter("saveData/saveGame.json")) {
             gson.toJson(this, writer);
         }
     }
 
+    /** Méthode permettant de charger la sauvegarde du jeu
+     */
     public static GameSave load() throws IOException {
+
+        //renvoie l'objet gameSave implémenter dans le fichier saveGame
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("saveData/saveGame.json")) {
             return gson.fromJson(reader, GameSave.class);
@@ -71,12 +84,16 @@ public class GameSave {
                 getClass().getResource(cheminImage)));
         terrain.setImage(image);
 
+        //Permet de récupérer le terrain sauvegardé
         gameManager.setMap(terrain);
 
+        //Implémente les équipes sauvegardées
         Team[] gameTeams = new Team[teams.length];
         for (int i = 0; i < teams.length; i++) {
             gameTeams[i] = teams[i].toTeam(gameManager.getWorld());
         }
+
+        //Permet de récupérer les équipes sauvegardées
         gameManager.setTeams(gameTeams);
     }
 
@@ -100,7 +117,9 @@ public class GameSave {
             }
         }
 
-        /* Méthode permettant de convertir une TeamSave en Team */
+        /**
+         * Méthode permettant de convertir une TeamSave en Team
+         */
         public Team toTeam(GameWorld world) {
             Team team = new Team(name, aliens.size());
             team.setInventory(inventory.toInventory());
@@ -122,7 +141,8 @@ public class GameSave {
             this.ammoStock = inventory.getAmmoStock();
         }
 
-        /* Méthode permettant de convertir un InventorySave en Inventory */
+        /** Méthode permettant de convertir un InventorySave en Inventory
+         */
         public Inventory toInventory() {
             return new Inventory(this);
         }
@@ -155,7 +175,8 @@ public class GameSave {
             this.position = alien.getPosition();
         }
 
-        /* Méthode permettant de convertir un AlienSave en Alien */
+        /** Méthode permettant de convertir un AlienSave en Alien
+         */
         public Alien toAlien(GameWorld world, Team team) {
             return new Alien(this, world, team);
         }

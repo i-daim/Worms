@@ -1,9 +1,11 @@
 package upc.controller;
 
-import upc.model.jeu.GameManager;
-import upc.view.gui.*;
 
 import java.awt.event.ActionListener;
+import upc.view.gui.GameSetupPanel;
+import upc.view.gui.MainFrame;
+import upc.view.gui.MenuPanel;
+import upc.view.gui.SettingsPanel;
 
 public class MenuActions {
 

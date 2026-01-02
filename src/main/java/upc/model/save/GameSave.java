@@ -80,11 +80,15 @@ public class GameSave {
         gameManager.setTeams(gameTeams);
     }
 
+    //Classe permettant de générér une équipe avec les informations minimales à sauvegarder
     public static class TeamSave {
+
+        //Attribut minimal pour sauvegarder d'une équipe
         private final String name;
         private final InventorySave inventory;
         private final List<AlienSave> aliens;
 
+        //Constructeur
         public TeamSave(Team team) {
             this.name = team.getName();
             this.inventory = new InventorySave(team.getInventory());
@@ -96,6 +100,7 @@ public class GameSave {
             }
         }
 
+        /* Méthode permettant de convertir une TeamSave en Team */
         public Team toTeam(GameWorld world) {
             Team team = new Team(name, aliens.size());
             team.setInventory(inventory.toInventory());

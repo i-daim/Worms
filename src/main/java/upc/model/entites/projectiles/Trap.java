@@ -22,30 +22,25 @@ public class Trap extends Projectile {
     }
 
 
-    //Méthode pour voir si un vers se situe dans la zone d'activation et provoque son explosion
+    /**
+     * Méthode pour voir si un vers se situe dans la zone d'activation et provoque son explosion
+     */
     public void activation(GameWorld gameWorld) {
-        if (!isActive()) { //si le piège a déjà explosé on ne peut plus la réutilisé
+        if (!isActive()) {
             return;
         }
+
         int posX = getPosition().getX();
         int posY = getPosition().getY();
 
-
-            for (Alien alien : gameWorld.getActiveAliens()) {
-                if (alien != null && alien.isAlive() && alien != getShooter()) {
-                    double distance = alien.getPosition().distance(posX, posY);
-
-                    if (distance <= activationRadius) {
-                        setActive(false);
-                        setState(State.EXPLODED);
-                        return; // explosion une seule fois
-                    }
-                }
+        for (Alien w : gameWorld.aliensInRadius(posX, posY, activationRadius)) {
+            if (w.isAlive() && w != getShooter()) {
+                setActive(false);
+                setState(State.EXPLODED);
+                return;
             }
         }
-
-
-
+    }
 
 
     public boolean isActive() {
@@ -55,6 +50,7 @@ public class Trap extends Projectile {
     public void setActive(boolean active) {
         this.active = active;
     }
+
     public int getActivationRadius() {
         return activationRadius;
     }

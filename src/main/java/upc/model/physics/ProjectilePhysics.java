@@ -18,6 +18,7 @@ import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
 import upc.model.items.Weapon;
+import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import upc.model.entites.projectiles.Bullet;
 
@@ -30,6 +31,7 @@ public class ProjectilePhysics {
     private final PhysicsEngine physicsEngine;
     private final World<Body> world;
     private final List<Projectile> activeProjectiles;
+    private final GameWorld gameWorld;
 
     private Vector2 wind = new Vector2(0, 0); // Vent (x, y)
 
@@ -38,6 +40,7 @@ public class ProjectilePhysics {
         this.physicsEngine = physicsEngine;
         this.world = physicsEngine.getWorld();
         this.activeProjectiles = new ArrayList<>();
+        this.gameWorld = physicsEngine.getGameWorld();
     }
 
     /**
@@ -187,51 +190,38 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
-            if (proj instanceof Trap) {
-                Trap trap = (Trap) proj;
+
+            if (proj instanceof Trap trap) {
                 if (trap.isActive()) {
                     int trapX = proj.getPosition().getX();
                     int trapY = proj.getPosition().getY();
-                    for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-                        if (!alien.isAlive() || alien == proj.getShooter()) {
-                            continue;
-                        }
-                        double distance =
-                                alien.getPosition().distance(trapX, trapY);
 
-                        if (distance <= trap.getActivationRadius()) {
-                            trap.setActive(false);
-                            trap.setState(Projectile.State.EXPLODED);
-                            break;
-                        }
+                    if (!gameWorld.aliensInRadius(trapX, trapY, trap.getActivationRadius()).
+                            isEmpty()) {
+
+                        trap.setActive(false);
+                        trap.setState(Projectile.State.EXPLODED);
                     }
                 }
             }
+
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
             }
-            if (proj instanceof Throwable || proj instanceof Trap) {
-                double triggerDistancePixels = 20.0;
 
-                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-                    if (!alien.isAlive()) {
-                        continue;
-                    }
+            if (proj instanceof Throwable) {
+                int triggerDistance = 20;
+
+                for (Alien alien : gameWorld.aliensInRadius(x, y, triggerDistance)) {
                     if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
                         continue;
                     }
-                    Position alienPos = alien.getPosition();
-                    double dx = alienPos.getX() - x;
-                    double dy = alienPos.getY() - y;
-                    double distSq = dx * dx + dy * dy;
-                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
-                        proj.setState(Projectile.State.EXPLODED);
-                        explodeProjectile(proj);
-                        world.removeBody(body);
-                        iterator.remove();
-                    }
+                    proj.setState(Projectile.State.EXPLODED);
+                    explodeProjectile(proj);
+                    world.removeBody(body);
+                    iterator.remove();
                 }
             }
         }
@@ -260,28 +250,22 @@ public class ProjectilePhysics {
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
         physicsEngine.getGameWorld().explode(explosionX, explosionY, proj);
-        for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-            if (!alien.isAlive()) {
-                continue;
-            }
 
+        for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();
             double distance = alienPos.distance(explosionX, explosionY);
 
-            if (distance <= radius && distance > 0) {
+            double ratio = 1.0 - (distance / radius);
+            double knockbackForce = 50.0 * ratio;
 
-                double ratio = 1.0 - (distance / radius);
-                double knockbackForce = 50.0 * ratio;
+            double dx = (alienPos.getX() - explosionX) / distance;
+            double dy = (alienPos.getY() - explosionY) / distance;
 
-                double dx = (alienPos.getX() - explosionX) / distance;
-                double dy = (alienPos.getY() - explosionY) / distance;
-
-                Body alienBody = physicsEngine.getAlienBodies().get(alien);
-                if (alienBody != null) {
-                    alienBody.applyImpulse(
-                            new Vector2(dx * knockbackForce, dy * knockbackForce)
-                    );
-                }
+            Body alienBody = physicsEngine.getAlienBodies().get(alien);
+            if (alienBody != null) {
+                alienBody.applyImpulse(
+                        new Vector2(dx * knockbackForce, dy * knockbackForce)
+                );
             }
         }
     }

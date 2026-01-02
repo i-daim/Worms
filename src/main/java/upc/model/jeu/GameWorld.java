@@ -3,7 +3,6 @@ package upc.model.jeu;
 import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.physics.PhysicsEngine;
-import upc.model.entites.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,6 @@ public class GameWorld {
     }
 
     public void explode(int x, int y, Projectile projectile) {
-        Position center = projectile.getExplosionCenter();
         int radius = projectile.getExplosionRadius();
         projectile.applyExplosionDamage(this);
 

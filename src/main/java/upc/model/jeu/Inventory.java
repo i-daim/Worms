@@ -15,9 +15,8 @@ import upc.model.items.Uzi;
 import upc.model.items.Weapon;
 
 public class Inventory {
-    public static Set<Item.Type> ALLOWED_WEAPONS = new HashSet<>
-            (Arrays.asList(Item.Type.values()));
-    public static final Item.Type[] ITEMS = {
+    private static Set<Item.Type> allowedWeapons = new HashSet<>(Arrays.asList(Item.Type.values()));
+    private static final Item.Type[] ITEMS = {
             Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
             Item.Type.GRENADE, Item.Type.MINE, Item.Type.JETPACK};
 
@@ -37,11 +36,21 @@ public class Inventory {
 
     //// Méthode pour initialiser l'inventaire ////
     private void initializeWeapons() {
-        if (ALLOWED_WEAPONS.contains(Item.Type.SHOTGUN)) weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
-        if (ALLOWED_WEAPONS.contains(Item.Type.UZI)) weaponStock.put(Item.Type.UZI, new Uzi());
-        if (ALLOWED_WEAPONS.contains(Item.Type.BAZOOKA)) weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
-        if (ALLOWED_WEAPONS.contains(Item.Type.GRENADE)) weaponStock.put(Item.Type.GRENADE, new Grenade());
-        if (ALLOWED_WEAPONS.contains(Item.Type.MINE)) weaponStock.put(Item.Type.MINE, new Mine());
+        if (allowedWeapons.contains(Item.Type.SHOTGUN)) {
+            weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
+        }
+        if (allowedWeapons.contains(Item.Type.UZI)) {
+            weaponStock.put(Item.Type.UZI, new Uzi());
+        }
+        if (allowedWeapons.contains(Item.Type.BAZOOKA)) {
+            weaponStock.put(Item.Type.BAZOOKA, new Bazooka());
+        }
+        if (allowedWeapons.contains(Item.Type.GRENADE)) {
+            weaponStock.put(Item.Type.GRENADE, new Grenade());
+        }
+        if (allowedWeapons.contains(Item.Type.MINE)) {
+            weaponStock.put(Item.Type.MINE, new Mine());
+        }
 
         for (Item.Type t : ITEMS) {
             if (weaponStock.containsKey(t)) {
@@ -52,11 +61,21 @@ public class Inventory {
     }
 
     private void initializeAmmo() {
-        if (ALLOWED_WEAPONS.contains(Item.Type.SHOTGUN)) addAmmo(Item.Type.SHOTGUN, 50);
-        if (ALLOWED_WEAPONS.contains(Item.Type.MINE)) addAmmo(Item.Type.MINE, 50);
-        if (ALLOWED_WEAPONS.contains(Item.Type.UZI)) addAmmo(Item.Type.UZI, 500);
-        if (ALLOWED_WEAPONS.contains(Item.Type.GRENADE)) addAmmo(Item.Type.GRENADE, 50);
-        if (ALLOWED_WEAPONS.contains(Item.Type.BAZOOKA)) addAmmo(Item.Type.BAZOOKA, 50);
+        if (allowedWeapons.contains(Item.Type.SHOTGUN)) {
+            addAmmo(Item.Type.SHOTGUN, 50);
+        }
+        if (allowedWeapons.contains(Item.Type.MINE)) {
+            addAmmo(Item.Type.MINE, 50);
+        }
+        if (allowedWeapons.contains(Item.Type.UZI)) {
+            addAmmo(Item.Type.UZI, 500);
+        }
+        if (allowedWeapons.contains(Item.Type.GRENADE)) {
+            addAmmo(Item.Type.GRENADE, 50);
+        }
+        if (allowedWeapons.contains(Item.Type.BAZOOKA)) {
+            addAmmo(Item.Type.BAZOOKA, 50);
+        }
     }
 
     //// Modifications des munitions ////

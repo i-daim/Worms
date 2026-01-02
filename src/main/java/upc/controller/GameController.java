@@ -116,6 +116,9 @@ public class GameController {
 ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
+        Item equipped = activeAlien.getEquippedItem();
+        boolean canShoot = !gameManager.isActionDone();
+
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
@@ -177,6 +180,19 @@ public class GameController {
                 saveGame();
             } catch (IOException e) {
                 System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
+            }
+        }
+        if (canShoot && equipped != null) {
+            if (equipped instanceof upc.model.items.Uzi) {
+                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
+            }
+            else {
+                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                    System.out.println("🎯 TIR COUP PAR COUP !");
+                }
             }
         }
     }

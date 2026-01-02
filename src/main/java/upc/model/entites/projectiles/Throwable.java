@@ -12,7 +12,7 @@ public class Throwable extends Projectile {
         super(
                 shooter,
                 (shooter != null) ? shooter.getPosition() : new Position(0, 0),
-                weapon.getDamage(),
+                0,
                 radius,
                 true,
                 weapon.getSpeed(),

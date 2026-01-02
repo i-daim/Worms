@@ -21,9 +21,9 @@ public class Terrain {
     /** Le tableau de booléens définissant la présence de collision pour chaque tuile. */
     private final boolean[][] collisions;
     /** L'image du terrain qui peut être modifiée (pour la destruction). */
-    private final BufferedImage image;
+    private transient BufferedImage image;
     /** L'image de fond qui n'est pas affectée par la destruction. */
-    private final BufferedImage background;
+    private transient BufferedImage background;
 
     /**
      * Constructeur pour {@code Terrain}.
@@ -156,6 +156,15 @@ public class Terrain {
      */
     public static int getWaterLevel() {
         return WATER_LEVEL;
+    }
+
+
+    public void setBackground(BufferedImage imageBackground) {
+        this.background = background;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
     /**

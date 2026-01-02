@@ -70,6 +70,7 @@ public class Projectile extends Entity {
         }
 
         double ratio = 1.0 - (distance / explosionRadius);
+        int maxDamage = weapon != null ? weapon.getDamage() : damage;
         return Math.max((int) (damage * ratio), 0);
     }
     public void applyExplosionDamage(GameWorld world) {

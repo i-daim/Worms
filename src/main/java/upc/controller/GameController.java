@@ -165,12 +165,15 @@ public class GameController {
         }
 
         // Utilisation de l'item
-        if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-            if (activeAlien.getEquippedItem() instanceof Jetpack) {
-                activeAlien.useEquippedItem();
-            }
-            if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                activeAlien.useEquippedItem();
+        if (equipped != null && canShoot) {
+            if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
+                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
+            } else {
+                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
             }
         }
 
@@ -180,18 +183,6 @@ public class GameController {
                 saveGame();
             } catch (IOException e) {
                 System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
-            }
-        }
-        if (canShoot && equipped != null) {
-            if (equipped instanceof upc.model.items.Uzi) {
-                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
-                }
-            } else {
-                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
-                    System.out.println("🎯 TIR COUP PAR COUP !");
-                }
             }
         }
     }

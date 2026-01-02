@@ -17,16 +17,29 @@ public class Shotgun extends Weapon {
         int baseAngle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
-        int startX = shooter.getPosition().getX() + 6;
-        int shooterY = shooter.getPosition().getY();
+        double distance = 20.0;
+        double rad = Math.toRadians(baseAngle);
+
+        if (!shooter.getDirection()) { // Si regarde à gauche
+            rad = Math.PI - rad;
+        }
+
+        int offsetX = (int) (Math.cos(rad) * distance);
+        int offsetY = (int) (-Math.sin(rad) * distance);
+
+        Position startPos = new Position(
+                shooter.getPosition().getX() + offsetX,
+                shooter.getPosition().getY() + offsetY - 10
+        );
+
 
         int[] spreads = {-12, -6, 0, 6, 12};
-        for (int spread : spreads) {
-            int startY = shooterY + spread / 3;
-            Position startPos = new Position(startX, startY);
-            int angle = baseAngle + spread;
 
-            Projectile proj = new Bullet(this, shooter, startPos);
+        for (int spread : spreads) {
+            int angle = baseAngle + spread;
+            Position bulletPos = new Position(startPos.getX(), startPos.getY());
+
+            Projectile proj = new Bullet(this, shooter, bulletPos);
             gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
         }
     }

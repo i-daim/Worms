@@ -84,9 +84,6 @@ public class SpawnPoints {
     }
 
 
-
-
-
     private static final HashMap<Integer, List<Position>> CONSOLE_SPAWNS = new HashMap<>();
     static {
         CONSOLE_SPAWNS.put(0, Arrays.asList(
@@ -112,6 +109,10 @@ public class SpawnPoints {
         if (mapName.equals("ice")) {
             return ICE_SPAWNS.get(team);
         }
+        if (mapName.equals("poison")) {
+            return POISON_SPAWNS.get(team);
+        }
+
         if (mapName.isEmpty()) {
             return CONSOLE_SPAWNS.get(team);
         }

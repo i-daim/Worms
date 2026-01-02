@@ -106,7 +106,7 @@ public class GameSetupPanel extends JPanel {
                 javax.swing.border.TitledBorder.CENTER,
                 javax.swing.border.TitledBorder.TOP,
                 new Font("Arial", Font.BOLD, 22),
-                new Color(100, 255, 100) // Vert fluo pour le titre
+                new Color(100, 255, 201) // Vert bleue
         ));
         weaponPanel.setMaximumSize(new Dimension(900, 300));
         weaponPanel.setPreferredSize(new Dimension(900, 300));

@@ -18,7 +18,8 @@ public class TestProjectile {
 
     @BeforeEach
     public void setUp() {
-        GameManager manager = new GameManager();
+        upc.model.jeu.Terrain terrainTest = upc.model.jeu.TerrainGenerator.createEmptyTerrain(100, 50);
+        GameManager manager = new GameManager(terrainTest, 2);
         world = manager.getWorld();
     }
 

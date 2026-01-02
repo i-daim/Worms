@@ -1,5 +1,6 @@
 package upc.controller;
 
+import upc.model.items.Item;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
@@ -26,6 +27,9 @@ public class GameController {
     private final PauseActions pauseActions;
 
     private static final int CAMERA_SPEED = 10;
+
+    private long lastUziShotTime = 0;
+    private static final long UZI_COOLDOWN = 50;
 
     private volatile boolean running = true;
     private boolean paused = false;
@@ -112,6 +116,9 @@ public class GameController {
 ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
+        Item equipped = activeAlien.getEquippedItem();
+        boolean canShoot = !gameManager.isActionDone();
+
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
@@ -173,6 +180,18 @@ public class GameController {
                 saveGame();
             } catch (IOException e) {
                 System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
+            }
+        }
+        if (canShoot && equipped != null) {
+            if (equipped instanceof upc.model.items.Uzi) {
+                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
+            } else {
+                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                    System.out.println("🎯 TIR COUP PAR COUP !");
+                }
             }
         }
     }

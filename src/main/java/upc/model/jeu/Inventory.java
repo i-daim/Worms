@@ -56,7 +56,7 @@ public class Inventory {
     private void initializeAmmo() {
         addAmmo(Item.Type.SHOTGUN, 50);
         addAmmo(Item.Type.MINE, 50);
-        addAmmo(Item.Type.UZI, 50);
+        addAmmo(Item.Type.UZI, 500);
         addAmmo(Item.Type.GRENADE, 50);
         addAmmo(Item.Type.BAZOOKA, 50);
         addAmmo(Item.Type.JETPACK, 250);

@@ -40,9 +40,11 @@ public class GameSetupPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Paramètres de la Partie");
-        title.setFont(new Font("Arial", Font.BOLD, 30));
+        title.setFont(new Font("Arial", Font.BOLD, 45));
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
 
         JPanel mapPanel = createRow("Carte : ");
         String[] maps = {"Aléatoire", "Liberty", "Spaceship"}; // Ajoutez vos noms de maps ici

@@ -20,7 +20,7 @@ public class Team {
     /** L'indice dans le tableau {@code aliens} de l'Alien actuellement actif. */
     private int activeAlienIndex;
     /** L'inventaire de l'équipe, contenant les armes et outils disponibles. */
-    private final Inventory inventory = new Inventory();
+    private Inventory inventory = new Inventory();
 
 
     /**
@@ -83,6 +83,13 @@ public class Team {
             return aliens[activeAlienIndex];
         }
         return null;
+    }
+
+    /**
+     * Modifie l'inventaire d'une équipe.
+     */
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     /**
@@ -196,6 +203,5 @@ public class Team {
     public String toString() {
         return name + " (" + getAliveAliensNumber() + "/" + aliens.length + " vivants)";
     }
-
 
 }

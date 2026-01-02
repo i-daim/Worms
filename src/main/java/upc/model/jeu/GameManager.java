@@ -14,10 +14,12 @@ public class GameManager {
     public static final int ROUND_TIME = 60;
     public static final int TEAM_SIZE = 2;
 
+    private Terrain terrain;
+
     private final String mapName;
-    private final Terrain terrain;
+
     private final GameWorld gameWorld;
-    private final Team[] teams;
+    private Team[] teams;
 
     private int activeTeamIndex;
     private int currentRound;
@@ -230,6 +232,16 @@ public class GameManager {
 
     public boolean isOver() {
         return gameOver;
+    }
+
+    /* SETTERS*/
+
+    public void setMap(Terrain terrain) {
+        this.terrain = terrain;
+    }
+
+    public void setTeams(Team[] teams) {
+        this.teams = teams;
     }
 
     public Team getWinningTeam() {

@@ -159,6 +159,7 @@ public class ProjectilePhysics {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
         while (iterator.hasNext()) {
+
             Projectile proj = iterator.next();
             Body body = proj.getBody();
 
@@ -180,6 +181,9 @@ public class ProjectilePhysics {
                     proj.setState(Projectile.State.EXPLODED);
                 }
             }
+            if (proj instanceof Trap trap) {
+                trap.activation(gameWorld);
+            }
 
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
@@ -191,38 +195,10 @@ public class ProjectilePhysics {
                 continue;
             }
 
-            if (proj instanceof Trap trap) {
-                if (trap.isActive()) {
-                    int trapX = proj.getPosition().getX();
-                    int trapY = proj.getPosition().getY();
-
-                    if (!gameWorld.aliensInRadius(trapX, trapY, trap.getActivationRadius()).
-                            isEmpty()) {
-
-                        trap.setActive(false);
-                        trap.setState(Projectile.State.EXPLODED);
-                    }
-                }
-            }
-
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
-            }
-
-            if (proj instanceof Throwable) {
-                int triggerDistance = 20;
-
-                for (Alien alien : gameWorld.aliensInRadius(x, y, triggerDistance)) {
-                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
-                        continue;
-                    }
-                    proj.setState(Projectile.State.EXPLODED);
-                    explodeProjectile(proj);
-                    world.removeBody(body);
-                    iterator.remove();
-                }
             }
         }
     }

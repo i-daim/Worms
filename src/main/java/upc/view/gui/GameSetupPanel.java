@@ -161,9 +161,19 @@ public class GameSetupPanel extends JPanel {
     public int getTeamSize() {
         return teamSizeSlider.getValue();
     }
-    public boolean isBazookaEnabled() { return chkBazooka.isSelected(); }
-    public boolean isUziEnabled() { return chkUzi.isSelected(); }
-    public boolean isShotgunEnabled() { return chkShotgun.isSelected(); }
-    public boolean isGrenadeEnabled() { return chkGrenade.isSelected(); }
-    public boolean isMineEnabled() { return chkMine.isSelected(); }
+    public boolean isBazookaEnabled() {
+        return chkBazooka.isSelected();
+    }
+    public boolean isUziEnabled() {
+        return chkUzi.isSelected();
+    }
+    public boolean isShotgunEnabled() {
+        return chkShotgun.isSelected();
+    }
+    public boolean isGrenadeEnabled() {
+        return chkGrenade.isSelected();
+    }
+    public boolean isMineEnabled() {
+        return chkMine.isSelected();
+    }
 }

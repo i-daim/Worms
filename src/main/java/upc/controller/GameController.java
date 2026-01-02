@@ -4,6 +4,7 @@ import upc.model.items.Item;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.save.GameSave;
 import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
@@ -11,8 +12,10 @@ import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
 
 public class GameController {
 
@@ -32,7 +35,7 @@ public class GameController {
     private boolean paused = false;
     private Thread gameThread;
 
-    // CONSTRUCTEUR //
+    // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
@@ -167,23 +170,13 @@ public class GameController {
                 activeAlien.useEquippedItem();
             }
         }
-        Item equipped = activeAlien.getEquippedItem();
-        boolean canShoot = !gameManager.isActionDone();
 
-        if (canShoot && equipped != null) {
-            if (equipped instanceof upc.model.items.Uzi) {
-                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-                    long now = System.currentTimeMillis();
-                    if (now - lastUziShotTime >= UZI_COOLDOWN) {
-                        activeAlien.useEquippedItem();
-                        lastUziShotTime = now;
-                    }
-                }
-            } else {
-                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
-                    System.out.println("🎯 Tir coup par coup !");
-                }
+        // Touche pour la sauvegarde
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_F5)) {
+            try {
+                saveGame();
+            } catch (IOException e) {
+                System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
             }
         }
     }
@@ -259,5 +252,13 @@ public class GameController {
                 frame.repaint();
             }
         });
+    }
+
+    /**
+     * Méthode permettant la sauvegarde du jeu
+     */
+    public void saveGame() throws IOException {
+        GameSave gameSave = new GameSave(gameManager);
+        gameSave.save();
     }
 }

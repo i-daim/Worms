@@ -47,8 +47,13 @@ public class GameSetupPanel extends JPanel {
 
 
         JPanel mapPanel = createRow("Carte : ");
-        String[] maps = {"Aléatoire", "Liberty", "Spaceship"}; // Ajoutez vos noms de maps ici
+        String[] maps = {"Aléatoire", "Liberty", "Spaceship"};
         mapSelector = new JComboBox<>(maps);
+        mapPanel.add(mapSelector);
+        mapSelector.setFont(new Font("Arial", Font.BOLD, 22));
+
+        mapSelector.setPreferredSize(new Dimension(200, 40));
+        mapSelector.setMaximumSize(new Dimension(200, 40));
         mapPanel.add(mapSelector);
 
         JPanel wormPanel = createRow("Vers par équipe : ");

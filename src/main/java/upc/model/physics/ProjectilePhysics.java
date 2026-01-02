@@ -270,6 +270,27 @@ public class ProjectilePhysics {
         }
     }
 
+
+    public void checkProjectileCollision(Body b1, Body b2) {
+        if (b1 != null && b1.getUserData() instanceof Projectile p) {
+
+            if (b2 != null && b2.getUserData() instanceof Alien alien) {
+                if (p.getShooter() == alien && p.getFrameCount() < 30) {
+                    return;
+                }
+            }
+            if (!p.isActive()) {
+                return;
+            }
+            if (p instanceof Rocket && b2 != null) {
+                p.setState(Projectile.State.EXPLODED);
+            } else if (p instanceof Bullet && b2 != null) {
+                handleBulletImpact((Bullet) p, b2);
+            }
+        }
+    }
+
+
     public void handleBulletImpact(Bullet bullet, Body target) {
         if (target == null || target.getUserData() instanceof Bullet) {
             return;

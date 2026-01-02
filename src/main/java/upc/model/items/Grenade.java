@@ -9,12 +9,13 @@ public class Grenade extends Weapon {
     public Grenade() {
         super("Grenade", 50, 3, 50);
     }
-    private static final int EXPLOSION_RADIUS = 40;
+
+    @Override
     public void useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
-        Projectile proj = new Throwable(this, shooter, 3, EXPLOSION_RADIUS);
+        Projectile proj = new Throwable(this, shooter, 3);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
     }
 }

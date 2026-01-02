@@ -8,7 +8,6 @@ import upc.view.gui.GameSetupPanel;
 import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
 
-import javax.swing.*;
 import java.util.HashSet;
 import java.util.Set;
 

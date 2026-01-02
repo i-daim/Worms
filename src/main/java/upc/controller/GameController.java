@@ -28,12 +28,10 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
-    private long lastUziShotTime = 0;
-    private static final long UZI_COOLDOWN = 50;
-
     private volatile boolean running = true;
     private boolean paused = false;
     private Thread gameThread;
+    private int frameCount;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
@@ -119,7 +117,7 @@ public class GameController {
         Item equipped = activeAlien.getEquippedItem();
         boolean canShoot = !gameManager.isActionDone();
 
-        if (activeAlien == null || !activeAlien.isAlive()) {
+        if (!activeAlien.isAlive()) {
             return;
         }
 
@@ -168,7 +166,11 @@ public class GameController {
         if (equipped != null && canShoot) {
             if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
                 if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
+                    if (frameCount % 5 == 0) {
+                        activeAlien.useEquippedItem();
+                        frameCount = 0;
+                    }
+                    frameCount++;
                 }
             } else {
                 if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {

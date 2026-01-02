@@ -8,7 +8,6 @@ import java.util.Arrays;
 import upc.model.items.Bazooka;
 import upc.model.items.Grenade;
 import upc.model.items.Item;
-import upc.model.items.Jetpack;
 import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
@@ -123,5 +122,14 @@ public class Inventory {
             return null;
         }
         return (Weapon) weaponStock.get(currentWeaponType);
+    }
+    public static void setAllowedWeapons(Set<Item.Type> weapons) {
+        allowedWeapons = weapons;
+    }
+    public Item getItemByIndex(int index) {
+        if (index >= 0 && index < ITEMS.length) {
+            return weaponStock.get(ITEMS[index]);
+        }
+        return null;
     }
 }

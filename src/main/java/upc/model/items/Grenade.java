@@ -7,7 +7,7 @@ import upc.model.jeu.GameWorld;
 public class Grenade extends Weapon {
 
     private static final int DAMAGE = 50;
-    private static final int RADIUS = 50;
+    private static final int RADIUS = 30;
 
     public Grenade() {
         super("Grenade", DAMAGE, 1, 50);

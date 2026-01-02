@@ -19,16 +19,21 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 import upc.controller.GameSetupController;
-import upc.model.items.Item;
 
-public class GameSetupPanel extends JPanel{
+public class GameSetupPanel extends JPanel {
     private final Image background = ImageManager.get("menu_background"); // Ou autre image
     private final MainFrame mainFrame;
 
     private JComboBox<String> mapSelector;
     private JSlider teamSizeSlider;
-    private JCheckBox chkBazooka, chkUzi, chkShotgun, chkGrenade, chkMine;
-    private JButton startButton, backButton;
+    private JButton startButton;
+    private JButton backButton;
+
+    private JCheckBox chkBazooka;
+    private JCheckBox chkUzi;
+    private JCheckBox chkShotgun;
+    private JCheckBox chkGrenade;
+    private JCheckBox chkMine;
 
     public GameSetupPanel(MainFrame frame) {
         this.mainFrame = frame;

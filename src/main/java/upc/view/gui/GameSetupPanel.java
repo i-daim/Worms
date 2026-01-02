@@ -90,7 +90,6 @@ public class GameSetupPanel extends JPanel {
         JPanel weaponPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
-                // On dessine nous-même le fond gris semi-transparent
                 g.setColor(new Color(20, 20, 20, 200));
                 g.fillRect(0, 0, getWidth(), getHeight());
                 super.paintComponent(g);
@@ -207,15 +206,6 @@ public class GameSetupPanel extends JPanel {
         box.setIcon(new ImageIcon(unselectedImg));
         box.setSelectedIcon(new ImageIcon(selectedImg));
         box.setPressedIcon(new ImageIcon(selectedImg));
-    }
-    private JPanel createRow(String text) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        p.setOpaque(false);
-        JLabel l = new JLabel(text);
-        l.setFont(new Font("Arial", Font.BOLD, 26));
-        l.setForeground(new Color(255, 220, 100));
-        p.add(l);
-        return p;
     }
     @Override
     protected void paintComponent(Graphics g) {

@@ -71,9 +71,6 @@ public class GameSetupPanel extends JPanel {
         wormPanel.add(teamSizeSlider);
 
 
-        JPanel weaponPanel = new JPanel();
-        weaponPanel.setBackground(new Color(20, 20, 20, 180));
-        weaponPanel.setOpaque(true);
         JPanel weaponPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -84,30 +81,39 @@ public class GameSetupPanel extends JPanel {
             }
         };
 
+        weaponPanel.setOpaque(false);
+        weaponPanel.setLayout(new GridLayout(3, 2, 20, 10));
 
         weaponPanel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.WHITE, 2), // Cadre gris
-                " Armes Autorisées ",
+                " Items Autorisées ",
                 javax.swing.border.TitledBorder.CENTER,
                 javax.swing.border.TitledBorder.TOP,
                 new Font("Arial", Font.BOLD, 22),
                 new Color(100, 255, 100) // Vert fluo pour le titre
         ));
-        weaponPanel.setMaximumSize(new Dimension(400, 300));
-        chkBazooka = new JCheckBox("Bazooka", true);
-        chkUzi = new JCheckBox("Uzi", true);
-        chkShotgun = new JCheckBox("Shotgun", true);
-        chkGrenade = new JCheckBox("Grenade", true);
-        chkMine = new JCheckBox("Mine", true);
+        weaponPanel.setMaximumSize(new Dimension(900, 300));
+        weaponPanel.setPreferredSize(new Dimension(900, 300));
+        chkBazooka = new JCheckBox("Bazooka", false);
+        styleCheckBoxWithIcon(chkBazooka, "Bazooka");
+        chkUzi = new JCheckBox("Uzi", false);
+        styleCheckBoxWithIcon(chkUzi, "Uzi");
+        chkShotgun = new JCheckBox("Shotgun", false);
+        styleCheckBoxWithIcon(chkShotgun, "Shotgun");
+        chkGrenade = new JCheckBox("Grenade", false);
+        styleCheckBoxWithIcon(chkGrenade, "Grenade");
+        chkMine = new JCheckBox("Mine", false);
+        styleCheckBoxWithIcon(chkMine, "Mine");
 
-        styleCheckBox(chkBazooka); styleCheckBox(chkUzi); styleCheckBox(chkShotgun);
-        styleCheckBox(chkGrenade); styleCheckBox(chkMine);
 
         weaponPanel.add(chkBazooka);
         weaponPanel.add(chkUzi);
         weaponPanel.add(chkShotgun);
         weaponPanel.add(chkGrenade);
         weaponPanel.add(chkMine);
+
+        weaponPanel.add(new JLabel(""));
+
 
         startButton = ButtonManager.createGameButton("LANCER LA PARTIE !");
         backButton = ButtonManager.createGameButton("Retour");

@@ -16,7 +16,7 @@ public class Bazooka extends Weapon {
 
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
-        double distance = 25.0;
+        double distance = 20.0;
         double rad = Math.toRadians(angle);
 
         if (!shooter.getDirection()) { // Si regarde à gauche
@@ -28,7 +28,7 @@ public class Bazooka extends Weapon {
 
         Position startPos = new Position(
                 shooter.getPosition().getX() + offsetX,
-                shooter.getPosition().getY() + offsetY - 10 // Légèrement plus haut (épaules)
+                shooter.getPosition().getY() + offsetY - 5// Légèrement plus haut (épaules)
         );
 
         Projectile proj = new Rocket(this, shooter, startPos);

@@ -187,8 +187,7 @@ public class GameController {
                 if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
                     activeAlien.useEquippedItem();
                 }
-            }
-            else {
+            } else {
                 if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
                     activeAlien.useEquippedItem();
                     System.out.println("🎯 TIR COUP PAR COUP !");

@@ -37,9 +37,8 @@ public class Shotgun extends Weapon {
 
         for (int spread : spreads) {
             int angle = baseAngle + spread;
-            Position bulletPos = new Position(startPos.getX(), startPos.getY());
 
-            Projectile proj = new Bullet(this, shooter, bulletPos);
+            Projectile proj = new Bullet(this, shooter, startPos);
             gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
         }
     }

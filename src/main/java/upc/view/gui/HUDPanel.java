@@ -19,19 +19,32 @@ import java.awt.geom.AffineTransform;
 public class HUDPanel extends JPanel {
 
     private final GameManager gameManager;
-    private final JButton skipButton;
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;
 
         this.setOpaque(false);
-        // layout en null pour positionner bouton avec coordonnées précises
-        this.setLayout(null);
+        this.setLayout(null); // pour positionner le bouton librement
         this.setPreferredSize(new Dimension(800, 100));
 
+        addSkipButton();
+    }
 
-//// Création du bouton Passer ////
-        skipButton = ButtonManager.createGameButton("Passer");
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        drawTopBar(g2);
+        drawCurrentWeapon(g2);
+    }
+
+
+    private void addSkipButton() {
+        JButton skipButton = ButtonManager.createGameButton("Passer");
         // passer le tour quand on clique
         skipButton.addActionListener(e -> {
             if (!gameManager.isOver()) {
@@ -47,19 +60,6 @@ public class HUDPanel extends JPanel {
         this.add(skipButton);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-
-        drawTopBar(g2);
-        drawCurrentWeapon(g2);
-
-        // Le bouton est dessiné automatiquement par Swing car il a été ajouté via this.add()
-    }
 
     private void drawCurrentWeapon(Graphics2D g2) {
         Alien activeAlien = gameManager.getActiveAlien();

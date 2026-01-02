@@ -106,17 +106,23 @@ public class GameSave {
         }
     }
 
+    //Classe permettant de générér un inventaire avec les informations minimales à sauvegarder
     public static class InventorySave {
+
+        //Attribut minimal pour sauvegarder d'un inventaire
         private final HashMap<Item.Type, Integer> ammoStock;
 
+        //Constructeur
         public InventorySave(Inventory inventory) {
             this.ammoStock = inventory.getAmmoStock();
         }
 
+        /* Méthode permettant de convertir un InventorySave en Inventory */
         public Inventory toInventory() {
             return new Inventory(this);
         }
 
+        /// Getter ///
         public HashMap<Item.Type, Integer> getAmmoStock() {
             return ammoStock;
         }
@@ -144,7 +150,7 @@ public class GameSave {
             this.position = alien.getPosition();
         }
 
-        /* Méthode permettant de convertier un alienSave en alien */
+        /* Méthode permettant de convertir un AlienSave en Alien */
         public Alien toAlien(GameWorld world, Team team) {
             return new Alien(this, world, team);
         }

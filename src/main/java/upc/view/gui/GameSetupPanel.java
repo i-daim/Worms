@@ -74,6 +74,16 @@ public class GameSetupPanel extends JPanel {
         JPanel weaponPanel = new JPanel();
         weaponPanel.setBackground(new Color(20, 20, 20, 180));
         weaponPanel.setOpaque(true);
+        JPanel weaponPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // On dessine nous-même le fond gris semi-transparent
+                g.setColor(new Color(20, 20, 20, 200));
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+
 
         weaponPanel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.WHITE, 2), // Cadre gris

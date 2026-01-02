@@ -34,9 +34,10 @@ public class GameSetupPanel extends JPanel {
 
     public GameSetupPanel(MainFrame frame) {
         this.mainFrame = frame;
+        this.setDoubleBuffered(true);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel("Paramètres de la Partie");
+        JLabel title = new JLabel("Paramètres de la Partie :");
         title.setFont(new Font("Arial", Font.BOLD, 45));
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);

@@ -61,7 +61,7 @@ public class GameSetupPanel extends JPanel {
         topSettingsPanel.setOpaque(false);
         topSettingsPanel.setMaximumSize(new Dimension(1000, 100));
 
-        JPanel mapPanel = createRow("Carte : ");
+        JPanel mapPanel = createVerticalBox("Carte : ");
         String[] maps = {"Aléatoire", "Liberty", "Spaceship"};
         mapSelector = new JComboBox<>(maps);
         mapPanel.add(mapSelector);
@@ -71,7 +71,7 @@ public class GameSetupPanel extends JPanel {
         mapSelector.setMaximumSize(new Dimension(200, 40));
         mapPanel.add(mapSelector);
 
-        JPanel wormPanel = createRow("Vers par équipe : ");
+        JPanel wormPanel = createVerticalBox("Vers par équipe : ");
         teamSizeSlider = new JSlider(1, 5, 2);
         teamSizeSlider.setOpaque(false);
         teamSizeSlider.setForeground(Color.WHITE);
@@ -82,6 +82,9 @@ public class GameSetupPanel extends JPanel {
         teamSizeSlider.setPaintLabels(true);
         teamSizeSlider.setPreferredSize(new Dimension(300, 60));
         wormPanel.add(teamSizeSlider);
+
+        topSettingsPanel.add(mapPanel);
+        topSettingsPanel.add(wormPanel);
 
 
         JPanel weaponPanel = new JPanel() {
@@ -153,6 +156,19 @@ public class GameSetupPanel extends JPanel {
 
 
 
+    }
+    private JPanel createVerticalBox(String text) {
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        p.setOpaque(false);
+
+        JLabel l = new JLabel(text);
+        l.setFont(new Font("Arial", Font.BOLD, 26));
+        l.setForeground(new Color(255, 220, 100));
+        l.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(l);
+        p.add(Box.createVerticalStrut(5));
+        return p;
     }
     private void styleCheckBoxWithIcon(JCheckBox box, String imageName) {
         box.setOpaque(false);

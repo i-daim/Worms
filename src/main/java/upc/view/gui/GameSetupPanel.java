@@ -70,16 +70,18 @@ public class GameSetupPanel extends JPanel {
 
 
         JPanel weaponPanel = new JPanel();
-        weaponPanel.setBackground(new Color(30, 30, 30, 200));
+        weaponPanel.setBackground(new Color(20, 20, 20, 180));
         weaponPanel.setOpaque(true);
+
         weaponPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 2), // Cadre gris
+                BorderFactory.createLineBorder(Color.WHITE, 2), // Cadre gris
                 " Armes Autorisées ",
                 javax.swing.border.TitledBorder.CENTER,
                 javax.swing.border.TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 16),
+                new Font("Arial", Font.BOLD, 22),
                 new Color(100, 255, 100) // Vert fluo pour le titre
         ));
+        weaponPanel.setMaximumSize(new Dimension(400, 300));
         chkBazooka = new JCheckBox("Bazooka", true);
         chkUzi = new JCheckBox("Uzi", true);
         chkShotgun = new JCheckBox("Shotgun", true);
@@ -101,17 +103,17 @@ public class GameSetupPanel extends JPanel {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        this.add(Box.createVerticalStrut(50));
-        this.add(title);
-        this.add(Box.createVerticalStrut(30));
-        this.add(mapPanel);
-        this.add(Box.createVerticalStrut(20));
-        this.add(wormPanel);
-        this.add(Box.createVerticalStrut(20));
-        this.add(weaponPanel);
         this.add(Box.createVerticalStrut(40));
+        this.add(title);
+        this.add(Box.createVerticalStrut(50));
+        this.add(mapPanel);
+        this.add(Box.createVerticalStrut(30));
+        this.add(wormPanel);
+        this.add(Box.createVerticalStrut(30));
+        this.add(weaponPanel);
+        this.add(Box.createVerticalStrut(50));
         this.add(startButton);
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(20));
         this.add(backButton);
 
         new GameSetupController(this, mainFrame);
@@ -123,16 +125,26 @@ public class GameSetupPanel extends JPanel {
     private void styleCheckBox(JCheckBox box) {
         box.setOpaque(false);
         box.setForeground(Color.WHITE);
-        box.setFont(new Font("Arial", Font.BOLD, 15));
+        box.setFont(new Font("Arial", Font.BOLD, 24));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     }
     private JPanel createRow(String text) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
         p.setOpaque(false);
         JLabel l = new JLabel(text);
-        l.setFont(new Font("Arial", Font.BOLD, 18));
-        l.setForeground(new Color(255, 200, 100));
+        l.setFont(new Font("Arial", Font.BOLD, 26));
+        l.setForeground(new Color(255, 220, 100));
         p.add(l);
         return p;
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (background != null) {
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        }
+        g.setColor(new Color(0, 0, 0, 100));
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
     public JButton getStartButton() {
         return startButton;

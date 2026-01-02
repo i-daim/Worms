@@ -11,8 +11,8 @@ public class Throwable extends Projectile {
     public Throwable(Weapon weapon, Alien shooter, int timerSeconds, int radius) {
         super(
                 shooter,
-                (shooter != null) ? shooter.getPosition() : new Position(0, 0),
-                0,
+                shooter.getPosition(),
+                weapon.getDamage(),
                 radius,
                 true,
                 weapon.getSpeed(),
@@ -30,13 +30,5 @@ public class Throwable extends Projectile {
 
     public boolean isReadyToExplode() {
         return timer <= 0;
-    }
-
-    public void update() {
-        decrementTimer();
-
-        if (isReadyToExplode() && getState() == State.FLYING) {
-            setState(State.EXPLODED);
-        }
     }
 }

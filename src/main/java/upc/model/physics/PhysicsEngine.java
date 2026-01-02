@@ -4,9 +4,7 @@ import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
-import upc.model.entites.projectiles.Bullet;
 import upc.model.entites.projectiles.Projectile;
-import upc.model.entites.projectiles.Rocket;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import org.dyn4j.world.listener.ContactListenerAdapter;
@@ -53,31 +51,6 @@ public class PhysicsEngine {
 
         terrainPhysics.rebuildTerrain();
     }
-    private void checkProjectileCollision(Body b1, Body b2) {
-        if (b1 != null && b1.getUserData() instanceof Projectile) {
-            Projectile p = (Projectile) b1.getUserData();
-
-            if (b2 != null && b2.getUserData() instanceof Alien) {
-                Alien alienTouche = (Alien) b2.getUserData();
-                if (p.getShooter() == alienTouche && p.getFrameCount() < 30) {
-                    return;
-                }
-            }
-            if (!p.isActive()) {
-                return;
-            }
-            if (p instanceof Rocket) {
-                p.setState(Projectile.State.EXPLODED);
-            } else if (p instanceof Bullet) {
-                if (b2 != null) {
-                    projectilePhysics.handleBulletImpact((Bullet) p, b2);
-                }
-            }
-        }
-    }
-    public Terrain getTerrain() {
-        return terrain;
-    }
 
 
 ////    UPDATE DES PHYSIQUES    ////
@@ -102,35 +75,18 @@ public class PhysicsEngine {
     }
 
 
-////    FONCTIONS AUXILIAIRES    ////
-
-    private boolean isOnGround(Body body) {
-        Vector2 vel = body.getLinearVelocity();
-        return Math.abs(vel.y) < 3.0;
-    }
-
-
 ////    FONCTIONS POUR ALIENS    ////
     public void addAlien(Alien alien) {
         alienPhysics.addAlienBody(alien);
     }
 
-    public void removeAlien(Alien alien) {
-        alienPhysics.removeAlien(alien);
-    }
-
-    public void jumpAlien(Alien alien) {
-        alienPhysics.jumpAlien(alien);
-    }
-
-
-    public void moveAlien(Alien alien, double direction) {
-        alienPhysics.moveAlien(alien, direction);
-    }
-
 ////    FONCTIONS POUR PROJECTILES    ////
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
+    }
+
+    private void checkProjectileCollision(Body b1, Body b2) {
+        projectilePhysics.checkProjectileCollision(b1, b2);
     }
 
 ////    GETTERS & SETTERS    ////
@@ -168,5 +124,9 @@ public class PhysicsEngine {
 
     public GameWorld getGameWorld() {
         return gameWorld;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
     }
 }

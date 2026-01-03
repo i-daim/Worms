@@ -13,6 +13,7 @@ import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
 import upc.model.items.Weapon;
 import upc.model.save.GameSave;
+import upc.model.items.Jetpack;
 
 public class Inventory {
     private static Set<Item.Type> allowedWeapons = new HashSet<>(Arrays.asList(Item.Type.values()));

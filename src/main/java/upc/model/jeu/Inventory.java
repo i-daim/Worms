@@ -41,8 +41,13 @@ public class Inventory {
     }
 
 
-////    Méthodes pour initialiser l'inventaire    ////
-    //// Méthode pour initialiser l'inventaire ////
+    //// Méthodes pour initialiser l'inventaire ////
+
+    /**
+     * Méthode permettant d'initialiser tous les types d'armes de l'inventaire
+     * En les implémentant dans l'attribut weaponStock
+     * Et en équipant une arme
+     */
     private void initializeWeapons() {
         weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
         weaponStock.put(Item.Type.UZI, new Uzi());
@@ -53,6 +58,11 @@ public class Inventory {
         this.currentWeaponType = Item.Type.BAZOOKA;
     }
 
+    /**
+     * Méthode permettant d'initialiser toutes les munitions des armes de l'inventaire
+     * En les implémentant dans l'attribut ammoStock
+     * Via la méthode addAmmo
+     */
     private void initializeAmmo() {
         addAmmo(Item.Type.SHOTGUN, 50);
         addAmmo(Item.Type.MINE, 50);

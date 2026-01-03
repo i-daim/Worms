@@ -6,6 +6,8 @@ import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Trap;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,6 +28,7 @@ public class GameManager {
     private boolean actionDone;
 
     private final List<ActiveAnimation> activeAnimations;
+    private Projectile activeProjectile;
 
     private long delayEndTime = 0;
     private boolean isPaused = false;
@@ -66,6 +69,7 @@ public class GameManager {
         gameWorld.update(elapsedTime);
         updateAnimations();
         checkGameOver();
+        checkActiveProjectile();
 
         // Si le délai n'est pas fini, on met pas à jour le reste
         if (System.currentTimeMillis() < delayEndTime) {
@@ -79,13 +83,11 @@ public class GameManager {
                 onDelayFinished = null;
             }
         }
-
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
         if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
             skipTurn();
             return;
         }
-
         countTimeLeft();
     }
 
@@ -212,6 +214,18 @@ public class GameManager {
         this.onDelayFinished = onFinished;
     }
 
+    private void checkActiveProjectile() {
+        if (activeProjectile == null || activeProjectile instanceof Trap) {
+            activeProjectile = null;
+            return;
+        }
+        if (activeProjectile.getState().equals(Projectile.State.FLYING)) {
+            delayEndTime += 20;
+        } else {
+            activeProjectile = null;
+        }
+    }
+
 
 ////    GETTERS & SETTERS    ////
     public Terrain getTerrain() {
@@ -273,6 +287,16 @@ public class GameManager {
     public List<ActiveAnimation> getActiveAnimations() {
         return activeAnimations;
     }
+    public Projectile getActiveProjectile() {
+        return activeProjectile;
+    }
+
+    public void setActiveProjectile(Projectile p) {
+        if (activeProjectile instanceof Trap) {
+            return;
+        }
+        this.activeProjectile = p;
+    }
 
     public void setMap(Terrain terrain) {
         this.terrain = terrain;
@@ -299,5 +323,4 @@ public class GameManager {
     public int getDelay() {
         return (int) (delayEndTime - System.currentTimeMillis()) / 10;
     }
-
 }

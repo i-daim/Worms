@@ -1,6 +1,7 @@
 package upc.model.entites;
 
 import upc.assets.SoundManager;
+import upc.model.entites.projectiles.Projectile;
 import upc.model.items.Item;
 import upc.model.save.GameSave;
 import upc.model.jeu.GameWorld;
@@ -94,19 +95,21 @@ public class Alien extends Entity {
 
 
 ////    Autres Méthodes    ////
-    public void useEquippedItem() {
+    public Projectile useEquippedItem() {
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
 
         if (!inventory.isAvailable(equippedItem)) {
-            return;
+            return null;
         }
-        Item item = inventory.getItem(equippedItem);
-        item.useItem(world, this);
-        inventory.useAmmo(equippedItem, 1);
+
         if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
             alienPhysics.flyAlien(this);
             setState(State.JUMP);
         }
+
+        Item item = inventory.getItem(equippedItem);
+        inventory.useAmmo(equippedItem, 1);
+        return item.useItem(world, this);
     }
 
     public void receiveDmg(int damage) {

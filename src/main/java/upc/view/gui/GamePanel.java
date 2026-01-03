@@ -15,7 +15,6 @@ import upc.model.entites.projectiles.Projectile;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
@@ -275,12 +274,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public Point screenToWorld(Point screenPoint) {
-        double worldX = (screenPoint.x / ZOOM) + cameraX;
-        double worldY = (screenPoint.y / ZOOM) + cameraY;
-        return new Point((int) worldX, (int) worldY);
-    }
-
     public void centralizeCamera(Entity entity) {
         if (entity == null || isCameraCentered(entity)) {
             return;
@@ -307,25 +300,6 @@ public class GamePanel extends JPanel {
         if (Math.abs(targetCamY - cameraY) < 0.1) {
             cameraY = targetCamY;
         }
-    }
-
-    public boolean isCameraCentered(Entity entity) {
-        if (entity == null) {
-            return false;
-        }
-        int posX = entity.getPosition().getX();
-        int posY = entity.getPosition().getY();
-
-        double viewX = posX - (getWidth() / (2 * ZOOM));
-        double viewY = posY - (getHeight() / (2 * ZOOM));
-
-        double maxX = terrain.getWidth() - getWidth() / ZOOM;
-        double maxY = terrain.getHeight() - getHeight() / ZOOM;
-
-        double camX = Math.max(0, Math.min(viewX, maxX));
-        double camY = Math.max(0, Math.min(viewY, maxY));
-
-        return (Math.abs(camX - cameraX) < 8) && (Math.abs(camY - cameraY) < 8);
     }
 
 

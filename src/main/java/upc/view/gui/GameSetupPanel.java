@@ -110,8 +110,34 @@ public class GameSetupPanel extends JPanel {
         itemsGrid.setOpaque(false);
         itemsGrid.setBorder(new EmptyBorder(10, 30, 30, 30));
 
-        topSettingsPanel.add(mapPanel);
-        topSettingsPanel.add(wormPanel);
+        chkBazooka = createWeaponCheckbox("Bazooka");
+        chkUzi = createWeaponCheckbox("Uzi");
+        chkShotgun = createWeaponCheckbox("Shotgun");
+        chkGrenade = createWeaponCheckbox("Grenade");
+        chkMine = createWeaponCheckbox("Mine");
+        chkJetpack = createWeaponCheckbox("Jetpack");
+
+        itemsGrid.add(chkBazooka);
+        itemsGrid.add(chkUzi);
+        itemsGrid.add(chkShotgun);
+        itemsGrid.add(chkGrenade);
+        itemsGrid.add(chkMine);
+        itemsGrid.add(chkJetpack);
+
+        weaponPanel.add(itemsGrid, BorderLayout.CENTER);
+
+        mainContentPanel.add(weaponPanel);
+        mainContentPanel.add(Box.createVerticalStrut(40));
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        buttonPanel.setOpaque(false);
+
+        backButton = ButtonManager.createGameButton("RETOUR");
+        startButton = ButtonManager.createGameButton("LANCER LE COMBAT !");
+
+        startButton.setPreferredSize(new Dimension(300, 60));
+        startButton.setFont(new Font("Arial", Font.BOLD, 24));
+        startButton.setForeground(Color.GREEN);
 
 
         JPanel weaponPanel = new JPanel() {

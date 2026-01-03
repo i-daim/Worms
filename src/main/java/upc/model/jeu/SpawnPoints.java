@@ -64,7 +64,16 @@ public class SpawnPoints {
 
 
 
-    // GETTER //
+    /// GETTER ///
+
+    /**
+     * Retourne l'ensemble des positions des aliens selon le terrain et l'équipe choisi
+     * @param mapName : Nom du terrain
+     * @param team : Equipe choisie
+     * @return la liste de position {@link List<Position>} des aliens d'une équipe
+     * si le nom de terrain choisi est liberty, spaceship ou vide
+     * ou {@code null} si le nom du terrain n'est pas pas valide
+     */
     public static List<Position> getSpawns(String mapName, int team) {
         if (mapName.equals("liberty")) {
             return LIBERTY_SPAWNS.get(team);

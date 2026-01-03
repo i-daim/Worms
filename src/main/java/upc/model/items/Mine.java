@@ -28,4 +28,9 @@ public class Mine extends Weapon {
     public Projectile createProjectile(Alien shooter) {
         return new Trap(this, shooter, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
     }
+
+    @Override
+    public Type getType() {
+        return Type.MINE;
+    }
 }

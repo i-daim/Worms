@@ -38,4 +38,8 @@ public class Uzi extends Weapon {
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
     }
 
+    @Override
+    public Type getType() {
+        return Type.UZI;
+    }
 }

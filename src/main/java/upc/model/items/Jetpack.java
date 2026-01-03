@@ -14,4 +14,10 @@ public class Jetpack extends Tool {
         // Le jetpack ne tire pas, l'action sera gérée via méthode fly()
 
     }
+
+    @Override
+    public Type getType() {
+        return Type.JETPACK;
+    }
+
 }

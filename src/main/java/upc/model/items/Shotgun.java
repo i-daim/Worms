@@ -42,4 +42,9 @@ public class Shotgun extends Weapon {
             gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
         }
     }
+
+    @Override
+    public Type getType() {
+        return Type.SHOTGUN;
+    }
 }

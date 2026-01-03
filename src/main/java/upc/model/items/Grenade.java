@@ -21,4 +21,9 @@ public class Grenade extends Weapon {
         Projectile proj = new Throwable(this, shooter, 3, RADIUS);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
     }
+
+    @Override
+    public Type getType() {
+        return Type.GRENADE;
+    }
 }

@@ -34,4 +34,9 @@ public class Bazooka extends Weapon {
         Projectile proj = new Rocket(this, shooter, startPos);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
     }
+
+    @Override
+    public Type getType() {
+        return Type.BAZOOKA;
+    }
 }

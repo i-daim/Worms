@@ -218,42 +218,36 @@ public class GameSetupPanel extends JPanel {
         box.setIconTextGap(20);
 
         Image originalImg = ImageManager.get(imageName + "_Inv");
-        if (originalImg == null) {
-            return;
-        }
-        int iconW = 90;
-        int iconH = 90;
-        BufferedImage unselectedImg = new BufferedImage(iconW, iconH, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = unselectedImg.createGraphics();
+        if (originalImg == null) return;
+
+        int iconW = 90, iconH = 90;
+        box.setIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, false)));
+        box.setSelectedIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, true)));
+        box.setPressedIcon(box.getSelectedIcon());
+    }
+
+    private BufferedImage createIcon(Image img, int w, int h, boolean selected) {
+        BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = image.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2.setColor(new Color(0, 0, 0, 100));
-        g2.fillRoundRect(5, 5, iconW - 10, iconH - 10, 15, 15);
-        g2.setColor(new Color(255, 255, 255, 100));
-        g2.drawRoundRect(5, 5, iconW - 10, iconH - 10, 15, 15);
+        g2.setColor(selected ? new Color(100, 255, 201, 30) : new Color(0, 0, 0, 100));
+        g2.fillRoundRect(5, 5, w - 10, h - 10, 15, 15);
 
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
-        g2.drawImage(originalImg, 10, 10, iconW - 20, iconH - 20, null);
+        if (!selected) {
+            g2.setColor(new Color(255, 255, 255, 100));
+            g2.drawRoundRect(5, 5, w - 10, h - 10, 15, 15);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+        }
+        g2.drawImage(img, 10, 10, w - 20, h - 20, null);
+
+        if (selected) {
+            g2.setColor(new Color(255, 215, 0));
+            g2.setStroke(new BasicStroke(3));
+            g2.drawRoundRect(5, 5, w - 10, h - 10, 15, 15);
+        }
         g2.dispose();
-
-        BufferedImage selectedImg = new BufferedImage(iconW, iconH, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g3 = selectedImg.createGraphics();
-        g3.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g3.setColor(new Color(100, 255, 201, 30));
-        g3.fillRoundRect(5, 5, iconW - 10, iconH - 10, 15, 15);
-
-        g3.drawImage(originalImg, 10, 10, iconW - 20, iconH - 20, null);
-
-        g3.setColor(new Color(255, 215, 0)); // Or
-        g3.setStroke(new BasicStroke(3));
-        g3.drawRoundRect(5, 5, iconW - 10, iconH - 10, 15, 15);
-        g3.dispose();
-
-        box.setIcon(new ImageIcon(unselectedImg));
-        box.setSelectedIcon(new ImageIcon(selectedImg));
-
-        box.setPressedIcon(new ImageIcon(selectedImg));
+        return image;
     }
 
     @Override

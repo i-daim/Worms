@@ -36,12 +36,14 @@ public class MouseHandler extends MouseAdapter {
     }
 
     public boolean isMouseNearEdge(GamePanel gamePanel) {
-        if (position == null) return false;
+        if (position == null) {
+            return false;
+        }
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
         int limit = (int) (50 * GamePanel.ZOOM);
 
-        return position.x > width - limit || position.x < limit ||
-                position.y > height - limit || position.y < limit;
+        return position.x > width - limit || position.x < limit
+                || position.y > height - limit || position.y < limit;
     }
 }

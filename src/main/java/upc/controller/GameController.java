@@ -96,10 +96,14 @@ public class GameController {
         handleCameraScroll(mouseHandler.getPosition());
         handleControls();
 
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            gamePanel.centralizeCamera(activeAlien);
+        // Ne centre pas la caméra si la souris est sur le bord
+        if (!mouseHandler.isMouseNearEdge(gamePanel)) {
+            Alien activeAlien = gameManager.getActiveAlien();
+            if (activeAlien != null && activeAlien.isAlive()) {
+                gamePanel.centralizeCamera(activeAlien);
+            }
         }
+
         gameManager.update(1.0 / 60.0);
 
         if (gameManager.isOver()) {
@@ -190,6 +194,10 @@ public class GameController {
     }
 
     private void handleCameraScroll(Point mousePos) {
+        if (mousePos == null) {
+            return;
+        }
+
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
         int limit = (int) (50 * GamePanel.ZOOM);

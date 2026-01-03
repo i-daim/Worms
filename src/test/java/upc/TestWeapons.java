@@ -64,7 +64,7 @@ public class TestWeapons {
     public void testMineConstantes() {
         assertEquals(45, Mine.DAMAGE);
         assertEquals(30, Mine.EXPLOSION_RADIUS);
-        assertEquals(3, Mine.ACTIVATION_RADIUS);
+        assertEquals(10, Mine.ACTIVATION_RADIUS);
     }
 
     @Test

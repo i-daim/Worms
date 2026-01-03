@@ -75,17 +75,18 @@ public class GameSetupPanel extends JPanel {
         mainContentPanel.setOpaque(false);
         mainContentPanel.setBorder(new EmptyBorder(50, 50, 0, 50)); // Marges latérales
 
-        JPanel mapPanel = createVerticalBox("Carte : ");
+        JPanel configPanel = createRoundedPanel();
+        configPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 20));
+        configPanel.setMaximumSize(new Dimension(1000, 140));
+
+        JPanel mapBox = createSection("CARTE", 240);
         String[] maps = {"Aléatoire", "Liberty", "Spaceship"};
         mapSelector = new JComboBox<>(maps);
-        mapPanel.add(mapSelector);
-        mapSelector.setFont(new Font("Arial", Font.BOLD, 22));
+        styleComboBox(mapSelector);
+        mapBox.add(mapSelector);
+        configPanel.add(mapBox);
 
-        mapSelector.setPreferredSize(new Dimension(200, 40));
-        mapSelector.setMaximumSize(new Dimension(200, 40));
-        mapPanel.add(mapSelector);
-
-        JPanel wormPanel = createVerticalBox("Vers par équipe : ");
+        JPanel teamBox = createSection("VERS PAR ÉQUIPE", 320);
         teamSizeSlider = new JSlider(1, 5, 2);
         teamSizeSlider.setOpaque(false);
         teamSizeSlider.setForeground(Color.WHITE);

@@ -87,7 +87,11 @@ public class GameManager {
         SoundManager.playVoice(0);
     }
 
+    /// Gestion des tours ////
 
+    /**
+     * Méthode permettant de passser son tour volontairement
+     */
     public void skipTurn() {
 
         // ne rien faire si la partie est terminée
@@ -95,17 +99,24 @@ public class GameManager {
             return;
         }
 
+        //Annule l'action de l'alien acitve
         actionDone = false;
 
+        //Incrémente le nombre de tour si partie non finie
         if (getTeam(0).isActiveLastAlien() && getTeam(1).isActiveLastAlien()) {
             currentRound++;
         }
 
+        //Permet de passer au prochain tour
         nextTurn();
 
+        //Reinitialise le temps de jeu
         timeLeft = ROUND_TIME;
     }
 
+    /**
+     * Méthode permettant de passser au prochain tour
+     */
     private void nextTurn() {
         // Passe à l'alien suivant avant de changer d'équipe, pour le prochain tour
         getActiveTeam().skipToNextAlien();

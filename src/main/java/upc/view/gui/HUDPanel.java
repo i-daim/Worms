@@ -29,6 +29,7 @@ public class HUDPanel extends JPanel {
         this.setOpaque(false);
         this.setLayout(null);
         this.setPreferredSize(new Dimension(800, 100));
+        this.setFocusable(false);
 
         addSkipButton();
         addInventoryToggleButton();
@@ -43,7 +44,9 @@ public class HUDPanel extends JPanel {
             isInventoryVisible = !isInventoryVisible;
             inventoryButton.setText(isInventoryVisible ? "CACHER" : "SAC");
             this.repaint();
-            this.getRootPane().requestFocusInWindow();
+            if (getParent() != null) {
+                getParent().requestFocusInWindow();
+            }
         });
         inventoryButton.setFocusable(false);
         inventoryButton.setBounds(0, 0, 80, 30);

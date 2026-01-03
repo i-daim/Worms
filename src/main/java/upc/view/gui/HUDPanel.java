@@ -152,10 +152,10 @@ public class HUDPanel extends JPanel {
 
         // Indice de puissance de tir
         int power = alien.getShootPower();
-        
+
         // Dimensions du cône
-        int coneLength = power / 2; 
-        int coneWidth = 4 + (power / 8); 
+        int coneLength = power / 2;
+        int coneWidth = 4 + (power / 8);
 
         if (power < 30) {
             g2.setColor(Color.GREEN);
@@ -170,9 +170,9 @@ public class HUDPanel extends JPanel {
             // Points du triangle (cône)
             int[] xPoints = {startX, startX + coneLength, startX + coneLength};
             int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
-            
+
             g2.fillPolygon(xPoints, yPoints, 3);
-            
+
             g2.setColor(Color.BLACK);
             g2.drawPolygon(xPoints, yPoints, 3);
         }

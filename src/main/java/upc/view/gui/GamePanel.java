@@ -39,7 +39,8 @@ public class GamePanel extends JPanel {
     private double cameraX = 0;
     private double cameraY = 0;
 
-    private boolean inventoryVisible = false;
+
+    private boolean inventoryVisible = true;
 
     private List<ActiveAnimation> activeAnimations;
 
@@ -99,11 +100,6 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
-        // Affichage de l'inventaire
-        if (inventoryVisible) {
-            drawInventory(g2);
-        }
-
         // Affichage des Projectiles
         drawProjectiles(g2);
 
@@ -112,7 +108,7 @@ public class GamePanel extends JPanel {
         g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
 
         // Affichage du HUD (après le zoom car non concerné)
-        hudPanel.setSize(getWidth(), 100);
+        hudPanel.setBounds(0, 0, getWidth(), getHeight());
 
         g2.dispose();
     }
@@ -248,21 +244,6 @@ public class GamePanel extends JPanel {
             }
         }
     }
-
-    private void drawInventory(Graphics2D g2) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            int alienPosX = activeAlien.getPosition().getX();
-
-            int inventoryY = activeAlien.getPosition().getY() - 80;
-            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
-
-            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY,
-                    activeAlien.getSelectedItemIndex());
-        }
-    }
-
-
 
 ////    AUTRES METHODES    ////
     public void togglePauseMenu(boolean paused) {

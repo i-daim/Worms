@@ -150,25 +150,20 @@ public class HUDPanel extends JPanel {
         // Rotation du viseur en fonction de l'angle
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
 
-        int distance = 20;
-        int width = 25;
-        int height = 6;
+        // Viseur représenté par un cercle
+        int distance = 50;
+        int radius = 6;
 
-        // Bordures noires pour le viseur
-        g2.setColor(Color.BLACK);
-        g2.drawRect(distance, -height / 2, width, height);
+        g2.setColor(Color.RED);
+        int circleX = distance + radius;
+        int circleY = -7;
+        g2.drawOval(circleX, circleY, radius, radius);
 
-        // Rectangle transparent blanc
-        g2.setColor(new Color(255, 255, 255, 150));
-        g2.fillRect(distance + 1, -height / 2 + 1, width - 1, height - 1);
+        // Croix au milieu
+        g2.drawLine(circleX, circleY + 3, circleX + 6, circleY + 3);
+        g2.drawLine(circleX + 3, circleY, circleX + 3, circleY + 6);
 
-        // Flèche au bout du viseur
-        g2.setColor(Color.BLACK);
-        int arrowX = distance + width + 1;
-        int[] xPoints = {arrowX, arrowX + 5, arrowX};
-        int[] yPoints = {-4, 0, 4};
-        g2.fillPolygon(xPoints, yPoints, 3);
-
+        // On revient à l'état original
         g2.setTransform(originalTransform);
     }
 

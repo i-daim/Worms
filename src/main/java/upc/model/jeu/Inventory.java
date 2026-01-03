@@ -23,7 +23,9 @@ public class Inventory {
     private final HashMap<Item.Type, Integer> ammoStock;
     private Item.Type currentWeaponType;
 
-    // Constructeur
+    /**
+     * Constructeur pour {@code Inventory}
+     */
     public Inventory() {
         this.weaponStock = new HashMap<>();
         this.ammoStock = new HashMap<>();
@@ -32,7 +34,11 @@ public class Inventory {
         initializeAmmo();
     }
 
-    //Constructeur pour charger un inventaire sauvegardé
+    /**
+     * Constructeur pour {@code Inventory}
+     * Visant à charger un inventaire sauvegardé
+     * @param inventorySave : objet de sauvegarde pour l'inventaire
+     */
     public Inventory(GameSave.InventorySave inventorySave) {
         this.weaponStock =  new HashMap<>();
         this.ammoStock = inventorySave.getAmmoStock();

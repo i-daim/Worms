@@ -9,7 +9,7 @@ import upc.model.jeu.Team;
 import upc.model.physics.AlienPhysics;
 
 public class Alien extends Entity {
-    // Attributs
+    /** Attributs */
     private final GameWorld world;
     private final AlienPhysics alienPhysics;
     private final Team team;
@@ -23,11 +23,11 @@ public class Alien extends Entity {
     private final Inventory inventory;
     private int selectedItemIndex = 0;
 
-    // Champs statiques
+    /** Champs statiques */
     private static final int SPEED = 5;
     private static final int INITIAL_HP = 100;
 
-    // Etat de l'alien (pour la partie graphique)
+    /** Etat de l'alien (pour la partie graphique) */
     public enum State {
         //Immobile
         IDLE,
@@ -40,7 +40,12 @@ public class Alien extends Entity {
     }
     private State state;
 
-    // Constructeur
+    /**
+     * Constructeur pour {@code Alien}
+     * @param gameWorld :
+     * @param team : Equipe de l'alien
+     * @param position : Position de départ de l'alien
+     */
     public Alien(GameWorld gameWorld, Team team, Position position) {
         super(position, SPEED);
         this.healthPoints = INITIAL_HP;
@@ -56,7 +61,13 @@ public class Alien extends Entity {
         this.aimAngle = 0;
     }
 
-    //Constructeur pour charger un alien
+    /**
+     * Constructeur pour {@code Alien}
+     * Visant à charger un alien sauvegardé
+     * @param alienSave : objet de sauvegarde pour un alien
+     * @param gameWorld :
+     * @param team : Equipe de l'alien
+     */
     public Alien(GameSave.AlienSave alienSave, GameWorld gameWorld, Team team) {
         super(alienSave.getPosition(), SPEED);
         this.world = gameWorld;

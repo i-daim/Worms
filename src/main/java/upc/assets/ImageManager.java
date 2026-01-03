@@ -26,10 +26,7 @@ public class ImageManager {
         ImageManager.load("Shotgun_Inv", "/Items/Shotgun_Inv.png");
         ImageManager.load("Grenade_Inv", "/Items/Grenade_Inv.png");
         ImageManager.load("Mine_Inv", "/Items/Mine_Inv.png");
-        ImageManager.load("Jetpack", "/animations/jetpack/Jetpack0.png");
-        for (int i = 0; i < 6; i++) {
-            load("Jetpack" + i, "/resources/animations/jetpack/Jetpack" + i + ".png");
-        }
+        ImageManager.load("Jetpack", "/Items/Jetpack0.png");
     }
 
     public static void load(String name, String path) {

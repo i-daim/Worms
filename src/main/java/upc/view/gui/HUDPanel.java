@@ -1,7 +1,6 @@
 package upc.view.gui;
 
 import upc.model.entites.Alien;
-import upc.model.items.Weapon;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.items.Item;
@@ -39,7 +38,7 @@ public class HUDPanel extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         drawTopBar(g2);
-        drawCurrentWeapon(g2);
+        drawWeaponInfo(g2);
     }
 
 
@@ -61,7 +60,34 @@ public class HUDPanel extends JPanel {
     }
 
 
-    private void drawCurrentWeapon(Graphics2D g2) {
+////    AFFICHAGE DU HUD EN HAUT DE L'ECRAN    ////
+    private void drawTopBar(Graphics2D g2) {
+        int width = this.getWidth();
+        int height = 50;
+
+        g2.setColor(new Color(0, 0, 0, 180));
+        g2.fillRect(0, 0, width, height);
+
+        drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
+    }
+
+    private void drawTurnTimer(Graphics2D g2, int x, int y) {
+        int timeLeft = gameManager.getTimeLeft();
+
+        g2.setColor(Color.WHITE);
+        g2.fillRoundRect(x, y, 100, 40, 10, 10);
+
+        g2.setColor(Color.DARK_GRAY);
+        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        String text = String.format("%02d", timeLeft);
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
+
+        g2.setFont(new Font("Arial", Font.PLAIN, 14));
+        g2.drawString("TIME", x + 35, y + 15);
+    }
+
+    private void drawWeaponInfo(Graphics2D g2) {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null) {
             return;
@@ -90,17 +116,7 @@ public class HUDPanel extends JPanel {
     }
 
 
-    private void drawTopBar(Graphics2D g2) {
-        int width = this.getWidth();
-        int height = 50;
-
-        g2.setColor(new Color(0, 0, 0, 180));
-        g2.fillRect(0, 0, width, height);
-
-        drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
-    }
-
-
+////    AFFICHAGE POUR LES ALIENS    ////
     public void drawAlienInfo(Graphics2D g2, GameManager gameManager) {
         for (Team team : gameManager.getTeams()) {
             for (Alien alien : team.getAliens()) {
@@ -199,21 +215,5 @@ public class HUDPanel extends JPanel {
             int[] yPoints = {barY - 5, barY - 12, barY - 12};
             g2.fillPolygon(xPoints, yPoints, 3);
         }
-    }
-
-    private void drawTurnTimer(Graphics2D g2, int x, int y) {
-        int timeLeft = gameManager.getTimeLeft();
-
-        g2.setColor(Color.WHITE);
-        g2.fillRoundRect(x, y, 100, 40, 10, 10);
-
-        g2.setColor(Color.DARK_GRAY);
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
-        String text = String.format("%02d", timeLeft);
-        int textWidth = g2.getFontMetrics().stringWidth(text);
-        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
-
-        g2.setFont(new Font("Arial", Font.PLAIN, 14));
-        g2.drawString("TIME", x + 35, y + 15);
     }
 }

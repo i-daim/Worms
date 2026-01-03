@@ -13,7 +13,7 @@ public class Shotgun extends Weapon {
     }
 
     @Override
-    public void useItem(GameWorld gameWorld, Alien shooter) {
+    public Projectile useItem(GameWorld gameWorld, Alien shooter) {
         int baseAngle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
@@ -35,12 +35,16 @@ public class Shotgun extends Weapon {
 
         int[] spreads = {-12, -6, 0, 6, 12};
 
+        Projectile proj = null;
+
         for (int spread : spreads) {
             int angle = baseAngle + spread;
 
-            Projectile proj = new Bullet(this, shooter, startPos);
+            proj = new Bullet(this, shooter, startPos);
             gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
         }
+
+        return proj;
     }
 
     @Override

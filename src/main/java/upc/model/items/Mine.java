@@ -16,12 +16,13 @@ public class Mine extends Weapon {
     }
 
     @Override
-    public void useItem(GameWorld gameWorld, Alien shooter) {
+    public Projectile useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
         Projectile mineProj = createProjectile(shooter);
         gameWorld.getPhysicsEngine().addProjectile(mineProj, angle, power);
+        return mineProj;
     }
 
 

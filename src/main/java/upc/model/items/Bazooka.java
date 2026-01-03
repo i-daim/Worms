@@ -12,7 +12,7 @@ public class Bazooka extends Weapon {
     }
 
     @Override
-    public void useItem(GameWorld gameWorld, Alien shooter) {
+    public Projectile useItem(GameWorld gameWorld, Alien shooter) {
 
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
@@ -33,6 +33,7 @@ public class Bazooka extends Weapon {
 
         Projectile proj = new Rocket(this, shooter, startPos);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
+        return proj;
     }
 
     @Override

@@ -12,6 +12,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;

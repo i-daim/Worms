@@ -64,6 +64,9 @@ public class Inventory {
         if (allowedWeapons.contains(Item.Type.MINE)) {
             weaponStock.put(Item.Type.MINE, new Mine());
         }
+        if (allowedWeapons.contains(Item.Type.JETPACK)) {
+            weaponStock.put(Item.Type.JETPACK, new Jetpack());
+        }
 
         for (Item.Type t : ITEMS) {
             if (weaponStock.containsKey(t)) {
@@ -89,6 +92,9 @@ public class Inventory {
         }
         if (allowedWeapons.contains(Item.Type.BAZOOKA)) {
             addAmmo(Item.Type.BAZOOKA, 50);
+        }
+        if (allowedWeapons.contains(Item.Type.JETPACK)) {
+            addAmmo(Item.Type.JETPACK, 200);
         }
 
     }

@@ -3,8 +3,11 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import upc.model.entites.Alien;
+import upc.model.items.Item;
+import upc.model.items.Jetpack;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.GameManager;
+import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import org.junit.jupiter.api.Test;
 
@@ -85,6 +88,16 @@ public class TestAlien {
     @Test
     void testGetTeam() {
         assertEquals(team, alien.getTeam());
+    }
+
+    @Test
+    void testUseEquippedItemJetpack() {
+        alien.setSelectedItemIndex(5);
+
+
+        alien.useEquippedItem();
+
+        assertEquals(Alien.State.JUMP, alien.getState());
     }
 
 

@@ -144,61 +144,124 @@ public class Alien extends Entity {
     }
 
 ////    GETTERS & SETTERS    ////
+
+    /**
+     * Retourne les points de vie
+     * @return L'attribut heathPoints
+     */
     public int getHealthPoints() {
         return healthPoints;
     }
 
+    /**
+     * Retourne un boolean si un alien est vivant
+     * @return L'attribut alive
+     */
     public boolean isAlive() {
         return alive;
     }
 
+    /**
+     * Retourne l'équipe de l'alien
+     * @return L'attribut team
+     */
     public Team getTeam() {
         return team;
     }
 
+    /**
+     * Retourne l'angle de visée de l'alien
+     * @return L'attribut aimAngle
+     */
     public int getAimAngle() {
         return aimAngle;
     }
 
+    /**
+     * Retourne l'item équipé de l'alien
+     * @return l'item depuis l'inventaire
+     */
     public Item getEquippedItem() {
         return inventory.getItem(Inventory.ITEMS[selectedItemIndex]);
     }
 
+    /**
+     * Retourne l'indice de l'item selectionné
+     * @return L'attribut selectedItemIndex
+     */
     public int getSelectedItemIndex() {
         return selectedItemIndex;
     }
 
+    /**
+     * Modifie l'indice de l'item selectionné
+     * @param index : Pour sélectionner un autre item
+     */
     public void setSelectedItemIndex(int index) {
         this.selectedItemIndex = index;
     }
 
+    /**
+     * Retourne l'état de déplacement de l'alien
+     * @return L'attribut state
+     */
     public State getState() {
         return state;
     }
 
+    /**
+     * Modifie l'état de déplacement de l'alien
+     * @param state : Pour sélectionner un autre état de déplacement
+     */
     public void setState(State state) {
         this.state = state;
     }
 
+    /**
+     * Retourne un boolean si l'alien se déplace
+     * @return L'attribut direction
+     */
     public boolean getDirection() {
         return direction;
     }
 
+    /**
+     * Modifie le boolean de déplacement de l'alien
+     * @param direction : Pour sélectionner un autre boolean de déplacement
+     */
     public void setDirection(boolean direction) {
         this.direction = direction;
     }
 
+    /**
+     * Retourne la puissance de tir de l'alien
+     * @return L'attribut shootPower
+     */
     public int getShootPower() {
         return shootPower;
     }
 
+    /**
+     * Modifie la puissance de tir de l'alien
+     * @param power : Pour sélectionner la puissance de tir
+     */
     public void setShootPower(int power) {
         this.shootPower = power;
     }
 
+    /**
+     * Modifie l'angle de tir de l'alien
+     * @param angle : Pour sélectionner l'angle de tir
+     */
     public void setAimAngle(int angle) {
         this.aimAngle = angle;
     }
 
-    public Inventory getInventory() { return inventory; }
+    /**
+     * Retourne l'inventaire de l'alien
+     * @return L'attribut inventory
+     */
+    public Inventory getInventory() {
+        return inventory;
+    }
 }

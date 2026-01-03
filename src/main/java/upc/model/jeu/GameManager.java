@@ -32,7 +32,7 @@ public class GameManager {
     private final List<ActiveAnimation> activeAnimations;
 
     /**
-     * Constructeur
+     * Constructeur pour {@code GameManager}
      */
     public GameManager() {
         this.terrain = TerrainGenerator.chooseRandomMap();
@@ -49,7 +49,7 @@ public class GameManager {
     }
 
     /**
-     * Constructeur
+     * Constructeur pour {@code GameManager}
      * @param mapName : Crée le terrain de jeu selon le nom de terrain donnée
      */
     public GameManager(String mapName) {

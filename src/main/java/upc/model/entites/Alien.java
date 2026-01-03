@@ -177,4 +177,6 @@ public class Alien extends Entity {
     public void setAimAngle(int angle) {
         this.aimAngle = angle;
     }
+
+    public Inventory getInventory() { return inventory; }
 }

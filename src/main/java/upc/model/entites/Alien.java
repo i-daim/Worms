@@ -97,20 +97,16 @@ public class Alien extends Entity {
 ////    Autres Méthodes    ////
     public Projectile useEquippedItem() {
         Item item = inventory.getItemByIndex(selectedItemIndex);
-        if (item == null) {
-            return; // Sécurité
-        }
         Item.Type equippedItem = Inventory.getItemTypeAt(selectedItemIndex);
 
-        if (!inventory.isAvailable(equippedItem)) {
+        if (item == null || !inventory.isAvailable(equippedItem)) {
             return null;
         }
-        item.useItem(world, this);
-        inventory.useAmmo(equippedItem, 1);
         if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
             alienPhysics.flyAlien(this);
             setState(State.JUMP);
         }
+
         inventory.useAmmo(equippedItem, 1);
         return item.useItem(world, this);
     }

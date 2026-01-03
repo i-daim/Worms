@@ -311,7 +311,12 @@ public class GamePanel extends JPanel {
         );
         currentZoom += (targetZoom - currentZoom) * 0.05;
 
-        double targetCamX = (terrain.getWidth() - getWidth() / currentZoom) / 2;
+        double visibleWidth = getWidth() / currentZoom;
+        double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
+
+        double delayFactor = Math.min(1.0, Math.max(0.0, (gameManager.getDelay() - 50) / 200.0));
+
+        double targetCamX = delayFactor * maxCamX;
         double targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
 
         cameraX += (targetCamX - cameraX) * 0.1;

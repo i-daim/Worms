@@ -6,8 +6,11 @@ import upc.model.jeu.GameWorld;
 
 public class Grenade extends Weapon {
 
+    private static final int DAMAGE = 50;
+    private static final int RADIUS = 30;
+
     public Grenade() {
-        super("Grenade", 50, 3, 50);
+        super("Grenade", DAMAGE, 1, 50);
     }
 
     @Override
@@ -15,7 +18,7 @@ public class Grenade extends Weapon {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
-        Projectile proj = new Throwable(this, shooter, 3);
+        Projectile proj = new Throwable(this, shooter, 3, RADIUS);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
     }
 }

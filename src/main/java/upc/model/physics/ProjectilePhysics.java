@@ -18,6 +18,7 @@ import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
 import upc.model.items.Weapon;
+import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import upc.model.entites.projectiles.Bullet;
 
@@ -30,6 +31,7 @@ public class ProjectilePhysics {
     private final PhysicsEngine physicsEngine;
     private final World<Body> world;
     private final List<Projectile> activeProjectiles;
+    private final GameWorld gameWorld;
 
     private Vector2 wind = new Vector2(0, 0); // Vent (x, y)
 
@@ -38,6 +40,7 @@ public class ProjectilePhysics {
         this.physicsEngine = physicsEngine;
         this.world = physicsEngine.getWorld();
         this.activeProjectiles = new ArrayList<>();
+        this.gameWorld = physicsEngine.getGameWorld();
     }
 
     /**
@@ -156,6 +159,7 @@ public class ProjectilePhysics {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
         while (iterator.hasNext()) {
+
             Projectile proj = iterator.next();
             Body body = proj.getBody();
 
@@ -177,6 +181,9 @@ public class ProjectilePhysics {
                     proj.setState(Projectile.State.EXPLODED);
                 }
             }
+            if (proj instanceof Trap trap) {
+                trap.activation(gameWorld);
+            }
 
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
@@ -187,32 +194,11 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
+
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
-            }
-            if (proj instanceof Throwable || proj instanceof Trap) {
-                double triggerDistancePixels = 20.0;
-
-                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-                    if (!alien.isAlive()) {
-                        continue;
-                    }
-                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
-                        continue;
-                    }
-                    Position alienPos = alien.getPosition();
-                    double dx = alienPos.getX() - x;
-                    double dy = alienPos.getY() - y;
-                    double distSq = dx * dx + dy * dy;
-                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
-                        proj.setState(Projectile.State.EXPLODED);
-                        explodeProjectile(proj);
-                        world.removeBody(body);
-                        iterator.remove();
-                    }
-                }
             }
         }
     }
@@ -236,46 +222,50 @@ public class ProjectilePhysics {
         if (proj instanceof Bullet) {
             return;
         }
-        //Récupère les coordonnées du centre de l'explosion
-        // (position actuelle du/des projectiles en pixels)
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
-        int damage = proj.getDamage();
+        physicsEngine.getGameWorld().explode(explosionX, explosionY, proj);
 
-        physicsEngine.getGameWorld().explode(
-                explosionX, explosionY, radius, 0
-        );
+        for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
+            Position alienPos = alien.getPosition();
+            double distance = alienPos.distance(explosionX, explosionY);
 
-        for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-            // Ignore les aliens déjà morts (pas besoin de les blesser ou de les propulser)
-            if (!alien.isAlive()) {
-                continue;
-            }
+            double ratio = 1.0 - (distance / radius);
+            double knockbackForce = 50.0 * ratio;
 
-            Position wormPos = alien.getPosition();
-            double distance = wormPos.distance(explosionX, explosionY);
+            double dx = (alienPos.getX() - explosionX) / distance;
+            double dy = (alienPos.getY() - explosionY) / distance;
 
-            if (distance <= radius) {
-                // Calcul de l'atténuation des dégâts (Falloff linéaire)
-                double damageRatio = 1.0 - (distance / radius);
-                int finalDamage = (int) (damage * damageRatio);
-
-                if (finalDamage > 0) {
-                    alien.receiveDmg(finalDamage);
-                }
-
-                Body wormBody = physicsEngine.getAlienBodies().get(alien);
-                if (wormBody != null && distance > 0) {
-                    double knockbackForce = 50.0 * damageRatio;
-                    double dx = (wormPos.getX() - explosionX) / distance;
-                    double dy = (wormPos.getY() - explosionY) / distance;
-                    // Applique une impulsion immédiate au corps physique pour le projeter en l'air
-                    wormBody.applyImpulse(new Vector2(dx * knockbackForce, dy * knockbackForce));
-                }
+            Body alienBody = physicsEngine.getAlienBodies().get(alien);
+            if (alienBody != null) {
+                alienBody.applyImpulse(
+                        new Vector2(dx * knockbackForce, dy * knockbackForce)
+                );
             }
         }
     }
+
+
+    public void checkProjectileCollision(Body b1, Body b2) {
+        if (b1 != null && b1.getUserData() instanceof Projectile p) {
+
+            if (b2 != null && b2.getUserData() instanceof Alien alien) {
+                if (p.getShooter() == alien && p.getFrameCount() < 30) {
+                    return;
+                }
+            }
+            if (!p.isActive()) {
+                return;
+            }
+            if (p instanceof Rocket && b2 != null) {
+                p.setState(Projectile.State.EXPLODED);
+            } else if (p instanceof Bullet && b2 != null) {
+                handleBulletImpact((Bullet) p, b2);
+            }
+        }
+    }
+
 
     public void handleBulletImpact(Bullet bullet, Body target) {
         if (target == null || target.getUserData() instanceof Bullet) {

@@ -40,7 +40,8 @@ public class InventoryPanel extends JPanel {
     private InventoryPanel() {
 
     }
-    public static void drawCenteredBottom(Graphics2D g2, int screenWidth, int screenHeight, Alien alien) {
+    public static void drawCenteredBottom(Graphics2D g2, int screenWidth, int screenHeight,
+                                          Alien alien) {
         int x = (screenWidth - TOTAL_WIDTH) / 2;
         int y = screenHeight - TOTAL_HEIGHT - 80;
 
@@ -51,10 +52,13 @@ public class InventoryPanel extends JPanel {
      * Dessine l'inventaire complet avec un conteneur global stylisé.
      */
     public static void drawAlienInventory(Graphics2D g2, int drawX, int drawY, Alien alien) {
-        if (alien == null) return;
+        if (alien == null) {
+            return;
+        }
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 
         g2.setColor(new Color(0, 0, 0, 150));
@@ -115,7 +119,8 @@ public class InventoryPanel extends JPanel {
 
                     g2.setColor(Color.WHITE);
                     g2.setFont(new Font("Arial", Font.PLAIN, 12));
-                    g2.drawString(itemType.name().substring(0, 3), currentX + 10, currentY + SLOT_SIZE / 2);
+                    g2.drawString(itemType.name().substring(0, 3), currentX + 10,
+                            currentY + SLOT_SIZE / 2);
                 }
             }
 
@@ -131,7 +136,8 @@ public class InventoryPanel extends JPanel {
                 g2.setColor(isSelected ? new Color(255, 255, 0) : Color.WHITE);
 
                 int textWidth = g2.getFontMetrics().stringWidth(ammoText);
-                g2.drawString(ammoText, currentX + SLOT_SIZE - textWidth - 8, currentY + SLOT_SIZE - 8);
+                g2.drawString(ammoText, currentX + SLOT_SIZE - textWidth - 8,
+                        currentY + SLOT_SIZE - 8);
             }
 
 
@@ -140,7 +146,9 @@ public class InventoryPanel extends JPanel {
     }
 
     private static String formatEnumName(String name) {
-        if (name == null || name.isEmpty()) return "";
+        if (name == null || name.isEmpty()) {
+            return "";
+        }
         return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 }

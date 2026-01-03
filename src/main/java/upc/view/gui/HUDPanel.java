@@ -60,10 +60,12 @@ public class HUDPanel extends JPanel {
             if (!gameManager.isOver()) {
                 gameManager.skipTurn();
             }
-            this.getRootPane().requestFocusInWindow();
+            if (getParent() != null) {
+                getParent().requestFocusInWindow();
+            }
         });
         skipButton.setFocusable(false);
-        skipButton.setBounds(20, 60, 100, 35);
+        skipButton.setBounds(20, 100, 100, 35);
         skipButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
         this.add(skipButton);
     }
@@ -74,16 +76,17 @@ public class HUDPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int width = getWidth();
         int height = getHeight();
         drawTopBar(g2);
         drawCurrentWeapon(g2);
-        int invWidth = InventoryPanel.TOTAL_WIDTH;
         int invHeight = InventoryPanel.TOTAL_HEIGHT;
-        int invX = 60;
+        int invX = 100;
         int invY = height - invHeight - 80;
         if (inventoryButton != null) {
-            int btnX = invX + invWidth + 10;
+            int btnX = invX - 80 - 10;
+            if (btnX < 10) {
+                btnX = 10;
+            }
             int btnY = invY + invHeight - 40;
             inventoryButton.setBounds(btnX, btnY, 80, 40);
         }

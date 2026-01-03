@@ -72,12 +72,22 @@ public class GameManager {
         countTimeLeft();
     }
 
+
+    /// Gestion de la partie ////
+
+    /**
+     * Méthode permettant d'initialiser la partie
+     */
     private void initializeGame() {
+
+        //Initialise les équipes dans le terrain de jeu
         teams[0].initializeTeam(gameWorld, mapName, 0);
         teams[1].initializeTeam(gameWorld, mapName, 1);
 
+        //Initialise la physique du jeu
         gameWorld.initializePhysics();
 
+        //Lance les attributs en lien avec la partie
         this.activeTeamIndex = 0;
         this.currentRound = 1;
         this.timeLeft = ROUND_TIME;
@@ -86,8 +96,6 @@ public class GameManager {
 
         SoundManager.playVoice(0);
     }
-
-    /// Gestion des tours ////
 
     /**
      * Méthode permettant de passser son tour volontairement
@@ -135,6 +143,19 @@ public class GameManager {
         }
     }
 
+    /**
+     * Méthode permettant de vérifier si une partie est finie ou non
+     * Parcourt les équipes et si une est éliminée
+     * Change l'attrbut gameOver en true
+     */
+    private void checkGameOver() {
+        for (Team team : teams) {
+            if (team.isEliminated()) {
+                gameOver = true;
+                return;
+            }
+        }
+    }
     private int frameCounter = 0;
 
     public void countTimeLeft() {
@@ -149,20 +170,6 @@ public class GameManager {
         }
     }
 
-
-    /**
-     * Méthode permettant de vérifier si une partie est finie ou non
-     * Parcourt les équipes et si une est éliminée
-     * Change l'attrbut gameOver en true
-     */
-    private void checkGameOver() {
-        for (Team team : teams) {
-            if (team.isEliminated()) {
-                gameOver = true;
-                return;
-            }
-        }
-    }
 
     /**
      * Méthode permettant d'infliger des dégats à un alien à une position donnée

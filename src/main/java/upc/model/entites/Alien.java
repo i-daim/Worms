@@ -76,7 +76,8 @@ public class Alien extends Entity {
 
 ////    Mouvements de l'alien    ////
 
-    /** Méthode permettant de déplacer un alien vers la droite
+    /**
+     * Méthode permettant de déplacer un alien vers la droite
      */
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
@@ -84,7 +85,8 @@ public class Alien extends Entity {
         direction = true;
     }
 
-    /** Méthode permettant de déplacer un alien vers la gauche
+    /**
+     * Méthode permettant de déplacer un alien vers la gauche
      */
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
@@ -92,14 +94,16 @@ public class Alien extends Entity {
         direction = false;
     }
 
-    /** Méthode permettant à un alien de sauter
+    /**
+     * Méthode permettant à un alien de sauter
      */
     public void jump() {
         alienPhysics.jumpAlien(this);
         setState(State.JUMP);
     }
 
-    /** Méthode permettant de rendre alien immobile
+    /**
+     * Méthode permettant de rendre alien immobile
      */
     public void idle() {
         alienPhysics.moveAlien(this, 0);
@@ -109,7 +113,8 @@ public class Alien extends Entity {
 
 ////    Autres Méthodes    ////
 
-    /**Méthode en lien avec l'utilisation d'item
+    /**
+     * Méthode en lien avec l'utilisation d'item
      */
     public void useEquippedItem() {
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
@@ -133,7 +138,8 @@ public class Alien extends Entity {
         }
     }
 
-    /**Méthode permettant d'infliger des dégats à un alien
+    /**
+     * Méthode permettant d'infliger des dégats à un alien
      * @param damage : Dégats à infliger à l'alien
      */
     public void receiveDmg(int damage) {

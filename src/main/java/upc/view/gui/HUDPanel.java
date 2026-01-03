@@ -151,10 +151,31 @@ public class HUDPanel extends JPanel {
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
 
         // Indice de puissance de tir
-        g2.setColor(Color.RED);
         int power = alien.getShootPower();
-        g2.drawRect(10, 0, power, 10);
-        g2.fillRect(10, 0, power, 10);
+        
+        // Dimensions du cône
+        int coneLength = power / 2; 
+        int coneWidth = 4 + (power / 8); 
+
+        if (power < 30) {
+            g2.setColor(Color.GREEN);
+        } else if (power < 70) {
+            g2.setColor(Color.ORANGE);
+        } else {
+            g2.setColor(Color.RED);
+        }
+
+        if (power > 0) {
+            int startX = 15;
+            // Points du triangle (cône)
+            int[] xPoints = {startX, startX + coneLength, startX + coneLength};
+            int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
+            
+            g2.fillPolygon(xPoints, yPoints, 3);
+            
+            g2.setColor(Color.BLACK);
+            g2.drawPolygon(xPoints, yPoints, 3);
+        }
 
         // Viseur représenté par un cercle
         int distance = 50;

@@ -205,6 +205,8 @@ public class GameManager {
      * @param x : Donne une position en x
      * @param y : Donne une position en y
      * @param damage : Dégat à infliger
+     * @return l'objet {@link Alien} ciblé
+     * ou {@code null} si les dégats sélectionnés sont invalide ou actionDone est vrai
      * */
     public Alien attackPosition(int x, int y, int damage) {
         if (actionDone || damage < 0) {
@@ -289,6 +291,8 @@ public class GameManager {
     /**
      * Retourne l'équipe à l'indice donnée
      * @param index : Pour sélectionner l'équipe équipe à la position teams[index]
+     * @return {@code null}
+     * ou l'objet {@link Team} si l'index est valide
      */
     public Team getTeam(int index) {
         if (index >= 0 && index < teams.length) {
@@ -347,7 +351,8 @@ public class GameManager {
 
     /**
      * Retourne l'équipe gagnante
-     * @return l'équipe qui n'est pas éliminée
+     * @return {@code null} si gameOver est false
+     * ou l'objet {@link Team} représentant l'équipe non éliminée
      */
     public Team getWinningTeam() {
         if (!gameOver) {
@@ -365,7 +370,7 @@ public class GameManager {
 
     /**
      * Retourne le nombre de aliens vivants
-     * @return un entier représentant le nombre d'aliens vivants dans une équipe
+     * @return un entier {@link int} représentant le nombre d'aliens vivants dans une équipe
      */
     public int getAliveWorms() {
         int total = 0;
@@ -396,7 +401,8 @@ public class GameManager {
      * Retourne un alien si il se trouve à une position donnée
      * @param x : Donne une position en x
      * @param y : Donne une position en y
-     * @return l'alien qui a une position égale à celle donnée en paramètre
+     * @return {@code null}
+     * ou l'objet {@link Alien} si l'alien a une position égale à celle donnée en paramètre
      */
     public Alien getAlienAtPosition(int x, int y) {
         for (Team team : teams) {

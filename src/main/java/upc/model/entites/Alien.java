@@ -31,7 +31,8 @@ public class Alien extends Entity {
     public enum State {
         IDLE,
         WALK,
-        JUMP
+        JUMP,
+        FLY
     }
     private State state;
 

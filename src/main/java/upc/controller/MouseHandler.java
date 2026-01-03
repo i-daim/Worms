@@ -1,5 +1,6 @@
 package upc.controller;
 
+import upc.model.entites.Alien;
 import upc.view.gui.GamePanel;
 
 import java.awt.Point;
@@ -55,6 +56,43 @@ public class MouseHandler extends MouseAdapter {
 
         return position.x > width - limit || position.x < limit
                 || position.y > height - limit || position.y < limit;
+    }
+
+    public void handleAim(Alien activeAlien, double cameraX, double cameraY, double zoom) {
+        if (position != null) {
+            // Convertit la position de la souris en coordonnées utilisables
+            double worldX = cameraX + position.x / zoom;
+            double worldY = cameraY + position.y / zoom;
+
+            // Calcule l'angle entre l'alien et la souris
+            double deltaX = worldX - activeAlien.getPosition().getX();
+            double deltaY = worldY - activeAlien.getPosition().getY();
+
+            // L'axe pour Y est inversé donc on inverse Y
+            double angleRad = Math.atan2(-deltaY, deltaX);
+            int angleDeg = (int) Math.toDegrees(angleRad);
+
+            // Ajuste l'angle et la direction de l'alien
+            if (deltaX < 0) {
+                activeAlien.setDirection(false);
+                angleDeg = 180 - Math.abs(angleDeg);
+                if (deltaY > 0) {
+                    angleDeg = -angleDeg;
+                }
+            } else {
+                activeAlien.setDirection(true);
+            }
+
+            // Pour limiter l'angle
+            if (angleDeg > 80) {
+                angleDeg = 80;
+            }
+            if (angleDeg < -80) {
+                angleDeg = -80;
+            }
+
+            activeAlien.setAimAngle(angleDeg);
+        }
     }
 
     public void handleCameraScroll(GamePanel gamePanel) {

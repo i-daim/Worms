@@ -5,8 +5,6 @@ import upc.model.items.Item;
 import upc.model.items.Weapon;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.Team;
-import upc.model.jeu.GameManager;
-import upc.model.items.Item;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -28,12 +26,43 @@ public class HUDPanel extends JPanel {
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;
-
         this.setOpaque(false);
-        this.setLayout(null); // pour positionner le bouton librement
+        this.setLayout(null);
         this.setPreferredSize(new Dimension(800, 100));
 
         addSkipButton();
+        addInventoryToggleButton();
+    }
+
+    private void addInventoryToggleButton() {
+        inventoryButton = ButtonManager.createGameButton("SAC");
+
+        inventoryButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+        inventoryButton.addActionListener(e -> {
+            isInventoryVisible = !isInventoryVisible;
+            inventoryButton.setText(isInventoryVisible ? "CACHER" : "SAC");
+            this.repaint();
+            this.getRootPane().requestFocusInWindow();
+        });
+        inventoryButton.setFocusable(false);
+        inventoryButton.setBounds(0, 0, 80, 30);
+
+        this.add(inventoryButton);
+    }
+
+    private void addSkipButton() {
+        JButton skipButton = ButtonManager.createGameButton("PASSER");
+        skipButton.addActionListener(e -> {
+            if (!gameManager.isOver()) {
+                gameManager.skipTurn();
+            }
+            this.getRootPane().requestFocusInWindow();
+        });
+        skipButton.setFocusable(false);
+        skipButton.setBounds(20, 60, 100, 35);
+        skipButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        this.add(skipButton);
     }
 
     @Override

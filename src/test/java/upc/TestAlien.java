@@ -100,6 +100,42 @@ public class TestAlien {
         assertEquals(Alien.State.JUMP, alien.getState());
     }
 
+    @Test
+    void testUseEquippedWeapon(){
+
+        alien.setSelectedItemIndex(0);
+        Item.Type equippedItem = Inventory.ITEMS[alien.getSelectedItemIndex()];
+        int ammo = alien.getInventory().getAmmo(equippedItem);
+        alien.useEquippedItem();
+        assertEquals(alien.getInventory().getAmmo(equippedItem), ammo - 1);
+
+        alien.setSelectedItemIndex(1);
+        equippedItem = Inventory.ITEMS[alien.getSelectedItemIndex()];
+        ammo = alien.getInventory().getAmmo(equippedItem);
+        alien.useEquippedItem();
+        assertEquals(alien.getInventory().getAmmo(equippedItem), ammo - 1);
+
+        alien.setSelectedItemIndex(2);
+        equippedItem = Inventory.ITEMS[alien.getSelectedItemIndex()];
+        ammo = alien.getInventory().getAmmo(equippedItem);
+        alien.useEquippedItem();
+        assertEquals(alien.getInventory().getAmmo(equippedItem), ammo - 1);
+
+        alien.setSelectedItemIndex(3);
+        equippedItem = Inventory.ITEMS[alien.getSelectedItemIndex()];
+        ammo = alien.getInventory().getAmmo(equippedItem);
+        alien.useEquippedItem();
+        assertEquals(alien.getInventory().getAmmo(equippedItem), ammo - 1);
+
+
+        alien.setSelectedItemIndex(4);
+        equippedItem = Inventory.ITEMS[alien.getSelectedItemIndex()];
+        ammo = alien.getInventory().getAmmo(equippedItem);
+        alien.useEquippedItem();
+        assertEquals(alien.getInventory().getAmmo(equippedItem), ammo - 1);
+
+    }
+
 
 
 

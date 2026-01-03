@@ -11,7 +11,10 @@ public class MouseHandler extends MouseAdapter {
 
     private Point position = new Point(0, 0);
     private final HashSet<Integer> pressedButtons = new HashSet<>();
+    private final HashSet<Integer> justPressedButtons = new HashSet<>();
 
+
+////    EVENTS    ////
     @Override
     public void mouseMoved(MouseEvent e) {
         this.position = e.getPoint();
@@ -19,6 +22,9 @@ public class MouseHandler extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (!pressedButtons.contains(e.getButton())) {
+            justPressedButtons.add(e.getButton());
+        }
         pressedButtons.add(e.getButton());
     }
 
@@ -27,12 +33,10 @@ public class MouseHandler extends MouseAdapter {
         pressedButtons.remove(e.getButton());
     }
 
-    public Point getPosition() {
-        return position;
-    }
 
-    public boolean isPressed(int buttonCode) {
-        return pressedButtons.contains(buttonCode);
+////    FONCTIONS    ////
+    public void clearJustPressed() {
+        justPressedButtons.clear();
     }
 
     public boolean isMouseNearEdge(GamePanel gamePanel) {
@@ -51,4 +55,19 @@ public class MouseHandler extends MouseAdapter {
         return position.x > width - limit || position.x < limit
                 || position.y > height - limit || position.y < limit;
     }
+
+////    GETTERS    ////
+    public Point getPosition() {
+        return position;
+    }
+
+    public boolean isPressed(int buttonCode) {
+        return pressedButtons.contains(buttonCode);
+    }
+
+    public boolean isJustPressed(int buttonCode) {
+        return justPressedButtons.contains(buttonCode);
+    }
+
+
 }

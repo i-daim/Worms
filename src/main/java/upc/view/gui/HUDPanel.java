@@ -69,38 +69,54 @@ public class HUDPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-
+        int width = getWidth();
+        int height = getHeight();
         drawTopBar(g2);
         drawCurrentWeapon(g2);
+        int invWidth = InventoryPanel.TOTAL_WIDTH;
+        int invHeight = InventoryPanel.TOTAL_HEIGHT;
+        int invX = 60;
+        int invY = height - invHeight - 80;
+        if (inventoryButton != null) {
+            int btnX = invX + invWidth + 10;
+            int btnY = invY + invHeight - 40;
+            inventoryButton.setBounds(btnX, btnY, 80, 40);
+        }
+
+        if (isInventoryVisible) {
+            InventoryPanel.drawAlienInventory(g2, invX, invY, gameManager.getActiveAlien());
+        }
+
+        g2.dispose();
+    }
+    private void drawTopBar(Graphics2D g2) {
+        int width = this.getWidth();
+        int height = 50;
+        g2.setColor(new Color(0, 0, 0, 180));
+        g2.fillRect(0, 0, width, height);
+        drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
     }
 
+    private void drawTurnTimer(Graphics2D g2, int x, int y) {
+        int timeLeft = gameManager.getTimeLeft();
+        if (timeLeft <= 5) g2.setColor(new Color(200, 0, 0, 200));
+        else g2.setColor(new Color(255, 255, 255, 50));
 
-    private void addSkipButton() {
-        JButton skipButton = ButtonManager.createGameButton("Passer");
-        // passer le tour quand on clique
-        skipButton.addActionListener(e -> {
-            if (!gameManager.isOver()) {
-                gameManager.skipTurn();
-            }
-        });
-        // Empêche le bouton de prendre le focus clavier.
-        // Sinon après un clic, les flèches contrôleraient plus l'alien
-        skipButton.setFocusable(false);
-        // Positionnement et taille
-        skipButton.setBounds(20, 5, 120, 40);
-        skipButton.setFont(new Font("Arial", Font.BOLD, 16));
-        this.add(skipButton);
+        g2.fillRoundRect(x, y, 100, 40, 10, 10);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        String text = String.format("%02d", timeLeft);
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+        g2.drawString(text, x + (100 - textWidth) / 2, y + 28);
     }
-
 
     private void drawCurrentWeapon(Graphics2D g2) {
         Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null) {
-            return;
-        }
+        if (activeAlien == null) return;
+
         Item currentItem = activeAlien.getEquippedItem();
         if (currentItem instanceof Weapon) {
             Weapon weapon = (Weapon) currentItem;
@@ -114,27 +130,15 @@ public class HUDPanel extends JPanel {
             g2.setColor(new Color(0, 0, 0, 150));
             g2.fillRoundRect(x, y, boxW, boxH, 15, 15);
             g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 18));
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 18));
             g2.drawString(weapon.getName(), x + 15, y + 30);
 
-            String ammo = (weapon.getNbOfShots() < 0) ? "Infini" : "x" + weapon.getNbOfShots();
-            g2.setFont(new Font("Arial", Font.PLAIN, 14));
+            String ammo = (weapon.getNbOfShots() < 0) ? "∞" : "x" + weapon.getNbOfShots();
+            g2.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             g2.setColor(Color.YELLOW);
             g2.drawString(ammo, x + 140, y + 30);
         }
     }
-
-
-    private void drawTopBar(Graphics2D g2) {
-        int width = this.getWidth();
-        int height = 50;
-
-        g2.setColor(new Color(0, 0, 0, 180));
-        g2.fillRect(0, 0, width, height);
-
-        drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
-    }
-
 
     public void drawAlienInfo(Graphics2D g2, GameManager gameManager) {
         for (Team team : gameManager.getTeams()) {
@@ -147,112 +151,79 @@ public class HUDPanel extends JPanel {
 
                     if (active) {
                         drawAlienAim(g2, alien);
-                        drawEquippedWeapon(g2, alien);
+                        drawEquippedWeaponText(g2, alien);
                     }
                 }
             }
         }
     }
 
-
-    private void drawAlienAim(Graphics2D g2, Alien alien) {
-        // "Sauvegarde" de l'état des graphiques pour ne transformer que le viseur
-        AffineTransform originalTransform = g2.getTransform();
-
-        int centerX = alien.getPosition().getX();
-        int centerY = alien.getPosition().getY();
-        g2.translate(centerX, centerY);
-
-        // Inverse le viseur si l'alien est tourné à gauche
-        if (!alien.getDirection()) {
-            g2.scale(-1, 1);
-        }
-
-        // Rotation du viseur en fonction de l'angle
-        g2.rotate(Math.toRadians(-alien.getAimAngle()));
-
-        int distance = 20;
-        int width = 25;
-        int height = 6;
-
-        // Bordures noires pour le viseur
-        g2.setColor(Color.BLACK);
-        g2.drawRect(distance, -height / 2, width, height);
-
-        // Rectangle transparent blanc
-        g2.setColor(new Color(255, 255, 255, 150));
-        g2.fillRect(distance + 1, -height / 2 + 1, width - 1, height - 1);
-
-        // Flèche au bout du viseur
-        g2.setColor(Color.BLACK);
-        int arrowX = distance + width + 1;
-        int[] xPoints = {arrowX, arrowX + 5, arrowX};
-        int[] yPoints = {-4, 0, 4};
-        g2.fillPolygon(xPoints, yPoints, 3);
-
-        g2.setTransform(originalTransform);
-    }
-
-
-    private void drawEquippedWeapon(Graphics2D g2, Alien alien) {
-        Item item = alien.getEquippedItem();
-        if (item == null) {
-            return;
-        }
-        int posX = alien.getPosition().getX();
-        int posY = alien.getPosition().getY();
-
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 12));
-        String text = alien.getEquippedItem().getName();
-        int textWidth = g2.getFontMetrics().stringWidth(text);
-
-        g2.drawString(text, posX - textWidth / 2, posY - 42);
-    }
-
-
     private void drawAlienHealthBar(Graphics2D g2, Alien alien, boolean active) {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
-
-        int barWidth = 30;
-        int barHeight = 5;
+        int barWidth = 40;
+        int barHeight = 6;
         int barX = posX - barWidth / 2;
-        int barY = posY - 25;
+        int barY = posY - 35;
 
         g2.setColor(Color.BLACK);
-        g2.fillRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2);
+        g2.fillRoundRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2, 4, 4);
 
-        // Barre de vie
         int hp = alien.getHealthPoints();
-        int healthWidth = (int) ((hp / 100.0) * barWidth);
+        int maxHp = 100;
+        int healthWidth = (int) (((double)Math.max(0, hp) / maxHp) * barWidth);
 
-        Color healthColor = hp > 60 ? Color.GREEN : hp > 25 ? Color.ORANGE : Color.RED;
+        Color healthColor = hp > 60 ? new Color(50, 205, 50) : hp > 25 ? Color.ORANGE : Color.RED;
         g2.setColor(healthColor);
-        g2.fillRect(barX, barY, healthWidth, barHeight);
+        g2.fillRoundRect(barX, barY, healthWidth, barHeight, 4, 4);
 
-        // Indicateur en triangle si le worm est actif
         if (active) {
-            g2.setColor(Color.RED);
-            int[] xPoints = {posX, posX - 6, posX + 6};
+            g2.setColor(new Color(255, 50, 50));
+            int[] xPoints = {posX, posX - 5, posX + 5};
             int[] yPoints = {barY - 5, barY - 12, barY - 12};
             g2.fillPolygon(xPoints, yPoints, 3);
         }
     }
 
-    private void drawTurnTimer(Graphics2D g2, int x, int y) {
-        int timeLeft = gameManager.getTimeLeft();
+    private void drawAlienAim(Graphics2D g2, Alien alien) {
+        AffineTransform originalTransform = g2.getTransform();
+        int centerX = alien.getPosition().getX();
+        int centerY = alien.getPosition().getY();
 
+        g2.translate(centerX, centerY);
+        if (!alien.getDirection()) {
+            g2.scale(-1, 1);
+        }
+        g2.rotate(Math.toRadians(-alien.getAimAngle()));
+
+        int distance = 25;
+        g2.setColor(new Color(255, 255, 255, 150));
+        g2.setStroke(new java.awt.BasicStroke(1f, java.awt.BasicStroke.CAP_BUTT,
+                java.awt.BasicStroke.JOIN_MITER, 10.0f, new float[]{5.0f}, 0.0f));
+        g2.drawLine(distance, 0, distance + 40, 0);
+
+        g2.setStroke(new java.awt.BasicStroke(1.5f));
+        g2.setColor(Color.RED);
+        int targetX = distance + 40;
+        g2.drawLine(targetX - 3, 0, targetX + 3, 0);
+        g2.drawLine(targetX, -3, targetX, 3);
+
+        g2.setTransform(originalTransform);
+    }
+
+    private void drawEquippedWeaponText(Graphics2D g2, Alien alien) {
+        Item item = alien.getEquippedItem();
+        if (item == null) return;
+        int posX = alien.getPosition().getX();
+        int posY = alien.getPosition().getY();
         g2.setColor(Color.WHITE);
-        g2.fillRoundRect(x, y, 100, 40, 10, 10);
-
-        g2.setColor(Color.DARK_GRAY);
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
-        String text = String.format("%02d", timeLeft);
-        int textWidth = g2.getFontMetrics().stringWidth(text);
-        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
-
-        g2.setFont(new Font("Arial", Font.PLAIN, 14));
-        g2.drawString("TIME", x + 35, y + 15);
+        g2.setFont(new Font("Arial", Font.BOLD, 11));
+        String text = item.getName();
+        int textX = posX - g2.getFontMetrics().stringWidth(text) / 2;
+        int textY = posY - 45;
+        g2.setColor(Color.BLACK);
+        g2.drawString(text, textX + 1, textY + 1);
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, textX, textY);
     }
 }

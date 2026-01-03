@@ -106,6 +106,13 @@ public class ProjectilePhysics {
         body.translate(startX, startY);
         double angleRad = Math.toRadians(angleDegrees);
 
+        Alien shooter = projectile.getShooter();
+        boolean facingRight = shooter.getDirection();
+
+        if (!facingRight) {
+            angleRad = Math.PI - angleRad;
+        }
+
         double baseVelocity = projectile.getWeapon().getSpeed();
         double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
 

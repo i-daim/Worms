@@ -1,7 +1,6 @@
 package upc.view.gui;
 
 import upc.model.entites.Alien;
-import upc.model.items.Weapon;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.items.Item;
@@ -39,7 +38,7 @@ public class HUDPanel extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         drawTopBar(g2);
-        drawCurrentWeapon(g2);
+        drawWeaponInfo(g2);
     }
 
 
@@ -61,35 +60,7 @@ public class HUDPanel extends JPanel {
     }
 
 
-    private void drawCurrentWeapon(Graphics2D g2) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null) {
-            return;
-        }
-        Item currentItem = activeAlien.getEquippedItem();
-        if (currentItem instanceof Weapon) {
-            Weapon weapon = (Weapon) currentItem;
-            int width = getWidth();
-            int boxW = 200;
-            int boxH = 50;
-            // Positionné à droite
-            int x = width - boxW - 20;
-            int y = 10;
-
-            g2.setColor(new Color(0, 0, 0, 150));
-            g2.fillRoundRect(x, y, boxW, boxH, 15, 15);
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 18));
-            g2.drawString(weapon.getName(), x + 15, y + 30);
-
-            String ammo = (weapon.getNbOfShots() < 0) ? "Infini" : "x" + weapon.getNbOfShots();
-            g2.setFont(new Font("Arial", Font.PLAIN, 14));
-            g2.setColor(Color.YELLOW);
-            g2.drawString(ammo, x + 140, y + 30);
-        }
-    }
-
-
+////    AFFICHAGE DU HUD EN HAUT DE L'ECRAN    ////
     private void drawTopBar(Graphics2D g2) {
         int width = this.getWidth();
         int height = 50;
@@ -100,7 +71,50 @@ public class HUDPanel extends JPanel {
         drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
     }
 
+    private void drawTurnTimer(Graphics2D g2, int x, int y) {
+        int timeLeft = gameManager.getTimeLeft();
 
+        g2.setColor(Color.WHITE);
+        g2.fillRoundRect(x, y, 100, 40, 10, 10);
+
+        g2.setColor(Color.DARK_GRAY);
+        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        String text = String.format("%02d", timeLeft);
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
+
+        g2.setFont(new Font("Arial", Font.PLAIN, 14));
+        g2.drawString("TIME", x + 35, y + 15);
+    }
+
+    private void drawWeaponInfo(Graphics2D g2) {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien == null) {
+            return;
+        }
+        Item currentItem = activeAlien.getEquippedItem();
+        if (currentItem instanceof Item item) {
+            int boxW = 200;
+            int boxH = 50;
+            int x = getWidth() - boxW - 20;
+            int y = 5;
+
+            g2.setColor(new Color(0, 0, 0, 150));
+            g2.fillRoundRect(x, y, boxW, boxH, 15, 15);
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 18));
+            g2.drawString(item.getName(), x + 15, y + 30);
+
+            int ammo = activeAlien.getTeam().getInventory().getAmmo(item.getType());
+            String info = (ammo < 0) ? "Infini" : "x" + ammo;
+            g2.setFont(new Font("Arial", Font.PLAIN, 14));
+            g2.setColor(Color.YELLOW);
+            g2.drawString(info, x + 140, y + 30);
+        }
+    }
+
+
+////    AFFICHAGE POUR LES ALIENS    ////
     public void drawAlienInfo(Graphics2D g2, GameManager gameManager) {
         for (Team team : gameManager.getTeams()) {
             for (Alien alien : team.getAliens()) {
@@ -136,25 +150,20 @@ public class HUDPanel extends JPanel {
         // Rotation du viseur en fonction de l'angle
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
 
-        int distance = 20;
-        int width = 25;
-        int height = 6;
+        // Viseur représenté par un cercle
+        int distance = 50;
+        int radius = 6;
 
-        // Bordures noires pour le viseur
-        g2.setColor(Color.BLACK);
-        g2.drawRect(distance, -height / 2, width, height);
+        g2.setColor(Color.RED);
+        int circleX = distance + radius;
+        int circleY = -7;
+        g2.drawOval(circleX, circleY, radius, radius);
 
-        // Rectangle transparent blanc
-        g2.setColor(new Color(255, 255, 255, 150));
-        g2.fillRect(distance + 1, -height / 2 + 1, width - 1, height - 1);
+        // Croix au milieu
+        g2.drawLine(circleX, circleY + 3, circleX + 6, circleY + 3);
+        g2.drawLine(circleX + 3, circleY, circleX + 3, circleY + 6);
 
-        // Flèche au bout du viseur
-        g2.setColor(Color.BLACK);
-        int arrowX = distance + width + 1;
-        int[] xPoints = {arrowX, arrowX + 5, arrowX};
-        int[] yPoints = {-4, 0, 4};
-        g2.fillPolygon(xPoints, yPoints, 3);
-
+        // On revient à l'état original
         g2.setTransform(originalTransform);
     }
 
@@ -203,21 +212,5 @@ public class HUDPanel extends JPanel {
             int[] yPoints = {barY - 5, barY - 12, barY - 12};
             g2.fillPolygon(xPoints, yPoints, 3);
         }
-    }
-
-    private void drawTurnTimer(Graphics2D g2, int x, int y) {
-        int timeLeft = gameManager.getTimeLeft();
-
-        g2.setColor(Color.WHITE);
-        g2.fillRoundRect(x, y, 100, 40, 10, 10);
-
-        g2.setColor(Color.DARK_GRAY);
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
-        String text = String.format("%02d", timeLeft);
-        int textWidth = g2.getFontMetrics().stringWidth(text);
-        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
-
-        g2.setFont(new Font("Arial", Font.PLAIN, 14));
-        g2.drawString("TIME", x + 35, y + 15);
     }
 }

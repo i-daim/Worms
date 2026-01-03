@@ -99,8 +99,10 @@ public class GameController {
         // Ne centre pas la caméra si la souris est sur le bord
         if (!mouseHandler.isMouseNearEdge(gamePanel)) {
             Alien activeAlien = gameManager.getActiveAlien();
-            if (activeAlien != null && activeAlien.isAlive()) {
-                gamePanel.centralizeCamera(activeAlien);
+            if (gameManager.isPaused()) {
+                gamePanel.unzoomCamera();
+            } else if (activeAlien != null && activeAlien.isAlive()) {
+                gamePanel.centerCamera(activeAlien);
             }
         }
 

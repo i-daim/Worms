@@ -29,8 +29,13 @@ public class Alien extends Entity {
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {
+        //Immobile
         IDLE,
+
+        //En marche
         WALK,
+
+        //En saut
         JUMP
     }
     private State state;
@@ -70,23 +75,32 @@ public class Alien extends Entity {
     }
 
 ////    Mouvements de l'alien    ////
+
+    /** Méthode permettant de déplacer un alien vers la droite
+     */
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
         setState(State.WALK);
         direction = true;
     }
 
+    /** Méthode permettant de déplacer un alien vers la gauche
+     */
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
         setState(State.WALK);
         direction = false;
     }
 
+    /** Méthode permettant à un alien de sauter
+     */
     public void jump() {
         alienPhysics.jumpAlien(this);
         setState(State.JUMP);
     }
 
+    /** Méthode permettant de rendre alien immobile
+     */
     public void idle() {
         alienPhysics.moveAlien(this, 0);
         setState(State.IDLE);
@@ -98,11 +112,9 @@ public class Alien extends Entity {
     /**Méthode en lien avec l'utilisation d'item
      */
     public void useEquippedItem() {
-
-        //Appel l'item équipé
+        
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
 
-        //
         if (!inventory.isAvailable(equippedItem)) {
             return;
         }
@@ -218,7 +230,7 @@ public class Alien extends Entity {
     }
 
     /**
-     * Retourne un boolean si l'alien se déplace
+     * Retourne le sens de déplacement de l'alien
      * @return L'attribut direction
      */
     public boolean getDirection() {
@@ -226,8 +238,8 @@ public class Alien extends Entity {
     }
 
     /**
-     * Modifie le boolean de déplacement de l'alien
-     * @param direction : Pour sélectionner un autre boolean de déplacement
+     * Modifie le sens de déplacement de l'alien
+     * @param direction : Pour sélectionner un autre sens de déplacement
      */
     public void setDirection(boolean direction) {
         this.direction = direction;

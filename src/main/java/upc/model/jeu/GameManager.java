@@ -150,6 +150,11 @@ public class GameManager {
     }
 
 
+    /**
+     * Méthode permettant de vérifier si une partie est finie ou non
+     * Parcourt les équipes et si une est éliminée
+     * Change l'attrbut gameOver en true
+     */
     private void checkGameOver() {
         for (Team team : teams) {
             if (team.isEliminated()) {
@@ -159,17 +164,32 @@ public class GameManager {
         }
     }
 
+    /**
+     * Méthode permettant d'infliger des dégats à un alien à une position donnée
+     * @param x : Donne une position en x
+     * @param y : Donne une position en y
+     * @param damage : Dégat à infliger
+     * */
     public Alien attackPosition(int x, int y, int damage) {
         if (actionDone || damage < 0) {
             return null;
         }
 
         Alien target = getAlienAtPosition(x, y);
+
+        //Si un alien existe à la position donnée
         if (target != null) {
+
+            //Inflige des dégats
             target.receiveDmg(damage);
+
+            //Vérifie si partie est finie suite à ça
             checkGameOver();
+
             actionDone = true;
         }
+
+        //Renvoie l'alien ciblé
         return target;
     }
 

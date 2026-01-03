@@ -45,6 +45,7 @@ public class SoundManager {
         if (currentMusic != null) {
             currentMusic.play();
             currentMusic.loop();
+            currentMusic.setVolume(-10f);
         }
     }
 
@@ -61,6 +62,7 @@ public class SoundManager {
         Sound effect = EFFECTS.get(name);
         if (effect != null) {
             effect.play();
+            effect.setVolume(-5f);
         }
     }
 
@@ -74,6 +76,7 @@ public class SoundManager {
         }
         if (index >= 0 && index < voices.length && voices[index] != null) {
             voices[index].play();
+            voices[index].setVolume(-5f);
         }
     }
 

@@ -14,16 +14,18 @@ public class SpawnPoints {
     static {
         // Equipe 1
         LIBERTY_SPAWNS.put(0, Arrays.asList(
-                new Position(150, 280),  // Missile à gauche
-                new Position(890, 30),   // Tête de statue
-                new Position(1350, 280)  // Tank (gauche)
+                new Position(150, 280),   // Missile (Left)
+                new Position(890, 145),    // Statue Head (Top)
+                new Position(1350, 280),   // Tank (Left slope)
+                new Position(960, 580)  // Statue Base (Right side/Tail)
         ));
 
-        // Equipe 2
+// Equipe 2
         LIBERTY_SPAWNS.put(1, Arrays.asList(
-                new Position(480, 280),  // Barres electriques
-                new Position(800, 90),   // Tête de statue
-                new Position(1580, 280)  // Tank (droite)
+                new Position(480, 330),   // Electric Pylon
+                new Position(800, 155),    // Statue Head (Nose/Visor)
+                new Position(1580, 280) ,  // Tank (Right side)
+                new Position(60, 280)    // Far Left Beach (Edge of map)
         ));
     }
 

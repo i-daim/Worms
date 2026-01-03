@@ -195,6 +195,39 @@ public class GameSetupPanel extends JPanel {
         p.add(Box.createVerticalStrut(5));
         return p;
     }
+
+    private void styleComboBox(JComboBox<String> combo) {
+        combo.setFont(MAIN_FONT);
+        combo.setPreferredSize(new Dimension(200, 40));
+        combo.setMaximumSize(new Dimension(200, 40));
+        ((JLabel)combo.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
+    }
+
+    private void styleSlider(JSlider slider) {
+        slider.setOpaque(false);
+        slider.setForeground(Color.WHITE);
+        slider.setFont(new Font("Arial", Font.BOLD, 16));
+        slider.setMajorTickSpacing(1);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+    }
+
+    private JCheckBox createWeaponCheckbox(String name) {
+        JCheckBox box = new JCheckBox(name);
+        styleCheckBoxWithIcon(box, name);
+
+        box.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                box.setForeground(ACCENT_COLOR);
+                box.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+            public void mouseExited(MouseEvent e) {
+                box.setForeground(Color.WHITE);
+            }
+        });
+        return box;
+    }
+
     private void styleCheckBoxWithIcon(JCheckBox box, String imageName) {
         box.setOpaque(false);
         box.setFocusPainted(false);

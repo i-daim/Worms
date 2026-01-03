@@ -42,7 +42,7 @@ public class GamePanel extends JPanel {
 
     private boolean inventoryVisible = false;
 
-    private List<ActiveAnimation> activeAnimations;
+    private final List<ActiveAnimation> activeAnimations;
 
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -276,41 +276,43 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void centralizeCamera(Entity entity) {
+    public void centerCamera(Entity entity) {
         if (entity == null) {
             return;
         }
+        currentZoom += (ZOOM - currentZoom) * 0.05;
 
-        double targetZoom;
-        double targetCamX;
-        double targetCamY;
+        int posX = entity.getPosition().getX();
+        int posY = entity.getPosition().getY();
+        double viewX = posX - (getWidth() / (2 * currentZoom));
+        double viewY = posY - (getHeight() / (2 * currentZoom));
 
-        if (gameManager.isPaused()) {
-            // Cam dézoomée si il n'y a pas de tour actif
-            targetZoom = Math.max(
-                    (double) getWidth() / terrain.getWidth(),
-                    (double) getHeight() / terrain.getHeight()
-            );
-            currentZoom += (targetZoom - currentZoom) * 0.05;
+        double maxX = terrain.getWidth() - getWidth() / currentZoom;
+        double maxY = terrain.getHeight() - getHeight() / currentZoom;
 
-            targetCamX = (terrain.getWidth() - getWidth() / currentZoom) / 2;
-            targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
-        } else {
-            // Zoom normal sur l'alien qui joue
-            currentZoom += (ZOOM - currentZoom) * 0.05;
+        double targetCamX = Math.max(0, Math.min(viewX, maxX));
+        double targetCamY = Math.max(0, Math.min(viewY, maxY));
 
-            int posX = entity.getPosition().getX();
-            int posY = entity.getPosition().getY();
+        cameraX += (targetCamX - cameraX) * 0.1;
+        cameraY += (targetCamY - cameraY) * 0.1;
 
-            double viewX = posX - (getWidth() / (2 * currentZoom));
-            double viewY = posY - (getHeight() / (2 * currentZoom));
-
-            double maxX = terrain.getWidth() - getWidth() / currentZoom;
-            double maxY = terrain.getHeight() - getHeight() / currentZoom;
-
-            targetCamX = Math.max(0, Math.min(viewX, maxX));
-            targetCamY = Math.max(0, Math.min(viewY, maxY));
+        if (Math.abs(targetCamX - cameraX) < 0.1) {
+            cameraX = targetCamX;
         }
+        if (Math.abs(targetCamY - cameraY) < 0.1) {
+            cameraY = targetCamY;
+        }
+    }
+
+    public void unzoomCamera() {
+        double targetZoom = Math.max(
+                (double) getWidth() / terrain.getWidth(),
+                (double) getHeight() / terrain.getHeight()
+        );
+        currentZoom += (targetZoom - currentZoom) * 0.05;
+
+        double targetCamX = (terrain.getWidth() - getWidth() / currentZoom) / 2;
+        double targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
 
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;

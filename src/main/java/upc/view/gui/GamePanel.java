@@ -30,6 +30,8 @@ public class GamePanel extends JPanel {
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final double ZOOM = 1.5 * SCREEN_WIDTH / DEFAULT_WIDTH;
 
+    private double currentZoom = ZOOM;
+
     private final GameManager gameManager;
     private final Terrain terrain;
     private final HUDPanel hudPanel;
@@ -69,7 +71,7 @@ public class GamePanel extends JPanel {
                 RenderingHints.VALUE_RENDER_SPEED);
 
         // Zoom + ajustement de la caméra
-        g2.scale(ZOOM, ZOOM);
+        g2.scale(currentZoom, currentZoom);
         g2.translate(-cameraX, -cameraY);
 
         // Affichage du background
@@ -108,7 +110,7 @@ public class GamePanel extends JPanel {
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
-        g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
+        g2.scale(1.0 / currentZoom, 1.0 / currentZoom);
 
         // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setSize(getWidth(), 100);
@@ -275,31 +277,46 @@ public class GamePanel extends JPanel {
     }
 
     public void centralizeCamera(Entity entity) {
-        if (entity == null || isCameraCentered(entity)) {
+        if (entity == null) {
             return;
         }
 
-        int posX = entity.getPosition().getX();
-        int posY = entity.getPosition().getY();
+        double targetZoom;
+        double targetCamX;
+        double targetCamY;
 
-        double viewX = posX - (getWidth() / (2 * ZOOM));
-        double viewY = posY - (getHeight() / (2 * ZOOM));
+        if (gameManager.isPaused()) {
+            // Cam dézoomée si il n'y a pas de tour actif
+            targetZoom = Math.max(
+                    (double) getWidth() / terrain.getWidth(),
+                    (double) getHeight() / terrain.getHeight()
+            );
+            currentZoom += (targetZoom - currentZoom) * 0.05;
 
-        double maxX = terrain.getWidth() - getWidth() / ZOOM;
-        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+            targetCamX = (terrain.getWidth() - getWidth() / currentZoom) / 2;
+            targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
+        } else {
+            // Zoom normal sur l'alien qui joue
+            currentZoom += (ZOOM - currentZoom) * 0.05;
 
-        double targetCamX = Math.max(0, Math.min(viewX, maxX));
-        double targetCamY = Math.max(0, Math.min(viewY, maxY));
+            int posX = entity.getPosition().getX();
+            int posY = entity.getPosition().getY();
+
+            double viewX = posX - (getWidth() / (2 * currentZoom));
+            double viewY = posY - (getHeight() / (2 * currentZoom));
+
+            double maxX = terrain.getWidth() - getWidth() / currentZoom;
+            double maxY = terrain.getHeight() - getHeight() / currentZoom;
+
+            targetCamX = Math.max(0, Math.min(viewX, maxX));
+            targetCamY = Math.max(0, Math.min(viewY, maxY));
+        }
 
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (Math.abs(targetCamX - cameraX) < 0.1) {
-            cameraX = targetCamX;
-        }
-        if (Math.abs(targetCamY - cameraY) < 0.1) {
-            cameraY = targetCamY;
-        }
+        if (Math.abs(targetCamX - cameraX) < 0.1) cameraX = targetCamX;
+        if (Math.abs(targetCamY - cameraY) < 0.1) cameraY = targetCamY;
     }
 
 

@@ -69,7 +69,7 @@ public class GameSetupPanel extends JPanel {
         configPanel.setMaximumSize(new Dimension(1000, 140));
 
         JPanel mapBox = createSection("CARTE", 240);
-        String[] maps = {"Aléatoire", "Liberty", "Spaceship"};
+        String[] maps = {"Aléatoire", "Liberty", "Spaceship","Ice","Poison","Hell"};
         mapSelector = new JComboBox<>(maps);
         styleComboBox(mapSelector);
         mapBox.add(mapSelector);

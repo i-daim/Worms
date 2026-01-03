@@ -11,7 +11,6 @@ import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.PausePanel;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class GameController {
     private final GameManager gameManager;
     private final PauseActions pauseActions;
 
-    private static final int CAMERA_SPEED = 10;
+    public static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
     private boolean paused = false;
@@ -96,7 +95,7 @@ public class GameController {
             return;
         }
 
-        handleCameraScroll(mouseHandler.getPosition());
+        handleCameraScroll();
         handleControls();
 
         // Ne centre pas la caméra si la souris est sur le bord
@@ -202,40 +201,10 @@ public class GameController {
         }
     }
 
-    private void handleCameraScroll(Point mousePos) {
-        if (mousePos == null) {
-            return;
-        }
-
-        int width = gamePanel.getWidth();
-        int height = gamePanel.getHeight();
-        int limit = (int) (50 * GamePanel.ZOOM);
-
-        double camX = gamePanel.getCameraX();
-        double camY = gamePanel.getCameraY();
-        int terrainWidth = gamePanel.getTerrain().getWidth();
-        int terrainHeight = gamePanel.getTerrain().getHeight();
-
-        if (mousePos.x > width - limit) {
-            camX += CAMERA_SPEED;
-        } else if (mousePos.x < limit) {
-            camX -= CAMERA_SPEED;
-        }
-
-        if (mousePos.y > height - limit) {
-            camY += CAMERA_SPEED;
-        } else if (mousePos.y < limit) {
-            camY -= CAMERA_SPEED;
-        }
-
-        int viewportWidth = (int) (width / GamePanel.ZOOM);
-        int viewportHeight = (int) (height / GamePanel.ZOOM);
-
-        camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
-        camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
-
-        gamePanel.setCamera(camX, camY);
+    private void handleCameraScroll() {
+        mouseHandler.handleCameraScroll(gamePanel);
     }
+
 
 ////    ARRET DU JEU    ////
     public void handlePause() {

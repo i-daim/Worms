@@ -40,6 +40,9 @@ public class AnimationManager {
         // Animations monde //
         animations.put("water",
                 new Animation("animations/water/water", 8, false));
+        animations.put("water_poison",
+                new Animation("animations/poison/poison", 8, false));
+
         animations.put("explosion",
                 new Animation("animations/explosion/explosion", 7, false));
 

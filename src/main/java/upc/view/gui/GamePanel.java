@@ -82,10 +82,12 @@ public class GamePanel extends JPanel {
         // Affichage de l'eau (arrière plan)
         int waterY = terrain.getHeight() - (Terrain.WATER_LEVEL);
 
-
         String waterKey = terrain.getWaterAnimationKey();
-        Animation waterAnim = AnimationManager.getAnimation(waterKey);
-        if (waterAnim == null) {
+        Animation waterAnim;
+
+        if (waterKey != null && waterKey.contains("poison")) {
+            waterAnim = AnimationManager.getAnimation("water_poison");
+        } else {
             waterAnim = AnimationManager.getAnimation("water");
         }
 

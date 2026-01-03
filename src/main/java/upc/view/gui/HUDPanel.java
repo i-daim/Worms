@@ -93,25 +93,23 @@ public class HUDPanel extends JPanel {
             return;
         }
         Item currentItem = activeAlien.getEquippedItem();
-        if (currentItem instanceof Weapon) {
-            Weapon weapon = (Weapon) currentItem;
-            int width = getWidth();
+        if (currentItem instanceof Item item) {
             int boxW = 200;
             int boxH = 50;
-            // Positionné à droite
-            int x = width - boxW - 20;
-            int y = 10;
+            int x = getWidth() - boxW - 20;
+            int y = 5;
 
             g2.setColor(new Color(0, 0, 0, 150));
             g2.fillRoundRect(x, y, boxW, boxH, 15, 15);
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Arial", Font.BOLD, 18));
-            g2.drawString(weapon.getName(), x + 15, y + 30);
+            g2.drawString(item.getName(), x + 15, y + 30);
 
-            String ammo = (weapon.getNbOfShots() < 0) ? "Infini" : "x" + weapon.getNbOfShots();
+            int ammo = activeAlien.getTeam().getInventory().getAmmo(item.getType());
+            String info = (ammo < 0) ? "Infini" : "x" + ammo;
             g2.setFont(new Font("Arial", Font.PLAIN, 14));
             g2.setColor(Color.YELLOW);
-            g2.drawString(ammo, x + 140, y + 30);
+            g2.drawString(info, x + 140, y + 30);
         }
     }
 

@@ -101,8 +101,11 @@ public class HUDPanel extends JPanel {
 
     private void drawTurnTimer(Graphics2D g2, int x, int y) {
         int timeLeft = gameManager.getTimeLeft();
-        if (timeLeft <= 5) g2.setColor(new Color(200, 0, 0, 200));
-        else g2.setColor(new Color(255, 255, 255, 50));
+        if (timeLeft <= 5) {
+            g2.setColor(new Color(200, 0, 0, 200));
+        } else {
+            g2.setColor(new Color(255, 255, 255, 50));
+        }
 
         g2.fillRoundRect(x, y, 100, 40, 10, 10);
 
@@ -115,7 +118,9 @@ public class HUDPanel extends JPanel {
 
     private void drawCurrentWeapon(Graphics2D g2) {
         Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null) return;
+        if (activeAlien == null) {
+            return;
+        }
 
         Item currentItem = activeAlien.getEquippedItem();
         if (currentItem instanceof Weapon) {
@@ -171,7 +176,7 @@ public class HUDPanel extends JPanel {
 
         int hp = alien.getHealthPoints();
         int maxHp = 100;
-        int healthWidth = (int) (((double)Math.max(0, hp) / maxHp) * barWidth);
+        int healthWidth = (int) (((double) Math.max(0, hp) / maxHp) * barWidth);
 
         Color healthColor = hp > 60 ? new Color(50, 205, 50) : hp > 25 ? Color.ORANGE : Color.RED;
         g2.setColor(healthColor);
@@ -213,7 +218,9 @@ public class HUDPanel extends JPanel {
 
     private void drawEquippedWeaponText(Graphics2D g2, Alien alien) {
         Item item = alien.getEquippedItem();
-        if (item == null) return;
+        if (item == null) {
+            return;
+        }
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
         g2.setColor(Color.WHITE);

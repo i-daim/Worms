@@ -193,6 +193,7 @@ public class GameSetupPanel extends JPanel {
 
     private JCheckBox createWeaponCheckbox(String name) {
         JCheckBox box = new JCheckBox(name);
+        box.setSelected(true);
         styleCheckBoxWithIcon(box, name);
 
         box.addMouseListener(new MouseAdapter() {

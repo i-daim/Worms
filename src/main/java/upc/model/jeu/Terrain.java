@@ -225,7 +225,9 @@ public class Terrain {
      * en fonction du nom de la map.
      */
     public String getWaterAnimationKey() {
-        if (mapName == null) return "water";
+        if (mapName == null) {
+            return "water";
+        }
 
         String name = mapName.toLowerCase();
 

@@ -185,6 +185,9 @@ public class GamePanel extends JPanel {
     public void drawAlienWeapon(Graphics2D g2, Alien alien, boolean direction,
                                 int posX, int posY) {
         Item currentItem = alien.getEquippedItem();
+        if (currentItem == null) {
+            return;
+        }
 
         BufferedImage weaponImage = ImageManager.get(currentItem.getName());
 

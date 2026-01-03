@@ -5,6 +5,7 @@ import upc.model.entites.Alien;
 import upc.model.entites.Entity;
 import upc.model.entites.Position;
 import upc.model.items.Weapon;
+import upc.model.jeu.GameWorld;
 
 public class Projectile extends Entity {
 
@@ -29,7 +30,8 @@ public class Projectile extends Entity {
     private State state;
     private int frameCount;
     private final Weapon weapon;
-    private int angle;
+    private final int angle;
+    private boolean explosionDamageApplied = false;
 
 
     /// /    CONSTRUCTOR    ////
@@ -43,20 +45,34 @@ public class Projectile extends Entity {
         this.state = State.FLYING;
         this.weapon = weapon;
         this.angle = shooter.getAimAngle();
-
-
-    }
-    public Projectile(Alien shooter,
-                      Position position,
-                      int damage,
-                      int explosionRadius,
-                      boolean explosive,
-                      double speed) {
-        this(shooter, position, damage, explosionRadius, explosive, speed, null);
     }
 
+    public int computeDamageFromDistance(double distance) {
+        if (!isExplosive()) {
+            return damage;
+        }
+        double ratio = 1.0 - (distance / explosionRadius);
+        return Math.max((int) (damage * ratio), 0);
+    }
 
-    /// /    GETTERS    ////
+    public void applyExplosionDamage(GameWorld world) {
+        if (!isExplosive() || explosionDamageApplied) {
+            return;
+        }
+
+        explosionDamageApplied = true;
+
+        Position pos = getPosition();
+        for (Alien alien : world.aliensInRadius(pos.getX(), pos.getY(), explosionRadius)) {
+
+            double distance = alien.getPosition().distance(pos.getX(), pos.getY());
+
+            int dmg = computeDamageFromDistance(distance);
+            alien.receiveDmg(dmg);
+        }
+    }
+
+    ////    GETTERS    ////
     public Alien getShooter() {
         return shooter;
     }
@@ -93,9 +109,7 @@ public class Projectile extends Entity {
     }
 
 
-
-
-    /// /    SETTERS    ////
+    ////    SETTERS    ////
     public void setBody(Body body) {
         this.body = body;
     }

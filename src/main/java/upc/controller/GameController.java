@@ -1,5 +1,6 @@
 package upc.controller;
 
+import upc.model.items.Item;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
@@ -26,6 +27,9 @@ public class GameController {
     private final PauseActions pauseActions;
 
     private static final int CAMERA_SPEED = 10;
+
+    private long lastUziShotTime = 0;
+    private static final long UZI_COOLDOWN = 50;
 
     private volatile boolean running = true;
     private boolean paused = false;
@@ -112,6 +116,9 @@ public class GameController {
 ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
+        Item equipped = activeAlien.getEquippedItem();
+        boolean canShoot = !gameManager.isActionDone();
+
         if (activeAlien == null || !activeAlien.isAlive()) {
             return;
         }
@@ -158,12 +165,15 @@ public class GameController {
         }
 
         // Utilisation de l'item
-        if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-            if (activeAlien.getEquippedItem() instanceof Jetpack) {
-                activeAlien.useEquippedItem();
-            }
-            if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                activeAlien.useEquippedItem();
+        if (equipped != null && canShoot) {
+            if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
+                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
+            } else {
+                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                    activeAlien.useEquippedItem();
+                }
             }
         }
 

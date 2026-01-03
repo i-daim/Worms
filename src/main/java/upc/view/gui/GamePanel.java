@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
     }
 
     public void drawAliens(Graphics2D g2) {
-        for (Alien alien : gameManager.getWorld().getActiveWorms()) {
+        for (Alien alien : gameManager.getWorld().getActiveAliens()) {
             if (alien != null && alien.isAlive()) {
                 if (alien.getTeam() == gameManager.getTeam(0)) {
                     drawAlien(g2, alien, 0);

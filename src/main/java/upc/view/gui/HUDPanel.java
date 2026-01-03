@@ -6,8 +6,8 @@ import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.items.Item;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,8 +24,10 @@ public class HUDPanel extends JPanel {
         this.gameManager = gameManager;
 
         this.setOpaque(false);
-        this.setLayout(new BorderLayout());
+        this.setLayout(null); // pour positionner le bouton librement
         this.setPreferredSize(new Dimension(800, 100));
+
+        addSkipButton();
     }
 
     @Override
@@ -39,6 +41,26 @@ public class HUDPanel extends JPanel {
         drawTopBar(g2);
         drawCurrentWeapon(g2);
     }
+
+
+    private void addSkipButton() {
+        JButton skipButton = ButtonManager.createGameButton("Passer");
+        // passer le tour quand on clique
+        skipButton.addActionListener(e -> {
+            if (!gameManager.isOver()) {
+                gameManager.skipTurn();
+            }
+        });
+        // Empêche le bouton de prendre le focus clavier.
+        // Sinon après un clic, les flèches contrôleraient plus l'alien
+        skipButton.setFocusable(false);
+        // Positionnement et taille
+        skipButton.setBounds(20, 5, 120, 40);
+        skipButton.setFont(new Font("Arial", Font.BOLD, 16));
+        this.add(skipButton);
+    }
+
+
     private void drawCurrentWeapon(Graphics2D g2) {
         Alien activeAlien = gameManager.getActiveAlien();
         if (activeAlien == null) {
@@ -50,6 +72,7 @@ public class HUDPanel extends JPanel {
             int width = getWidth();
             int boxW = 200;
             int boxH = 50;
+            // Positionné à droite
             int x = width - boxW - 20;
             int y = 10;
 
@@ -169,7 +192,7 @@ public class HUDPanel extends JPanel {
         g2.setColor(healthColor);
         g2.fillRect(barX, barY, healthWidth, barHeight);
 
-        // Inidicateur en triangle si le worm est actif
+        // Indicateur en triangle si le worm est actif
         if (active) {
             g2.setColor(Color.RED);
             int[] xPoints = {posX, posX - 6, posX + 6};
@@ -193,7 +216,4 @@ public class HUDPanel extends JPanel {
         g2.setFont(new Font("Arial", Font.PLAIN, 14));
         g2.drawString("TIME", x + 35, y + 15);
     }
-
-
-
 }

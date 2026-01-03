@@ -172,27 +172,19 @@ public class GameSetupPanel extends JPanel {
         return p;
     }
 
-        centerPanel.add(Box.createVerticalGlue());
-
-        this.add(centerPanel, BorderLayout.CENTER);
-
-        new GameSetupController(this, mainFrame);
-
-
-
-
-    }
-    private JPanel createVerticalBox(String text) {
+    private JPanel createSection(String labelTitle, int width) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         p.setOpaque(false);
+        p.setPreferredSize(new Dimension(width, 80));
 
-        JLabel l = new JLabel(text);
-        l.setFont(new Font("Arial", Font.BOLD, 26));
-        l.setForeground(new Color(255, 220, 100));
+        JLabel l = new JLabel(labelTitle);
+        l.setFont(new Font("Arial", Font.BOLD, 18));
+        l.setForeground(ACCENT_COLOR);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         p.add(l);
-        p.add(Box.createVerticalStrut(5));
+        p.add(Box.createVerticalStrut(10));
         return p;
     }
 
@@ -233,83 +225,66 @@ public class GameSetupPanel extends JPanel {
         box.setFocusPainted(false);
         box.setContentAreaFilled(false);
         box.setBorderPainted(false);
-
         box.setForeground(Color.WHITE);
-        box.setFont(new Font("Arial", Font.BOLD, 20));
-        box.setIconTextGap(15);
+        box.setFont(new Font("Arial", Font.BOLD, 18));
+        box.setHorizontalAlignment(SwingConstants.LEFT);
+        box.setIconTextGap(20);
 
         Image originalImg = ImageManager.get(imageName);
-        if (originalImg == null) {
-            return;
-        }
-
-        int size = 60;
-
-        BufferedImage unselectedImg = new BufferedImage(
-                size, size, BufferedImage.TYPE_INT_ARGB);
+        if (originalImg == null) return;
+        int iconW = 90;
+        int iconH = 90;
+        BufferedImage unselectedImg = new BufferedImage(iconW, iconH, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = unselectedImg.createGraphics();
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-        g2.drawImage(originalImg, 0, 0, size, size, null);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(new Color(0, 0, 0, 100));
+        g2.fillRoundRect(5, 5, iconW-10, iconH-10, 15, 15);
+        g2.setColor(new Color(255, 255, 255, 100));
+        g2.drawRoundRect(5, 5, iconW-10, iconH-10, 15, 15);
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+        g2.drawImage(originalImg, 10, 10, iconW-20, iconH-20, null);
         g2.dispose();
 
-        BufferedImage selectedImg = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage selectedImg = new BufferedImage(iconW, iconH, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g3 = selectedImg.createGraphics();
+        g3.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g3.drawImage(originalImg, 0, 0, size, size, null);
+        g3.setColor(new Color(100, 255, 201, 30));
+        g3.fillRoundRect(5, 5, iconW-10, iconH-10, 15, 15);
 
-        // On dessine un cadre autour
-        g3.setColor(new Color(224, 185, 145));
+        g3.drawImage(originalImg, 10, 10, iconW-20, iconH-20, null);
+
+        g3.setColor(new Color(255, 215, 0)); // Or
         g3.setStroke(new BasicStroke(3));
-        g3.drawRoundRect(1, 1, size - 2, size - 2, 10, 10); // Cadre arrondi
+        g3.drawRoundRect(5, 5, iconW-10, iconH-10, 15, 15);
         g3.dispose();
 
         box.setIcon(new ImageIcon(unselectedImg));
         box.setSelectedIcon(new ImageIcon(selectedImg));
+
         box.setPressedIcon(new ImageIcon(selectedImg));
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (background != null) {
             g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         }
-        g.setColor(new Color(0, 0, 0, 100));
+        g.setColor(new Color(0, 0, 0, 80));
         g.fillRect(0, 0, getWidth(), getHeight());
     }
-    public JButton getStartButton() {
-        return startButton;
-    }
 
-    public JButton getBackButton() {
-        return backButton;
-    }
-
-    public String getSelectedMap() {
-        return (String) mapSelector.getSelectedItem();
-    }
-
-    public int getTeamSize() {
-
-        return teamSizeSlider.getValue();
-    }
-    public boolean isBazookaEnabled() {
-
-        return chkBazooka.isSelected();
-    }
-    public boolean isUziEnabled() {
-
-        return chkUzi.isSelected();
-    }
-    public boolean isShotgunEnabled() {
-
-        return chkShotgun.isSelected();
-    }
-    public boolean isGrenadeEnabled() {
-
-        return chkGrenade.isSelected();
-    }
-    public boolean isMineEnabled() {
-
-        return chkMine.isSelected();
-    }
+    public JButton getStartButton() { return startButton; }
+    public JButton getBackButton() { return backButton; }
+    public String getSelectedMap() { return (String) mapSelector.getSelectedItem(); }
+    public int getTeamSize() { return teamSizeSlider.getValue(); }
+    public boolean isBazookaEnabled() { return chkBazooka.isSelected(); }
+    public boolean isUziEnabled() { return chkUzi.isSelected(); }
+    public boolean isShotgunEnabled() { return chkShotgun.isSelected(); }
+    public boolean isGrenadeEnabled() { return chkGrenade.isSelected(); }
+    public boolean isMineEnabled() { return chkMine.isSelected(); }
+    public boolean isJetpackEnabled() { return chkJetpack.isSelected(); }
 }

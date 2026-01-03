@@ -225,6 +225,10 @@ public class GameManager {
         return teams[indexEnnemi];
     }
 
+    /**
+     * Retourne l'équipe à l'indice donnée
+     * @param index : Pour sélectionner l'équipe équipe à la position teams[index]
+     */
     public Team getTeam(int index) {
         if (index >= 0 && index < teams.length) {
             return teams[index];
@@ -248,20 +252,66 @@ public class GameManager {
         return activeTeamIndex;
     }
 
+    /**
+     * Retourne l'alien active
+     * @return l'alien acitve depuis l'équipe ative
+     */
     public Alien getActiveAlien() {
         return getActiveTeam().getActiveAlien();
     }
 
+    /**
+     * Retourne le n-ième round joué
+     * @return l'attribut currentRound
+     */
     public int getCurrentRound() {
         return currentRound;
     }
 
+    /**
+     * Retourne le temps restant
+     * @return l'attribut timeLeft
+     */
     public int getTimeLeft() {
         return timeLeft;
     }
 
+    /**
+     * Retourne un boolean si une partie est finie
+     * @return l'attribut gameOver
+     */
     public boolean isOver() {
         return gameOver;
+    }
+
+    /**
+     * Retourne l'équipe gagnante
+     * @return l'équipe qui n'est pas éliminée
+     */
+    public Team getWinningTeam() {
+        if (!gameOver) {
+            return null;
+        }
+
+        for (Team team : teams) {
+            if (!team.isEliminated()) {
+                return team;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Retourne le nombre de aliens vivants
+     * @return un entier représentant le nombre d'aliens vivants dans une équipe
+     */
+    public int getAliveWorms() {
+        int total = 0;
+        for (Team team : teams) {
+            total += team.getAliveAliensNumber();
+        }
+        return total;
     }
 
     /// SETTERS ///
@@ -282,27 +332,6 @@ public class GameManager {
         this.teams = teams;
     }
 
-    public Team getWinningTeam() {
-        if (!gameOver) {
-            return null;
-        }
-
-        for (Team team : teams) {
-            if (!team.isEliminated()) {
-                return team;
-            }
-        }
-
-        return null;
-    }
-
-    public int getAliveWorms() {
-        int total = 0;
-        for (Team team : teams) {
-            total += team.getAliveAliensNumber();
-        }
-        return total;
-    }
 
     public boolean isActionDone() {
         return actionDone;

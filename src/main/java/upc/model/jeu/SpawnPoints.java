@@ -39,8 +39,8 @@ public class SpawnPoints {
 
 
         ICE_SPAWNS.put(1, Arrays.asList(
-                new Position(1254, 280),
-                new Position(1047, 368),
+                new Position(1254, 287),
+                new Position(1047, 374),
                 new Position(1398, 216),
                 new Position(1586, 156)
         ));
@@ -59,10 +59,10 @@ public class SpawnPoints {
 
 
         POISON_SPAWNS.put(1, Arrays.asList(
-                new Position(1252, 154),
-                new Position(1411, 286),
-                new Position(1367, 474),
-                new Position(1285, 462)
+                new Position(1252, 152),
+                new Position(1411, 290),
+                new Position(1367, 478),
+                new Position(1285, 465)
         ));
     }
 

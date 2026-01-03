@@ -28,7 +28,7 @@ import java.awt.BorderLayout;
 import upc.controller.GameSetupController;
 
 public class GameSetupPanel extends JPanel {
-    private final Image background = ImageManager.get("menu_background"); // Ou autre image
+    private final Image background = ImageManager.get("menu_background");
     private final MainFrame mainFrame;
 
     private JComboBox<String> mapSelector;
@@ -51,13 +51,23 @@ public class GameSetupPanel extends JPanel {
     public GameSetupPanel(MainFrame frame) {
         this.mainFrame = frame;
         this.setDoubleBuffered(true);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout()); // Changement pour BorderLayout global pour centrer facilement
 
-        JLabel title = new JLabel("Paramètres de la Partie :");
-        title.setFont(new Font("Arial", Font.BOLD, 45));
-        title.setForeground(Color.WHITE);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setBorder(BorderFactory.createEmptyBorder(300, 0, 10, 1850));
+        JLabel title = new JLabel("PARAMÈTRES DE LA PARTIE :", SwingConstants.CENTER) {
+            @Override
+            public void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                g2.setFont(getFont());
+                g2.setColor(new Color(0, 0, 0, 150));
+                g2.drawString(getText(), 4, getHeight() - 4);
+                g2.setColor(getForeground());
+                g2.drawString(getText(), 0, getHeight() - 6);
+            }
+        };
+        title.setFont(new Font("Arial", Font.BOLD, 50));
+        title.setForeground(TITLE_COLOR);
+        title.setBorder(new EmptyBorder(350, 50, 0, 50));
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));

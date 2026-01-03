@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager {
-    //Constantes
+    /** Constantes */
     public static final int ROUND_TIME = 60;
     public static final int TEAM_SIZE = 2;
 
@@ -22,7 +22,7 @@ public class GameManager {
     private final GameWorld gameWorld;
     private Team[] teams;
 
-    //Attribut en lien à la partie
+    /** Attribut en lien à la partie */
     private int activeTeamIndex;
     private int currentRound;
     private int timeLeft;

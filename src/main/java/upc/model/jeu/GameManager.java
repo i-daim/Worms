@@ -67,22 +67,6 @@ public class GameManager {
     }
 
 
-    public void update(double elapsedTime) {
-        //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
-        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
-            skipTurn();
-            return;
-        }
-        gameWorld.update(elapsedTime);
-
-        updateAnimations();
-
-        checkGameOver();
-
-        countTimeLeft();
-    }
-
-
     /// Gestion de la partie ////
 
     /**
@@ -166,20 +150,55 @@ public class GameManager {
             }
         }
     }
+
+    /// Autres méthodes ///
+
+    //Attribut compteur de frame
     private int frameCounter = 0;
 
+    /**
+     * Méthode permettant de décrementer le temps restant de la partie
+     */
     public void countTimeLeft() {
         frameCounter++;
         if (frameCounter >= 60) {  // 1 seconde à 60 FPS
             frameCounter = 0;
+
+            //Si le temps restant est supérieur à 0
             if (timeLeft > 0) {
+
+                //Décremente de 1
                 timeLeft--;
             } else {
+                //Alors on passe au prochain tour
                 skipTurn();
             }
         }
     }
 
+    /**
+     * Méthode permettant de mettre à jour l'état du jeu à chaque frame
+     * @param elapsedTime : temps écoulé depuis la dernière mise à jour
+     */
+    public void update(double elapsedTime) {
+        //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
+        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
+            skipTurn();
+            return;
+        }
+
+        //Met à jour la physique
+        gameWorld.update(elapsedTime);
+
+        //Met à jour l'animation
+        updateAnimations();
+
+        //Vérifie que la partie est finie
+        checkGameOver();
+
+        //Décremente le temps restant
+        countTimeLeft();
+    }
 
     /**
      * Méthode permettant d'infliger des dégats à un alien à une position donnée

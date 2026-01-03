@@ -9,8 +9,17 @@ import java.util.List;
 public class SpawnPoints {
 
     /// SPAWNS POUR LA MAP LIBERTY ///
+
+    /**
+     * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
+     * pour le terrain de jeu Liberty
+     */
     private static final HashMap<Integer, List<Position>> LIBERTY_SPAWNS = new HashMap<>();
 
+    /**
+     * Initialise la position de départ des aliens de chaque équipe
+     * sur le terrain de jeu Liberty
+     */
     static {
         // Equipe 1
         LIBERTY_SPAWNS.put(0, Arrays.asList(
@@ -48,12 +57,14 @@ public class SpawnPoints {
 
     /// SPAWNS POUR CONSOLE ///
 
-    /**Constante représentant l'ensemble des positions de départ des alien de chaque équipe
+    /**
+     * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
      * pour le terrain de jeu Console
      */
     private static final HashMap<Integer, List<Position>> CONSOLE_SPAWNS = new HashMap<>();
 
-    /**Initialise la position de départ des aliens de chaque équipe
+    /**
+     * Initialise la position de départ des aliens de chaque équipe
      * sur le terrain de jeu Console
      */
     static {

@@ -94,27 +94,49 @@ public class Alien extends Entity {
 
 
 ////    Autres Méthodes    ////
+
+    /**Méthode en lien avec l'utilisation d'item
+     */
     public void useEquippedItem() {
+
+        //Appel l'item équipé
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
 
+        //
         if (!inventory.isAvailable(equippedItem)) {
             return;
         }
+
         Item item = inventory.getItem(equippedItem);
         item.useItem(world, this);
+
+        //Décremente de un le nombre de munitions présent dans l'arme
         inventory.useAmmo(equippedItem, 1);
+
+        //Si l'item équipé est le jetpack et le nombre de munition suffisant
         if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
             alienPhysics.flyAlien(this);
+
+            //Met l'alien dans l'état saut
             setState(State.JUMP);
         }
     }
 
+    /**Méthode permettant d'infliger des dégats à un alien
+     * @param damage : Dégats à infliger à l'alien
+     */
     public void receiveDmg(int damage) {
         if (!alive) {
             return;
         }
+
+        //Décremente les points de vie de l'alien selon les dégats
         healthPoints -= Math.max(0, damage);
+
+        //Lance le son lié quand un alien subit un dégat
         SoundManager.playEffect("Damage");
+
+        //Change l'attribut alive de l'alien si les points de vie de l'alien sont inférieurs à 0
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;

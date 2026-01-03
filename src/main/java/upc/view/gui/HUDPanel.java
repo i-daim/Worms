@@ -160,6 +160,10 @@ public class HUDPanel extends JPanel {
 
 
     private void drawEquippedWeapon(Graphics2D g2, Alien alien) {
+        Item item = alien.getEquippedItem();
+        if (item == null) {
+            return;
+        }
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 

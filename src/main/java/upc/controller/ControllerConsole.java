@@ -2,6 +2,8 @@ package upc.controller;
 
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.jeu.Terrain;
+import upc.model.jeu.TerrainGenerator;
 import upc.view.console.ConsoleView;
 
 public class ControllerConsole {
@@ -9,14 +11,10 @@ public class ControllerConsole {
     private final ConsoleView view;
     private boolean enCours;
 
-    public ControllerConsole() {
-        this.gameManager = new GameManager(); // Jeu normal
-        this.view = new ConsoleView();
-        this.enCours = true;
-    }
 
     public ControllerConsole(GameManager gameManager) {
-        this.gameManager = gameManager; // Jeu injecté (map plate)
+        Terrain terrainConsole = TerrainGenerator.createTerrain("liberty");
+        this.gameManager = new GameManager(terrainConsole, 2);
         this.view = new ConsoleView();
         this.enCours = true;
     }

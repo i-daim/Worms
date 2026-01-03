@@ -4,10 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
-import upc.model.jeu.GameManager;
-import upc.model.jeu.Inventory;
-import upc.model.jeu.Team;
-import upc.model.jeu.Terrain;
+import upc.model.jeu.*;
 import upc.model.save.GameSave;
 
 
@@ -36,8 +33,9 @@ public class TestSave {
 
         zlerpsInventory = new Inventory();
         glorbsInventory = new Inventory();
+        Terrain realMap = TerrainGenerator.chooseRandomMap();
 
-        gameManager = new GameManager();
+        gameManager = new GameManager(realMap, 5);
 
         terrain = gameManager.getTerrain();
     }
@@ -91,7 +89,8 @@ public class TestSave {
         gameSave.save();
 
         GameSave loadedGameSave = GameSave.load();
-        GameManager loadedGameManager = new GameManager();
+        Terrain dummyMap = TerrainGenerator.chooseRandomMap();
+        GameManager loadedGameManager = new GameManager(dummyMap, 5);
         loadedGameSave.applyTo(loadedGameManager);
 
         Terrain loadedTerrain = loadedGameManager.getTerrain();

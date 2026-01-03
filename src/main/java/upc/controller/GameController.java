@@ -1,5 +1,6 @@
 package upc.controller;
 
+import upc.model.entites.projectiles.Projectile;
 import upc.model.items.Item;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
@@ -28,12 +29,10 @@ public class GameController {
 
     private static final int CAMERA_SPEED = 10;
 
-    private long lastUziShotTime = 0;
-    private static final long UZI_COOLDOWN = 50;
-
     private volatile boolean running = true;
     private boolean paused = false;
     private Thread gameThread;
+    private int frameCount;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
@@ -98,10 +97,19 @@ public class GameController {
         handleCameraScroll(mouseHandler.getPosition());
         handleControls();
 
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            gamePanel.centralizeCamera(activeAlien);
+        // Ne centre pas la caméra si la souris est sur le bord
+        if (!mouseHandler.isMouseNearEdge(gamePanel)) {
+            Alien activeAlien = gameManager.getActiveAlien();
+            if (gameManager.isPaused()) {
+                gamePanel.unzoomCamera();
+            } else if (activeAlien != null && activeAlien.isAlive()) {
+                gamePanel.centerCamera(activeAlien);
+            }
         }
+        if (gameManager.getActiveProjectile() != null) {
+            gamePanel.centerCamera(gameManager.getActiveProjectile());
+        }
+
         gameManager.update(1.0 / 60.0);
 
         if (gameManager.isOver()) {
@@ -119,7 +127,7 @@ public class GameController {
         Item equipped = activeAlien.getEquippedItem();
         boolean canShoot = !gameManager.isActionDone();
 
-        if (activeAlien == null || !activeAlien.isAlive()) {
+        if (!activeAlien.isAlive()) {
             return;
         }
 
@@ -168,11 +176,16 @@ public class GameController {
         if (equipped != null && canShoot) {
             if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
                 if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
+                    if (frameCount % 5 == 0) {
+                        activeAlien.useEquippedItem();
+                        frameCount = 0;
+                    }
+                    frameCount++;
                 }
             } else {
                 if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
+                    Projectile p = activeAlien.useEquippedItem();
+                    gameManager.setActiveProjectile(p);
                 }
             }
         }
@@ -188,6 +201,10 @@ public class GameController {
     }
 
     private void handleCameraScroll(Point mousePos) {
+        if (mousePos == null) {
+            return;
+        }
+
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
         int limit = (int) (50 * GamePanel.ZOOM);

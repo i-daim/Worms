@@ -18,7 +18,7 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error loading sound : " + e.getMessage());
         }
     }
 

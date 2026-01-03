@@ -42,8 +42,8 @@ public class AnimationManager {
                 new Animation("animations/water/water", 8, false));
         animations.put("water_poison",
                 new Animation("animations/poison/poison", 8, false));
-        animations.put("water_lava",
-                new Animation( "animations/lava/water_lava", 8, false));
+        animations.put("water_hell",
+                new Animation( "animations/lava/lava", 8, false));
 
         animations.put("explosion",
                 new Animation("animations/explosion/explosion", 7, false));

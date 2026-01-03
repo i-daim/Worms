@@ -231,10 +231,10 @@ public class Terrain {
 
         if (name.contains("poison")) {
             return "water_poison";
-        } else if (name.contains("ice") || name.contains("glace")) {
-            return "water_ice";    // Exemple pour de l'eau gelée
-        } else if (name.contains("lave") || name.contains("volcano")) {
-            return "water_lava";   // Exemple pour de la lave
+        } else if (name.contains("ice")) {
+            return "water_ice";
+        } else if (name.contains("hell")) {
+            return "water_hell";
         }
 
         return "water";

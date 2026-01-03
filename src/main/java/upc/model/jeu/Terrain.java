@@ -219,4 +219,25 @@ public class Terrain {
         // 2. Vérifie s'il n'y a pas de collision à cette position
         return !collisions[posY][posX];
     }
+
+    /**
+     * Retourne la clé (le nom) de l'animation à utiliser pour l'eau
+     * en fonction du nom de la map.
+     */
+    public String getWaterAnimationKey() {
+        if (mapName == null) return "water";
+
+        String name = mapName.toLowerCase();
+
+        if (name.contains("poison")) {
+            return "water_poison";
+        } else if (name.contains("ice") || name.contains("glace")) {
+            return "water_ice";    // Exemple pour de l'eau gelée
+        } else if (name.contains("lave") || name.contains("volcano")) {
+            return "water_lava";   // Exemple pour de la lave
+        }
+
+        return "water";
+    }
+
 }

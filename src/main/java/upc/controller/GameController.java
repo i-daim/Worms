@@ -124,9 +124,6 @@ public class GameController {
         }
 
         // Gestion de l'inventaire
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
-            gamePanel.toggleInventory();
-        }
         if (gamePanel.isInventoryVisible()) {
             for (int i = 0; i < 6; i++) {
                 int keyCode = KeyEvent.VK_1 + i;

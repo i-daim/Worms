@@ -20,6 +20,8 @@ public class SoundManager {
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
         MUSICS.put("Victory Music", loadMusic("victory_music"));
+        MUSICS.put("Zip The Zoop Of Us", loadMusic("zip_the_zoop_of_us"));
+        MUSICS.put("Caramellzlerpen", loadMusic("caramellzlerpen"));
 
         EFFECTS.put("Damage", loadEffect("damage"));
         EFFECTS.put("Explosion", loadEffect("explosion"));
@@ -43,6 +45,7 @@ public class SoundManager {
         if (currentMusic != null) {
             currentMusic.play();
             currentMusic.loop();
+            currentMusic.setVolume(-10f);
         }
     }
 
@@ -59,6 +62,7 @@ public class SoundManager {
         Sound effect = EFFECTS.get(name);
         if (effect != null) {
             effect.play();
+            effect.setVolume(-5f);
         }
     }
 
@@ -72,6 +76,7 @@ public class SoundManager {
         }
         if (index >= 0 && index < voices.length && voices[index] != null) {
             voices[index].play();
+            voices[index].setVolume(-5f);
         }
     }
 

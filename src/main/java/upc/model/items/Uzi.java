@@ -13,7 +13,7 @@ public class Uzi extends Weapon {
     }
 
     @Override
-    public void useItem(GameWorld gameWorld, Alien shooter) {
+    public Projectile useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
@@ -36,6 +36,11 @@ public class Uzi extends Weapon {
 
         Projectile proj = new Bullet(this, shooter, startPos);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
+        return proj;
     }
 
+    @Override
+    public Type getType() {
+        return Type.UZI;
+    }
 }

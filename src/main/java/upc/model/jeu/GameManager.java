@@ -6,6 +6,8 @@ import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Trap;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,9 +17,7 @@ public class GameManager {
     public static final int TEAM_SIZE = 2;
 
     private Terrain terrain;
-
     private final String mapName;
-
     private final GameWorld gameWorld;
     private Team[] teams;
 
@@ -28,6 +28,12 @@ public class GameManager {
     private boolean actionDone;
 
     private final List<ActiveAnimation> activeAnimations;
+    private Projectile activeProjectile;
+
+    private long delayEndTime = 0;
+    private boolean isPaused = false;
+    private Runnable onDelayFinished;
+
 
     public GameManager(Terrain terrain, int teamSize) {
         this.terrain = terrain;
@@ -42,6 +48,7 @@ public class GameManager {
 
         initializeGame();
     }
+
     public GameManager(String mapName) {
         this.terrain = TerrainGenerator.createTerrain(mapName);
         this.mapName = mapName;
@@ -58,17 +65,29 @@ public class GameManager {
 
 
     public void update(double elapsedTime) {
+        // On met à jour les physiques et animations
+        gameWorld.update(elapsedTime);
+        updateAnimations();
+        checkGameOver();
+        checkActiveProjectile();
+
+        // Si le délai n'est pas fini, on met pas à jour le reste
+        if (System.currentTimeMillis() < delayEndTime) {
+            return;
+        }
+        // Exécute les commandes à exécuter après le délai
+        if (isPaused) {
+            isPaused = false;
+            if (onDelayFinished != null) {
+                onDelayFinished.run();
+                onDelayFinished = null;
+            }
+        }
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
         if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
             skipTurn();
             return;
         }
-        gameWorld.update(elapsedTime);
-
-        updateAnimations();
-
-        checkGameOver();
-
         countTimeLeft();
     }
 
@@ -84,7 +103,7 @@ public class GameManager {
         this.gameOver = false;
         this.actionDone = false;
 
-        SoundManager.playVoice(0);
+        setDelay(3000, () -> SoundManager.playVoice(0));
     }
 
 
@@ -101,9 +120,10 @@ public class GameManager {
             currentRound++;
         }
 
-        nextTurn();
-
-        timeLeft = ROUND_TIME;
+        setDelay(2000, () -> {
+            nextTurn();
+            timeLeft = ROUND_TIME;
+        });
     }
 
     private void nextTurn() {
@@ -143,7 +163,6 @@ public class GameManager {
         for (Team team : teams) {
             if (team.isEliminated()) {
                 gameOver = true;
-                return;
             }
         }
     }
@@ -189,9 +208,26 @@ public class GameManager {
         activeAnimations.add(active);
     }
 
+    public void setDelay(long durationMs, Runnable onFinished) {
+        this.delayEndTime = System.currentTimeMillis() + durationMs;
+        this.isPaused = true;
+        this.onDelayFinished = onFinished;
+    }
 
-////    GETTERS    ////
+    private void checkActiveProjectile() {
+        if (activeProjectile == null || activeProjectile instanceof Trap) {
+            activeProjectile = null;
+            return;
+        }
+        if (activeProjectile.getState().equals(Projectile.State.FLYING)) {
+            delayEndTime += 20;
+        } else {
+            activeProjectile = null;
+        }
+    }
 
+
+////    GETTERS & SETTERS    ////
     public Terrain getTerrain() {
         return terrain;
     }
@@ -240,7 +276,27 @@ public class GameManager {
         return gameOver;
     }
 
-    /* SETTERS*/
+    public boolean isActionDone() {
+        return actionDone;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public List<ActiveAnimation> getActiveAnimations() {
+        return activeAnimations;
+    }
+    public Projectile getActiveProjectile() {
+        return activeProjectile;
+    }
+
+    public void setActiveProjectile(Projectile p) {
+        if (activeProjectile instanceof Trap) {
+            return;
+        }
+        this.activeProjectile = p;
+    }
 
     public void setMap(Terrain terrain) {
         this.terrain = terrain;
@@ -264,19 +320,7 @@ public class GameManager {
         return null;
     }
 
-    public int getAliveWorms() {
-        int total = 0;
-        for (Team team : teams) {
-            total += team.getAliveAliensNumber();
-        }
-        return total;
-    }
-
-    public boolean isActionDone() {
-        return actionDone;
-    }
-
-    public List<ActiveAnimation> getActiveAnimations() {
-        return activeAnimations;
+    public int getDelay() {
+        return (int) (delayEndTime - System.currentTimeMillis()) / 10;
     }
 }

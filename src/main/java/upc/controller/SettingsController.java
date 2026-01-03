@@ -48,15 +48,15 @@ public class SettingsController {
             if (sliderValue == 0) {
                 currentMusic.setVolume(-80f);
             } else if (sliderValue < 20) {
-                currentMusic.setVolume(-20f);
+                currentMusic.setVolume(-26f);
             } else if (sliderValue < 40) {
-                currentMusic.setVolume(-12f);
+                currentMusic.setVolume(-18f);
             } else if (sliderValue < 60) {
-                currentMusic.setVolume(-5f);
+                currentMusic.setVolume(-10f);
             } else if (sliderValue < 80) {
-                currentMusic.setVolume(1f);
+                currentMusic.setVolume(0f);
             } else {
-                currentMusic.setVolume(6f);
+                currentMusic.setVolume(4f);
             }
         }
     }

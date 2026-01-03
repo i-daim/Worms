@@ -1,5 +1,6 @@
 package upc.model.items;
 import upc.model.entites.Alien;
+import upc.model.entites.projectiles.Projectile;
 import upc.model.jeu.GameWorld;
 
 public interface Item {
@@ -13,7 +14,9 @@ public interface Item {
         JETPACK
     }
 
-    void useItem(GameWorld gameWorld, Alien alienActif);
+    Projectile useItem(GameWorld gameWorld, Alien alienActif);
 
     String getName();
+
+    Type getType();
 }

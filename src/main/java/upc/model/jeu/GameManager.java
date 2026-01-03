@@ -240,12 +240,20 @@ public class GameManager {
         return gameOver;
     }
 
-    /* SETTERS*/
+    /// SETTERS ///
 
+    /**
+     * Modifie le terrain du jeu
+     * @param terrain : Pour sélectionner un terrrain
+     */
     public void setMap(Terrain terrain) {
         this.terrain = terrain;
     }
 
+    /**
+     * Modifie les équipes du jeu
+     * @param teams : Pour sélectionner les équipes
+     */
     public void setTeams(Team[] teams) {
         this.teams = teams;
     }

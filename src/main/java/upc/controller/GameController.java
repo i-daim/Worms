@@ -13,6 +13,7 @@ import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -47,6 +48,7 @@ public class GameController {
     private void addListeners() {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
+        gamePanel.addMouseListener(mouseHandler);
         gamePanel.setFocusable(true);
 
         PausePanel pausePanel = gamePanel.getPausePanel();
@@ -118,6 +120,7 @@ public class GameController {
         }
 
         keyHandler.clearJustPressed();
+        mouseHandler.clearJustPressed();
         gamePanel.repaint();
     }
 
@@ -175,7 +178,7 @@ public class GameController {
         // Utilisation de l'item
         if (equipped != null && canShoot) {
             if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
-                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
                         activeAlien.useEquippedItem();
                         frameCount = 0;
@@ -183,13 +186,12 @@ public class GameController {
                     frameCount++;
                 }
             } else {
-                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     Projectile p = activeAlien.useEquippedItem();
                     gameManager.setActiveProjectile(p);
                 }
             }
         }
-
         // Touche pour la sauvegarde
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_F5)) {
             try {

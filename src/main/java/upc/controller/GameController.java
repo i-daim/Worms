@@ -1,5 +1,6 @@
 package upc.controller;
 
+import upc.model.entites.projectiles.Projectile;
 import upc.model.items.Item;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
@@ -105,6 +106,9 @@ public class GameController {
                 gamePanel.centerCamera(activeAlien);
             }
         }
+        if (gameManager.getActiveProjectile() != null) {
+            gamePanel.centerCamera(gameManager.getActiveProjectile());
+        }
 
         gameManager.update(1.0 / 60.0);
 
@@ -180,7 +184,8 @@ public class GameController {
                 }
             } else {
                 if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
-                    activeAlien.useEquippedItem();
+                    Projectile p = activeAlien.useEquippedItem();
+                    gameManager.setActiveProjectile(p);
                 }
             }
         }

@@ -36,54 +36,33 @@ import java.awt.Cursor;
 
 public class GameSetupPanel extends JPanel {
     private final Image background = ImageManager.get("menu_background");
-    private final MainFrame mainFrame;
 
-    private JComboBox<String> mapSelector;
-    private JSlider teamSizeSlider;
-    private JButton startButton;
-    private JButton backButton;
+    private final JComboBox<String> mapSelector;
+    private final JSlider teamSizeSlider;
+    private final JButton startButton;
+    private final JButton backButton;
 
-    private JCheckBox chkBazooka;
-    private JCheckBox chkUzi;
-    private JCheckBox chkShotgun;
-    private JCheckBox chkGrenade;
-    private JCheckBox chkMine;
-    private JCheckBox chkJetpack;
+    private final JCheckBox chkBazooka;
+    private final JCheckBox chkUzi;
+    private final JCheckBox chkShotgun;
+    private final JCheckBox chkGrenade;
+    private final JCheckBox chkMine;
+    private final JCheckBox chkJetpack;
 
-    private static final Color TITLE_COLOR = new Color(255, 255, 255);
     private static final Color PANEL_BG_COLOR = new Color(30, 30, 40, 220);
     private static final Color ACCENT_COLOR = new Color(100, 255, 201);
     private static final Font MAIN_FONT = new Font("Arial", Font.BOLD, 22);
 
     public GameSetupPanel(MainFrame frame) {
-        this.mainFrame = frame;
         this.setDoubleBuffered(true);
         this.setLayout(new BorderLayout());
-        // Changement pour BorderLayout global pour centrer facilement
-
-        JLabel title = new JLabel("PARAMÈTRES DE LA PARTIE :",
-                SwingConstants.CENTER) {
-            @Override
-            public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-                g2.setFont(getFont());
-                g2.setColor(new Color(0, 0, 0, 150));
-                g2.drawString(getText(), 4, getHeight() - 4);
-                g2.setColor(getForeground());
-                g2.drawString(getText(), 0, getHeight() - 6);
-            }
-        };
-        title.setFont(new Font("Arial", Font.BOLD, 50));
-        title.setForeground(TITLE_COLOR);
-        title.setBorder(new EmptyBorder(350, 50, 0, 50));
-
 
         JPanel mainContentPanel = new JPanel();
         mainContentPanel.setLayout(new BoxLayout(mainContentPanel, BoxLayout.Y_AXIS));
         mainContentPanel.setOpaque(false);
-        mainContentPanel.setBorder(new EmptyBorder(50, 50, 0, 50)); // Marges latérales
+        mainContentPanel.setBorder(new EmptyBorder(200, 50, 20, 50)); // Marges
+
+        mainContentPanel.add(Box.createVerticalGlue());
 
         JPanel configPanel = createRoundedPanel();
         configPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 20));
@@ -142,12 +121,8 @@ public class GameSetupPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
         buttonPanel.setOpaque(false);
 
-        backButton = ButtonManager.createGameButton("RETOUR");
-        startButton = ButtonManager.createGameButton("LANCER LE COMBAT !");
-
-        startButton.setPreferredSize(new Dimension(300, 60));
-        startButton.setFont(new Font("Arial", Font.BOLD, 24));
-        startButton.setForeground(Color.GREEN);
+        backButton = ButtonManager.createGameButton("Retour");
+        startButton = ButtonManager.createGameButton("Lancer le combat");
 
         buttonPanel.add(backButton);
         buttonPanel.add(startButton);
@@ -155,10 +130,9 @@ public class GameSetupPanel extends JPanel {
         mainContentPanel.add(buttonPanel);
         mainContentPanel.add(Box.createVerticalGlue());
 
-        this.add(title, BorderLayout.NORTH);
         this.add(mainContentPanel, BorderLayout.CENTER);
 
-        new GameSetupController(this, mainFrame);
+        new GameSetupController(this, frame);
     }
 
 
@@ -243,7 +217,7 @@ public class GameSetupPanel extends JPanel {
         box.setHorizontalAlignment(SwingConstants.LEFT);
         box.setIconTextGap(20);
 
-        Image originalImg = ImageManager.get(imageName);
+        Image originalImg = ImageManager.get(imageName + "_Inv");
         if (originalImg == null) {
             return;
         }

@@ -176,6 +176,12 @@ public class GameController {
                     }
                     frameCount++;
                 }
+            } else if (equipped instanceof upc.model.items.Shotgun) {
+                if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
+                    activeAlien.setShootPower(100);
+                    activeAlien.useEquippedItem();
+                    activeAlien.setShootPower(0);
+                }
             } else {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     activeAlien.incrementPower();

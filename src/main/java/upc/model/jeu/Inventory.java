@@ -78,6 +78,13 @@ public class Inventory {
     }
 
     //// Autres méthodes ////
+
+    /**
+     * Méthode permettant de savoir si une arme est utilisable ou non
+     * @param w : Item représentant une arme
+     * @return boolean {@code boolean}
+     * si le nombre de munitions de l'item donnée en paramètre est valide
+     */
     public boolean isAvailable(Item.Type w) {
         int amount = ammoStock.getOrDefault(w, 0);
         return amount > 0 || amount == -1;

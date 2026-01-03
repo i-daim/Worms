@@ -112,7 +112,6 @@ public class Alien extends Entity {
     /**Méthode en lien avec l'utilisation d'item
      */
     public void useEquippedItem() {
-        
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
 
         if (!inventory.isAvailable(equippedItem)) {

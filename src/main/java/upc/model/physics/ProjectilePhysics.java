@@ -181,10 +181,6 @@ public class ProjectilePhysics {
                     proj.setState(Projectile.State.EXPLODED);
                 }
             }
-            if (proj instanceof Trap trap) {
-                trap.activation(gameWorld);
-            }
-
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
 

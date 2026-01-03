@@ -118,7 +118,7 @@ public class GameManager {
             currentRound++;
         }
 
-        setDelay(1000, () -> {
+        setDelay(2000, () -> {
             nextTurn();
             timeLeft = ROUND_TIME;
         });
@@ -213,8 +213,7 @@ public class GameManager {
     }
 
 
-////    GETTERS    ////
-
+////    GETTERS & SETTERS    ////
     public Terrain getTerrain() {
         return terrain;
     }
@@ -263,7 +262,17 @@ public class GameManager {
         return gameOver;
     }
 
-    /* SETTERS*/
+    public boolean isActionDone() {
+        return actionDone;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public List<ActiveAnimation> getActiveAnimations() {
+        return activeAnimations;
+    }
 
     public void setMap(Terrain terrain) {
         this.terrain = terrain;
@@ -287,23 +296,8 @@ public class GameManager {
         return null;
     }
 
-    public int getAliveWorms() {
-        int total = 0;
-        for (Team team : teams) {
-            total += team.getAliveAliensNumber();
-        }
-        return total;
+    public int getDelay() {
+        return (int) (delayEndTime - System.currentTimeMillis()) / 10;
     }
 
-    public boolean isActionDone() {
-        return actionDone;
-    }
-
-    public List<ActiveAnimation> getActiveAnimations() {
-        return activeAnimations;
-    }
-
-    public boolean isPaused() {
-        return isPaused;
-    }
 }

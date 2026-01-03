@@ -11,7 +11,6 @@ import upc.model.items.Item;
 import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
-import upc.model.items.Weapon;
 import upc.model.save.GameSave;
 import upc.model.items.Jetpack;
 
@@ -24,7 +23,6 @@ public class Inventory {
     // Stock des armes et des munitions de l'équipe
     private final HashMap<Item.Type, Item> weaponStock;
     private final HashMap<Item.Type, Integer> ammoStock;
-    private Item.Type currentWeaponType;
 
     // Constructeur
     public Inventory() {
@@ -34,12 +32,7 @@ public class Inventory {
         initializeWeapons();
         initializeAmmo();
     }
-    public static Item.Type getItemTypeAt(int index) {
-        if (index >= 0 && index < ITEMS.length) {
-            return ITEMS[index];
-        }
-        return null;
-    }
+
     //Constructeur pour charger un inventaire sauvegardé
     public Inventory(GameSave.InventorySave inventorySave) {
         this.weaponStock =  new HashMap<>();
@@ -48,7 +41,8 @@ public class Inventory {
         initializeWeapons();
     }
 
-    //// Méthode pour initialiser l'inventaire ////
+
+//// Méthode pour initialiser l'inventaire ////
     private void initializeWeapons() {
         if (allowedWeapons.contains(Item.Type.SHOTGUN)) {
             weaponStock.put(Item.Type.SHOTGUN, new Shotgun());
@@ -68,17 +62,9 @@ public class Inventory {
         if (allowedWeapons.contains(Item.Type.JETPACK)) {
             weaponStock.put(Item.Type.JETPACK, new Jetpack());
         }
-
-        for (Item.Type t : ITEMS) {
-            if (weaponStock.containsKey(t)) {
-                this.currentWeaponType = t;
-                break;
-            }
-        }
     }
 
     private void initializeAmmo() {
-
         if (allowedWeapons.contains(Item.Type.SHOTGUN)) {
             addAmmo(Item.Type.SHOTGUN, 50);
         }
@@ -97,10 +83,10 @@ public class Inventory {
         if (allowedWeapons.contains(Item.Type.JETPACK)) {
             addAmmo(Item.Type.JETPACK, 200);
         }
-
     }
 
-    //// Modifications des munitions ////
+
+//// Modifications des munitions ////
     public void addAmmo(Item.Type weapon, int qty) {
         if (qty <= 0 || getAmmo(weapon) < 0) {
             return;
@@ -115,7 +101,8 @@ public class Inventory {
         ammoStock.put(weapon, Math.max(getAmmo(weapon) - qty, 0));
     }
 
-    //// Autres méthodes ////
+
+////    GETTERS & SETTERS    ////
     public boolean isAvailable(Item.Type w) {
         int amount = ammoStock.getOrDefault(w, 0);
         return amount > 0 || amount == -1;
@@ -125,23 +112,21 @@ public class Inventory {
         return ammoStock;
     }
 
-    public Item getItem(Item.Type w) {
-        return weaponStock.get(w);
-    }
-
     public int getAmmo(Item.Type w) {
         return ammoStock.getOrDefault(w, 0);
     }
 
-    public Weapon getCurrentWeapon() {
-        if (currentWeaponType == null) {
-            return null;
+    public static Item.Type getItemTypeAt(int index) {
+        if (index >= 0 && index < ITEMS.length) {
+            return ITEMS[index];
         }
-        return (Weapon) weaponStock.get(currentWeaponType);
+        return null;
     }
+
     public static void setAllowedWeapons(Set<Item.Type> weapons) {
         allowedWeapons = weapons;
     }
+
     public Item getItemByIndex(int index) {
         if (index >= 0 && index < ITEMS.length) {
             return weaponStock.get(ITEMS[index]);

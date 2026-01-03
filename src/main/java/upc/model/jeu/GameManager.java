@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager {
+    //Constantes
     public static final int ROUND_TIME = 60;
     public static final int TEAM_SIZE = 2;
 
@@ -21,6 +22,7 @@ public class GameManager {
     private final GameWorld gameWorld;
     private Team[] teams;
 
+    //Attribut en lien à la partie
     private int activeTeamIndex;
     private int currentRound;
     private int timeLeft;
@@ -29,6 +31,9 @@ public class GameManager {
 
     private final List<ActiveAnimation> activeAnimations;
 
+    /**
+     * Constructeur
+     */
     public GameManager() {
         this.terrain = TerrainGenerator.chooseRandomMap();
         this.mapName = terrain.getMapName();
@@ -42,6 +47,11 @@ public class GameManager {
 
         initializeGame();
     }
+
+    /**
+     * Constructeur
+     * @param mapName : Crée le terrain de jeu selon le nom de terrain donnée
+     */
     public GameManager(String mapName) {
         this.terrain = TerrainGenerator.createTerrain(mapName);
         this.mapName = mapName;

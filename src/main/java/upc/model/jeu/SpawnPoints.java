@@ -46,15 +46,24 @@ public class SpawnPoints {
     }
 
 
-    // SPAWNS POUR CONSOLE //
+    /// SPAWNS POUR CONSOLE ///
+
+    /**Constante représentant l'ensemble des positions de départ des alien de chaque équipe pour le terrain de jeu Console*/
     private static final HashMap<Integer, List<Position>> CONSOLE_SPAWNS = new HashMap<>();
+
+    /**Initialise la position de départ des aliens de chaque équipe
+     * sur le terrain de jeu Console
+     */
     static {
+
+        //Equipe 1
         CONSOLE_SPAWNS.put(0, Arrays.asList(
                 new Position(10, 5),
                 new Position(12, 5),
                 new Position(14, 5)
         ));
 
+        //Equipe 2
         CONSOLE_SPAWNS.put(1, Arrays.asList(
                 new Position(20, 5),
                 new Position(22, 5),
@@ -69,10 +78,10 @@ public class SpawnPoints {
     /**
      * Retourne l'ensemble des positions des aliens selon le terrain et l'équipe choisi
      * @param mapName : Nom du terrain
-     * @param team : Equipe choisie
+     * @param team : Indice d'équipe
      * @return la liste de position {@link List<Position>} des aliens d'une équipe
      * si le nom de terrain choisi est liberty, spaceship ou vide
-     * ou {@code null} si le nom du terrain n'est pas pas valide
+     * ou {@code null} si le nom du terrain n'est pas reconnu
      */
     public static List<Position> getSpawns(String mapName, int team) {
         if (mapName.equals("liberty")) {

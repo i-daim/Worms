@@ -14,11 +14,12 @@ import upc.model.save.GameSave;
 
 public class Inventory {
 
+    /** Constantes contenant les différentes items présent dans l'inventaire*/
     public static final Item.Type[] ITEMS = {
             Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
             Item.Type.GRENADE, Item.Type.MINE, Item.Type.JETPACK};
 
-    // Stock des armes et des munitions de l'équipe
+    /** Stock des armes et des munitions de l'équipe */
     private final HashMap<Item.Type, Item> weaponStock;
     private final HashMap<Item.Type, Integer> ammoStock;
     private Item.Type currentWeaponType;

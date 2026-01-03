@@ -63,17 +63,36 @@ public class Inventory {
     }
 
     //// Modifications des munitions ////
+
+    /**
+     * Méthode permettant d'augmenter le nombre de muntions d'une arme
+     * @param weapon : Arme sélectionnée
+     * @param qty : Nombre de munitions à ajouter
+     */
     public void addAmmo(Item.Type weapon, int qty) {
+
+        //Vérifie que le nombre de munitions utilisées ou présent dans l'arme est invalide
         if (qty <= 0 || getAmmo(weapon) < 0) {
             return;
         }
+
+        //Met à jour le nombre de munitions présent pour l'arme
         ammoStock.put(weapon, getAmmo(weapon) + qty);
     }
 
+    /**
+     * Méthode permettant de décrémenter le nombre de muntions d'une arme suite à un tir
+     * @param weapon : Arme sélectionnée
+     * @param qty : Nombre de munitions utilisées
+     */
     public void useAmmo(Item.Type weapon, int qty) {
+
+        //Vérifie que le nombre de munitions utilisées ou présent dans l'arme est invalide
         if (qty <= 0 || getAmmo(weapon) < 0) {
             return;
         }
+
+        //Met à jour le nombre de munitions restant pour l'arme
         ammoStock.put(weapon, Math.max(getAmmo(weapon) - qty, 0));
     }
 

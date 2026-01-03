@@ -24,7 +24,7 @@ public class SpawnPoints {
         LIBERTY_SPAWNS.put(1, Arrays.asList(
                 new Position(480, 330),   // Electric Pylon
                 new Position(800, 155),    // Statue Head (Nose/Visor)
-                new Position(1580, 280) ,  // Tank (Right side)
+                new Position(1580, 280),  // Tank (Right side)
                 new Position(60, 280)    // Far Left Beach (Edge of map)
         ));
     }

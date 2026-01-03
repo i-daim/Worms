@@ -315,8 +315,12 @@ public class GamePanel extends JPanel {
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (Math.abs(targetCamX - cameraX) < 0.1) cameraX = targetCamX;
-        if (Math.abs(targetCamY - cameraY) < 0.1) cameraY = targetCamY;
+        if (Math.abs(targetCamX - cameraX) < 0.1) {
+            cameraX = targetCamX;
+        }
+        if (Math.abs(targetCamY - cameraY) < 0.1) {
+            cameraY = targetCamY;
+        }
     }
 
 

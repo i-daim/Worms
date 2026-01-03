@@ -139,67 +139,38 @@ public class GameSetupPanel extends JPanel {
         startButton.setFont(new Font("Arial", Font.BOLD, 24));
         startButton.setForeground(Color.GREEN);
 
+        buttonPanel.add(backButton);
+        buttonPanel.add(startButton);
 
-        JPanel weaponPanel = new JPanel() {
+        mainContentPanel.add(buttonPanel);
+        mainContentPanel.add(Box.createVerticalGlue());
+
+        this.add(title, BorderLayout.NORTH);
+        this.add(mainContentPanel, BorderLayout.CENTER);
+
+        new GameSetupController(this, mainFrame);
+    }
+
+
+
+    private JPanel createRoundedPanel() {
+        JPanel p = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
-                g.setColor(new Color(20, 20, 20, 200));
-                g.fillRect(0, 0, getWidth(), getHeight());
-                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(PANEL_BG_COLOR);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30); // Coins arrondis
+
+                g2.setColor(new Color(255, 255, 255, 50));
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRoundRect(1, 1, getWidth()-2, getHeight()-2, 30, 30);
+                g2.dispose();
             }
         };
-
-        weaponPanel.setOpaque(false);
-        weaponPanel.setLayout(new GridLayout(3, 2, 20, 10));
-
-        weaponPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.WHITE, 2), // Cadre gris
-                " Items Autorisées ",
-                javax.swing.border.TitledBorder.CENTER,
-                javax.swing.border.TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 22),
-                new Color(100, 255, 201) // Vert bleue
-        ));
-        weaponPanel.setMaximumSize(new Dimension(900, 300));
-        weaponPanel.setPreferredSize(new Dimension(900, 300));
-        chkBazooka = new JCheckBox("Bazooka", false);
-        styleCheckBoxWithIcon(chkBazooka, "Bazooka");
-        chkUzi = new JCheckBox("Uzi", false);
-        styleCheckBoxWithIcon(chkUzi, "Uzi");
-        chkShotgun = new JCheckBox("Shotgun", false);
-        styleCheckBoxWithIcon(chkShotgun, "Shotgun");
-        chkGrenade = new JCheckBox("Grenade", false);
-        styleCheckBoxWithIcon(chkGrenade, "Grenade");
-        chkMine = new JCheckBox("Mine", false);
-        styleCheckBoxWithIcon(chkMine, "Mine");
-
-
-        weaponPanel.add(chkBazooka);
-        weaponPanel.add(chkUzi);
-        weaponPanel.add(chkShotgun);
-        weaponPanel.add(chkGrenade);
-        weaponPanel.add(chkMine);
-
-        weaponPanel.add(new JLabel(""));
-
-
-        startButton = ButtonManager.createGameButton("LANCER LA PARTIE !");
-        backButton = ButtonManager.createGameButton("Retour");
-
-        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-
-        this.add(Box.createVerticalStrut(30));
-        this.add(title);
-        centerPanel.add(Box.createVerticalStrut(50));
-        centerPanel.add(topSettingsPanel);
-        centerPanel.add(Box.createVerticalStrut(50));
-        centerPanel.add(weaponPanel);
-        centerPanel.add(Box.createVerticalStrut(80));
-        centerPanel.add(startButton);
-        centerPanel.add(Box.createVerticalStrut(30));
-        centerPanel.add(backButton);
+        p.setOpaque(false);
+        return p;
+    }
 
         centerPanel.add(Box.createVerticalGlue());
 

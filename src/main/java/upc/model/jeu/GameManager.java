@@ -15,9 +15,7 @@ public class GameManager {
     public static final int TEAM_SIZE = 2;
 
     private Terrain terrain;
-
     private final String mapName;
-
     private final GameWorld gameWorld;
     private Team[] teams;
 
@@ -28,6 +26,11 @@ public class GameManager {
     private boolean actionDone;
 
     private final List<ActiveAnimation> activeAnimations;
+
+    private long delayEndTime = 0;
+    private boolean isPaused = false;
+    private Runnable onDelayFinished;
+
 
     public GameManager() {
         this.terrain = TerrainGenerator.chooseRandomMap();
@@ -42,6 +45,7 @@ public class GameManager {
 
         initializeGame();
     }
+
     public GameManager(String mapName) {
         this.terrain = TerrainGenerator.createTerrain(mapName);
         this.mapName = mapName;
@@ -189,6 +193,12 @@ public class GameManager {
         activeAnimations.add(active);
     }
 
+    public void setDelay(long durationMs, Runnable onFinished) {
+        this.delayEndTime = System.currentTimeMillis() + durationMs;
+        this.isPaused = true;
+        this.onDelayFinished = onFinished;
+    }
+
 
 ////    GETTERS    ////
 
@@ -278,5 +288,9 @@ public class GameManager {
 
     public List<ActiveAnimation> getActiveAnimations() {
         return activeAnimations;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 }

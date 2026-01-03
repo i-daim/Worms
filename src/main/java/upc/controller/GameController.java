@@ -175,8 +175,13 @@ public class GameController {
                 }
             } else {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
+                    activeAlien.incrementPower();
+                }
+                if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
+                    activeAlien.setShootPower(50);
                     Projectile p = activeAlien.useEquippedItem();
                     gameManager.setActiveProjectile(p);
+                    activeAlien.setShootPower(0);
                 }
             }
         }

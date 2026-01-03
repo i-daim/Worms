@@ -41,6 +41,12 @@ public class GameSetupPanel extends JPanel {
     private JCheckBox chkShotgun;
     private JCheckBox chkGrenade;
     private JCheckBox chkMine;
+    private JCheckBox chkJetpack;
+
+    private static final Color TITLE_COLOR = new Color(255, 255, 255);
+    private static final Color PANEL_BG_COLOR = new Color(30, 30, 40, 220); 
+    private static final Color ACCENT_COLOR = new Color(100, 255, 201);
+    private static final Font MAIN_FONT = new Font("Arial", Font.BOLD, 22);
 
     public GameSetupPanel(MainFrame frame) {
         this.mainFrame = frame;

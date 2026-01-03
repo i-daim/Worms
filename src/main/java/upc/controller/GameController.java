@@ -120,6 +120,7 @@ public class GameController {
 
         keyHandler.clearJustPressed();
         mouseHandler.clearJustPressed();
+        mouseHandler.clearJustReleased();
         gamePanel.repaint();
     }
 
@@ -168,7 +169,9 @@ public class GameController {
             if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
+                        activeAlien.setShootPower(100);
                         activeAlien.useEquippedItem();
+                        activeAlien.setShootPower(0);
                         frameCount = 0;
                     }
                     frameCount++;
@@ -177,8 +180,7 @@ public class GameController {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     activeAlien.incrementPower();
                 }
-                if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
-                    activeAlien.setShootPower(50);
+                if (mouseHandler.isJustReleased(MouseEvent.BUTTON1)) {
                     Projectile p = activeAlien.useEquippedItem();
                     gameManager.setActiveProjectile(p);
                     activeAlien.setShootPower(0);

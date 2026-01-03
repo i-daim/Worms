@@ -65,7 +65,7 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
@@ -81,7 +81,14 @@ public class GamePanel extends JPanel {
 
         // Affichage de l'eau (arrière plan)
         int waterY = terrain.getHeight() - (Terrain.WATER_LEVEL);
-        Animation waterAnim = AnimationManager.getAnimation("water");
+
+
+        String waterKey = terrain.getWaterAnimationKey();
+        Animation waterAnim = AnimationManager.getAnimation(waterKey);
+        if (waterAnim == null) {
+            waterAnim = AnimationManager.getAnimation("water");
+        }
+
         drawAnimation(g2, waterAnim, 0, waterY, 0, 100, true);
 
         // Affichage du terrain
@@ -118,7 +125,7 @@ public class GamePanel extends JPanel {
     }
 
 
-////    METHODES D'AFFICHAGE    ////
+    ////    METHODES D'AFFICHAGE    ////
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
@@ -261,7 +268,7 @@ public class GamePanel extends JPanel {
 
 
 
-////    AUTRES METHODES    ////
+    ////    AUTRES METHODES    ////
     public void togglePauseMenu(boolean paused) {
         pausePanel.setVisible(paused);
         hudPanel.setVisible(!paused);
@@ -329,7 +336,7 @@ public class GamePanel extends JPanel {
     }
 
 
-////    SETTERS & GETTERS    ////
+    ////    SETTERS & GETTERS    ////
     public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;

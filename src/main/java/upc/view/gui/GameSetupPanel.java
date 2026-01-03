@@ -219,9 +219,12 @@ public class GameSetupPanel extends JPanel {
         box.setIconTextGap(20);
 
         Image originalImg = ImageManager.get(imageName + "_Inv");
-        if (originalImg == null) return;
+        if (originalImg == null) {
+            return;
+        }
 
-        int iconW = 90, iconH = 90;
+        int iconW = 90;
+        int iconH = 90;
         box.setIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, false)));
         box.setSelectedIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, true)));
         box.setPressedIcon(box.getSelectedIcon());

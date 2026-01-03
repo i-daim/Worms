@@ -159,20 +159,9 @@ public class GameController {
             activeAlien.idle();
         }
 
-        // Gestion de la visée
-        if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
-            int angle = activeAlien.getAimAngle() + 2;
-            if (angle > 80) {
-                angle = 80;
-            }
-            activeAlien.setAimAngle(angle);
-        } else if (keyHandler.isKeyPressed(KeyEvent.VK_DOWN)) {
-            int angle = activeAlien.getAimAngle() - 2;
-            if (angle < -45) {
-                angle = -45;
-            }
-            activeAlien.setAimAngle(angle);
-        }
+        // Gestion de la visée avec la souris
+        mouseHandler.handleAim(activeAlien,
+                gamePanel.getCameraX(), gamePanel.getCameraY(), GamePanel.ZOOM);
 
         // Utilisation de l'item
         if (equipped != null && canShoot) {

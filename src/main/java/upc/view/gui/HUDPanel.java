@@ -150,6 +150,12 @@ public class HUDPanel extends JPanel {
         // Rotation du viseur en fonction de l'angle
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
 
+        // Indice de puissance de tir
+        g2.setColor(Color.RED);
+        int power = alien.getShootPower();
+        g2.drawRect(10, 0, power, 10);
+        g2.fillRect(10, 0, power, 10);
+
         // Viseur représenté par un cercle
         int distance = 50;
         int radius = 6;

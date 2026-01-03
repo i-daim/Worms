@@ -36,9 +36,21 @@ public class SpawnPoints {
         ));
     }
 
+    /// SPAWNS POUR LA MAP SPACESHIP ///
+
+    /**
+     * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
+     * pour le terrain de jeu Spaceship
+     */
     private static final HashMap<Integer, List<Position>> SPACESHIP_SPAWNS = new HashMap<>();
 
+    /**
+     * Initialise la position de départ des aliens de chaque équipe
+     * sur le terrain de jeu Spaceship
+     */
     static {
+
+        //Equipe 1
         SPACESHIP_SPAWNS.put(0, Arrays.asList(
                 new Position(148, 271),
                 new Position(741, 522),
@@ -46,6 +58,7 @@ public class SpawnPoints {
                 new Position(494, 198)
         ));
 
+        //Equipe 2
         SPACESHIP_SPAWNS.put(1, Arrays.asList(
                 new Position(384, 360),
                 new Position(877, 210),

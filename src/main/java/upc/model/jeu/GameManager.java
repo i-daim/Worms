@@ -101,7 +101,7 @@ public class GameManager {
         this.gameOver = false;
         this.actionDone = false;
 
-        SoundManager.playVoice(0);
+        setDelay(3000, () -> SoundManager.playVoice(0));
     }
 
 
@@ -118,9 +118,10 @@ public class GameManager {
             currentRound++;
         }
 
-        nextTurn();
-
-        timeLeft = ROUND_TIME;
+        setDelay(1000, () -> {
+            nextTurn();
+            timeLeft = ROUND_TIME;
+        });
     }
 
     private void nextTurn() {
@@ -160,7 +161,6 @@ public class GameManager {
         for (Team team : teams) {
             if (team.isEliminated()) {
                 gameOver = true;
-                return;
             }
         }
     }

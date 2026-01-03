@@ -192,18 +192,34 @@ public class GameManager {
 
 ////    GETTERS    ////
 
+    /**
+     * Retourne le terrain du jeu
+     * @return L'attribut terrain
+     */
     public Terrain getTerrain() {
         return terrain;
     }
 
+    /**
+     * Retourne le
+     * @return L'attribut terrain
+     */
     public GameWorld getWorld() {
         return gameWorld;
     }
 
+    /**
+     * Retourne l'équipe active
+     * @return l'équipe depuis l'attribut teams
+     */
     public Team getActiveTeam() {
         return teams[activeTeamIndex];
     }
 
+    /**
+     * Retourne l'équipe ennemie
+     * @return l'équipe depuis l'attribut teams
+     */
     public Team getEnnemyTeam() {
         int indexEnnemi = (activeTeamIndex + 1) % teams.length;
         return teams[indexEnnemi];
@@ -216,10 +232,18 @@ public class GameManager {
         return null;
     }
 
+    /**
+     * Retourne les équipes du jeu
+     * @return l'attribut teams
+     */
     public Team[] getTeams() {
         return teams;
     }
 
+    /**
+     * Retourne l'indice de l'équipe active
+     * @return l'attribut activeTeamIndex
+     */
     public int getActiveTeamIndex() {
         return activeTeamIndex;
     }

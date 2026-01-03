@@ -9,7 +9,7 @@ public class Mine extends Weapon {
 
     public static final int DAMAGE = 45;
     public static final int EXPLOSION_RADIUS = 30;
-    public static final int ACTIVATION_RADIUS = 3;
+    public static final int ACTIVATION_RADIUS = 10;
 
     public Mine() {
         super("Mine", DAMAGE, 1, 15);

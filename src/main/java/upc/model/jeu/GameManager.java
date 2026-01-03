@@ -62,16 +62,29 @@ public class GameManager {
 
 
     public void update(double elapsedTime) {
+        // On met à jour les physiques et animations
+        gameWorld.update(elapsedTime);
+        updateAnimations();
+        checkGameOver();
+
+        // Si le délai n'est pas fini, on met pas à jour le reste
+        if (System.currentTimeMillis() < delayEndTime) {
+            return;
+        }
+        // Exécute les commandes à exécuter après le délai
+        if (isPaused) {
+            isPaused = false;
+            if (onDelayFinished != null) {
+                onDelayFinished.run();
+                onDelayFinished = null;
+            }
+        }
+
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
         if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
             skipTurn();
             return;
         }
-        gameWorld.update(elapsedTime);
-
-        updateAnimations();
-
-        checkGameOver();
 
         countTimeLeft();
     }

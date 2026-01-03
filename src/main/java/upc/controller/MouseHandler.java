@@ -41,7 +41,12 @@ public class MouseHandler extends MouseAdapter {
         }
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
-        int limit = (int) (50 * GamePanel.ZOOM);
+        int limit = (int) (50 * GamePanel.ZOOM) + 50;
+
+        // empêche la cam de se déplacer quand on appuie sur le bouton "Skip"
+        if (position.y < 50) {
+            return false;
+        }
 
         return position.x > width - limit || position.x < limit
                 || position.y > height - limit || position.y < limit;

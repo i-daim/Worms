@@ -88,15 +88,27 @@ public class GameSetupPanel extends JPanel {
 
         JPanel teamBox = createSection("VERS PAR ÉQUIPE", 320);
         teamSizeSlider = new JSlider(1, 5, 2);
-        teamSizeSlider.setOpaque(false);
-        teamSizeSlider.setForeground(Color.WHITE);
-        teamSizeSlider.setFont(new Font("Arial", Font.BOLD, 20));
+        styleSlider(teamSizeSlider);
+        teamBox.add(teamSizeSlider);
+        configPanel.add(teamBox);
 
-        teamSizeSlider.setMajorTickSpacing(1);
-        teamSizeSlider.setPaintTicks(true);
-        teamSizeSlider.setPaintLabels(true);
-        teamSizeSlider.setPreferredSize(new Dimension(300, 60));
-        wormPanel.add(teamSizeSlider);
+        mainContentPanel.add(configPanel);
+        mainContentPanel.add(Box.createVerticalStrut(30));
+
+        JPanel weaponPanel = createRoundedPanel();
+        weaponPanel.setLayout(new BorderLayout());
+        weaponPanel.setMaximumSize(new Dimension(900, 380));
+        weaponPanel.setPreferredSize(new Dimension(900, 380));
+
+        JLabel weaponTitle = new JLabel("ARSENAL AUTORISÉ", SwingConstants.CENTER);
+        weaponTitle.setFont(new Font("Arial", Font.BOLD, 28));
+        weaponTitle.setForeground(ACCENT_COLOR);
+        weaponTitle.setBorder(new EmptyBorder(15, 0, 15, 0));
+        weaponPanel.add(weaponTitle, BorderLayout.NORTH);
+
+        JPanel itemsGrid = new JPanel(new GridLayout(2, 3, 20, 20));
+        itemsGrid.setOpaque(false);
+        itemsGrid.setBorder(new EmptyBorder(10, 30, 30, 30));
 
         topSettingsPanel.add(mapPanel);
         topSettingsPanel.add(wormPanel);

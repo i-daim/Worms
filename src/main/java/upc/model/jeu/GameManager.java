@@ -162,19 +162,6 @@ public class GameManager {
         return target;
     }
 
-    public Alien getAlienAtPosition(int x, int y) {
-        for (Team team : teams) {
-            for (Alien alien : team.getAliens()) {
-                if (alien != null && alien.isAlive()) {
-                    Position pos = alien.getPosition();
-                    if (pos.getX() == x && pos.getY() == y) {
-                        return alien;
-                    }
-                }
-            }
-        }
-        return null;
-    }
 
     private void updateAnimations() {
         activeAnimations.removeIf(active -> {
@@ -202,7 +189,7 @@ public class GameManager {
 
     /**
      * Retourne le
-     * @return L'attribut terrain
+     * @return L'attribut gameWorld
      */
     public GameWorld getWorld() {
         return gameWorld;
@@ -314,6 +301,43 @@ public class GameManager {
         return total;
     }
 
+
+    /**
+     * Retourne un boolean si l'alien effectue une action
+     * @return l'attribut actionDone
+     */
+    public boolean isActionDone() {
+        return actionDone;
+    }
+
+    /**
+     * Retourne une liste des animations de l'alien
+     * @return l'attribut activeAnimations
+     */
+    public List<ActiveAnimation> getActiveAnimations() {
+        return activeAnimations;
+    }
+
+    /**
+     * Retourne un alien si il se trouve à une position donnée
+     * @param x : Donne une position en x
+     * @param y : Donne une position en y
+     * @return l'alien qui a une position égale à celle donnée en paramètre
+     */
+    public Alien getAlienAtPosition(int x, int y) {
+        for (Team team : teams) {
+            for (Alien alien : team.getAliens()) {
+                if (alien != null && alien.isAlive()) {
+                    Position pos = alien.getPosition();
+                    if (pos.getX() == x && pos.getY() == y) {
+                        return alien;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     /// SETTERS ///
 
     /**
@@ -332,12 +356,4 @@ public class GameManager {
         this.teams = teams;
     }
 
-
-    public boolean isActionDone() {
-        return actionDone;
-    }
-
-    public List<ActiveAnimation> getActiveAnimations() {
-        return activeAnimations;
-    }
 }

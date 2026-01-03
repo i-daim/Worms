@@ -173,7 +173,11 @@ public class GameManager {
         return target;
     }
 
+    /// Animation ///
 
+    /**
+     * Méthode permettant de mettre à jour l'animation
+     */
     private void updateAnimations() {
         activeAnimations.removeIf(active -> {
             active.update();
@@ -181,6 +185,9 @@ public class GameManager {
         });
     }
 
+    /**
+     * Méthode permettant d'ajouter une animation active dans la liste d'animations
+     */
     public void addActiveAnimation(String name, int posX, int posY) {
         Animation animation = AnimationManager.getAnimation(name);
         ActiveAnimation active = new ActiveAnimation(animation, 50, false, posX, posY);

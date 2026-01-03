@@ -69,13 +69,11 @@ public class GameSetupPanel extends JPanel {
         title.setForeground(TITLE_COLOR);
         title.setBorder(new EmptyBorder(350, 50, 0, 50));
 
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setOpaque(false);
 
-        JPanel topSettingsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 0));
-        topSettingsPanel.setOpaque(false);
-        topSettingsPanel.setMaximumSize(new Dimension(1000, 100));
+        JPanel mainContentPanel = new JPanel();
+        mainContentPanel.setLayout(new BoxLayout(mainContentPanel, BoxLayout.Y_AXIS));
+        mainContentPanel.setOpaque(false);
+        mainContentPanel.setBorder(new EmptyBorder(50, 50, 0, 50)); // Marges latérales
 
         JPanel mapPanel = createVerticalBox("Carte : ");
         String[] maps = {"Aléatoire", "Liberty", "Spaceship"};

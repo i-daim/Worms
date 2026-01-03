@@ -1,7 +1,9 @@
 package upc.view.gui;
 
 import upc.model.entites.Alien;
+import upc.model.items.Item;
 import upc.model.items.Weapon;
+import upc.model.jeu.GameManager;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.items.Item;
@@ -19,6 +21,10 @@ import java.awt.geom.AffineTransform;
 public class HUDPanel extends JPanel {
 
     private final GameManager gameManager;
+
+
+    private boolean isInventoryVisible = true;
+    private JButton inventoryButton;
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;

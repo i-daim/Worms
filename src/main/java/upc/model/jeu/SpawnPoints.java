@@ -29,7 +29,7 @@ public class SpawnPoints {
     private static final HashMap<Integer, List<Position>> ICE_SPAWNS = new HashMap<>();
 
     static {
-        // Equipe 0 (valeurs fournies - premier bloc)
+
         ICE_SPAWNS.put(0, Arrays.asList(
                 new Position(118, 452),
                 new Position(433, 158),
@@ -37,7 +37,7 @@ public class SpawnPoints {
                 new Position(441, 435)
         ));
 
-        // Equipe 1 (valeurs fournies - second bloc)
+
         ICE_SPAWNS.put(1, Arrays.asList(
                 new Position(1254, 280),
                 new Position(1047, 368),
@@ -49,7 +49,7 @@ public class SpawnPoints {
     private static final HashMap<Integer, List<Position>> POISON_SPAWNS = new HashMap<>();
 
     static {
-        // Equipe 0 (valeurs fournies - premier bloc)
+
         POISON_SPAWNS.put(0, Arrays.asList(
                 new Position(347, 221),
                 new Position(366, 465),
@@ -57,7 +57,7 @@ public class SpawnPoints {
                 new Position(477, 410)
         ));
 
-        // Equipe 1 (valeurs fournies - second bloc)
+
         POISON_SPAWNS.put(1, Arrays.asList(
                 new Position(1252, 154),
                 new Position(1411, 286),
@@ -69,7 +69,7 @@ public class SpawnPoints {
     private static final HashMap<Integer, List<Position>> HELL_SPAWNS = new HashMap<>();
 
     static {
-        // Equipe 0 (valeurs fournies - premier bloc)
+
         HELL_SPAWNS.put(0, Arrays.asList(
                 new Position(168, 150),
                 new Position(489, 190),
@@ -77,7 +77,7 @@ public class SpawnPoints {
                 new Position(205, 100)
         ));
 
-        // Equipe 1 (valeurs fournies - second bloc)
+
         HELL_SPAWNS.put(1, Arrays.asList(
                 new Position(843, 238),
                 new Position(1218, 187),

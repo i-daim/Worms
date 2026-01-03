@@ -83,22 +83,46 @@ public class Inventory {
         return amount > 0 || amount == -1;
     }
 
+    /// Getters ///
+
+    /**
+     * Retourne la liste des différentes munitions utilisées par les armes
+     * @return L'attribut ammoStock
+     */
     public HashMap<Item.Type, Integer> getAmmoStock() {
         return ammoStock;
     }
 
+    /**
+     * Retourne l'item présent dans la liste représentant l'ensemble des armes de l'inventaire
+     * @param w : Un item donné
+     * @return l'item présent dans l'attribut weaponStock
+     */
     public Item getItem(Item.Type w) {
         return weaponStock.get(w);
     }
 
+    /**
+     * Retourne le nombre de munitions de l'item mis en paramètre
+     * @param w : Un item donné
+     * @return le nombre de munitions via l'attribut ammoStock
+     */
     public int getAmmo(Item.Type w) {
         return ammoStock.getOrDefault(w, 0);
     }
 
+    /**
+     * Méthode permettant de retourner l'arme équipé
+     * @return l'objet {@link Weapon} représentant l'arme équipée,
+     * ou {@code null} si aucune arme n'est équipée
+     */
     public Weapon getCurrentWeapon() {
         if (currentWeaponType == null) {
             return null;
         }
+
+        //Retourne l'arme équipé en l'appelant depuis l'attribut weaponStock
+        //Et en castant le résultat de sortie en weapon
         return (Weapon) weaponStock.get(currentWeaponType);
     }
 }

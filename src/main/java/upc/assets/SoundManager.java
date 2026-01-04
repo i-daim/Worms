@@ -63,9 +63,10 @@ public class SoundManager {
         if (isAudioDisabled()) {
             return;
         }
-        Sound effect = EFFECTS.get(name);
-        if (effect != null) {
-            effect.duplicate().play();
+        if (EFFECTS.get(name) != null) {
+            Sound effect = EFFECTS.get(name).duplicate();
+            effect.setVolume(-10f);
+            effect.play();
         }
     }
 

@@ -120,9 +120,15 @@ public class TestAlien {
         ammo = alien.getInventory().getAmmo(equippedItem);
         alien.useEquippedItem();
         assertEquals(alien.getInventory().getAmmo(equippedItem), ammo);
+    }
 
+    @Test
+    public void testSetDirection() {
+        alien.setDirection(true);
+        assertTrue(alien.getDirection());
 
-
+        alien.setDirection(false);
+        assertFalse(alien.getDirection());
     }
 
 

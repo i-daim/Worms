@@ -176,4 +176,15 @@ public class InventoryPanel extends JPanel {
         }
         return -1;
     }
+
+    public static boolean isInsideInventory(Point p, int screenWidth, int screenHeight) {
+        if (p == null) {
+            return false;
+        }
+        int drawX = (screenWidth - TOTAL_WIDTH) / 2;
+        int drawY = screenHeight - TOTAL_HEIGHT - 80;
+
+        return p.x >= drawX && p.x <= drawX + TOTAL_WIDTH &&
+                p.y >= drawY && p.y <= drawY + TOTAL_HEIGHT;
+    }
 }

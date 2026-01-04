@@ -197,7 +197,7 @@ public class ProjectilePhysics {
             }
             int tileY = y / TerrainGenerator.TILE_SIZE;
             if (terrain.isWater(tileY)) {
-                SoundManager.playOverlappingEffect("Splash");
+                SoundManager.playEffect("Splash");
                 proj.setState(Projectile.State.OUT_OF_BOUNDS);
                 world.removeBody(body);
                 iterator.remove();
@@ -317,7 +317,7 @@ public class ProjectilePhysics {
 
             } else if (p instanceof Bullet && b2 != null) {
                 handleBulletImpact((Bullet) p, b2);
-                SoundManager.playOverlappingEffect("Impact");
+                SoundManager.playEffect("Impact");
             }
         }
     }

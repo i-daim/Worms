@@ -35,10 +35,11 @@ public class ImageManager {
             if (url != null) {
                 IMAGES.put(name, ImageIO.read(url));
             } else {
-                System.err.println("Sprite introuvable : " + path);
+                System.err.println("Image introuvable : " + path);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Erreur lors du chargement de l'image " + name + " : " + path);
+            System.err.println(e.getMessage());
         }
     }
 

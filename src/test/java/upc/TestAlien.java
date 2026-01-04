@@ -189,7 +189,9 @@ public class TestAlien {
         alien.setDirection(false);
         assertFalse(alien.getDirection());
     }
-
+    /**
+     * Vérifie que l'objet équipé n'est pas nul.
+     */
     @Test
     public void testGetEquippedItem() {
         assertNotNull(alien.getEquippedItem());

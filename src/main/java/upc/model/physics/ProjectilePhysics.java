@@ -7,6 +7,8 @@ import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 
+import upc.assets.Sound;
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
@@ -18,9 +20,11 @@ import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
 import upc.model.items.Weapon;
+import upc.model.items.Bazooka;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import upc.model.entites.projectiles.Bullet;
+import upc.model.jeu.TerrainGenerator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -101,6 +105,29 @@ public class ProjectilePhysics {
         body.addFixture(fixture);
         body.setMass(MassType.NORMAL);
 
+        if (projectile instanceof Rocket) {
+            // On charge une instance unique pour cette roquette
+            // Assurez-vous que le fichier existe : /sounds/effects/rocket_fly.wav
+            Sound flightSound = SoundManager.loadEffect("Rocket");
+            if (flightSound != null) {
+                flightSound.setVolume(-15f);
+                flightSound.loop();
+                flightSound.play();
+            }
+        }
+
+        if (weapon instanceof Uzi) {
+            SoundManager.playEffect("Uzi");
+        } else if (weapon instanceof Shotgun) {
+            SoundManager.playEffect("Shotgun");
+        } else if (weapon instanceof Bazooka) {
+            SoundManager.playEffect("Bazooka");
+        } else if (weapon instanceof Mine) {
+            SoundManager.playEffect("Mine");
+        } else if (weapon instanceof Grenade) {
+            SoundManager.playEffect("Grenade");
+        }
+
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
@@ -163,11 +190,6 @@ public class ProjectilePhysics {
             Projectile proj = iterator.next();
             Body body = proj.getBody();
 
-            if (body == null) {
-                iterator.remove();
-                continue;
-            }
-
             proj.incrementFrame();
 
             Vector2 pos = body.getTransform().getTranslation();
@@ -183,6 +205,14 @@ public class ProjectilePhysics {
             }
             if (proj instanceof Trap trap) {
                 trap.activation(gameWorld);
+            }
+            int tileY = y / TerrainGenerator.TILE_SIZE;
+            if (terrain.isWater(tileY)) {
+                SoundManager.playOverlappingEffect("Splash");
+                proj.setState(Projectile.State.OUT_OF_BOUNDS);
+                world.removeBody(body);
+                iterator.remove();
+                continue;
             }
 
             int mapWidth = terrain.getWidth();
@@ -222,10 +252,12 @@ public class ProjectilePhysics {
         if (proj instanceof Bullet) {
             return;
         }
+
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
         physicsEngine.getGameWorld().explode(explosionX, explosionY, proj);
+        SoundManager.playEffect("Explosion");
 
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();
@@ -236,7 +268,6 @@ public class ProjectilePhysics {
 
             double dx = (alienPos.getX() - explosionX) / distance;
             double dy = (alienPos.getY() - explosionY) / distance;
-
             Body alienBody = physicsEngine.getAlienBodies().get(alien);
             if (alienBody != null) {
                 alienBody.applyImpulse(
@@ -260,8 +291,10 @@ public class ProjectilePhysics {
             }
             if (p instanceof Rocket && b2 != null) {
                 p.setState(Projectile.State.EXPLODED);
+
             } else if (p instanceof Bullet && b2 != null) {
                 handleBulletImpact((Bullet) p, b2);
+                SoundManager.playOverlappingEffect("Impact");
             }
         }
     }

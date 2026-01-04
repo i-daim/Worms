@@ -53,12 +53,16 @@ public class MouseHandler extends MouseAdapter {
     }
 
     public boolean isMouseNearEdge(GamePanel gamePanel) {
+        if (gamePanel.getGameManager().isPaused()) {
+            return false;
+        }
+
         if (position == null) {
             return false;
         }
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
-        int limit = (int) (50 * GamePanel.ZOOM) + 50;
+        int limit = (int) (50 * gamePanel.getCurrentZoom()) + 50;
 
         // empêche la cam de se déplacer quand on appuie sur le bouton "Skip"
         if (position.y < 50) {
@@ -68,6 +72,7 @@ public class MouseHandler extends MouseAdapter {
         return position.x > width - limit || position.x < limit
                 || position.y > height - limit || position.y < limit;
     }
+
 
     public void handleAim(Alien activeAlien, double cameraX, double cameraY, double zoom) {
         if (position != null) {

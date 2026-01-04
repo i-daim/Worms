@@ -10,7 +10,15 @@ import upc.model.jeu.GameManager;
 import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import org.junit.jupiter.api.Test;
-
+/**
+ * Ces tests vérifient :
+ * - l'état initial d'un alien
+ * - la gestion des points de vie et de la mort
+ * - les déplacements et états (walk, jump, idle)
+ * - la direction et les paramètres de tir
+ * - l'utilisation des objets de l'inventaire
+ * Les tests utilisent JUnit 5.
+ */
 public class TestAlien {
     private Alien alien;
     private Team team;

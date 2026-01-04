@@ -55,7 +55,13 @@ public class Position {
         int dy = this.y - y;
         return Math.sqrt(dx * dx + dy * dy);
     }
-
+    /**
+     * Indique si l'objet donné est égal à cette position.
+     * Deux positions sont égales si leurs coordonnées x et y sont identiques.
+     *
+     * @param o l'objet à comparer
+     * @return true si les positions sont égales, false sinon
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

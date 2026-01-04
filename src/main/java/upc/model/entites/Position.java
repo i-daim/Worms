@@ -1,5 +1,9 @@
 package upc.model.entites;
-
+/**
+ * Représente une position dans un plan en deux dimensions.
+ * Une position est définie par des coordonnées entières (x, y).
+ * La classe est immuable : ses valeurs ne peuvent pas être modifiées.
+ */
 public class Position {
     private final int x;
     private final int y;

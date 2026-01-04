@@ -144,7 +144,10 @@ public class TestAlien {
     void testGetTeam() {
         assertEquals(team, alien.getTeam());
     }
-
+    /**
+     * Vérifie l'utilisation du jetpack.
+     * L'alien doit passer à l'état JUMP.
+     */
     @Test
     void testUseEquippedItemJetpack() {
         alien.setSelectedItemIndex(5);

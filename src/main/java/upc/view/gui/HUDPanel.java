@@ -151,7 +151,7 @@ public class HUDPanel extends JPanel {
 
     private void drawWindIndicator(Graphics2D g2) {
          if (gameManager.getWorld().getPhysicsEngine() == null
-         || gameManager.isWindEnabled()) {
+         || !gameManager.isWindEnabled()) {
              return;
          }
 

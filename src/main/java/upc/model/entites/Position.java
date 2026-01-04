@@ -83,7 +83,9 @@ public class Position {
     public int hashCode() {
         return HASHCODE * x + y;
     }
-
+    /**
+     * @return La position sous la forme (x, y)
+     */
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";

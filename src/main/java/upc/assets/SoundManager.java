@@ -1,6 +1,5 @@
 package upc.assets;
 
-import upc.model.entites.projectiles.Projectile;
 
 import java.util.HashMap;
 
@@ -71,7 +70,9 @@ public class SoundManager {
         }
     }
     public static void playOverlappingEffect(String name) {
-        if (isAudioDisabled()) return;
+        if (isAudioDisabled()) {
+            return;
+        }
         String fileToLoad = null;
         if (name.equalsIgnoreCase("Uzi")) {
             fileToLoad = "uzi";

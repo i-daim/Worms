@@ -77,7 +77,10 @@ public class TestAlien {
         assertEquals(0, alien.getHealthPoints());
         assertFalse(alien.isAlive());
     }
-
+    /**
+     * Vérifie que le déplacement vers la droite
+     * met l'état à WALK et la direction à droite.
+     */
     @Test
     void testMoveRight(){
         alien.moveRight() ;

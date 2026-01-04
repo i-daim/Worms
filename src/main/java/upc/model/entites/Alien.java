@@ -120,7 +120,9 @@ public class Alien extends Entity {
     }
 
     /**
-     * Méthode permettant de rendre alien immobile
+     * Méthode permettant de rendre alien immobile.
+     * On met l'alien à l'arrêt.
+     * L'alien ne se déplace plus et passe à l'état IDLE.
      */
     public void idle() {
         alienPhysics.moveAlien(this, 0);

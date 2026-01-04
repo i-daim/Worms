@@ -70,7 +70,7 @@ public class ProjectilePhysics {
             fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.1);
             fixture.setRestitution(0.1);
-            fixture.setDensity(1.0);
+            fixture.setDensity(3.0);
             body.setBullet(true);
 
         } else if (weapon instanceof Mine) {

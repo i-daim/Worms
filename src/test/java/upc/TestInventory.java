@@ -75,6 +75,13 @@ public class TestInventory {
         assertFalse(inventory.getAmmoStock().isEmpty());
     }
 
+    @Test
+    public void testUseAmmoNegative() {
+        int ammoStockUzi = inventory.getAmmoStock().get(Type.UZI);
+
+        inventory.useAmmo(Type.UZI, -10);
+        assertEquals(ammoStockUzi, inventory.getAmmoStock().get(Type.UZI));
+    }
 
 
 }

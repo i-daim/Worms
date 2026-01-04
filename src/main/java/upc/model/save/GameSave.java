@@ -84,6 +84,9 @@ public class GameSave {
                 getClass().getResource(cheminImage)));
         terrain.setImage(image);
 
+        //Pour mettre à jour la map en fonction des collisions de la sauvegarde
+        terrain.updateMapImage();
+
         //Permet de récupérer le terrain sauvegardé
         gameManager.setMap(terrain);
 

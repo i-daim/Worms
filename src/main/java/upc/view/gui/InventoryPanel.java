@@ -10,6 +10,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
@@ -153,5 +154,26 @@ public class InventoryPanel extends JPanel {
             return "";
         }
         return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+    }
+
+    /**
+     * Vérifie si un clic est dans un slot de l'inventaire et retourne l'index du slot.
+     * Retourne -1 si aucun slot est cliqué.
+     */
+    public static int getClickedSlotIndex(Point clickPoint, int screenWidth, int screenHeight) {
+        int drawX = (screenWidth - TOTAL_WIDTH) / 2;
+        int drawY = screenHeight - TOTAL_HEIGHT - 80;
+
+        int currentX = drawX + CONTAINER_MARGIN;
+        int currentY = drawY + CONTAINER_MARGIN;
+
+        for (int i = 0; i < INVENTORY_SLOTS; i++) {
+            if (clickPoint.x >= currentX && clickPoint.x <= currentX + SLOT_SIZE
+                    && clickPoint.y >= currentY && clickPoint.y <= currentY + SLOT_SIZE) {
+                return i;
+            }
+            currentX += SLOT_SIZE + GAP;
+        }
+        return -1;
     }
 }

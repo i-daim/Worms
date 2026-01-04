@@ -39,6 +39,11 @@ public class TestAlien {
         alien.receiveDmg(25);
         assertEquals(75, alien.getHealthPoints());
         assertTrue(alien.isAlive());
+
+        alien.receiveDmg(75);
+        int pointDeVie = alien.getHealthPoints();
+        alien.receiveDmg(75);
+        assertEquals(pointDeVie, alien.getHealthPoints());
     }
     @Test
     void testMortAlien() {

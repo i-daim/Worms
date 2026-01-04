@@ -302,7 +302,6 @@ public class ProjectilePhysics {
 
             } else if (p instanceof Bullet && b2 != null) {
                 handleBulletImpact((Bullet) p, b2);
-                SoundManager.playEffect("Impact");
             }
         }
     }

@@ -1,15 +1,13 @@
 package upc;
 import org.junit.jupiter.api.BeforeEach;
 import upc.model.entites.Alien;
+import upc.model.entites.Position;
 import upc.model.jeu.GameManager;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Team;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTeam {
 
@@ -67,6 +65,16 @@ public class TestTeam {
     public void testGetAliens() {
         Team a = new Team("TEAM A",3);
         assertEquals(a.getAliens(),a.getAliens());
+    }
+
+    @Test
+    public void testGetActiveAlien() {
+        Team a = new Team("TEAM A",3);
+        Alien activeAlien =  a.getActiveAlien();
+        assertNull(activeAlien);
+
+        a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
+        assertNotNull(a.getActiveAlien());
     }
 }
 

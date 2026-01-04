@@ -144,6 +144,9 @@ public class MouseHandler extends MouseAdapter {
             camY -= CAMERA_SPEED;
         }
 
+        camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
+        camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
+
         gamePanel.setCamera(camX, camY);
     }
 

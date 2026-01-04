@@ -143,6 +143,17 @@ public class ProjectilePhysics {
 
     /**
      * Met à jour l'état de tous les projectiles actifs à chaque frame.
+     * <p>
+     * Cette méthode effectue plusieurs tâches essentielles :
+     * <ul>
+     * <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
+     * <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
+     * <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son
+     * explosion.</li>
+     * <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts
+     * ou sortis.</li>
+     * </ul>*
+     * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
      */
     public void updateProjectiles(Terrain terrain) {
 
@@ -227,6 +238,16 @@ public class ProjectilePhysics {
 
     /**
      * Gère la logique d'explosion d'un projectile.
+     * <p>
+     * Cette méthode applique les conséquences de l'explosion :
+     * <ul>
+     * <li>Calcule les dégâts infligés aux Aliens en fonction de leur distance
+     * à l'impact.</li>
+     * <li>Applique une force de recul (knockback) physique aux Aliens touchés.</li>
+     * <li>(Note : La destruction du terrain est généralement gérée ailleurs
+     * ou pourrait être ajoutée ici).</li>
+     * </ul>*
+     * @param proj Le projectile qui vient d'exploser.
      */
     public void explodeProjectile(Projectile proj) {
         if (proj instanceof Bullet) {

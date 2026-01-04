@@ -6,8 +6,6 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
-
-import upc.assets.Sound;
 import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
@@ -105,16 +103,6 @@ public class ProjectilePhysics {
         body.addFixture(fixture);
         body.setMass(MassType.NORMAL);
 
-        if (projectile instanceof Rocket) {
-            // On charge une instance unique pour cette roquette
-            // Assurez-vous que le fichier existe : /sounds/effects/rocket_fly.wav
-            Sound flightSound = SoundManager.loadEffect("Rocket");
-            if (flightSound != null) {
-                flightSound.setVolume(-15f);
-                flightSound.loop();
-                flightSound.play();
-            }
-        }
 
         if (weapon instanceof Uzi) {
             SoundManager.playEffect("Uzi");

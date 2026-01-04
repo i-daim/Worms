@@ -106,7 +106,7 @@ public class Alien extends Entity {
             alienPhysics.flyAlien(this);
             setState(State.JUMP);
         }
-
+        SoundManager.playEffect(item.getName());
         inventory.useAmmo(equippedItem, 1);
         return item.useItem(world, this);
     }

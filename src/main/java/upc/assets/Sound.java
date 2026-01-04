@@ -8,10 +8,12 @@ import java.net.URL;
 
 public class Sound {
 
+    private final String path;
     private Clip clip;
     private URL soundURL;
 
     public Sound(String path) {
+        this.path = path;
         try {
             soundURL = getClass().getResource(path);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundURL);
@@ -31,6 +33,10 @@ public class Sound {
         }
         clip.setFramePosition(0);
         clip.start();
+    }
+
+    public Sound duplicate() {
+        return new Sound(path);
     }
 
     public void stop() {

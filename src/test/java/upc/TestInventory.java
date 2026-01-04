@@ -91,5 +91,14 @@ public class TestInventory {
         assertEquals(ammoStockUzi, inventory.getAmmoStock().get(Type.UZI));
     }
 
+    @Test
+    public void testUseAmmoSansStock() {
+        inventory.useAmmo(Type.SHOTGUN, 50);
+        int ammoStockShotgun = inventory.getAmmoStock().get(Type.SHOTGUN);
+        inventory.useAmmo(Type.SHOTGUN, 50);
+        assertEquals(ammoStockShotgun, inventory.getAmmoStock().get(Type.SHOTGUN));
+    }
+
+
 
 }

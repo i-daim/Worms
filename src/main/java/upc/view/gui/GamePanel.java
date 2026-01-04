@@ -342,4 +342,9 @@ public class GamePanel extends JPanel {
     public HUDPanel getHudPanel() {
         return hudPanel;
     }
+
+    public double getCurrentZoom() {
+        return currentZoom;
+    }
+
 }

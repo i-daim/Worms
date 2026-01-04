@@ -13,7 +13,7 @@ public class Rocket extends Projectile {
                 weapon.getDamage(),
                 EXPLOSION_RADIUS,
                 true,
-                weapon.getSpeed(),
+                weapon.getBasePower(),
                 weapon
         );
     }

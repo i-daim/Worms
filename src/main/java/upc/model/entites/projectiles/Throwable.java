@@ -13,7 +13,7 @@ public class Throwable extends Projectile {
                 weapon.getDamage(),
                 radius,
                 true,
-                weapon.getSpeed(),
+                weapon.getBasePower(),
                 weapon
         );
         this.timer = timerSeconds * 60;

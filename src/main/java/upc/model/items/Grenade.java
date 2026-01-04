@@ -7,10 +7,12 @@ import upc.model.jeu.GameWorld;
 public class Grenade extends Weapon {
 
     private static final int DAMAGE = 50;
+    private static final int NB_OF_SHOTS = 1;
+    private static final int BASE_POWER = 10;
     private static final int RADIUS = 30;
 
     public Grenade() {
-        super("Grenade", DAMAGE, 1, 50);
+        super("Grenade", DAMAGE, NB_OF_SHOTS, BASE_POWER);
     }
 
     @Override

@@ -9,10 +9,12 @@ import upc.model.save.GameSave;
 import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
+import upc.view.gui.InventoryPanel;
 import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -27,7 +29,7 @@ public class GameController {
     private final GameManager gameManager;
     private final PauseActions pauseActions;
 
-    private static final int CAMERA_SPEED = 10;
+    public static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
     private boolean paused = false;
@@ -47,6 +49,7 @@ public class GameController {
     private void addListeners() {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
+        gamePanel.addMouseListener(mouseHandler);
         gamePanel.setFocusable(true);
 
         PausePanel pausePanel = gamePanel.getPausePanel();
@@ -94,7 +97,7 @@ public class GameController {
             return;
         }
 
-        handleCameraScroll(mouseHandler.getPosition());
+        handleCameraScroll();
         handleControls();
 
         // Ne centre pas la caméra si la souris est sur le bord
@@ -118,6 +121,8 @@ public class GameController {
         }
 
         keyHandler.clearJustPressed();
+        mouseHandler.clearJustPressed();
+        mouseHandler.clearJustReleased();
         gamePanel.repaint();
     }
 
@@ -131,16 +136,16 @@ public class GameController {
             return;
         }
 
-        // Gestion de l'inventaire
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_I)) {
-            gamePanel.toggleInventory();
-        }
-        if (gamePanel.isInventoryVisible()) {
-            for (int i = 0; i < 6; i++) {
-                int keyCode = KeyEvent.VK_1 + i;
+        // Gestion de l'inventaire (clic souris)
+        if (isMouseOnInv()) {
+            if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
+                Point clickPos = mouseHandler.getPosition();
 
-                if (keyHandler.isJustKeyPressed(keyCode)) {
-                    activeAlien.setSelectedItemIndex(i);
+                int slotIndex = InventoryPanel.getClickedSlotIndex(
+                        clickPos, gamePanel.getWidth(), gamePanel.getHeight());
+
+                if (slotIndex != -1) {
+                    activeAlien.setSelectedItemIndex(slotIndex);
                 }
             }
         }
@@ -157,39 +162,42 @@ public class GameController {
             activeAlien.idle();
         }
 
-        // Gestion de la visée
-        if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
-            int angle = activeAlien.getAimAngle() + 2;
-            if (angle > 80) {
-                angle = 80;
-            }
-            activeAlien.setAimAngle(angle);
-        } else if (keyHandler.isKeyPressed(KeyEvent.VK_DOWN)) {
-            int angle = activeAlien.getAimAngle() - 2;
-            if (angle < -45) {
-                angle = -45;
-            }
-            activeAlien.setAimAngle(angle);
-        }
+        // Gestion de la visée avec la souris
+        mouseHandler.handleAim(activeAlien,
+                gamePanel.getCameraX(), gamePanel.getCameraY(), GamePanel.ZOOM);
 
         // Utilisation de l'item
-        if (equipped != null && canShoot) {
+        if (equipped != null && canShoot && !isMouseOnInv()) {
+            // Peut être utilisé plusieurs fois si c'est un Uzi ou un jetpack
             if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
-                if (keyHandler.isKeyPressed(KeyEvent.VK_A)) {
+                if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
+                        activeAlien.setShootPower(100);
                         activeAlien.useEquippedItem();
+                        activeAlien.setShootPower(0);
                         frameCount = 0;
                     }
                     frameCount++;
                 }
+            // Le shotgun tire directement sans jauge de puissance
+            } else if (equipped instanceof upc.model.items.Shotgun) {
+                if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
+                    activeAlien.setShootPower(100);
+                    activeAlien.useEquippedItem();
+                    activeAlien.setShootPower(0);
+                }
+            // Pour le reste, on peut maintenir le clic pour plus de puissance
             } else {
-                if (keyHandler.isJustKeyPressed(KeyEvent.VK_A)) {
+                if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
+                    activeAlien.incrementPower();
+                }
+                if (mouseHandler.isJustReleased(MouseEvent.BUTTON1)) {
                     Projectile p = activeAlien.useEquippedItem();
                     gameManager.setActiveProjectile(p);
+                    activeAlien.setShootPower(0);
                 }
             }
         }
-
         // Touche pour la sauvegarde
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_F5)) {
             try {
@@ -200,40 +208,20 @@ public class GameController {
         }
     }
 
-    private void handleCameraScroll(Point mousePos) {
-        if (mousePos == null) {
-            return;
+    private boolean isMouseOnInv() {
+        if (!gamePanel.getHudPanel().isInventoryVisible()) {
+            return false;
         }
+        Point mousePos = mouseHandler.getPosition();
 
-        int width = gamePanel.getWidth();
-        int height = gamePanel.getHeight();
-        int limit = (int) (50 * GamePanel.ZOOM);
-
-        double camX = gamePanel.getCameraX();
-        double camY = gamePanel.getCameraY();
-        int terrainWidth = gamePanel.getTerrain().getWidth();
-        int terrainHeight = gamePanel.getTerrain().getHeight();
-
-        if (mousePos.x > width - limit) {
-            camX += CAMERA_SPEED;
-        } else if (mousePos.x < limit) {
-            camX -= CAMERA_SPEED;
-        }
-
-        if (mousePos.y > height - limit) {
-            camY += CAMERA_SPEED;
-        } else if (mousePos.y < limit) {
-            camY -= CAMERA_SPEED;
-        }
-
-        int viewportWidth = (int) (width / GamePanel.ZOOM);
-        int viewportHeight = (int) (height / GamePanel.ZOOM);
-
-        camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
-        camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
-
-        gamePanel.setCamera(camX, camY);
+        return InventoryPanel.isInsideInventory(
+                mousePos, gamePanel.getWidth(), gamePanel.getHeight());
     }
+
+    private void handleCameraScroll() {
+        mouseHandler.handleCameraScroll(gamePanel);
+    }
+
 
 ////    ARRET DU JEU    ////
     public void handlePause() {

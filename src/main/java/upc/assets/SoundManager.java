@@ -73,23 +73,24 @@ public class SoundManager {
         if (isAudioDisabled()) {
             return;
         }
-        String fileToLoad = null;
-        if (name.equalsIgnoreCase("Uzi")) {
-            fileToLoad = "uzi";
-        } else if (name.equalsIgnoreCase("Impact")) {
-            fileToLoad = "Impact";
-        } else if (name.equalsIgnoreCase("Shotgun")) {
-            fileToLoad = "shotgun";
+        String fileName = null;
+        switch (name) {
+            case "Uzi": fileName = "uzi"; break;
+            case "Shotgun": fileName = "shotgun"; break;
+            case "Impact": fileName = "impact"; break;
+            case "Splash": fileName = "splash"; break;
+            default:
+                playEffect(name);
+                return;
         }
-        if (fileToLoad != null) {
-            Sound tempSound = loadEffect(fileToLoad);
-            if (tempSound != null) {
-                tempSound.setVolume(-10f);
+        Sound tempSound = loadEffect(fileName);
+        if (tempSound != null) {
+            if (name.equals("Uzi")) {
+                tempSound.setVolume(-10.0f);
             }
-        } else {
-            playEffect(name);
+            tempSound.play();
         }
-    }
+}
 
     public static void playVoice() {
         int index = (int) (Math.random() * 11);

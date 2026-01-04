@@ -130,4 +130,13 @@ public class TestProjectile {
         assertEquals(0, p.getDamage());
     }
 
+    @Test
+    public void testIsExplosive(){
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
+        assertFalse(p.isExplosive());
+
+        Projectile p2 = new Projectile(shooter, pos, 0, 0, true, 0, null);
+        assertTrue(p2.isExplosive());
+    }
+
 }

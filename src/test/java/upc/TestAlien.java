@@ -97,6 +97,9 @@ public class TestAlien {
         assertEquals(Alien.State.WALK, alien.getState());
         assertFalse(alien.getDirection());
     }
+    /**
+     * Vérifie que la méthode idle met l'état à IDLE.
+     */
     @Test
     void testIdle() {
         alien.idle();

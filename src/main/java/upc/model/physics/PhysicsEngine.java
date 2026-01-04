@@ -17,7 +17,7 @@ import java.util.Map;
 public class PhysicsEngine {
 
     private final GameWorld gameWorld;
-    private final Terrain terrain;
+    private Terrain terrain;
     private final World<Body> world;
 
     private final TerrainPhysics terrainPhysics;
@@ -128,5 +128,12 @@ public class PhysicsEngine {
 
     public Terrain getTerrain() {
         return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+        this.alienPhysics.setTerrain(terrain);
+        this.terrainPhysics.setTerrain(terrain);
+    }
     }
 }

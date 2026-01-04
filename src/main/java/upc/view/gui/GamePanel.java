@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
         this.hudPanel = new HUDPanel(gameManager);
         this.pausePanel = new PausePanel();
 
-        this.setLayout(null); // Pour "superposer" les JPnaels
+        this.setLayout(null);
         this.add(pausePanel);
         this.add(hudPanel);
 
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
@@ -80,7 +80,18 @@ public class GamePanel extends JPanel {
 
         // Affichage de l'eau (arrière plan)
         int waterY = terrain.getHeight() - (Terrain.WATER_LEVEL);
-        Animation waterAnim = AnimationManager.getAnimation("water");
+
+        String waterKey = terrain.getWaterAnimationKey();
+        Animation waterAnim;
+
+        if (waterKey != null && waterKey.contains("poison")) {
+            waterAnim = AnimationManager.getAnimation("water_poison");
+        } else if (waterKey != null && waterKey.contains("hell")) {
+            waterAnim = AnimationManager.getAnimation("water_hell");
+        } else {
+            waterAnim = AnimationManager.getAnimation("water");
+        }
+
         drawAnimation(g2, waterAnim, 0, waterY, 0, 100, true);
 
         // Affichage du terrain

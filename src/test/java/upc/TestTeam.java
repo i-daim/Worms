@@ -22,27 +22,27 @@ public class TestTeam {
 
     @Test
     public void testConstructeur() {
-        Team a = new Team("TEAM A",3);
-        assertEquals("TEAM A",a.getName());
-        assertEquals(3,a.getAliens().length);
+        Team a = new Team("TEAM A", 3);
+        assertEquals("TEAM A", a.getName());
+        assertEquals(3, a.getAliens().length);
     }
 
     @Test
     public void testInitializeTeam() {
-        Team a = new Team("TEAM A",3);
-        a.initializeTeam(world, "",0);
-        Alien[] aliens = a.getAliens() ;
-        for(Alien w : aliens){
+        Team a = new Team("TEAM A", 3);
+        a.initializeTeam(world, "", 0);
+        Alien[] aliens = a.getAliens();
+        for (Alien w : aliens) {
             assertNotNull(w);
         }
     }
 
     @Test
     public void testEquipeEliminee() {
-        Team b = new Team("TEAM B",3);
-        b.initializeTeam(world, "",1);
+        Team b = new Team("TEAM B", 3);
+        b.initializeTeam(world, "", 1);
 
-        Alien[] aliens = b.getAliens() ;
+        Alien[] aliens = b.getAliens();
         aliens[0].receiveDmg(100);
 
         assertFalse(b.isEliminated());
@@ -57,20 +57,20 @@ public class TestTeam {
 
     @Test
     public void testGetNom() {
-        Team a = new Team("TEAM A",3);
-        assertEquals("TEAM A",a.getName());
+        Team a = new Team("TEAM A", 3);
+        assertEquals("TEAM A", a.getName());
     }
 
     @Test
     public void testGetAliens() {
-        Team a = new Team("TEAM A",3);
-        assertEquals(a.getAliens(),a.getAliens());
+        Team a = new Team("TEAM A", 3);
+        assertEquals(a.getAliens(), a.getAliens());
     }
 
     @Test
     public void testGetActiveAlien() {
-        Team a = new Team("TEAM A",3);
-        Alien activeAlien =  a.getActiveAlien();
+        Team a = new Team("TEAM A", 3);
+        Alien activeAlien = a.getActiveAlien();
         assertNull(activeAlien);
 
         a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
@@ -78,8 +78,8 @@ public class TestTeam {
     }
 
     @Test
-    public void testGetAliveAliensNumber(){
-        Team a = new Team("TEAM A",3);
+    public void testGetAliveAliensNumber() {
+        Team a = new Team("TEAM A", 3);
         assertEquals(0, a.getAliveAliensNumber());
 
         a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
@@ -87,13 +87,28 @@ public class TestTeam {
     }
 
     @Test
-    public void testIsActiveLastAlien(){
-        Team a = new Team("TEAM A",3);
+    public void testIsActiveLastAlien() {
+        Team a = new Team("TEAM A", 3);
         assertTrue(a.isActiveLastAlien());
 
         a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
         a.getAliens()[1] = new Alien(world, a, new Position(1, 0));
         assertFalse(a.isActiveLastAlien());
     }
+
+    @Test
+    public void testResetIndex() {
+        Team a = new Team("TEAM A", 2);
+        int activeAlien = a.getActiveAlienIndex();
+        a.resetIndex();
+        assertNotEquals(activeAlien, a.getActiveAlienIndex());
+
+        a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
+        a.getAliens()[1] = new Alien(world, a, new Position(1, 0));
+        a.resetIndex();
+        assertEquals(activeAlien, a.getActiveAlienIndex());
+
+    }
+
 }
 

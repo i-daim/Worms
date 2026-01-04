@@ -40,9 +40,6 @@ public class GamePanel extends JPanel {
     private double cameraX = 0;
     private double cameraY = 0;
 
-
-    private boolean inventoryVisible = true;
-
     private final List<ActiveAnimation> activeAnimations;
 
     public GamePanel(GameManager gameManager) {
@@ -330,15 +327,6 @@ public class GamePanel extends JPanel {
         return cameraY;
     }
 
-    public boolean isInventoryVisible() {
-        return inventoryVisible;
-    }
-
-    public void toggleInventory() {
-        inventoryVisible = !inventoryVisible;
-        repaint();
-    }
-
     public Terrain getTerrain() {
         return terrain;
     }
@@ -349,5 +337,9 @@ public class GamePanel extends JPanel {
 
     public PausePanel getPausePanel() {
         return pausePanel;
+    }
+
+    public HUDPanel getHudPanel() {
+        return hudPanel;
     }
 }

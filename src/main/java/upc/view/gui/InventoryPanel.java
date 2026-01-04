@@ -40,47 +40,26 @@ public class InventoryPanel extends JPanel {
     private InventoryPanel() {
 
     }
-    public static void drawCenteredBottom(Graphics2D g2, int screenWidth, int screenHeight,
-                                          Alien alien) {
+
+    public static void drawInventory(Graphics2D g2, int screenWidth, int screenHeight,
+                                     Alien alien) {
         int x = (screenWidth - TOTAL_WIDTH) / 2;
         int y = screenHeight - TOTAL_HEIGHT - 80;
 
         drawAlienInventory(g2, x, y, alien);
     }
 
-    /**
-     * Dessine l'inventaire complet avec un conteneur global stylisé.
-     */
+
     public static void drawAlienInventory(Graphics2D g2, int drawX, int drawY, Alien alien) {
         if (alien == null) {
             return;
         }
 
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-
-        g2.setColor(new Color(0, 0, 0, 150));
-        g2.fillRoundRect(drawX + 8, drawY + 8, TOTAL_WIDTH, TOTAL_HEIGHT, 30, 30);
-
-
-        g2.setColor(GLOBAL_BG_COLOR);
-        g2.fillRoundRect(drawX, drawY, TOTAL_WIDTH, TOTAL_HEIGHT, 30, 30);
-
-
-        g2.setStroke(new BasicStroke(4f));
-        g2.setColor(GLOBAL_BORDER_OUTER);
-        g2.drawRoundRect(drawX, drawY, TOTAL_WIDTH, TOTAL_HEIGHT, 30, 30);
-
-        g2.setStroke(new BasicStroke(2f));
-        g2.setColor(GLOBAL_BORDER_INNER);
-        g2.drawRoundRect(drawX + 5, drawY + 5, TOTAL_WIDTH - 10, TOTAL_HEIGHT - 10, 20, 20);
-
+        setupGraphics(g2);
+        drawContainer(g2, drawX, drawY);
 
         Inventory inventory = alien.getTeam().getInventory();
         int selectedIndex = alien.getSelectedItemIndex();
-
 
         int currentX = drawX + CONTAINER_MARGIN;
         int currentY = drawY + CONTAINER_MARGIN;
@@ -90,59 +69,83 @@ public class InventoryPanel extends JPanel {
             int ammoCount = (itemType != null) ? inventory.getAmmo(itemType) : 0;
             boolean isSelected = (i == selectedIndex);
 
-
-            g2.setColor(isSelected ? SLOT_BG_SELECTED : SLOT_BG_NORMAL);
-            g2.fillRoundRect(currentX, currentY, SLOT_SIZE, SLOT_SIZE, 15, 15);
-
-
-            if (isSelected) {
-                g2.setStroke(new BasicStroke(3f));
-                g2.setColor(SLOT_BORDER_SELECTED);
-                g2.drawRoundRect(currentX, currentY, SLOT_SIZE, SLOT_SIZE, 15, 15);
-            } else {
-
-                g2.setStroke(new BasicStroke(1f));
-                g2.setColor(new Color(100, 100, 100, 100));
-                g2.drawRoundRect(currentX, currentY, SLOT_SIZE, SLOT_SIZE, 15, 15);
-            }
-
-
-            if (itemType != null) {
-                String keyName = formatEnumName(itemType.name()) + "_Inv";
-                BufferedImage img = ImageManager.get(keyName);
-
-                if (img != null) {
-
-                    int imgSize = SLOT_SIZE - 20;
-                    g2.drawImage(img, currentX + 10, currentY + 10, imgSize, imgSize, null);
-                } else {
-
-                    g2.setColor(Color.WHITE);
-                    g2.setFont(new Font("Arial", Font.PLAIN, 12));
-                    g2.drawString(itemType.name().substring(0, 3), currentX + 10,
-                            currentY + SLOT_SIZE / 2);
-                }
-            }
-
-
-            g2.setColor(isSelected ? Color.WHITE : Color.LIGHT_GRAY);
-            g2.setFont(new Font("Segoe UI", Font.BOLD, 14));
-            g2.drawString(String.valueOf(i + 1), currentX + 8, currentY + 20);
-
-
-            if (itemType != null) {
-                String ammoText = (ammoCount == -1) ? "∞" : String.valueOf(ammoCount);
-                g2.setFont(new Font("Segoe UI", Font.BOLD, 16));
-                g2.setColor(isSelected ? new Color(255, 255, 0) : Color.WHITE);
-
-                int textWidth = g2.getFontMetrics().stringWidth(ammoText);
-                g2.drawString(ammoText, currentX + SLOT_SIZE - textWidth - 8,
-                        currentY + SLOT_SIZE - 8);
-            }
-
+            drawSlot(g2, currentX, currentY, isSelected);
+            drawItemIcon(g2, currentX, currentY, itemType);
+            drawAmmoCount(g2, currentX, currentY, itemType, ammoCount, isSelected);
 
             currentX += SLOT_SIZE + GAP;
         }
+    }
+
+    private static void setupGraphics(Graphics2D g2) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    }
+
+    private static void drawContainer(Graphics2D g2, int x, int y) {
+        // Ombre
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRoundRect(x + 8, y + 8, TOTAL_WIDTH, TOTAL_HEIGHT, 30, 30);
+
+        // Fond
+        g2.setColor(GLOBAL_BG_COLOR);
+        g2.fillRoundRect(x, y, TOTAL_WIDTH, TOTAL_HEIGHT, 30, 30);
+
+        // Bordure extérieure
+        g2.setStroke(new BasicStroke(4f));
+        g2.setColor(GLOBAL_BORDER_OUTER);
+        g2.drawRoundRect(x, y, TOTAL_WIDTH, TOTAL_HEIGHT, 30, 30);
+
+        // Bordure intérieure
+        g2.setStroke(new BasicStroke(2f));
+        g2.setColor(GLOBAL_BORDER_INNER);
+        g2.drawRoundRect(x + 5, y + 5, TOTAL_WIDTH - 10, TOTAL_HEIGHT - 10, 20, 20);
+    }
+
+    private static void drawSlot(Graphics2D g2, int x, int y, boolean isSelected) {
+        g2.setColor(isSelected ? SLOT_BG_SELECTED : SLOT_BG_NORMAL);
+        g2.fillRoundRect(x, y, SLOT_SIZE, SLOT_SIZE, 15, 15);
+
+        if (isSelected) {
+            g2.setStroke(new BasicStroke(3f));
+            g2.setColor(SLOT_BORDER_SELECTED);
+            g2.drawRoundRect(x, y, SLOT_SIZE, SLOT_SIZE, 15, 15);
+        } else {
+            g2.setStroke(new BasicStroke(1f));
+            g2.setColor(new Color(100, 100, 100, 100));
+            g2.drawRoundRect(x, y, SLOT_SIZE, SLOT_SIZE, 15, 15);
+        }
+    }
+
+    private static void drawItemIcon(Graphics2D g2, int x, int y, Item.Type itemType) {
+        if (itemType == null) {
+            return;
+        }
+        String keyName = formatEnumName(itemType.name()) + "_Inv";
+        BufferedImage img = ImageManager.get(keyName);
+
+        if (img != null) {
+            int imgSize = SLOT_SIZE - 20;
+            g2.drawImage(img, x + 10, y + 10, imgSize, imgSize, null);
+        } else {
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.PLAIN, 12));
+            g2.drawString(itemType.name().substring(0, 3), x + 10, y + SLOT_SIZE / 2);
+        }
+    }
+
+    private static void drawAmmoCount(Graphics2D g2, int x, int y, Item.Type itemType,
+                                      int ammoCount, boolean isSelected) {
+        if (itemType == null) {
+            return;
+        }
+        String ammoText = (ammoCount == -1) ? "∞" : String.valueOf(ammoCount);
+        g2.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        g2.setColor(isSelected ? new Color(255, 255, 0) : Color.WHITE);
+
+        int textWidth = g2.getFontMetrics().stringWidth(ammoText);
+        g2.drawString(ammoText, x + SLOT_SIZE - textWidth - 8, y + SLOT_SIZE - 8);
     }
 
     private static String formatEnumName(String name) {

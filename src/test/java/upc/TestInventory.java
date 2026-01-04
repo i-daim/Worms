@@ -3,6 +3,7 @@ package upc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import upc.model.items.Item;
 import upc.model.jeu.Inventory;
 import upc.model.items.Item.Type;
 
@@ -97,6 +98,12 @@ public class TestInventory {
         int ammoStockShotgun = inventory.getAmmoStock().get(Type.SHOTGUN);
         inventory.useAmmo(Type.SHOTGUN, 50);
         assertEquals(ammoStockShotgun, inventory.getAmmoStock().get(Type.SHOTGUN));
+    }
+
+    @Test
+    public void testGetCurrentWeapon(){
+        assertNotNull(inventory.getCurrentWeapon());
+
     }
 
 

@@ -70,6 +70,25 @@ public class SoundManager {
             effect.setVolume(-5f);
         }
     }
+    public static void playOverlappingEffect(String name) {
+        if (isAudioDisabled()) return;
+        String fileToLoad = null;
+        if (name.equalsIgnoreCase("Uzi")) {
+            fileToLoad = "uzi";
+        } else if (name.equalsIgnoreCase("Impact")) {
+            fileToLoad = "Impact";
+        } else if (name.equalsIgnoreCase("Shotgun")) {
+            fileToLoad = "shotgun";
+        }
+        if (fileToLoad != null) {
+            Sound tempSound = loadEffect(fileToLoad);
+            if (tempSound != null) {
+                tempSound.setVolume(-10f);
+            }
+        } else {
+            playEffect(name);
+        }
+    }
 
     public static void playVoice() {
         int index = (int) (Math.random() * 11);

@@ -4,26 +4,16 @@ import upc.model.items.Weapon;
 import  upc.model.entites.Position;
 
 public class Rocket extends Projectile {
-    public Rocket(Weapon weapon, Alien shooter) {
+    private static final int EXPLOSION_RADIUS = 30;
+
+    public Rocket(Weapon weapon, Alien shooter, Position startPos) {
         super(
                 shooter,
-                (shooter != null) ? shooter.getPosition() : new Position(0, 0),
+                startPos,
                 weapon.getDamage(),
-                45,
+                EXPLOSION_RADIUS,
                 true,
-                weapon.getSpeed(),
-                weapon
-        );
-    }
-    public Rocket(Alien shooter, Position startPosition, int damage,
-                  int explosionRadius, boolean explosive, double speed, Weapon weapon) {
-        super(
-                shooter,
-                startPosition,
-                damage,
-                explosionRadius,
-                explosive,
-                speed,
+                weapon.getBasePower(),
                 weapon
         );
     }

@@ -1,14 +1,21 @@
 package upc.controller;
+
+import upc.model.entites.projectiles.Projectile;
+import upc.model.items.Item;
 import upc.model.jeu.Team;
-
-
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
+import upc.model.save.GameSave;
+import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
+import upc.view.gui.InventoryPanel;
+import upc.view.gui.PausePanel;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -20,25 +27,20 @@ public class GameController {
 
     private final GamePanel gamePanel;
     private final GameManager gameManager;
+    private final PauseActions pauseActions;
 
-    private static final int CAMERA_SPEED = 10;
-
-    private boolean inventoryVisible = true;
-
-    // Variables pour la gestion manuelle du TOGGLE (pour éviter la répétition)
-    private boolean iKeyWasPressed = false;
-    private boolean[] selectionKeysWasPressed = new boolean[5];
+    public static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
+    private boolean paused = false;
     private Thread gameThread;
-    private boolean lastAWasPressed = false;
+    private int frameCount;
 
     // Constructeur //
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;
-
-        gamePanel.setInventoryVisible(inventoryVisible);
+        this.pauseActions = new PauseActions(this, gamePanel);
 
         addListeners();
         startGameLoop();
@@ -47,11 +49,17 @@ public class GameController {
     private void addListeners() {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
+        gamePanel.addMouseListener(mouseHandler);
         gamePanel.setFocusable(true);
+
+        PausePanel pausePanel = gamePanel.getPausePanel();
+        pausePanel.getResumeButton().addActionListener(pauseActions.getResumeAction());
+        pausePanel.getMainMenuButton().addActionListener(pauseActions.getMainMenuAction());
+        pausePanel.getSettingsButton().addActionListener(pauseActions.getSettingsAction());
+        pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
-
-    ////    GESTION DE LA BOUCLE DU JEU    ////
+////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -84,14 +92,25 @@ public class GameController {
     }
 
     private void update() {
-        // Gestion de la caméra à travers mouseHandler
-        handleCameraScroll(mouseHandler.getPosition());
-        // Gestion des touches clavier et de l'inventaire
+        handlePause();
+        if (paused) {
+            return;
+        }
+
+        handleCameraScroll();
         handleControls();
 
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            gamePanel.centralizeCamera(activeAlien);
+        // Ne centre pas la caméra si la souris est sur le bord
+        if (!mouseHandler.isMouseNearEdge(gamePanel)) {
+            Alien activeAlien = gameManager.getActiveAlien();
+            if (gameManager.isPaused()) {
+                gamePanel.unzoomCamera();
+            } else if (activeAlien != null && activeAlien.isAlive()) {
+                gamePanel.centerCamera(activeAlien);
+            }
+        }
+        if (gameManager.getActiveProjectile() != null) {
+            gamePanel.centerCamera(gameManager.getActiveProjectile());
         }
 
         gameManager.update(1.0 / 60.0);
@@ -100,56 +119,41 @@ public class GameController {
             showGameOver();
             return;
         }
-        boolean isAPressed = keyHandler.isKeyPressed(KeyEvent.VK_A);
-        if (isAPressed && !lastAWasPressed) {  // ← EDGE DETECTION
-            if (!gameManager.isActionDone() && activeAlien != null) {
-                activeAlien.useEquippedItem();  // ← Appelé UNE SEULE FOIS
-                System.out.println("🎯 TIR DÉCLENCHÉ UNE FOIS !");
-            }
-        }
-        lastAWasPressed = isAPressed;
+
+        keyHandler.clearJustPressed();
+        mouseHandler.clearJustPressed();
+        mouseHandler.clearJustReleased();
         gamePanel.repaint();
     }
 
-
-    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
-
-        boolean iIsPressed = keyHandler.isKeyPressed(KeyEvent.VK_I);
-
-        if (iIsPressed && !iKeyWasPressed) {
-            inventoryVisible = !inventoryVisible;
-            gamePanel.setInventoryVisible(inventoryVisible);
-        }
-        iKeyWasPressed = iIsPressed;
-
-
-        if (inventoryVisible) {
-            for (int i = 0; i < 5; i++) {
-                int keyCode = KeyEvent.VK_1 + i;
-                boolean keyIsPressed = keyHandler.isKeyPressed(keyCode);
-
-                if (keyIsPressed && !selectionKeysWasPressed[i]) {
-                    gamePanel.setSelectedItemIndex(i);
-
-                }
-                selectionKeysWasPressed[i] = keyIsPressed;
-            }
-        } else {
-            for (int i = 0; i < 5; i++) {
-                selectionKeysWasPressed[i] = false;
-            }
-        }
-
         Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null || !activeAlien.isAlive()) {
+        Item equipped = activeAlien.getEquippedItem();
+        boolean canShoot = !gameManager.isActionDone();
+
+        if (!activeAlien.isAlive()) {
             return;
         }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
-            activeAlien.jump();
+        // Gestion de l'inventaire (clic souris)
+        if (isMouseOnInv()) {
+            if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
+                Point clickPos = mouseHandler.getPosition();
+
+                int slotIndex = InventoryPanel.getClickedSlotIndex(
+                        clickPos, gamePanel.getWidth(), gamePanel.getHeight());
+
+                if (slotIndex != -1) {
+                    activeAlien.setSelectedItemIndex(slotIndex);
+                }
+            }
         }
 
+        // Gestion des mouvements
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
+            activeAlien.jump();
+        }
         if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
             activeAlien.moveLeft();
         } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
@@ -158,64 +162,87 @@ public class GameController {
             activeAlien.idle();
         }
 
-        if (keyHandler.isKeyPressed(KeyEvent.VK_UP)) {
-            int angle = activeAlien.getAimAngle() + 2;
-            if (angle > 80) {
-                angle = 80;
+        // Gestion de la visée avec la souris
+        mouseHandler.handleAim(activeAlien,
+                gamePanel.getCameraX(), gamePanel.getCameraY(), GamePanel.ZOOM);
+
+        // Utilisation de l'item
+        if (equipped != null && canShoot && !isMouseOnInv()) {
+            // Peut être utilisé plusieurs fois si c'est un Uzi ou un jetpack
+            if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
+                if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
+                    if (frameCount % 5 == 0) {
+                        activeAlien.setShootPower(100);
+                        activeAlien.useEquippedItem();
+                        activeAlien.setShootPower(0);
+                        frameCount = 0;
+                    }
+                    frameCount++;
+                }
+            // Le shotgun tire directement sans jauge de puissance
+            } else if (equipped instanceof upc.model.items.Shotgun) {
+                if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
+                    activeAlien.setShootPower(100);
+                    activeAlien.useEquippedItem();
+                    activeAlien.setShootPower(0);
+                }
+            // Pour le reste, on peut maintenir le clic pour plus de puissance
+            } else {
+                if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
+                    activeAlien.incrementPower();
+                }
+                if (mouseHandler.isJustReleased(MouseEvent.BUTTON1)) {
+                    Projectile p = activeAlien.useEquippedItem();
+                    gameManager.setActiveProjectile(p);
+                    activeAlien.setShootPower(0);
+                }
             }
-            activeAlien.setAimAngle(angle);
-        } else if (keyHandler.isKeyPressed(KeyEvent.VK_DOWN)) {
-            int angle = activeAlien.getAimAngle() - 2;
-            if (angle < -45) {
-                angle = -45;
-            }
-            activeAlien.setAimAngle(angle);
         }
-
-
-        if (keyHandler.isKeyPressed(KeyEvent.VK_E)) {
-            Point worldPos = gamePanel.screenToWorld(mouseHandler.getPosition());
-            gameManager.getWorld().explode(worldPos.x, worldPos.y, 30, 30);
+        // Touche pour la sauvegarde
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_F5)) {
+            try {
+                saveGame();
+            } catch (IOException e) {
+                System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
+            }
         }
     }
 
-    private void handleCameraScroll(Point mousePos) {
-        int width = gamePanel.getWidth();
-        int height = gamePanel.getHeight();
-        int limit = (int) (50 * GamePanel.ZOOM);
-
-        int camX = gamePanel.getCameraX();
-        int camY = gamePanel.getCameraY();
-        int terrainWidth = gamePanel.getTerrain().getWidth();
-        int terrainHeight = gamePanel.getTerrain().getHeight();
-
-        if (mousePos.x > width - limit) {
-            camX += CAMERA_SPEED;
-        } else if (mousePos.x < limit) {
-            camX -= CAMERA_SPEED;
+    private boolean isMouseOnInv() {
+        if (!gamePanel.getHudPanel().isInventoryVisible()) {
+            return false;
         }
+        Point mousePos = mouseHandler.getPosition();
 
-        if (mousePos.y > height - limit) {
-            camY += CAMERA_SPEED;
-        } else if (mousePos.y < limit) {
-            camY -= CAMERA_SPEED;
-        }
-
-        int viewportWidth = (int) (width / GamePanel.ZOOM);
-        int viewportHeight = (int) (height / GamePanel.ZOOM);
-
-        camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
-        camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
-
-        gamePanel.setCamera(camX, camY);
+        return InventoryPanel.isInsideInventory(
+                mousePos, gamePanel.getWidth(), gamePanel.getHeight());
     }
 
-    ////    ARRET DU JEU    ////
+    private void handleCameraScroll() {
+        mouseHandler.handleCameraScroll(gamePanel);
+    }
+
+
+////    ARRET DU JEU    ////
+    public void handlePause() {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
+            togglePause();
+        }
+        gamePanel.togglePauseMenu(paused);
+        if (paused) {
+            keyHandler.clearJustPressed();
+        }
+    }
+
+    public void togglePause() {
+        paused = !paused;
+    }
+
     public void stop() {
         running = false;
         if (gameThread != null) {
             try {
-                gameThread.join(1000);
+                gameThread.join(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -238,4 +265,11 @@ public class GameController {
         });
     }
 
+    /**
+     * Méthode permettant la sauvegarde du jeu
+     */
+    public void saveGame() throws IOException {
+        GameSave gameSave = new GameSave(gameManager);
+        gameSave.save();
+    }
 }

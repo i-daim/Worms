@@ -36,23 +36,18 @@ public class GameWorld {
         }
         return aliens;
     }
-
-    public void explode(int x, int y, int radius, int damage) {
-        for (Alien a : aliensInRadius(x, y, radius)) {
-            if (a != null && a.isAlive()) {
-                a.receiveDmg(damage);
-            }
-        }
+    public void explode(int x, int y, int radius) {
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);
         gameManager.addActiveAnimation("explosion", x, y);
     }
 
+
     public Terrain getTerrain() {
         return gameManager.getTerrain();
     }
 
-    public ArrayList<Alien> getActiveWorms() {
+    public ArrayList<Alien> getActiveAliens() {
         ArrayList<Alien> living = new ArrayList<>();
         for (Alien a : activeAliens) {
             if (a != null && a.isAlive()) {
@@ -63,6 +58,9 @@ public class GameWorld {
     }
 
     public void initializePhysics() {
+        physicsEngine.clearAliens();
+        activeAliens.clear();
+
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);
@@ -83,5 +81,8 @@ public class GameWorld {
     }
     public List<Projectile> getActiveProjectiles() {
         return physicsEngine.getActiveProjectiles();
+    }
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }

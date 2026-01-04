@@ -15,20 +15,21 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestProjectile {
 
     private GameWorld world;
+    private Position pos = new Position(10, 20);
+    private Alien shooter;
 
     @BeforeEach
     public void setUp() {
-        GameManager manager = new GameManager("");
+        upc.model.jeu.Terrain terrainTest = upc.model.jeu.TerrainGenerator.createEmptyTerrain(100, 50);
+        GameManager manager = new GameManager(terrainTest, 2);
         world = manager.getWorld();
+        Team team = new Team("Alpha", 1);
+        shooter = new Alien(world, team, pos);
     }
 
     @Test
     void testConstructor() {
-        Team team = new Team("Alpha", 1);
-        Position pos = new Position(10, 20);
-        Alien shooter = new Alien(world, team, pos);
-
-        Projectile p = new Projectile(shooter, pos, 20, 0, false, 1);
+        Projectile p = new Projectile(shooter, pos, 20, 0, false, 1, null);
 
         assertNotNull(p);
         assertEquals(10, p.getPosition().getX());
@@ -39,28 +40,22 @@ public class TestProjectile {
 
     @Test
     void testGetShooter() {
-        Team team = new Team("Gamma", 1);
-        Alien shooter = new Alien(world, team, new Position(50, 50));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         assertEquals(shooter, p.getShooter());
-        assertEquals("Gamma", p.getShooter().getTeam().getName());
+        assertEquals("Alpha", p.getShooter().getTeam().getName());
     }
 
     @Test
     void testGetBody() {
-        Team team = new Team("Delta", 1);
-        Alien shooter = new Alien(world, team, new Position(0, 0));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         assertNull(p.getBody());
     }
 
     @Test
     void testSetBody() {
-        Team team = new Team("Epsilon", 1);
-        Alien shooter = new Alien(world, team, new Position(0, 0));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         p.setBody(null);
 
@@ -69,18 +64,14 @@ public class TestProjectile {
 
     @Test
     void testGetState() {
-        Team team = new Team("Zeta", 1);
-        Alien shooter = new Alien(world, team, new Position(0, 0));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         assertEquals(State.FLYING, p.getState());
     }
 
     @Test
     void testSetState() {
-        Team team = new Team("Eta", 1);
-        Alien shooter = new Alien(world, team, new Position(0, 0));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         p.setState(State.EXPLODED);
         assertEquals(State.EXPLODED, p.getState());
@@ -91,9 +82,7 @@ public class TestProjectile {
 
     @Test
     void testIsActive() {
-        Team team = new Team("Theta", 1);
-        Alien shooter = new Alien(world, team, new Position(0, 0));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         p.setState(State.FLYING);
         assertTrue(p.isActive());
@@ -107,9 +96,7 @@ public class TestProjectile {
 
     @Test
     void testIncrementFrame() {
-        Team team = new Team("Iota", 1);
-        Alien shooter = new Alien(world, team, new Position(0, 0));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         p.incrementFrame();
         p.incrementFrame();
@@ -120,9 +107,7 @@ public class TestProjectile {
 
     @Test
     void testGetFrameCount() {
-        Team team = new Team("Kappa", 1);
-        Alien shooter = new Alien(world, team, new Position(0, 0));
-        Projectile p = new Projectile(shooter, shooter.getPosition(), 0, 0, false, 0);
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
 
         assertEquals(0, p.getFrameCount());
     }

@@ -17,12 +17,13 @@ public class Terrain {
     /** Niveau vertical (en tuiles) où l'eau est considérée comme présente. */
     public static final int WATER_LEVEL = 170;
 
+    private final String mapName;
     /** Le tableau de booléens définissant la présence de collision pour chaque tuile. */
     private final boolean[][] collisions;
     /** L'image du terrain qui peut être modifiée (pour la destruction). */
-    private final BufferedImage image;
+    private transient BufferedImage image;
     /** L'image de fond qui n'est pas affectée par la destruction. */
-    private final BufferedImage background;
+    private transient BufferedImage background;
 
     /**
      * Constructeur pour {@code Terrain}.
@@ -31,7 +32,9 @@ public class Terrain {
      * @param image L'image du terrain (premier plan, destructible).
      * @param background L'image de fond (non destructible).
      */
-    public Terrain(boolean[][] collisions, BufferedImage image, BufferedImage background) {
+    public Terrain(String mapName, boolean[][] collisions,
+                   BufferedImage image, BufferedImage background) {
+        this.mapName = mapName;
         this.collisions = collisions;
         this.image = image;
         this.background = background;
@@ -67,8 +70,7 @@ public class Terrain {
                         // 3. Mise à jour du tableau de collisions
                         int colX = x / TILE_SIZE;
                         int colY = y / TILE_SIZE;
-                        if (colX >= 0 && colX < getCollisionsWidth()
-                                && colY >= 0 && colY < getCollisionsHeight()) {
+                        if (colX < getCollisionsWidth() && colY < getCollisionsHeight()) {
                             // Marque la tuile comme non solide (vide)
                             collisions[colY][colX] = false;
                         }
@@ -78,6 +80,42 @@ public class Terrain {
         }
     }
 
+    /**
+     * Met à jour l'image du terrain en fonction du tableau de collisions.
+     * <p>
+     * Cette méthode est utilisée pour la sauvegarde, pour synchroniser
+     * l'image de la map avec le tableau de collisions.
+     * </p>
+     */
+    public void updateMapImage() {
+        if (image == null) {
+            return;
+        }
+
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+
+        for (int y = 0; y < getCollisionsHeight(); y++) {
+            for (int x = 0; x < getCollisionsWidth(); x++) {
+                if (!collisions[y][x]) {
+                    // La tuile est vide, on rend les pixels correspondants transparents
+                    int startX = x * TILE_SIZE;
+                    int startY = y * TILE_SIZE;
+
+                    for (int py = startY; py < startY + TILE_SIZE && py < imgHeight; py++) {
+                        for (int px = startX; px < startX + TILE_SIZE && px < imgWidth; px++) {
+                            image.setRGB(px, py, 0x00000000);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    public String getMapName() {
+        return mapName;
+    }
 
     /**
      * Retourne la largeur de l'image du terrain en pixels.
@@ -151,6 +189,15 @@ public class Terrain {
         return WATER_LEVEL;
     }
 
+
+    public void setBackground(BufferedImage imageBackground) {
+        this.background = imageBackground;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
     /**
      * Vérifie s'il y a une collision à la coordonnée de tuile spécifiée.
      * <p>
@@ -203,4 +250,27 @@ public class Terrain {
         // 2. Vérifie s'il n'y a pas de collision à cette position
         return !collisions[posY][posX];
     }
+
+    /**
+     * Retourne la clé (le nom) de l'animation à utiliser pour l'eau
+     * en fonction du nom de la map.
+     */
+    public String getWaterAnimationKey() {
+        if (mapName == null) {
+            return "water";
+        }
+
+        String name = mapName.toLowerCase();
+
+        if (name.contains("poison")) {
+            return "water_poison";
+        } else if (name.contains("ice")) {
+            return "water_ice";
+        } else if (name.contains("hell")) {
+            return "water_hell";
+        }
+
+        return "water";
+    }
+
 }

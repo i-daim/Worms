@@ -1,0 +1,70 @@
+package upc.controller;
+
+
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import upc.model.jeu.GameManager;
+import upc.model.save.GameSave;
+import upc.view.gui.GamePanel;
+import upc.view.gui.GameSetupPanel;
+import upc.view.gui.MainFrame;
+import upc.view.gui.MenuPanel;
+import upc.view.gui.SettingsPanel;
+
+public class MenuActions {
+
+    private final MainFrame mainFrame;
+    private final MenuPanel menuPanel;
+
+    public MenuActions(MainFrame mainFrame, MenuPanel menuPanel) {
+        this.mainFrame = mainFrame;
+        this.menuPanel = menuPanel;
+    }
+
+    public ActionListener getNewGameAction() {
+        return e -> {
+            GameSetupPanel setupPanel = new GameSetupPanel(mainFrame);
+
+            mainFrame.setContentPane(setupPanel);
+            mainFrame.revalidate();
+            mainFrame.repaint();
+
+            setupPanel.requestFocusInWindow();
+        };
+    }
+
+    public ActionListener getLoadGameAction() {
+        return e -> {
+            try {
+                GameSave save = GameSave.load();
+                GameManager gameManager = new GameManager("");
+                save.applyTo(gameManager);
+                GamePanel gamePanel = new GamePanel(gameManager);
+                new GameController(gamePanel, gameManager);
+
+                mainFrame.setContentPane(gamePanel);
+                gamePanel.requestFocusInWindow();
+                mainFrame.revalidate();
+                mainFrame.repaint();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
+    }
+
+    public ActionListener getSettingsAction() {
+        return e -> {
+            SettingsPanel settingsPanel = new SettingsPanel();
+            new SettingsController(settingsPanel, mainFrame, menuPanel);
+
+            mainFrame.setContentPane(settingsPanel);
+            mainFrame.revalidate();
+            mainFrame.repaint();
+        };
+    }
+
+    public ActionListener getQuitAction() {
+        return e -> System.exit(0);
+    }
+}

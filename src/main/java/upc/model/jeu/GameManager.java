@@ -1,11 +1,13 @@
 package upc.model.jeu;
 
-import upc.assets.SpriteManager;
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Trap;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -14,9 +16,10 @@ public class GameManager {
     public static final int ROUND_TIME = 60;
     public static final int TEAM_SIZE = 2;
 
-    private final Terrain terrain;
+    private Terrain terrain;
+    private final String mapName;
     private final GameWorld gameWorld;
-    private final Team[] teams;
+    private Team[] teams;
 
     private int activeTeamIndex;
     private int currentRound;
@@ -24,39 +27,68 @@ public class GameManager {
     private boolean gameOver;
     private boolean actionDone;
 
-    private final String mapName;
-
     private final List<ActiveAnimation> activeAnimations;
+    private Projectile activeProjectile;
 
-    public GameManager(String mapName) {
-        this.mapName = mapName;
-        this.terrain = TerrainGenerator.createTerrain(mapName);
+    private long delayEndTime = 0;
+    private boolean isPaused = false;
+    private Runnable onDelayFinished;
+    private boolean windEnabled = false;
+
+
+    public GameManager(Terrain terrain, int teamSize) {
+        this.terrain = terrain;
+        this.mapName = terrain.getMapName();
 
         this.teams = new Team[2];
         this.teams[0] = new Team("Zlerps", TEAM_SIZE);
         this.teams[1] = new Team("Glorbs", TEAM_SIZE);
 
         this.gameWorld = new GameWorld(this, this.terrain);
-
         this.activeAnimations = new CopyOnWriteArrayList<>();
-        SpriteManager.load("weapon_bazooka", "/Items/Bazooka2.png");
-
 
         initializeGame();
     }
 
+    public GameManager(String mapName) {
+        this.terrain = TerrainGenerator.createTerrain(mapName);
+        this.mapName = mapName;
+
+        this.teams = new Team[2];
+        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
+        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+
+        this.gameWorld = new GameWorld(this, this.terrain);
+        this.activeAnimations = new CopyOnWriteArrayList<>();
+
+        initializeGame();
+    }
+
+
     public void update(double elapsedTime) {
+        // On met à jour les physiques et animations
+        gameWorld.update(elapsedTime);
+        updateAnimations();
+        checkGameOver();
+        checkActiveProjectile();
+
+        // Si le délai n'est pas fini, on met pas à jour le reste
+        if (System.currentTimeMillis() < delayEndTime) {
+            return;
+        }
+        // Exécute les commandes à exécuter après le délai
+        if (isPaused) {
+            isPaused = false;
+            if (onDelayFinished != null) {
+                onDelayFinished.run();
+                onDelayFinished = null;
+            }
+        }
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
         if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
             skipTurn();
             return;
         }
-        gameWorld.update(elapsedTime);
-
-        updateAnimations();
-
-        checkGameOver();
-
         countTimeLeft();
     }
 
@@ -71,28 +103,49 @@ public class GameManager {
         this.timeLeft = ROUND_TIME;
         this.gameOver = false;
         this.actionDone = false;
+
+        setDelay(3000, () -> SoundManager.playVoice(0));
     }
 
 
     public void skipTurn() {
+
+        // ne rien faire si la partie est terminée
+        if (gameOver) {
+            return;
+        }
+
         actionDone = false;
 
         if (getTeam(0).isActiveLastAlien() && getTeam(1).isActiveLastAlien()) {
             currentRound++;
         }
 
-        nextTurn();
-
-        timeLeft = ROUND_TIME;
+        setDelay(2000, () -> {
+            nextTurn();
+            timeLeft = ROUND_TIME;
+        });
     }
 
     private void nextTurn() {
-        //Permet de passer à un vers actif à un autre
+        // Passe à l'alien suivant avant de changer d'équipe, pour le prochain tour
         getActiveTeam().skipToNextAlien();
 
+        // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        if (getActiveTeam().isEliminated()) {
+        // [MODIFICATION] Délégation à la physique
+        if (windEnabled) {
+            applyWindChange();
+        }
+
+        if (!getActiveTeam().isEliminated()) {
+            // Pour passer au prochain alien vivant si l'actif est mort
+            while (getActiveAlien() != null && !getActiveAlien().isAlive()) {
+                getActiveTeam().skipToNextAlien();
+            }
+            SoundManager.playVoice();
+        } else {
             gameOver = true;
         }
     }
@@ -116,7 +169,6 @@ public class GameManager {
         for (Team team : teams) {
             if (team.isEliminated()) {
                 gameOver = true;
-                return;
             }
         }
     }
@@ -162,9 +214,33 @@ public class GameManager {
         activeAnimations.add(active);
     }
 
+    public void setDelay(long durationMs, Runnable onFinished) {
+        this.delayEndTime = System.currentTimeMillis() + durationMs;
+        this.isPaused = true;
+        this.onDelayFinished = onFinished;
+    }
 
-    /* GETTERS */
+    private void checkActiveProjectile() {
+        if (activeProjectile == null || activeProjectile instanceof Trap) {
+            activeProjectile = null;
+            return;
+        }
+        if (activeProjectile.getState().equals(Projectile.State.FLYING)) {
+            delayEndTime += 20;
+        } else {
+            activeProjectile = null;
+        }
+    }
 
+    // Méthode simplifiée qui demande au moteur physique de faire le travail
+    private void applyWindChange() {
+        if (gameWorld.getPhysicsEngine() != null) {
+            gameWorld.getPhysicsEngine().randomizeWind();
+        }
+    }
+
+
+    ////    GETTERS & SETTERS    ////
     public Terrain getTerrain() {
         return terrain;
     }
@@ -213,6 +289,48 @@ public class GameManager {
         return gameOver;
     }
 
+    public boolean isActionDone() {
+        return actionDone;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public List<ActiveAnimation> getActiveAnimations() {
+        return activeAnimations;
+    }
+    public Projectile getActiveProjectile() {
+        return activeProjectile;
+    }
+
+    public void setActiveProjectile(Projectile p) {
+        if (activeProjectile instanceof Trap) {
+            return;
+        }
+        this.activeProjectile = p;
+    }
+
+    public boolean isWindEnabled() {
+        return windEnabled;
+    }
+
+    public void setWindEnabled(boolean enabled) {
+        this.windEnabled = enabled;
+        if (enabled) {
+            applyWindChange();
+        }
+    }
+
+    public void setMap(Terrain terrain) {
+        this.terrain = terrain;
+        this.gameWorld.getPhysicsEngine().setTerrain(terrain);
+    }
+
+    public void setTeams(Team[] teams) {
+        this.teams = teams;
+    }
+
     public Team getWinningTeam() {
         if (!gameOver) {
             return null;
@@ -227,19 +345,7 @@ public class GameManager {
         return null;
     }
 
-    public int getAliveWorms() {
-        int total = 0;
-        for (Team team : teams) {
-            total += team.getAliveAliensNumber();
-        }
-        return total;
-    }
-
-    public boolean isActionDone() {
-        return actionDone;
-    }
-
-    public List<ActiveAnimation> getActiveAnimations() {
-        return activeAnimations;
+    public int getDelay() {
+        return (int) (delayEndTime - System.currentTimeMillis()) / 10;
     }
 }

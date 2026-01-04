@@ -5,7 +5,6 @@ import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Projectile;
-import upc.model.entites.projectiles.Rocket;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import org.dyn4j.world.listener.ContactListenerAdapter;
@@ -14,22 +13,26 @@ import org.dyn4j.dynamics.contact.Contact;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class PhysicsEngine {
 
     private final GameWorld gameWorld;
-    private final Terrain terrain;
+    private Terrain terrain;
     private final World<Body> world;
 
     private final TerrainPhysics terrainPhysics;
     private final AlienPhysics alienPhysics;
     private final ProjectilePhysics projectilePhysics;
 
-    private Vector2 wind = new Vector2(0, 0); // Vent (x, y)
+    private Vector2 wind = new Vector2(0, 0);
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 60.0);
 
-////    CONSTRUCTEUR    ////
+    private final Random random = new Random();
+    private static final double MAX_WIND_POWER = 15.0;
+
+    ////    CONSTRUCTEUR    ////
     public PhysicsEngine(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         this.terrain = gameWorld.getTerrain();
@@ -51,27 +54,6 @@ public class PhysicsEngine {
         this.terrainPhysics = new TerrainPhysics(world, terrain);
 
         terrainPhysics.rebuildTerrain();
-    }
-    private void checkProjectileCollision(Body b1, Body b2) {
-        if (b1 != null && b1.getUserData() instanceof Projectile) {
-            Projectile p = (Projectile) b1.getUserData();
-
-            if (b2 != null && b2.getUserData() instanceof Alien) {
-                Alien alienTouche = (Alien) b2.getUserData();
-                if (p.getShooter() == alienTouche && p.getFrameCount() < 30) {
-                    return;
-                }
-            }
-            if (p.isActive() && p instanceof Rocket && p.getState() == Projectile.State.FLYING) {
-                p.setState(Projectile.State.EXPLODED);
-                projectilePhysics.explodeProjectile(p);
-                world.removeBody(p.getBody());
-                projectilePhysics.getActiveProjectiles().remove(p);
-            }
-        }
-    }
-    public Terrain getTerrain() {
-        return terrain;
     }
 
 
@@ -97,30 +79,9 @@ public class PhysicsEngine {
     }
 
 
-////    FONCTIONS AUXILIAIRES    ////
-
-    private boolean isOnGround(Body body) {
-        Vector2 vel = body.getLinearVelocity();
-        return Math.abs(vel.y) < 3.0;
-    }
-
-
 ////    FONCTIONS POUR ALIENS    ////
     public void addAlien(Alien alien) {
         alienPhysics.addAlienBody(alien);
-    }
-
-    public void removeAlien(Alien alien) {
-        alienPhysics.removeAlien(alien);
-    }
-
-    public void jumpAlien(Alien alien) {
-        alienPhysics.jumpAlien(alien);
-    }
-
-
-    public void moveAlien(Alien alien, double direction) {
-        alienPhysics.moveAlien(alien, direction);
     }
 
 ////    FONCTIONS POUR PROJECTILES    ////
@@ -128,8 +89,26 @@ public class PhysicsEngine {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
 
-    public void explodeProjectile(Projectile proj) {
-        projectilePhysics.explodeProjectile(proj);
+    private void checkProjectileCollision(Body b1, Body b2) {
+        projectilePhysics.checkProjectileCollision(b1, b2);
+    }
+
+
+    public void randomizeWind() {
+        // Calcul du facteur entre 0.1 et 1.0
+        double powerFactor = 0.1 + (random.nextDouble() * 0.75);
+        double direction = random.nextBoolean() ? 1.0 : -1.0;
+
+        double windX = MAX_WIND_POWER * powerFactor * direction;
+        double windY = (random.nextDouble() * 2.0) - 1.0;
+
+        Vector2 windVector = new Vector2(windX, windY);
+
+        // Application directe à la physique des projectiles
+        this.projectilePhysics.setWind(windVector);
+
+        // Met à jour la variable locale aussi si besoin pour affichage
+        this.wind = windVector;
     }
 
 
@@ -155,7 +134,9 @@ public class PhysicsEngine {
     }
 
     public void setWind(double windX, double windY) {
-        this.wind = new Vector2(windX, windY);
+        Vector2 v = new Vector2(windX, windY);
+        this.wind = v;
+        this.projectilePhysics.setWind(v);
     }
 
     public TerrainPhysics getTerrainPhysics() {
@@ -168,5 +149,23 @@ public class PhysicsEngine {
 
     public GameWorld getGameWorld() {
         return gameWorld;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+        this.alienPhysics.setTerrain(terrain);
+        this.terrainPhysics.setTerrain(terrain);
+    }
+
+    public void clearAliens() {
+        alienPhysics.clearAliens();
+    }
+
+    public ProjectilePhysics getProjectilePhysics() {
+        return projectilePhysics;
     }
 }

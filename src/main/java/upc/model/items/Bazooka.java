@@ -6,42 +6,42 @@ import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
 
 public class Bazooka extends Weapon {
+
+    private static final int DAMAGE = 45;
+    private static final int NB_OF_SHOTS = 1;
+    private static final int BASE_POWER = 20;
+
     public Bazooka() {
-        super("Bazooka", 45, 3, 70);
+        super("Bazooka", DAMAGE, NB_OF_SHOTS, BASE_POWER);
     }
+
     @Override
-    public void useItem(GameWorld gameWorld, Alien shooter) {
-        System.out.println("🎯 useItem appelée");
+    public Projectile useItem(GameWorld gameWorld, Alien shooter) {
+
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
-        double distance = 25.0;
+        double distance = 20.0;
         double rad = Math.toRadians(angle);
+
         if (!shooter.getDirection()) { // Si regarde à gauche
             rad = Math.PI - rad;
         }
+
         int offsetX = (int) (Math.cos(rad) * distance);
         int offsetY = (int) (-Math.sin(rad) * distance);
+
         Position startPos = new Position(
                 shooter.getPosition().getX() + offsetX,
-                shooter.getPosition().getY() + offsetY - 10 // Légèrement plus haut (épaules)
+                shooter.getPosition().getY() + offsetY - 5// Légèrement plus haut (épaules)
         );
-        Projectile proj = createProjectile(shooter, startPos, angle, power);
+
+        Projectile proj = new Rocket(this, shooter, startPos);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
-
+        return proj;
     }
+
     @Override
-    public Projectile createProjectile(Alien shooter, Position startPosition, int angleDegrees,
-                                       int powerPercent) {
-        Rocket rocket = new Rocket(
-                shooter,                          // Le tireur
-                startPosition,                    // ✅ La position de départ (sortie du canon)
-                this.getDamage(),                 // Les dégâts
-                3,        // Rayon d'explosion
-                true,                             // C'est explosif
-                this.getSpeed(),                  // Vitesse
-                this                              // L'arme (Bazooka)
-        );
-        return rocket;
+    public Type getType() {
+        return Type.BAZOOKA;
     }
-
 }

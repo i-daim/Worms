@@ -87,7 +87,10 @@ public class TestAlien {
         assertEquals(Alien.State.WALK, alien.getState());
         assertTrue(alien.getDirection());
     }
-
+    /**
+     * Vérifie que le déplacement vers la gauche
+     * met l'état à WALK et la direction à gauche.
+     */
     @Test
     void testMoveLeft() {
         alien.moveLeft();

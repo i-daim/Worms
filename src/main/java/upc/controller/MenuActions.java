@@ -44,6 +44,7 @@ public class MenuActions {
                 new GameController(gamePanel, gameManager);
 
                 mainFrame.setContentPane(gamePanel);
+                gamePanel.requestFocusInWindow();
                 mainFrame.revalidate();
                 mainFrame.repaint();
             } catch (IOException ex) {

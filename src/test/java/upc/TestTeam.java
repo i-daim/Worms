@@ -50,6 +50,11 @@ public class TestTeam {
         assertFalse(b.isEliminated());
         assertFalse(aliens[0].isAlive());
         assertTrue(aliens[1].isAlive());
+
+        aliens[1].receiveDmg(100);
+        aliens[2].receiveDmg(100);
+
+        assertTrue(b.isEliminated());
     }
 
     @Test

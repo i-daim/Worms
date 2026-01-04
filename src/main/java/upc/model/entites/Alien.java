@@ -133,7 +133,10 @@ public class Alien extends Entity {
 ////    Autres Méthodes    ////
 
     /**
-     * Méthode en lien avec l'utilisation d'item
+     * Méthode en lien avec l'utilisation d'item:
+     * Utilise l'objet actuellement sélectionné dans l'inventaire.
+     * Si l'objet n'est pas disponible, rien ne se passe.
+     * Si l'objet est un jetpack, l'alien vole.
      */
     public void useEquippedItem() {
         Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];

@@ -121,6 +121,9 @@ public class TestAlien {
         alien.setAimAngle(30);
         assertEquals(30, alien.getAimAngle());
     }
+    /**
+     * Vérifie la modification de la puissance de tir.
+     */
     @Test
     void testShootPower() {
         alien.setShootPower(90);

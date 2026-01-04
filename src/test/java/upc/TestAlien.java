@@ -137,6 +137,9 @@ public class TestAlien {
         alien.setSelectedItemIndex(0);
         assertEquals(0, alien.getSelectedItemIndex());
     }
+    /**
+     * Vérifie que l'alien appartient bien à son équipe.
+     */
     @Test
     void testGetTeam() {
         assertEquals(team, alien.getTeam());

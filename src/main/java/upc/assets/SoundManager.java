@@ -1,5 +1,7 @@
 package upc.assets;
 
+import upc.model.entites.projectiles.Projectile;
+
 import java.util.HashMap;
 
 public class SoundManager {
@@ -30,6 +32,9 @@ public class SoundManager {
         EFFECTS.put("Shotgun", loadEffect("shotgun"));
         EFFECTS.put("Uzi", loadEffect("uzi"));
         EFFECTS.put("Mine", loadEffect("mine_deploy"));
+        EFFECTS.put("Impact", loadEffect("Impact"));
+        EFFECTS.put("Grenade", loadEffect("grenade"));
+        EFFECTS.put("Splash", loadEffect("water"));
     }
 
 

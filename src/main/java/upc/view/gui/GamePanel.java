@@ -64,13 +64,16 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
+        // Sauvegarde du transform
+        AffineTransform old = g2.getTransform();
+
         // Zoom + ajustement de la caméra
-        g2.scale(currentZoom, currentZoom);
         g2.translate(-cameraX, -cameraY);
+        g2.scale(currentZoom, currentZoom);
 
         // Affichage du background
         BufferedImage backgroundImage = terrain.getBackground();
@@ -102,8 +105,7 @@ public class GamePanel extends JPanel {
         drawProjectiles(g2);
 
         // Annulation du zoom
-        g2.translate(cameraX, cameraY);
-        g2.scale(1.0 / currentZoom, 1.0 / currentZoom);
+        g2.setTransform(old);
 
         // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setBounds(0, 0, getWidth(), getHeight());
@@ -112,7 +114,7 @@ public class GamePanel extends JPanel {
     }
 
 
-////    METHODES D'AFFICHAGE    ////
+    ////    METHODES D'AFFICHAGE    ////
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),

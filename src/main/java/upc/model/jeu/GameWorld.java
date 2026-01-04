@@ -58,6 +58,9 @@ public class GameWorld {
     }
 
     public void initializePhysics() {
+        physicsEngine.clearAliens();
+        activeAliens.clear();
+
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);

@@ -20,7 +20,7 @@ import java.util.Set;
 public class AlienPhysics {
 
     private final World<Body> world;
-    private final Terrain terrain;
+    private Terrain terrain;
 
 
     // Les Maps sont remplacés par une classe qui rassemble les valeurs par alien
@@ -128,6 +128,13 @@ public class AlienPhysics {
         }
     }
 
+    public void clearAliens() {
+        for (AlienState state : alienStates.values()) {
+            world.removeBody(state.body);
+        }
+        alienStates.clear();
+    }
+
     public void moveAlien(Alien alien, double direction) {
         AlienState state = alienStates.get(alien);
         if (state != null) {
@@ -224,5 +231,9 @@ public class AlienPhysics {
     public Body getAlienBody(Alien alien) {
         AlienState state = alienStates.get(alien);
         return state != null ? state.body : null;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 }

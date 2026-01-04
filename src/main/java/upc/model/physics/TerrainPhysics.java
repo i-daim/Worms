@@ -11,7 +11,7 @@ import upc.model.jeu.TerrainGenerator;
 public class TerrainPhysics {
 
     private final World<Body> world;
-    private final Terrain terrain;
+    private Terrain terrain;
 
     private Body terrainBody;
 
@@ -103,5 +103,10 @@ public class TerrainPhysics {
 
     public void setModified(boolean modified) {
         this.modified = modified;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+        setModified(true);
     }
 }

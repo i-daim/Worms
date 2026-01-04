@@ -54,6 +54,10 @@ public class TestAlien {
         assertTrue(alien.getDirection());
     }
     @Test
+    /**
+     * Vérifie que les dégâts réduisent correctement les points de vie
+     * et qu'un alien mort ne peut plus recevoir de dégâts.
+     */
     void testReceiveDamage() {
         alien.receiveDmg(25);
         assertEquals(75, alien.getHealthPoints());

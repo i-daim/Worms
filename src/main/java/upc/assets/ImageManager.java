@@ -15,18 +15,18 @@ public class ImageManager {
         ImageManager.load("menu_background", "/menu/menu_background.png");
         ImageManager.load("settings_background", "/menu/settings_background.png");
 
-        ImageManager.load("Bazooka", "/Items/Bazooka.png");
-        ImageManager.load("Uzi", "/Items/Uzi.png");
-        ImageManager.load("Shotgun", "/Items/Shotgun.png");
-        ImageManager.load("Grenade", "/Items/Grenade.png");
-        ImageManager.load("Mine", "/Items/Mine.png");
+        ImageManager.load("Bazooka", "/items/bazooka.png");
+        ImageManager.load("Uzi", "/items/uzi.png");
+        ImageManager.load("Shotgun", "/items/shotgun.png");
+        ImageManager.load("Grenade", "/items/grenade.png");
+        ImageManager.load("Mine", "/items/mine.png");
 
-        ImageManager.load("Bazooka_Inv", "/Items/Bazooka_Inv.png");
-        ImageManager.load("Uzi_Inv", "/Items/Uzi_Inv.png");
-        ImageManager.load("Shotgun_Inv", "/Items/Shotgun_Inv.png");
-        ImageManager.load("Grenade_Inv", "/Items/Grenade_Inv.png");
-        ImageManager.load("Mine_Inv", "/Items/Mine_Inv.png");
-        ImageManager.load("Jetpack_Inv", "/Items/Jetpack_Inv.png");
+        ImageManager.load("Bazooka_Inv", "/items/bazooka_inv.png");
+        ImageManager.load("Uzi_Inv", "/items/uzi_inv.png");
+        ImageManager.load("Shotgun_Inv", "/items/shotgun_inv.png");
+        ImageManager.load("Grenade_Inv", "/items/grenade_inv.png");
+        ImageManager.load("Mine_Inv", "/items/mine_inv.png");
+        ImageManager.load("Jetpack_Inv", "/items/jetpack_inv.png");
     }
 
     public static void load(String name, String path) {

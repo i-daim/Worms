@@ -117,4 +117,13 @@ public class TestProjectile {
         assertEquals(0, p.getAngle());
     }
 
+    @Test
+    public void testGetExplosionRadius(){
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
+
+        assertEquals(0, p.getExplosionRadius());
+    }
+
+
+
 }

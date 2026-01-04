@@ -28,7 +28,7 @@ public class PhysicsEngine {
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 60.0);
 
-////    CONSTRUCTEUR    ////
+    ////    CONSTRUCTEUR    ////
     public PhysicsEngine(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         this.terrain = gameWorld.getTerrain();
@@ -53,7 +53,7 @@ public class PhysicsEngine {
     }
 
 
-////    UPDATE DES PHYSIQUES    ////
+    ////    UPDATE DES PHYSIQUES    ////
     public void update() {
         world.update(dt);
         updateAliens();
@@ -75,12 +75,12 @@ public class PhysicsEngine {
     }
 
 
-////    FONCTIONS POUR ALIENS    ////
+    ////    FONCTIONS POUR ALIENS    ////
     public void addAlien(Alien alien) {
         alienPhysics.addAlienBody(alien);
     }
 
-////    FONCTIONS POUR PROJECTILES    ////
+    ////    FONCTIONS POUR PROJECTILES    ////
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
@@ -89,7 +89,7 @@ public class PhysicsEngine {
         projectilePhysics.checkProjectileCollision(b1, b2);
     }
 
-////    GETTERS & SETTERS    ////
+    ////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {
         return world;
     }
@@ -129,4 +129,9 @@ public class PhysicsEngine {
     public Terrain getTerrain() {
         return terrain;
     }
+
+    public ProjectilePhysics getProjectilePhysics() {
+        return projectilePhysics;
+    }
+
 }

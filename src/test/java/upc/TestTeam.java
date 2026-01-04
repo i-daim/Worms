@@ -110,5 +110,14 @@ public class TestTeam {
 
     }
 
+    @Test
+    public void testSkipToNextAlien() {
+        Team a = new Team("TEAM A", 2);
+        a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
+        a.getAliens()[1] = new Alien(world, a, new Position(1, 0));
+        Alien activeAlien = a.getActiveAlien();
+        a.skipToNextAlien();
+        assertNotEquals(activeAlien,a.getActiveAlien());
+    }
 }
 

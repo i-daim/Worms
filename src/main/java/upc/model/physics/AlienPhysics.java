@@ -128,6 +128,13 @@ public class AlienPhysics {
         }
     }
 
+    public void clearAliens() {
+        for (AlienState state : alienStates.values()) {
+            world.removeBody(state.body);
+        }
+        alienStates.clear();
+    }
+
     public void moveAlien(Alien alien, double direction) {
         AlienState state = alienStates.get(alien);
         if (state != null) {

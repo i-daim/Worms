@@ -135,5 +135,8 @@ public class PhysicsEngine {
         this.alienPhysics.setTerrain(terrain);
         this.terrainPhysics.setTerrain(terrain);
     }
+
+    public void clearAliens() {
+        alienPhysics.clearAliens();
     }
 }

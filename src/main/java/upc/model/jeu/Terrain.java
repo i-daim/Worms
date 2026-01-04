@@ -70,10 +70,41 @@ public class Terrain {
                         // 3. Mise à jour du tableau de collisions
                         int colX = x / TILE_SIZE;
                         int colY = y / TILE_SIZE;
-                        if (colX >= 0 && colX < getCollisionsWidth()
-                                && colY >= 0 && colY < getCollisionsHeight()) {
+                        if (colX < getCollisionsWidth() && colY < getCollisionsHeight()) {
                             // Marque la tuile comme non solide (vide)
                             collisions[colY][colX] = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Met à jour l'image du terrain en fonction du tableau de collisions.
+     * <p>
+     * Cette méthode est utilisée pour la sauvegarde, pour synchroniser
+     * l'image de la map avec le tableau de collisions.
+     * </p>
+     */
+    public void updateMapImage() {
+        if (image == null) {
+            return;
+        }
+
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+
+        for (int y = 0; y < getCollisionsHeight(); y++) {
+            for (int x = 0; x < getCollisionsWidth(); x++) {
+                if (!collisions[y][x]) {
+                    // La tuile est vide, on rend les pixels correspondants transparents
+                    int startX = x * TILE_SIZE;
+                    int startY = y * TILE_SIZE;
+
+                    for (int py = startY; py < startY + TILE_SIZE && py < imgHeight; py++) {
+                        for (int px = startX; px < startX + TILE_SIZE && px < imgWidth; px++) {
+                            image.setRGB(px, py, 0x00000000);
                         }
                     }
                 }
@@ -160,7 +191,7 @@ public class Terrain {
 
 
     public void setBackground(BufferedImage imageBackground) {
-        this.background = background;
+        this.background = imageBackground;
     }
 
     public void setImage(BufferedImage image) {
@@ -219,4 +250,27 @@ public class Terrain {
         // 2. Vérifie s'il n'y a pas de collision à cette position
         return !collisions[posY][posX];
     }
+
+    /**
+     * Retourne la clé (le nom) de l'animation à utiliser pour l'eau
+     * en fonction du nom de la map.
+     */
+    public String getWaterAnimationKey() {
+        if (mapName == null) {
+            return "water";
+        }
+
+        String name = mapName.toLowerCase();
+
+        if (name.contains("poison")) {
+            return "water_poison";
+        } else if (name.contains("ice")) {
+            return "water_ice";
+        } else if (name.contains("hell")) {
+            return "water_hell";
+        }
+
+        return "water";
+    }
+
 }

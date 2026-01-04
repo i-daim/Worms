@@ -6,7 +6,7 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
-
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
@@ -21,6 +21,7 @@ import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import upc.model.entites.projectiles.Bullet;
+import upc.model.jeu.TerrainGenerator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -162,14 +163,8 @@ public class ProjectilePhysics {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
         while (iterator.hasNext()) {
-
             Projectile proj = iterator.next();
             Body body = proj.getBody();
-
-            if (body == null) {
-                iterator.remove();
-                continue;
-            }
 
             proj.incrementFrame();
 
@@ -184,6 +179,18 @@ public class ProjectilePhysics {
                     proj.setState(Projectile.State.EXPLODED);
                 }
             }
+            if (proj instanceof Trap trap) {
+                trap.activation(gameWorld);
+            }
+            int tileY = y / TerrainGenerator.TILE_SIZE;
+            if (terrain.isWater(tileY)) {
+                SoundManager.playEffect("Splash");
+                proj.setState(Projectile.State.OUT_OF_BOUNDS);
+                world.removeBody(body);
+                iterator.remove();
+                continue;
+            }
+
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
 
@@ -255,10 +262,12 @@ public class ProjectilePhysics {
         if (proj instanceof Bullet) {
             return;
         }
+
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
         physicsEngine.getGameWorld().explode(explosionX, explosionY, radius);
+        SoundManager.playEffect("Explosion");
 
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();
@@ -269,7 +278,6 @@ public class ProjectilePhysics {
 
             double dx = (alienPos.getX() - explosionX) / distance;
             double dy = (alienPos.getY() - explosionY) / distance;
-
             Body alienBody = physicsEngine.getAlienBodies().get(alien);
             if (alienBody != null) {
                 alienBody.applyImpulse(
@@ -293,6 +301,7 @@ public class ProjectilePhysics {
             }
             if (p instanceof Rocket && b2 != null) {
                 p.setState(Projectile.State.EXPLODED);
+
             } else if (p instanceof Bullet && b2 != null) {
                 handleBulletImpact((Bullet) p, b2);
             }
@@ -309,6 +318,7 @@ public class ProjectilePhysics {
             target.applyImpulse(5);
         }
         bullet.setState(Projectile.State.EXPLODED);
+        SoundManager.playEffect("Impact");
     }
 
     public List<Projectile> getActiveProjectiles() {

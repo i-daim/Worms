@@ -2,6 +2,11 @@ package upc.controller;
 
 
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import upc.model.jeu.GameManager;
+import upc.model.save.GameSave;
+import upc.view.gui.GamePanel;
 import upc.view.gui.GameSetupPanel;
 import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
@@ -30,7 +35,22 @@ public class MenuActions {
     }
 
     public ActionListener getLoadGameAction() {
-        return e -> System.out.println("Load Game non implémenté pour le moment.");
+        return e -> {
+            try {
+                GameSave save = GameSave.load();
+                GameManager gameManager = new GameManager("");
+                save.applyTo(gameManager);
+                GamePanel gamePanel = new GamePanel(gameManager);
+                new GameController(gamePanel, gameManager);
+
+                mainFrame.setContentPane(gamePanel);
+                gamePanel.requestFocusInWindow();
+                mainFrame.revalidate();
+                mainFrame.repaint();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
     }
 
     public ActionListener getSettingsAction() {

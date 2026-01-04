@@ -1,5 +1,6 @@
 package upc.assets;
 
+
 import java.util.HashMap;
 
 public class SoundManager {
@@ -30,6 +31,9 @@ public class SoundManager {
         EFFECTS.put("Shotgun", loadEffect("shotgun"));
         EFFECTS.put("Uzi", loadEffect("uzi"));
         EFFECTS.put("Mine", loadEffect("mine_deploy"));
+        EFFECTS.put("Impact", loadEffect("Impact"));
+        EFFECTS.put("Grenade", loadEffect("grenade"));
+        EFFECTS.put("Splash", loadEffect("water"));
     }
 
 
@@ -59,10 +63,10 @@ public class SoundManager {
         if (isAudioDisabled()) {
             return;
         }
-        Sound effect = EFFECTS.get(name);
-        if (effect != null) {
+        if (EFFECTS.get(name) != null) {
+            Sound effect = EFFECTS.get(name).duplicate();
+            effect.setVolume(-10f);
             effect.play();
-            effect.setVolume(-5f);
         }
     }
 

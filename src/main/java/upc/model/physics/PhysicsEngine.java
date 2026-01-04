@@ -18,7 +18,7 @@ import java.util.Random;
 public class PhysicsEngine {
 
     private final GameWorld gameWorld;
-    private final Terrain terrain;
+    private Terrain terrain;
     private final World<Body> world;
 
     private final TerrainPhysics terrainPhysics;
@@ -57,7 +57,7 @@ public class PhysicsEngine {
     }
 
 
-    ////    UPDATE DES PHYSIQUES    ////
+////    UPDATE DES PHYSIQUES    ////
     public void update() {
         world.update(dt);
         updateAliens();
@@ -79,12 +79,12 @@ public class PhysicsEngine {
     }
 
 
-    ////    FONCTIONS POUR ALIENS    ////
+////    FONCTIONS POUR ALIENS    ////
     public void addAlien(Alien alien) {
         alienPhysics.addAlienBody(alien);
     }
 
-    ////    FONCTIONS POUR PROJECTILES    ////
+////    FONCTIONS POUR PROJECTILES    ////
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
@@ -111,7 +111,8 @@ public class PhysicsEngine {
         this.wind = windVector;
     }
 
-    ////    GETTERS & SETTERS    ////
+
+////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {
         return world;
     }
@@ -152,6 +153,16 @@ public class PhysicsEngine {
 
     public Terrain getTerrain() {
         return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+        this.alienPhysics.setTerrain(terrain);
+        this.terrainPhysics.setTerrain(terrain);
+    }
+
+    public void clearAliens() {
+        alienPhysics.clearAliens();
     }
 
     public ProjectilePhysics getProjectilePhysics() {

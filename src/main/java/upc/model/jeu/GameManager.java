@@ -320,6 +320,7 @@ public class GameManager {
 
     public void setMap(Terrain terrain) {
         this.terrain = terrain;
+        this.gameWorld.getPhysicsEngine().setTerrain(terrain);
     }
 
     public void setTeams(Team[] teams) {

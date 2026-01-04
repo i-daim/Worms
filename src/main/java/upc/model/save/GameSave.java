@@ -84,6 +84,9 @@ public class GameSave {
                 getClass().getResource(cheminImage)));
         terrain.setImage(image);
 
+        //Pour mettre à jour la map en fonction des collisions de la sauvegarde
+        terrain.updateMapImage();
+
         //Permet de récupérer le terrain sauvegardé
         gameManager.setMap(terrain);
 
@@ -95,6 +98,9 @@ public class GameSave {
 
         //Permet de récupérer les équipes sauvegardées
         gameManager.setTeams(gameTeams);
+
+        // Réinitialise la physique avec les nouveaux aliens
+        gameManager.getWorld().initializePhysics();
     }
 
     //Classe permettant de générér une équipe avec les informations minimales à sauvegarder

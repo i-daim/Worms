@@ -30,7 +30,7 @@ public class PhysicsEngine {
     private final Vector2 gravity = new Vector2(0, 60.0);
 
     private final Random random = new Random();
-    private static final double MAX_WIND_POWER = 25.0;
+    private static final double MAX_WIND_POWER = 15.0;
 
     ////    CONSTRUCTEUR    ////
     public PhysicsEngine(GameWorld gameWorld) {
@@ -95,8 +95,8 @@ public class PhysicsEngine {
 
 
     public void randomizeWind() {
-        // Calcul du facteur entre 0.25 et 1.0
-        double powerFactor = 0.25 + (random.nextDouble() * 0.75);
+        // Calcul du facteur entre 0.1 et 1.0
+        double powerFactor = 0.1 + (random.nextDouble() * 0.75);
         double direction = random.nextBoolean() ? 1.0 : -1.0;
 
         double windX = MAX_WIND_POWER * powerFactor * direction;

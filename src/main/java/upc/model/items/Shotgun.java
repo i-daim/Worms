@@ -8,8 +8,12 @@ import upc.model.jeu.GameWorld;
 
 public class Shotgun extends Weapon {
 
+    private static final int DAMAGE = 35;
+    private static final int NB_OF_SHOTS = 8;
+    private static final int BASE_POWER = 20;
+
     public Shotgun() {
-        super("Shotgun", 35, 8, 80);
+        super("Shotgun", DAMAGE, NB_OF_SHOTS, BASE_POWER);
     }
 
     @Override

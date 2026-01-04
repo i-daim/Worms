@@ -18,6 +18,8 @@ import java.awt.geom.AffineTransform;
 public class HUDPanel extends JPanel {
 
     private final GameManager gameManager;
+    private boolean inventoryVisible = false;
+    private JButton inventoryButton;
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -27,6 +29,7 @@ public class HUDPanel extends JPanel {
         this.setPreferredSize(new Dimension(800, 100));
 
         addSkipButton();
+        addInventoryButton();
     }
 
     @Override
@@ -39,8 +42,21 @@ public class HUDPanel extends JPanel {
 
         drawTopBar(g2);
         drawWeaponInfo(g2);
+
+        if (inventoryVisible) {
+            InventoryPanel.drawInventory(g2, getWidth(), getHeight(), gameManager.getActiveAlien());
+        }
     }
 
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        if (inventoryButton != null) {
+            int posX = (width - inventoryButton.getWidth()) / 2;
+            int posY = height - inventoryButton.getHeight() - 10;
+            inventoryButton.setLocation(posX, posY);
+        }
+    }
 
     private void addSkipButton() {
         JButton skipButton = ButtonManager.createGameButton("Passer");
@@ -57,6 +73,24 @@ public class HUDPanel extends JPanel {
         skipButton.setBounds(20, 5, 120, 40);
         skipButton.setFont(new Font("Arial", Font.BOLD, 16));
         this.add(skipButton);
+    }
+
+    private void addInventoryButton() {
+        inventoryButton = ButtonManager.createGameButton("Inventaire");
+        inventoryButton.addActionListener(e -> toggleInventory());
+        inventoryButton.setFocusable(false);
+        inventoryButton.setSize(150, 50);
+        inventoryButton.setFont(new Font("Arial", Font.BOLD, 16));
+        this.add(inventoryButton);
+    }
+
+    public void toggleInventory() {
+        inventoryVisible = !inventoryVisible;
+        this.repaint();
+    }
+
+    public boolean isInventoryVisible() {
+        return inventoryVisible;
     }
 
 
@@ -149,6 +183,33 @@ public class HUDPanel extends JPanel {
 
         // Rotation du viseur en fonction de l'angle
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
+
+        // Indice de puissance de tir
+        int power = alien.getShootPower();
+
+        // Dimensions du cône
+        int coneLength = power / 2;
+        int coneWidth = 4 + (power / 8);
+
+        if (power < 30) {
+            g2.setColor(Color.GREEN);
+        } else if (power < 70) {
+            g2.setColor(Color.ORANGE);
+        } else {
+            g2.setColor(Color.RED);
+        }
+
+        if (power > 0) {
+            int startX = 15;
+            // Points du triangle (cône)
+            int[] xPoints = {startX, startX + coneLength, startX + coneLength};
+            int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
+
+            g2.fillPolygon(xPoints, yPoints, 3);
+
+            g2.setColor(Color.BLACK);
+            g2.drawPolygon(xPoints, yPoints, 3);
+        }
 
         // Viseur représenté par un cercle
         int distance = 50;

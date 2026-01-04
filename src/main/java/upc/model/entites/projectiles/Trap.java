@@ -15,7 +15,7 @@ public class Trap extends Projectile {
                 weapon.getDamage(),
                 explosionRadius,
                 true,
-                weapon.getSpeed(),
+                weapon.getBasePower(),
                 weapon);
 
         this.activationRadius = activationRadius;

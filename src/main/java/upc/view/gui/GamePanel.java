@@ -40,8 +40,6 @@ public class GamePanel extends JPanel {
     private double cameraX = 0;
     private double cameraY = 0;
 
-    private boolean inventoryVisible = false;
-
     private final List<ActiveAnimation> activeAnimations;
 
     public GamePanel(GameManager gameManager) {
@@ -113,7 +111,7 @@ public class GamePanel extends JPanel {
         g2.scale(1.0 / currentZoom, 1.0 / currentZoom);
 
         // Affichage du HUD (après le zoom car non concerné)
-        hudPanel.setSize(getWidth(), 100);
+        hudPanel.setBounds(0, 0, getWidth(), getHeight());
 
         g2.dispose();
     }
@@ -250,21 +248,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void drawInventory(Graphics2D g2) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            int alienPosX = activeAlien.getPosition().getX();
-
-            int inventoryY = activeAlien.getPosition().getY() - 80;
-            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
-
-            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY,
-                    activeAlien.getSelectedItemIndex());
-        }
-    }
-
-
-
 ////    AUTRES METHODES    ////
     public void togglePauseMenu(boolean paused) {
         pausePanel.setVisible(paused);
@@ -349,15 +332,6 @@ public class GamePanel extends JPanel {
         return cameraY;
     }
 
-    public boolean isInventoryVisible() {
-        return inventoryVisible;
-    }
-
-    public void toggleInventory() {
-        inventoryVisible = !inventoryVisible;
-        repaint();
-    }
-
     public Terrain getTerrain() {
         return terrain;
     }
@@ -368,5 +342,9 @@ public class GamePanel extends JPanel {
 
     public PausePanel getPausePanel() {
         return pausePanel;
+    }
+
+    public HUDPanel getHudPanel() {
+        return hudPanel;
     }
 }

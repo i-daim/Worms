@@ -72,6 +72,12 @@ public class Position {
         }
         return x == position.x && y == position.y;
     }
+    /**
+     * Calcule le hashCode de la position.
+     * Utilisé notamment dans les structures de données comme HashMap.
+     *
+     * @return le hashCode de la position
+     */
 
     @Override
     public int hashCode() {

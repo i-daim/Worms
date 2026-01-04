@@ -347,4 +347,9 @@ public class GamePanel extends JPanel {
         return currentZoom;
     }
 
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+
 }

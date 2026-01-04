@@ -107,42 +107,44 @@ public class MouseHandler extends MouseAdapter {
     }
 
     public void handleCameraScroll(GamePanel gamePanel) {
+        if (gamePanel.getGameManager().isPaused()) {
+            return;
+        }
+
         if (position == null) {
             return;
         }
 
         int width = gamePanel.getWidth();
         int height = gamePanel.getHeight();
-        int limit = (int) (50 * GamePanel.ZOOM);
+        int limit = (int) (50 * gamePanel.getCurrentZoom());
 
         double camX = gamePanel.getCameraX();
         double camY = gamePanel.getCameraY();
         int terrainWidth = gamePanel.getTerrain().getWidth();
         int terrainHeight = gamePanel.getTerrain().getHeight();
 
-        if (position.x > width - limit) {
+        int viewportWidth = (int) (width / gamePanel.getCurrentZoom());
+        int viewportHeight = (int) (height / gamePanel.getCurrentZoom());
+
+        if (position.x > width - limit && camX < terrainWidth - viewportWidth) {
             camX += CAMERA_SPEED;
-        } else if (position.x < limit) {
+        } else if (position.x < limit && camX > 0) {
             camX -= CAMERA_SPEED;
         }
 
-        if (position.y > height - limit) {
+        if (position.y > height - limit && camY < terrainHeight - viewportHeight) {
             camY += CAMERA_SPEED;
-        } else if (position.y < limit) {
+        } else if (position.y < limit && camY > 0) {
             camY -= CAMERA_SPEED;
         }
-
-        int viewportWidth = (int) (width / GamePanel.ZOOM);
-        int viewportHeight = (int) (height / GamePanel.ZOOM);
-
-        camX = Math.max(0, Math.min(camX, terrainWidth - viewportWidth));
-        camY = Math.max(0, Math.min(camY, terrainHeight - viewportHeight));
 
         gamePanel.setCamera(camX, camY);
     }
 
 
-////    GETTERS    ////
+
+    ////    GETTERS    ////
     public Point getPosition() {
         return position;
     }

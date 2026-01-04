@@ -69,6 +69,9 @@ public class TestAlien {
         assertEquals(pointDeVie, alien.getHealthPoints());
     }
     @Test
+    /**
+     * Vérifie qu'un alien meurt lorsque ses points de vie tombent à zéro.
+     */
     void testMortAlien() {
         alien.receiveDmg(200);
         assertEquals(0, alien.getHealthPoints());

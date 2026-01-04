@@ -8,9 +8,6 @@ import upc.assets.Animation;
 import upc.assets.AnimationManager;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.entites.projectiles.Trap;
-// [MODIFICATION] Imports nécessaires pour le vent
-import org.dyn4j.geometry.Vector2;
-import java.util.Random;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -37,8 +34,6 @@ public class GameManager {
     private boolean isPaused = false;
     private Runnable onDelayFinished;
     private boolean windEnabled = false;
-    private final Random random = new Random();
-    private static final double MAX_WIND_POWER = 25.0;
 
 
     public GameManager(Terrain terrain, int teamSize) {
@@ -139,9 +134,9 @@ public class GameManager {
         // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        // Si le vent est activé, on le change à chaque tour
+        // [MODIFICATION] Délégation à la physique
         if (windEnabled) {
-            changeWind();
+            applyWindChange();
         }
 
         if (!getActiveTeam().isEliminated()) {
@@ -237,19 +232,17 @@ public class GameManager {
         }
     }
 
-    // logique de calcul du vent
-    private void changeWind() {
-        // Calcule un aléatoire entre 0.25 et 1.0
-        double powerFactor = 0.25 + (random.nextDouble() * 0.75);
-        double direction = random.nextBoolean() ? 1.0 : -1.0;
-        // Calcule la force finale sur l'axe X
-        double windX = MAX_WIND_POWER * powerFactor * direction;
-        // Un très léger vent vertical aléatoire pour varier
-        double windY = (random.nextDouble() * 2.0) - 1.0;
-        Vector2 windVector = new Vector2(windX, windY);
-        // Envoi de la valeur au moteur physique
+    // Méthode simplifiée qui demande au moteur physique de faire le travail
+    private void applyWindChange() {
         if (gameWorld.getPhysicsEngine() != null) {
-            gameWorld.getPhysicsEngine().getProjectilePhysics().setWind(windVector);
+            gameWorld.getPhysicsEngine().randomizeWind();
+        }
+    }
+
+    public void setWindEnabled(boolean enabled) {
+        this.windEnabled = enabled;
+        if (enabled) {
+            applyWindChange();
         }
     }
 
@@ -350,12 +343,4 @@ public class GameManager {
     public int getDelay() {
         return (int) (delayEndTime - System.currentTimeMillis()) / 10;
     }
-
-    public void setWindEnabled(boolean enabled) {
-        this.windEnabled = enabled;
-        if (enabled) {
-            changeWind();
-        }
-    }
-
 }

@@ -8,11 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameWorld {
+    /**Attributs*/
     private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
 
     private final ArrayList<Alien> activeAliens;
 
+    /**
+     * Constructeur pour {@code GameWorld}
+     * @param gameManager : Le gestionnaire de jeu
+     * @param terrain : Le terrain de jeu
+     *
+     */
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
         this.physicsEngine = new PhysicsEngine(this);

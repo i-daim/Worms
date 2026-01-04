@@ -25,6 +25,10 @@ public class TestAlien {
     private GameWorld world;
 
     @BeforeEach
+    /**
+     * Initialise l'environnement de test avant chaque test.
+     * Crée un GameManager, récupère le monde, l'équipe et un alien.
+     */
     void setup() {
         GameManager gameManager = new GameManager();
         world = gameManager.getWorld();

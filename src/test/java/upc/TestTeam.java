@@ -76,5 +76,14 @@ public class TestTeam {
         a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
         assertNotNull(a.getActiveAlien());
     }
+
+    @Test
+    public void testGetAliveAliensNumber(){
+        Team a = new Team("TEAM A",3);
+        assertEquals(0, a.getAliveAliensNumber());
+
+        a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
+        assertEquals(1, a.getAliveAliensNumber());
+    }
 }
 

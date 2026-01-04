@@ -184,7 +184,7 @@ public class InventoryPanel extends JPanel {
         int drawX = (screenWidth - TOTAL_WIDTH) / 2;
         int drawY = screenHeight - TOTAL_HEIGHT - 80;
 
-        return p.x >= drawX && p.x <= drawX + TOTAL_WIDTH &&
-                p.y >= drawY && p.y <= drawY + TOTAL_HEIGHT;
+        return p.x >= drawX && p.x <= drawX + TOTAL_WIDTH
+                && p.y >= drawY && p.y <= drawY + TOTAL_HEIGHT;
     }
 }

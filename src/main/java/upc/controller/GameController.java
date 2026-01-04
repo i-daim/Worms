@@ -9,8 +9,10 @@ import upc.model.save.GameSave;
 import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
+import upc.view.gui.InventoryPanel;
 import upc.view.gui.PausePanel;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -134,13 +136,16 @@ public class GameController {
             return;
         }
 
-        // Gestion de l'inventaire
-        if (gamePanel.isInventoryVisible()) {
-            for (int i = 0; i < 6; i++) {
-                int keyCode = KeyEvent.VK_1 + i;
+        // Gestion de l'inventaire (clic souris)
+        if (isMouseOnInv()) {
+            if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
+                Point clickPos = mouseHandler.getPosition();
 
-                if (keyHandler.isJustKeyPressed(keyCode)) {
-                    activeAlien.setSelectedItemIndex(i);
+                int slotIndex = InventoryPanel.getClickedSlotIndex(
+                        clickPos, gamePanel.getWidth(), gamePanel.getHeight());
+
+                if (slotIndex != -1) {
+                    activeAlien.setSelectedItemIndex(slotIndex);
                 }
             }
         }
@@ -198,6 +203,16 @@ public class GameController {
                 System.err.println("Erreur lors de la sauvegarde du jeu : " + e.getMessage());
             }
         }
+    }
+
+    private boolean isMouseOnInv() {
+        if (!gamePanel.getHudPanel().isInventoryVisible()) {
+            return false;
+        }
+        Point mousePos = mouseHandler.getPosition();
+
+        return InventoryPanel.isInsideInventory(
+                mousePos, gamePanel.getWidth(), gamePanel.getHeight());
     }
 
     private void handleCameraScroll() {

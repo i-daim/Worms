@@ -178,7 +178,9 @@ public class TestAlien {
         alien.useEquippedItem();
         assertEquals(alien.getInventory().getAmmo(equippedItem), ammo);
     }
-
+    /**
+     * Vérifie la modification de la direction de l'alien.
+     */
     @Test
     public void testSetDirection() {
         alien.setDirection(true);

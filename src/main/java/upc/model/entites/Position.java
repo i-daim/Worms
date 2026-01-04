@@ -32,7 +32,12 @@ public class Position {
     public Position deplacer(int dx, int dy) {
         return new Position(x + dx, y + dy);
     }
-
+/**
+ * Calcule la distance entre cette position et une autre position.
+ *
+ * @param autre la position avec laquelle on calcule la distance
+ * @return la distance entre les deux positions
+ */
     public double distanceAvec(Position autre) {
         int dx = this.x - autre.x;
         int dy = this.y - autre.y;

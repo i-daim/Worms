@@ -129,6 +129,9 @@ public class TestAlien {
         alien.setShootPower(90);
         assertEquals(90, alien.getShootPower());
     }
+    /**
+     * Vérifie la sélection d'un objet dans l'inventaire.
+     */
     @Test
     void testSelectedItemIndex() {
         alien.setSelectedItemIndex(0);

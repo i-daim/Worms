@@ -105,6 +105,9 @@ public class TestAlien {
         alien.idle();
         assertEquals(Alien.State.IDLE, alien.getState());
     }
+    /**
+     * Vérifie que la méthode jump met l'état à JUMP.
+     */
     @Test
     void testJump() {
         alien.jump();

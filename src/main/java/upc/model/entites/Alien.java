@@ -90,7 +90,7 @@ public class Alien extends Entity {
     /**
      * Méthode permettant de déplacer un alien vers la droite:
      On fait avancer l'alien vers la droite.
-     * On Met à jour la physique, l'état et la direction.
+     * On met à jour la physique, l'état et la direction.
      */
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
@@ -99,7 +99,9 @@ public class Alien extends Entity {
     }
 
     /**
-     * Méthode permettant de déplacer un alien vers la gauche
+     * Méthode permettant de déplacer un alien vers la gauche:
+     * On Fait avancer l'alien vers la gauche.
+     * On met à jour la physique, l'état et la direction.
      */
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);

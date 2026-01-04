@@ -40,6 +40,13 @@ public class TestAlien {
         assertNotNull(alien);
     }
     @Test
+    /**
+     * Vérifie l'état initial de l'alien :
+     * - vivant
+     * - 100 points de vie
+     * - état IDLE
+     * - direction vers la droite
+     */
     void testEtatInitialAlien() {
         assertTrue(alien.isAlive());
         assertEquals(100, alien.getHealthPoints());

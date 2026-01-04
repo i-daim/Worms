@@ -239,13 +239,6 @@ public class GameManager {
         }
     }
 
-    public void setWindEnabled(boolean enabled) {
-        this.windEnabled = enabled;
-        if (enabled) {
-            applyWindChange();
-        }
-    }
-
 
     ////    GETTERS & SETTERS    ////
     public Terrain getTerrain() {
@@ -316,6 +309,17 @@ public class GameManager {
             return;
         }
         this.activeProjectile = p;
+    }
+
+    public boolean isWindEnabled() {
+        return windEnabled;
+    }
+
+    public void setWindEnabled(boolean enabled) {
+        this.windEnabled = enabled;
+        if (enabled) {
+            applyWindChange();
+        }
     }
 
     public void setMap(Terrain terrain) {

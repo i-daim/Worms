@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameWorld {
-    /**Attributs*/
+    /** Attributs principaux du monde de jeu */
     private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
 
@@ -29,11 +29,27 @@ public class GameWorld {
         initializePhysics();
     }
 
+    ///Autres méthodes ///
+
+    /**
+     * Méthode permettant de mettre à jour la physique du jeu
+     * @param elapsedTime : temps écoulé depuis la dernière mise à jour
+     */
     public void update(double elapsedTime) {
         physicsEngine.update();
 
     }
 
+
+    /**
+     * Méthode permettant de retourner l'ensemble des aliens
+     * Situé dans un rayon donnée
+     * @param x : coordonnée du centre en x
+     * @param y : coordonnée du centre en y
+     * @param radius : rayon de recherche
+     * @return une liste {@link ArrayList<Alien>}
+     * représentant l'ensemble des aliens situés dans ce rayon
+     */
     public ArrayList<Alien> aliensInRadius(int x, int y, int radius) {
         ArrayList<Alien> aliens = new ArrayList<>();
         for (Alien a : this.activeAliens) {
@@ -44,6 +60,14 @@ public class GameWorld {
         return aliens;
     }
 
+    /**
+     * Méthode permettant de représenter le point d'impact des armes sur le terrain du jeu
+     * En mettant à jour la physique du terrain
+     * Et activant l'animation requise au point d'impacy
+     * @param x : Position du projectile en x
+     * @param y : Position du projectile en y
+     * @param projectile : Projectile sélectionné
+     */
     public void explode(int x, int y, Projectile projectile) {
         int radius = projectile.getExplosionRadius();
         projectile.applyExplosionDamage(this);
@@ -55,6 +79,12 @@ public class GameWorld {
 
 
 
+    /**
+     * Méthode permettant d'initialiser la physique du jeu
+     * En ajoutant chaque alien de chaque équipe
+     * Dans l'ensemble des aliens actives
+     * Et dans le moteur physique
+     */
     public void initializePhysics() {
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {

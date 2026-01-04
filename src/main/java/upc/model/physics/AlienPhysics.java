@@ -76,7 +76,7 @@ public class AlienPhysics {
             int tileY = pixelY / TerrainGenerator.TILE_SIZE;
             if (terrain.isWater(tileY)) {
                 if (alien.getHealthPoints() > 0) {
-                    SoundManager.playOverlappingEffect("Splash");
+                    SoundManager.playEffect("Splash");
                 }
             }
 

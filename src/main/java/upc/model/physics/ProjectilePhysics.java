@@ -18,7 +18,6 @@ import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
 import upc.model.items.Weapon;
-import upc.model.items.Bazooka;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import upc.model.entites.projectiles.Bullet;
@@ -103,19 +102,6 @@ public class ProjectilePhysics {
         body.addFixture(fixture);
         body.setMass(MassType.NORMAL);
 
-
-        if (weapon instanceof Uzi) {
-            SoundManager.playOverlappingEffect("Uzi");
-        } else if (weapon instanceof Shotgun) {
-            SoundManager.playOverlappingEffect("Shotgun");
-        } else if (weapon instanceof Bazooka) {
-            SoundManager.playOverlappingEffect("Bazooka");
-        } else if (weapon instanceof Mine) {
-            SoundManager.playOverlappingEffect("Mine");
-        } else if (weapon instanceof Grenade) {
-            SoundManager.playOverlappingEffect("Grenade");
-        }
-
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
@@ -175,7 +161,6 @@ public class ProjectilePhysics {
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
         while (iterator.hasNext()) {
-
             Projectile proj = iterator.next();
             Body body = proj.getBody();
 
@@ -332,6 +317,7 @@ public class ProjectilePhysics {
             target.applyImpulse(5);
         }
         bullet.setState(Projectile.State.EXPLODED);
+        SoundManager.playEffect("Impact");
     }
 
     public List<Projectile> getActiveProjectiles() {

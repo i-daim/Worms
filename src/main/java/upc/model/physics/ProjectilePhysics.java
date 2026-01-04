@@ -182,10 +182,6 @@ public class ProjectilePhysics {
                     proj.setState(Projectile.State.EXPLODED);
                 }
             }
-            if (proj instanceof Trap trap) {
-                trap.activation(gameWorld);
-            }
-
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
 
@@ -195,12 +191,46 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
-
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
+                continue;
             }
+            if (proj instanceof Throwable || proj instanceof Trap) {
+                double triggerDistancePixels = 20.0;
+
+                if (proj instanceof Trap) {
+                    triggerDistancePixels = ((Trap) proj).getActivationRadius();
+                }
+                boolean exploded = false;
+                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
+                    if (!alien.isAlive()) {
+                        continue;
+                    }
+
+                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
+                        continue;
+                    }
+
+                    Position alienPos = alien.getPosition();
+                    double dx = alienPos.getX() - x;
+                    double dy = alienPos.getY() - y;
+                    double distSq = dx * dx + dy * dy;
+                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
+                        proj.setState(Projectile.State.EXPLODED);
+                        explodeProjectile(proj);
+                        world.removeBody(body);
+                        iterator.remove();
+                        exploded = true;
+                        break;
+                    }
+                }
+                if (exploded) {
+                    continue;
+                }
+            }
+
         }
     }
 
@@ -226,7 +256,7 @@ public class ProjectilePhysics {
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
-        physicsEngine.getGameWorld().explode(explosionX, explosionY, proj);
+        physicsEngine.getGameWorld().explode(explosionX, explosionY, radius);
 
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();

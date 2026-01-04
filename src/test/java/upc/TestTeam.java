@@ -119,5 +119,12 @@ public class TestTeam {
         a.skipToNextAlien();
         assertNotEquals(activeAlien,a.getActiveAlien());
     }
+
+    @Test
+    public void testToString() {
+        Team a = new Team("TEAM A", 2);
+        String actual = a.getName() + " (" + a.getAliveAliensNumber() + "/" + a.getAliens().length + " vivants)";
+        assertEquals(actual, a.toString());
+    }
 }
 

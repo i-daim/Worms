@@ -18,8 +18,8 @@ public class Alien extends Entity {
     private int healthPoints;
     private boolean alive;
     private boolean direction;
-    private int aimAngle = 0;
-    private int shootPower = 50;
+    private int aimAngle;
+    private int shootPower;
 
     private final Inventory inventory;
     private int selectedItemIndex = 0;
@@ -120,6 +120,13 @@ public class Alien extends Entity {
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;
+        }
+    }
+
+    public void incrementPower() {
+        shootPower++;
+        if (shootPower > 100) {
+            shootPower = 100;
         }
     }
 

@@ -22,7 +22,6 @@ public class KeyboardHandler extends KeyAdapter {
         pressedKeys.remove(e.getKeyCode());
     }
 
-
     public void clearJustPressed() {
         justPressedKeys.clear();
     }

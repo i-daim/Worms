@@ -43,7 +43,13 @@ public class Position {
         int dy = this.y - autre.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
-
+    /**
+     * Calcule la distance entre cette position et un point donné.
+     *
+     * @param x coordonnée x du point
+     * @param y coordonnée y du point
+     * @return la distance entre la position et le point donné
+     */
     public double distance(int x, int y) {  // Retourner double
         int dx = this.x - x;
         int dy = this.y - y;

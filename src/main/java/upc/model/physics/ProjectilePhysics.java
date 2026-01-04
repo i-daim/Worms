@@ -105,15 +105,15 @@ public class ProjectilePhysics {
 
 
         if (weapon instanceof Uzi) {
-            SoundManager.playEffect("Uzi");
+            SoundManager.playOverlappingEffect("Uzi");
         } else if (weapon instanceof Shotgun) {
-            SoundManager.playEffect("Shotgun");
+            SoundManager.playOverlappingEffect("Shotgun");
         } else if (weapon instanceof Bazooka) {
-            SoundManager.playEffect("Bazooka");
+            SoundManager.playOverlappingEffect("Bazooka");
         } else if (weapon instanceof Mine) {
-            SoundManager.playEffect("Mine");
+            SoundManager.playOverlappingEffect("Mine");
         } else if (weapon instanceof Grenade) {
-            SoundManager.playEffect("Grenade");
+            SoundManager.playOverlappingEffect("Grenade");
         }
 
         double startX = Converter.toMeters(projectile.getPosition().getX());
@@ -279,7 +279,7 @@ public class ProjectilePhysics {
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
-        physicsEngine.getGameWorld().explode(explosionX, explosionY, proj);
+        physicsEngine.getGameWorld().explode(explosionX, explosionY, radius);
         SoundManager.playEffect("Explosion");
 
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {

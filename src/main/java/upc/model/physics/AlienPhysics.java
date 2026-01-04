@@ -7,6 +7,7 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.jeu.Terrain;
@@ -72,6 +73,12 @@ public class AlienPhysics {
             int pixelX = Converter.toPixels(v.x);
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
+            int tileY = pixelY / TerrainGenerator.TILE_SIZE;
+            if (terrain.isWater(tileY)) {
+                if (alien.getHealthPoints() > 0) {
+                    SoundManager.playEffect("Splash");
+                }
+            }
 
             int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
             if (collisionY >= Terrain.getWaterLevel()) {

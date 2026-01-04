@@ -89,8 +89,8 @@ public class GamePanel extends JPanel {
         // Affichage des entites
         drawAliens(g2);
 
-        // Affichage de l'eau (avant-plan)
-        drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
+        // Affichage des Projectiles
+        drawProjectiles(g2);
 
         // Affichage des barres de vie
         hudPanel.drawAlienInfo(g2, gameManager);
@@ -98,8 +98,8 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
-        // Affichage des Projectiles
-        drawProjectiles(g2);
+        // Affichage de l'eau (avant-plan)
+        drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);

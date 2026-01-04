@@ -18,6 +18,7 @@ import java.awt.geom.AffineTransform;
 public class HUDPanel extends JPanel {
 
     private final GameManager gameManager;
+    private boolean inventoryVisible = false;
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -27,6 +28,7 @@ public class HUDPanel extends JPanel {
         this.setPreferredSize(new Dimension(800, 100));
 
         addSkipButton();
+        addInventoryButton();
     }
 
     @Override
@@ -39,8 +41,11 @@ public class HUDPanel extends JPanel {
 
         drawTopBar(g2);
         drawWeaponInfo(g2);
-    }
 
+        if (inventoryVisible) {
+            InventoryPanel.drawInventory(g2, getWidth(), getHeight(), gameManager.getActiveAlien());
+        }
+    }
 
     private void addSkipButton() {
         JButton skipButton = ButtonManager.createGameButton("Passer");
@@ -57,6 +62,26 @@ public class HUDPanel extends JPanel {
         skipButton.setBounds(20, 5, 120, 40);
         skipButton.setFont(new Font("Arial", Font.BOLD, 16));
         this.add(skipButton);
+    }
+
+    private void addInventoryButton() {
+        JButton inventoryButton = ButtonManager.createGameButton("SAC");
+        inventoryButton.addActionListener(e -> {
+            toggleInventory();
+        });
+        inventoryButton.setFocusable(false);
+        inventoryButton.setBounds(160, 5, 100, 40);
+        inventoryButton.setFont(new Font("Arial", Font.BOLD, 16));
+        this.add(inventoryButton);
+    }
+
+    public void toggleInventory() {
+        inventoryVisible = !inventoryVisible;
+        this.repaint();
+    }
+
+    public boolean isInventoryVisible() {
+        return inventoryVisible;
     }
 
 

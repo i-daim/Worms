@@ -131,6 +131,11 @@ public class TestAlien {
         assertFalse(alien.getDirection());
     }
 
+    @Test
+    public void testGetEquippedItem() {
+        assertNotNull(alien.getEquippedItem());
+    }
+
 
 
 

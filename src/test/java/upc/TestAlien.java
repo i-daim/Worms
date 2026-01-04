@@ -157,7 +157,11 @@ public class TestAlien {
 
         assertEquals(Alien.State.JUMP, alien.getState());
     }
-
+    /**
+     * Vérifie l'utilisation d'une arme :
+     * - les munitions diminuent si l'objet est disponible
+     * - les munitions ne changent pas si l'objet est vide
+     */
     @Test
     void testUseEquippedItemWeapon(){
 

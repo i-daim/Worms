@@ -110,7 +110,9 @@ public class Alien extends Entity {
     }
 
     /**
-     * Méthode permettant à un alien de sauter
+     * Méthode permettant à un alien de sauter:
+     * On fait sauter l'alien.
+     * On utilise le moteur physique et met létat à JUMP.
      */
     public void jump() {
         alienPhysics.jumpAlien(this);

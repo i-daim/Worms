@@ -19,6 +19,7 @@ public class HUDPanel extends JPanel {
 
     private final GameManager gameManager;
     private boolean inventoryVisible = false;
+    private JButton inventoryButton;
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -47,6 +48,16 @@ public class HUDPanel extends JPanel {
         }
     }
 
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        if (inventoryButton != null) {
+            int posX = (width - inventoryButton.getWidth()) / 2;
+            int posY = height - inventoryButton.getHeight() - 10;
+            inventoryButton.setLocation(posX, posY);
+        }
+    }
+
     private void addSkipButton() {
         JButton skipButton = ButtonManager.createGameButton("Passer");
         // passer le tour quand on clique
@@ -65,12 +76,10 @@ public class HUDPanel extends JPanel {
     }
 
     private void addInventoryButton() {
-        JButton inventoryButton = ButtonManager.createGameButton("SAC");
-        inventoryButton.addActionListener(e -> {
-            toggleInventory();
-        });
+        inventoryButton = ButtonManager.createGameButton("Inventaire");
+        inventoryButton.addActionListener(e -> toggleInventory());
         inventoryButton.setFocusable(false);
-        inventoryButton.setBounds(160, 5, 100, 40);
+        inventoryButton.setSize(150, 50);
         inventoryButton.setFont(new Font("Arial", Font.BOLD, 16));
         this.add(inventoryButton);
     }

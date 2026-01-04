@@ -48,6 +48,7 @@ public class GameSetupPanel extends JPanel {
     private final JCheckBox chkGrenade;
     private final JCheckBox chkMine;
     private final JCheckBox chkJetpack;
+    private final JCheckBox chkWind;
 
     private static final Color PANEL_BG_COLOR = new Color(30, 30, 40, 220);
     private static final Color ACCENT_COLOR = new Color(100, 255, 201);
@@ -95,7 +96,7 @@ public class GameSetupPanel extends JPanel {
         weaponTitle.setBorder(new EmptyBorder(15, 0, 15, 0));
         weaponPanel.add(weaponTitle, BorderLayout.NORTH);
 
-        JPanel itemsGrid = new JPanel(new GridLayout(2, 3, 20, 20));
+        JPanel itemsGrid = new JPanel(new GridLayout(3, 3, 20, 20));
         itemsGrid.setOpaque(false);
         itemsGrid.setBorder(new EmptyBorder(10, 30, 30, 30));
 
@@ -105,6 +106,8 @@ public class GameSetupPanel extends JPanel {
         chkGrenade = createWeaponCheckbox("Grenade");
         chkMine = createWeaponCheckbox("Mine");
         chkJetpack = createWeaponCheckbox("Jetpack");
+        chkWind = createWeaponCheckbox("Vent");
+        chkWind.setSelected(false); // Désactivé par défaut
 
         itemsGrid.add(chkBazooka);
         itemsGrid.add(chkUzi);
@@ -112,6 +115,7 @@ public class GameSetupPanel extends JPanel {
         itemsGrid.add(chkGrenade);
         itemsGrid.add(chkMine);
         itemsGrid.add(chkJetpack);
+        itemsGrid.add(chkWind);
 
         weaponPanel.add(itemsGrid, BorderLayout.CENTER);
 
@@ -219,6 +223,7 @@ public class GameSetupPanel extends JPanel {
         box.setIconTextGap(20);
 
         Image originalImg = ImageManager.get(imageName + "_Inv");
+        //  Protection si l'image n'existe pas encore
         if (originalImg == null) {
             return;
         }
@@ -293,5 +298,8 @@ public class GameSetupPanel extends JPanel {
     }
     public boolean isJetpackEnabled() {
         return chkJetpack.isSelected();
+    }
+    public boolean isWindEnabled() {
+        return chkWind.isSelected();
     }
 }

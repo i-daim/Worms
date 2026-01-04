@@ -13,6 +13,7 @@ import org.dyn4j.dynamics.contact.Contact;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class PhysicsEngine {
 
@@ -24,11 +25,14 @@ public class PhysicsEngine {
     private final AlienPhysics alienPhysics;
     private final ProjectilePhysics projectilePhysics;
 
-    private Vector2 wind = new Vector2(0, 0); // Vent (x, y)
+    private Vector2 wind = new Vector2(0, 0);
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 60.0);
 
-////    CONSTRUCTEUR    ////
+    private final Random random = new Random();
+    private static final double MAX_WIND_POWER = 15.0;
+
+    ////    CONSTRUCTEUR    ////
     public PhysicsEngine(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         this.terrain = gameWorld.getTerrain();
@@ -89,6 +93,25 @@ public class PhysicsEngine {
         projectilePhysics.checkProjectileCollision(b1, b2);
     }
 
+
+    public void randomizeWind() {
+        // Calcul du facteur entre 0.1 et 1.0
+        double powerFactor = 0.1 + (random.nextDouble() * 0.75);
+        double direction = random.nextBoolean() ? 1.0 : -1.0;
+
+        double windX = MAX_WIND_POWER * powerFactor * direction;
+        double windY = (random.nextDouble() * 2.0) - 1.0;
+
+        Vector2 windVector = new Vector2(windX, windY);
+
+        // Application directe à la physique des projectiles
+        this.projectilePhysics.setWind(windVector);
+
+        // Met à jour la variable locale aussi si besoin pour affichage
+        this.wind = windVector;
+    }
+
+
 ////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {
         return world;
@@ -111,7 +134,9 @@ public class PhysicsEngine {
     }
 
     public void setWind(double windX, double windY) {
-        this.wind = new Vector2(windX, windY);
+        Vector2 v = new Vector2(windX, windY);
+        this.wind = v;
+        this.projectilePhysics.setWind(v);
     }
 
     public TerrainPhysics getTerrainPhysics() {
@@ -138,5 +163,9 @@ public class PhysicsEngine {
 
     public void clearAliens() {
         alienPhysics.clearAliens();
+    }
+
+    public ProjectilePhysics getProjectilePhysics() {
+        return projectilePhysics;
     }
 }

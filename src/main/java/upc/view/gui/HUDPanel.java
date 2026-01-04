@@ -4,6 +4,7 @@ import upc.model.entites.Alien;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.items.Item;
+import org.dyn4j.geometry.Vector2;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -42,6 +43,7 @@ public class HUDPanel extends JPanel {
 
         drawTopBar(g2);
         drawWeaponInfo(g2);
+        drawWindIndicator(g2);
 
         if (inventoryVisible) {
             InventoryPanel.drawInventory(g2, getWidth(), getHeight(), gameManager.getActiveAlien());
@@ -145,6 +147,47 @@ public class HUDPanel extends JPanel {
             g2.setColor(Color.YELLOW);
             g2.drawString(info, x + 140, y + 30);
         }
+    }
+
+    private void drawWindIndicator(Graphics2D g2) {
+         if (gameManager.getWorld().getPhysicsEngine() == null
+         || !gameManager.isWindEnabled()) {
+             return;
+         }
+
+        Vector2 wind = gameManager.getWorld().getPhysicsEngine().getWind();
+        if (wind == null) {
+            return;
+        }
+        int x = getWidth() - 100;
+        int y = 80;
+        int width = 80;
+        int height = 20;
+
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRoundRect(x, y, width, height, 10, 10);
+
+        int centerX = x + width / 2;
+
+        // Barre de vent
+        double maxWind = 15.0;
+        double windRatio = wind.x / maxWind;
+        int barLength = (int) (windRatio * (width / 2 - 5));
+
+        g2.setColor(Color.WHITE);
+        if (barLength > 0) {
+            g2.fillRect(centerX, y + 5, barLength, height - 10);
+        } else {
+            g2.fillRect(centerX + barLength, y + 5, -barLength, height - 10);
+        }
+
+        // Ligne centrale
+        g2.setColor(Color.GRAY);
+        g2.drawLine(centerX, y, centerX, y + height);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 10));
+        g2.drawString("WIND", x + 25, y - 5);
     }
 
 

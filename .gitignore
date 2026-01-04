@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 .kotlin
 saveData/
+/saveData/*
 
 ### IntelliJ IDEA ###
 .idea/

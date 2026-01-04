@@ -33,6 +33,7 @@ public class GameManager {
     private long delayEndTime = 0;
     private boolean isPaused = false;
     private Runnable onDelayFinished;
+    private boolean windEnabled = false;
 
 
     public GameManager(Terrain terrain, int teamSize) {
@@ -133,6 +134,11 @@ public class GameManager {
         // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
+        // [MODIFICATION] Délégation à la physique
+        if (windEnabled) {
+            applyWindChange();
+        }
+
         if (!getActiveTeam().isEliminated()) {
             // Pour passer au prochain alien vivant si l'actif est mort
             while (getActiveAlien() != null && !getActiveAlien().isAlive()) {
@@ -226,8 +232,15 @@ public class GameManager {
         }
     }
 
+    // Méthode simplifiée qui demande au moteur physique de faire le travail
+    private void applyWindChange() {
+        if (gameWorld.getPhysicsEngine() != null) {
+            gameWorld.getPhysicsEngine().randomizeWind();
+        }
+    }
 
-////    GETTERS & SETTERS    ////
+
+    ////    GETTERS & SETTERS    ////
     public Terrain getTerrain() {
         return terrain;
     }
@@ -296,6 +309,17 @@ public class GameManager {
             return;
         }
         this.activeProjectile = p;
+    }
+
+    public boolean isWindEnabled() {
+        return windEnabled;
+    }
+
+    public void setWindEnabled(boolean enabled) {
+        this.windEnabled = enabled;
+        if (enabled) {
+            applyWindChange();
+        }
     }
 
     public void setMap(Terrain terrain) {

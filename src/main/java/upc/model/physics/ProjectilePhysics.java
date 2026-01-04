@@ -113,8 +113,9 @@ public class ProjectilePhysics {
             angleRad = Math.PI - angleRad;
         }
 
-        double baseVelocity = projectile.getWeapon().getSpeed();
-        double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
+        double baseVelocity = projectile.getWeapon().getBasePower();
+        double velocityMagnitude =
+                Math.max(baseVelocity, powerPercent * baseVelocity / 20);
 
         double vx = velocityMagnitude * Math.cos(angleRad);
         double vy = -velocityMagnitude * Math.sin(angleRad);

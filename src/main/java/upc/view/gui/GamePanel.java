@@ -101,11 +101,6 @@ public class GamePanel extends JPanel {
         // Affichage de l'eau (avant-plan)
         drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
-        // Affichage de l'inventaire
-        if (inventoryVisible) {
-            drawInventory(g2);
-        }
-
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / currentZoom, 1.0 / currentZoom);

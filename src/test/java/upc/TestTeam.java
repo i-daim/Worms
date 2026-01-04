@@ -85,5 +85,15 @@ public class TestTeam {
         a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
         assertEquals(1, a.getAliveAliensNumber());
     }
+
+    @Test
+    public void testIsActiveLastAlien(){
+        Team a = new Team("TEAM A",3);
+        assertTrue(a.isActiveLastAlien());
+
+        a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
+        a.getAliens()[1] = new Alien(world, a, new Position(1, 0));
+        assertFalse(a.isActiveLastAlien());
+    }
 }
 

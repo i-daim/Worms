@@ -167,7 +167,8 @@ public class GameController {
                 gamePanel.getCameraX(), gamePanel.getCameraY(), GamePanel.ZOOM);
 
         // Utilisation de l'item
-        if (equipped != null && canShoot) {
+        if (equipped != null && canShoot && !isMouseOnInv()) {
+            // Peut être utilisé plusieurs fois si c'est un Uzi ou un jetpack
             if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
@@ -178,12 +179,14 @@ public class GameController {
                     }
                     frameCount++;
                 }
+            // Le shotgun tire directement sans jauge de puissance
             } else if (equipped instanceof upc.model.items.Shotgun) {
                 if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
                     activeAlien.setShootPower(100);
                     activeAlien.useEquippedItem();
                     activeAlien.setShootPower(0);
                 }
+            // Pour le reste, on peut maintenir le clic pour plus de puissance
             } else {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     activeAlien.incrementPower();

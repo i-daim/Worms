@@ -6,6 +6,8 @@ import upc.model.entites.Position;
 import upc.assets.ActiveAnimation;
 import upc.assets.Animation;
 import upc.assets.AnimationManager;
+import upc.model.entites.projectiles.Projectile;
+import upc.model.entites.projectiles.Trap;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,9 +18,7 @@ public class GameManager {
     public static final int TEAM_SIZE = 2;
 
     private Terrain terrain;
-
     private final String mapName;
-
     private final GameWorld gameWorld;
     private Team[] teams;
 
@@ -30,12 +30,20 @@ public class GameManager {
     private boolean actionDone;
 
     private final List<ActiveAnimation> activeAnimations;
+    private Projectile activeProjectile;
+    private long delayEndTime = 0;
+    private boolean isPaused = false;
+    private Runnable onDelayFinished;
+    private boolean windEnabled = false;
+
 
     /**
      * Constructeur pour {@code GameManager}
+     * @param terrain : Terrain de jeu
+     * @param teamSize : taille des équipes
      */
-    public GameManager() {
-        this.terrain = TerrainGenerator.chooseRandomMap();
+    public GameManager(Terrain terrain, int teamSize) {
+        this.terrain = terrain;
         this.mapName = terrain.getMapName();
 
         this.teams = new Team[2];
@@ -67,7 +75,40 @@ public class GameManager {
     }
 
 
+
     /// Gestion de la partie ////
+
+
+    /**
+     * Méthode permettant de mettre à jour le gestionnaire du jeu
+     * @param elapsedTime : temps écoulé depuis la dernière mise à jour
+     */
+    public void update(double elapsedTime) {
+        // On met à jour les physiques et animations
+        gameWorld.update(elapsedTime);
+        updateAnimations();
+        checkGameOver();
+        checkActiveProjectile();
+
+        // Si le délai n'est pas fini, on met pas à jour le reste
+        if (System.currentTimeMillis() < delayEndTime) {
+            return;
+        }
+        // Exécute les commandes à exécuter après le délai
+        if (isPaused) {
+            isPaused = false;
+            if (onDelayFinished != null) {
+                onDelayFinished.run();
+                onDelayFinished = null;
+            }
+        }
+        //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
+        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
+            skipTurn();
+            return;
+        }
+        countTimeLeft();
+    }
 
     /**
      * Méthode permettant d'initialiser la partie
@@ -88,7 +129,7 @@ public class GameManager {
         this.gameOver = false;
         this.actionDone = false;
 
-        SoundManager.playVoice(0);
+        setDelay(3000, () -> SoundManager.playVoice(0));
     }
 
     /**
@@ -109,11 +150,10 @@ public class GameManager {
             currentRound++;
         }
 
-        //Permet de passer au prochain tour
-        nextTurn();
-
-        //Reinitialise le temps de jeu
-        timeLeft = ROUND_TIME;
+        setDelay(2000, () -> {
+            nextTurn();
+            timeLeft = ROUND_TIME;
+        });
     }
 
     /**
@@ -125,6 +165,11 @@ public class GameManager {
 
         // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
+
+        // [MODIFICATION] Délégation à la physique
+        if (windEnabled) {
+            applyWindChange();
+        }
 
         if (!getActiveTeam().isEliminated()) {
             // Pour passer au prochain alien vivant si l'actif est mort
@@ -146,7 +191,6 @@ public class GameManager {
         for (Team team : teams) {
             if (team.isEliminated()) {
                 gameOver = true;
-                return;
             }
         }
     }
@@ -174,30 +218,6 @@ public class GameManager {
                 skipTurn();
             }
         }
-    }
-
-    /**
-     * Méthode permettant de mettre à jour l'état du jeu à chaque frame
-     * @param elapsedTime : temps écoulé depuis la dernière mise à jour
-     */
-    public void update(double elapsedTime) {
-        //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
-        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
-            skipTurn();
-            return;
-        }
-
-        //Met à jour la physique
-        gameWorld.update(elapsedTime);
-
-        //Met à jour l'animation
-        updateAnimations();
-
-        //Vérifie que la partie est finie
-        checkGameOver();
-
-        //Décremente le temps restant
-        countTimeLeft();
     }
 
     /**
@@ -245,6 +265,9 @@ public class GameManager {
 
     /**
      * Méthode permettant d'ajouter une animation active dans la liste d'animations
+     * @param name : nom de l'aniamtion
+     * @param posX : coordonnée en x
+     * @param posY : coordonnée en y
      */
     public void addActiveAnimation(String name, int posX, int posY) {
         Animation animation = AnimationManager.getAnimation(name);
@@ -252,8 +275,45 @@ public class GameManager {
         activeAnimations.add(active);
     }
 
+    /**
+     * Méthode permettant de définir le délai de pause du jeu
+     * @param durationMs : durée du délai en millisecondes
+     * @param onFinished : Action à exécuter à la fin du délai
+     * */
+    public void setDelay(long durationMs, Runnable onFinished) {
+        this.delayEndTime = System.currentTimeMillis() + durationMs;
+        this.isPaused = true;
+        this.onDelayFinished = onFinished;
+    }
 
-////    GETTERS    ////
+    /**
+     * Méthode permettant de vérifier l'état du projectile actif
+     * selon qu'il soit de type piège ou en vol
+     * */
+    private void checkActiveProjectile() {
+        if (activeProjectile == null || activeProjectile instanceof Trap) {
+            activeProjectile = null;
+            return;
+        }
+        if (activeProjectile.getState().equals(Projectile.State.FLYING)) {
+            delayEndTime += 20;
+        } else {
+            activeProjectile = null;
+        }
+    }
+
+
+    /**
+     * Méthode simplifiée qui demande au moteur physique de faire le travail
+     */
+    private void applyWindChange() {
+        if (gameWorld.getPhysicsEngine() != null) {
+            gameWorld.getPhysicsEngine().randomizeWind();
+        }
+    }
+
+
+    ////    GETTERS & SETTERS    ////
 
     /**
      * Retourne le terrain du jeu
@@ -349,6 +409,32 @@ public class GameManager {
         return gameOver;
     }
 
+
+    /**
+     * Retourne un boolean si une partie est en pause
+     * @return l'attribut isPaused
+     */
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    /**
+     * Retourne le projectile active
+     * @return l'attribut activeProjectile
+     */
+    public Projectile getActiveProjectile() {
+        return activeProjectile;
+    }
+
+    /**
+     * Retourne un boolean si le vent est activé dans le jeu
+     * @return l'attribut windEnabled
+     */
+    public boolean isWindEnabled() {
+        return windEnabled;
+    }
+
+
     /**
      * Retourne l'équipe gagnante
      * @return {@code null} si gameOver est false
@@ -418,7 +504,30 @@ public class GameManager {
         return null;
     }
 
-    /// SETTERS ///
+
+    /**
+     * Permet de changer le projective active
+     * selon qu'il soit de type piège
+     * */
+    public void setActiveProjectile(Projectile p) {
+        if (activeProjectile instanceof Trap) {
+            return;
+        }
+        this.activeProjectile = p;
+    }
+
+
+    /**
+     * Permet d'activer ou de désactiver le vent
+     */
+    public void setWindEnabled(boolean enabled) {
+        this.windEnabled = enabled;
+        if (enabled) {
+            applyWindChange();
+        }
+    }
+
+
 
     /**
      * Modifie le terrain du jeu
@@ -426,6 +535,7 @@ public class GameManager {
      */
     public void setMap(Terrain terrain) {
         this.terrain = terrain;
+        this.gameWorld.getPhysicsEngine().setTerrain(terrain);
     }
 
     /**
@@ -436,4 +546,16 @@ public class GameManager {
         this.teams = teams;
     }
 
+
+    /**
+     * Retourne le temps restant avant la fin du délai en cours
+     */
+    public int getDelay() {
+        return (int) (delayEndTime - System.currentTimeMillis()) / 10;
+    }
+
 }
+
+
+
+

@@ -51,6 +51,10 @@ public class TestWeapons {
         assertEquals(30, uzi.getNbOfShots());
         assertEquals(20, uzi.getBasePower());
     }
+    /**
+     * Vérifie que le constructeur de la grenade initialise
+     * correctement ses valeurs.
+     */
     @Test
     public void testGrenadeConstructeur() {
         Grenade grenade = new Grenade();

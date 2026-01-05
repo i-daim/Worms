@@ -1,6 +1,7 @@
 package upc.model.entites;
 
 import upc.assets.SoundManager;
+import upc.model.entites.projectiles.Projectile;
 import upc.model.items.Item;
 import upc.model.save.GameSave;
 import upc.model.jeu.GameWorld;
@@ -17,8 +18,8 @@ public class Alien extends Entity {
     private int healthPoints;
     private boolean alive;
     private boolean direction;
-    private int aimAngle = 0;
-    private int shootPower = 50;
+    private int aimAngle;
+    private int shootPower;
 
     private final Inventory inventory;
     private int selectedItemIndex = 0;
@@ -132,24 +133,20 @@ public class Alien extends Entity {
 
 ////    Autres Méthodes    ////
 
+
     /**
      * Méthode en lien avec l'utilisation d'item:
      * Utilise l'objet actuellement sélectionné dans l'inventaire.
      * Si l'objet n'est pas disponible, rien ne se passe.
      * Si l'objet est un jetpack, l'alien vole.
      */
-    public void useEquippedItem() {
-        Item.Type equippedItem = Inventory.ITEMS[selectedItemIndex];
+    public Projectile useEquippedItem() {
+        Item item = inventory.getItemByIndex(selectedItemIndex);
+        Item.Type equippedItem = Inventory.getItemTypeAt(selectedItemIndex);
 
-        if (!inventory.isAvailable(equippedItem)) {
-            return;
+        if (item == null || !inventory.isAvailable(equippedItem)) {
+            return null;
         }
-
-        Item item = inventory.getItem(equippedItem);
-        item.useItem(world, this);
-
-        //Décremente de un le nombre de munitions présent dans l'arme
-        inventory.useAmmo(equippedItem, 1);
 
         //Si l'item équipé est le jetpack et le nombre de munition suffisant
         if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
@@ -158,6 +155,11 @@ public class Alien extends Entity {
             //Met l'alien dans l'état saut
             setState(State.JUMP);
         }
+        SoundManager.playEffect(item.getName());
+
+        //Décremente de un le nombre de munitions présent dans l'arme
+        inventory.useAmmo(equippedItem, 1);
+        return item.useItem(world, this);
     }
 
     /**
@@ -179,6 +181,18 @@ public class Alien extends Entity {
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;
+        }
+    }
+
+
+    /**
+     * Méthode permettant d'augmenter  la puissance de tir
+     * En bloquant le seuil de la puissance de tir à 100
+     */
+    public void incrementPower() {
+        shootPower++;
+        if (shootPower > 100) {
+            shootPower = 100;
         }
     }
 
@@ -221,7 +235,7 @@ public class Alien extends Entity {
      * @return l'item depuis l'inventaire
      */
     public Item getEquippedItem() {
-        return inventory.getItem(Inventory.ITEMS[selectedItemIndex]);
+        return inventory.getItemByIndex(selectedItemIndex);
     }
 
     /**

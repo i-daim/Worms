@@ -21,7 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestWeapons {
 
     private Alien dummyShooter;
-
+    /**
+     * création d'un environnement (terrain, monde, équipe)
+     * afin d'avoir un Alien valide pour les tests.
+     */
     @BeforeEach
     public void setUp() {
         // Crée un environnement minimal pour construire un Alien valide

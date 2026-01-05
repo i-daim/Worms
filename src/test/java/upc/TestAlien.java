@@ -198,8 +198,17 @@ public class TestAlien {
         assertNotNull(alien.getEquippedItem());
     }
 
+    @Test
+    public void testIncrementPower() {
+        int shootPower = alien.getShootPower();
+        alien.incrementPower();
+        assertEquals(shootPower + 1, alien.getShootPower());
 
-
+        alien.setShootPower(100);
+        shootPower = alien.getShootPower();
+        alien.incrementPower();
+        assertEquals(shootPower, alien.getShootPower());
+    }
 
 
 

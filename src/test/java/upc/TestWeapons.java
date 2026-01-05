@@ -86,7 +86,10 @@ public class TestWeapons {
         assertEquals(30, Mine.EXPLOSION_RADIUS);
         assertEquals(20, Mine.ACTIVATION_RADIUS);
     }
-
+    /**
+     * Vérifie que le constructeur de la mine initialise
+     * correctement ses attributs.
+     */
     @Test
     public void testMineConstructeur() {
         Mine mine = new Mine();

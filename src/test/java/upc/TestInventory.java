@@ -105,6 +105,12 @@ public class TestInventory {
         Item item = inventory.getItem(Item.Type.SHOTGUN);
         assertEquals(item, inventory.getItem(inventory.getItemTypeAt(0)));
         assertNull(inventory.getItemTypeAt(-1));
+    }
 
+    @Test
+    public void testGetItemByIndex(){
+        assertNull(inventory.getItemByIndex(-1));
+        Item item = inventory.getItem(Item.Type.SHOTGUN);
+        assertEquals(item, inventory.getItemByIndex(0));
     }
 }

@@ -16,11 +16,7 @@ import upc.model.jeu.Team;
 import static org.junit.jupiter.api.Assertions.*;
 /**
  * Classe de tests unitaires pour les armes du jeu.
- * Ces tests vérifient :
- * - les valeurs initiales des armes (nom, dégâts, tirs, puissance)
- * - les constantes spécifiques (Mine)
- * - la bonne création des objets Weapon
- * Les tests utilisent un Alien factice pour simuler un tireur.
+ * Vérifie l'initialisation et le comportement des armes.
  */
 public class TestWeapons {
 

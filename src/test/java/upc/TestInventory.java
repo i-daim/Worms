@@ -101,11 +101,10 @@ public class TestInventory {
     }
 
     @Test
-    public void testGetCurrentWeapon(){
-        assertNotNull(inventory.getCurrentWeapon());
+    public void testGetItemTypeAt(){
+        Item item = inventory.getItem(Item.Type.SHOTGUN);
+        assertEquals(item, inventory.getItem(inventory.getItemTypeAt(0)));
+        assertNull(inventory.getItemTypeAt(-1));
 
     }
-
-
-
 }

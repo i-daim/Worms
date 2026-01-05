@@ -77,6 +77,9 @@ public class TestWeapons {
         assertEquals(8, shotgun.getNbOfShots());
         assertEquals(20, shotgun.getBasePower());
     }
+    /**
+     * Vérifie les constantes définies dans la classe Mine.
+     */
     @Test
     public void testMineConstantes() {
         assertEquals(45, Mine.DAMAGE);

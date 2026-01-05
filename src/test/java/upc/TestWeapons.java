@@ -64,6 +64,10 @@ public class TestWeapons {
         assertEquals(1, grenade.getNbOfShots());
         assertEquals(10, grenade.getBasePower());
     }
+    /**
+     * Vérifie que le constructeur du shotgun initialise
+     * correctement ses caractéristiques.
+     */
     @Test
     public void testShotgunConstructeur() {
         Shotgun shotgun = new Shotgun();

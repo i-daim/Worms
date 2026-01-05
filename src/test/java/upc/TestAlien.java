@@ -167,13 +167,13 @@ public class TestAlien {
     void testUseEquippedItemWeapon(){
 
         alien.setSelectedItemIndex(0);
-        Item.Type equippedItem = Inventory.ITEMS[alien.getSelectedItemIndex()];
+        Item.Type equippedItem = Item.Type.SHOTGUN;
         int ammo = alien.getInventory().getAmmo(equippedItem);
         alien.useEquippedItem();
         assertEquals(alien.getInventory().getAmmo(equippedItem), ammo - 1);
 
         alien.setSelectedItemIndex(1);
-        equippedItem = Inventory.ITEMS[alien.getSelectedItemIndex()];
+        equippedItem = Item.Type.UZI;
         alien.getInventory().useAmmo(equippedItem, 500);
         ammo = alien.getInventory().getAmmo(equippedItem);
         alien.useEquippedItem();

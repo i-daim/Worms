@@ -8,12 +8,16 @@ import upc.model.entites.projectiles.Projectile;
 
 public class Uzi extends Weapon {
 
+    private static final int DAMAGE = 10;
+    private static final int NB_OF_SHOTS = 30;
+    private static final int BASE_POWER = 20;
+
     public Uzi() {
-        super("Uzi", 10, 30, 80);
+        super("Uzi", DAMAGE, NB_OF_SHOTS, BASE_POWER);
     }
 
     @Override
-    public void useItem(GameWorld gameWorld, Alien shooter) {
+    public Projectile useItem(GameWorld gameWorld, Alien shooter) {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
@@ -36,6 +40,11 @@ public class Uzi extends Weapon {
 
         Projectile proj = new Bullet(this, shooter, startPos);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
+        return proj;
     }
 
+    @Override
+    public Type getType() {
+        return Type.UZI;
+    }
 }

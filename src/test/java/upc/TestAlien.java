@@ -30,7 +30,8 @@ public class TestAlien {
      * Crée un GameManager, récupère le monde, l'équipe et un alien.
      */
     void setup() {
-        GameManager gameManager = new GameManager();
+        upc.model.jeu.Terrain terrainTest = upc.model.jeu.TerrainGenerator.createEmptyTerrain(100, 50);
+        GameManager gameManager = new GameManager(terrainTest, 2);
         world = gameManager.getWorld();
         team = gameManager.getTeam(0);
         alien = team.getAliens()[0];

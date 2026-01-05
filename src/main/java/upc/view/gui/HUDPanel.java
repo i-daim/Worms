@@ -1,10 +1,10 @@
 package upc.view.gui;
 
 import upc.model.entites.Alien;
-import upc.model.items.Weapon;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
 import upc.model.items.Item;
+import org.dyn4j.geometry.Vector2;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -19,6 +19,8 @@ import java.awt.geom.AffineTransform;
 public class HUDPanel extends JPanel {
 
     private final GameManager gameManager;
+    private boolean inventoryVisible = false;
+    private JButton inventoryButton;
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -28,6 +30,7 @@ public class HUDPanel extends JPanel {
         this.setPreferredSize(new Dimension(800, 100));
 
         addSkipButton();
+        addInventoryButton();
     }
 
     @Override
@@ -39,9 +42,23 @@ public class HUDPanel extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         drawTopBar(g2);
-        drawCurrentWeapon(g2);
+        drawWeaponInfo(g2);
+        drawWindIndicator(g2);
+
+        if (inventoryVisible) {
+            InventoryPanel.drawInventory(g2, getWidth(), getHeight(), gameManager.getActiveAlien());
+        }
     }
 
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        if (inventoryButton != null) {
+            int posX = (width - inventoryButton.getWidth()) / 2;
+            int posY = height - inventoryButton.getHeight() - 10;
+            inventoryButton.setLocation(posX, posY);
+        }
+    }
 
     private void addSkipButton() {
         JButton skipButton = ButtonManager.createGameButton("Passer");
@@ -60,36 +77,26 @@ public class HUDPanel extends JPanel {
         this.add(skipButton);
     }
 
+    private void addInventoryButton() {
+        inventoryButton = ButtonManager.createGameButton("Inventaire");
+        inventoryButton.addActionListener(e -> toggleInventory());
+        inventoryButton.setFocusable(false);
+        inventoryButton.setSize(150, 50);
+        inventoryButton.setFont(new Font("Arial", Font.BOLD, 16));
+        this.add(inventoryButton);
+    }
 
-    private void drawCurrentWeapon(Graphics2D g2) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien == null) {
-            return;
-        }
-        Item currentItem = activeAlien.getEquippedItem();
-        if (currentItem instanceof Weapon) {
-            Weapon weapon = (Weapon) currentItem;
-            int width = getWidth();
-            int boxW = 200;
-            int boxH = 50;
-            // Positionné à droite
-            int x = width - boxW - 20;
-            int y = 10;
+    public void toggleInventory() {
+        inventoryVisible = !inventoryVisible;
+        this.repaint();
+    }
 
-            g2.setColor(new Color(0, 0, 0, 150));
-            g2.fillRoundRect(x, y, boxW, boxH, 15, 15);
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 18));
-            g2.drawString(weapon.getName(), x + 15, y + 30);
-
-            String ammo = (weapon.getNbOfShots() < 0) ? "Infini" : "x" + weapon.getNbOfShots();
-            g2.setFont(new Font("Arial", Font.PLAIN, 14));
-            g2.setColor(Color.YELLOW);
-            g2.drawString(ammo, x + 140, y + 30);
-        }
+    public boolean isInventoryVisible() {
+        return inventoryVisible;
     }
 
 
+////    AFFICHAGE DU HUD EN HAUT DE L'ECRAN    ////
     private void drawTopBar(Graphics2D g2) {
         int width = this.getWidth();
         int height = 50;
@@ -100,7 +107,91 @@ public class HUDPanel extends JPanel {
         drawTurnTimer(g2, width / 2 - 50, height / 2 - 20);
     }
 
+    private void drawTurnTimer(Graphics2D g2, int x, int y) {
+        int timeLeft = gameManager.getTimeLeft();
 
+        g2.setColor(Color.WHITE);
+        g2.fillRoundRect(x, y, 100, 40, 10, 10);
+
+        g2.setColor(Color.DARK_GRAY);
+        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        String text = String.format("%02d", timeLeft);
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
+
+        g2.setFont(new Font("Arial", Font.PLAIN, 14));
+        g2.drawString("TIME", x + 35, y + 15);
+    }
+
+    private void drawWeaponInfo(Graphics2D g2) {
+        Alien activeAlien = gameManager.getActiveAlien();
+        if (activeAlien == null) {
+            return;
+        }
+        Item currentItem = activeAlien.getEquippedItem();
+        if (currentItem instanceof Item item) {
+            int boxW = 200;
+            int boxH = 50;
+            int x = getWidth() - boxW - 20;
+            int y = 5;
+
+            g2.setColor(new Color(0, 0, 0, 150));
+            g2.fillRoundRect(x, y, boxW, boxH, 15, 15);
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 18));
+            g2.drawString(item.getName(), x + 15, y + 30);
+
+            int ammo = activeAlien.getTeam().getInventory().getAmmo(item.getType());
+            String info = (ammo < 0) ? "Infini" : "x" + ammo;
+            g2.setFont(new Font("Arial", Font.PLAIN, 14));
+            g2.setColor(Color.YELLOW);
+            g2.drawString(info, x + 140, y + 30);
+        }
+    }
+
+    private void drawWindIndicator(Graphics2D g2) {
+         if (gameManager.getWorld().getPhysicsEngine() == null
+         || !gameManager.isWindEnabled()) {
+             return;
+         }
+
+        Vector2 wind = gameManager.getWorld().getPhysicsEngine().getWind();
+        if (wind == null) {
+            return;
+        }
+        int x = getWidth() - 100;
+        int y = 80;
+        int width = 80;
+        int height = 20;
+
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRoundRect(x, y, width, height, 10, 10);
+
+        int centerX = x + width / 2;
+
+        // Barre de vent
+        double maxWind = 15.0;
+        double windRatio = wind.x / maxWind;
+        int barLength = (int) (windRatio * (width / 2 - 5));
+
+        g2.setColor(Color.WHITE);
+        if (barLength > 0) {
+            g2.fillRect(centerX, y + 5, barLength, height - 10);
+        } else {
+            g2.fillRect(centerX + barLength, y + 5, -barLength, height - 10);
+        }
+
+        // Ligne centrale
+        g2.setColor(Color.GRAY);
+        g2.drawLine(centerX, y, centerX, y + height);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 10));
+        g2.drawString("WIND", x + 25, y - 5);
+    }
+
+
+////    AFFICHAGE POUR LES ALIENS    ////
     public void drawAlienInfo(Graphics2D g2, GameManager gameManager) {
         for (Team team : gameManager.getTeams()) {
             for (Alien alien : team.getAliens()) {
@@ -136,30 +227,56 @@ public class HUDPanel extends JPanel {
         // Rotation du viseur en fonction de l'angle
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
 
-        int distance = 20;
-        int width = 25;
-        int height = 6;
+        // Indice de puissance de tir
+        int power = alien.getShootPower();
 
-        // Bordures noires pour le viseur
-        g2.setColor(Color.BLACK);
-        g2.drawRect(distance, -height / 2, width, height);
+        // Dimensions du cône
+        int coneLength = power / 2;
+        int coneWidth = 4 + (power / 8);
 
-        // Rectangle transparent blanc
-        g2.setColor(new Color(255, 255, 255, 150));
-        g2.fillRect(distance + 1, -height / 2 + 1, width - 1, height - 1);
+        if (power < 30) {
+            g2.setColor(Color.GREEN);
+        } else if (power < 70) {
+            g2.setColor(Color.ORANGE);
+        } else {
+            g2.setColor(Color.RED);
+        }
 
-        // Flèche au bout du viseur
-        g2.setColor(Color.BLACK);
-        int arrowX = distance + width + 1;
-        int[] xPoints = {arrowX, arrowX + 5, arrowX};
-        int[] yPoints = {-4, 0, 4};
-        g2.fillPolygon(xPoints, yPoints, 3);
+        if (power > 0) {
+            int startX = 15;
+            // Points du triangle (cône)
+            int[] xPoints = {startX, startX + coneLength, startX + coneLength};
+            int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
 
+            g2.fillPolygon(xPoints, yPoints, 3);
+
+            g2.setColor(Color.BLACK);
+            g2.drawPolygon(xPoints, yPoints, 3);
+        }
+
+        // Viseur représenté par un cercle
+        int distance = 50;
+        int radius = 6;
+
+        g2.setColor(Color.RED);
+        int circleX = distance + radius;
+        int circleY = -7;
+        g2.drawOval(circleX, circleY, radius, radius);
+
+        // Croix au milieu
+        g2.drawLine(circleX, circleY + 3, circleX + 6, circleY + 3);
+        g2.drawLine(circleX + 3, circleY, circleX + 3, circleY + 6);
+
+        // On revient à l'état original
         g2.setTransform(originalTransform);
     }
 
 
     private void drawEquippedWeapon(Graphics2D g2, Alien alien) {
+        Item item = alien.getEquippedItem();
+        if (item == null) {
+            return;
+        }
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
@@ -199,21 +316,5 @@ public class HUDPanel extends JPanel {
             int[] yPoints = {barY - 5, barY - 12, barY - 12};
             g2.fillPolygon(xPoints, yPoints, 3);
         }
-    }
-
-    private void drawTurnTimer(Graphics2D g2, int x, int y) {
-        int timeLeft = gameManager.getTimeLeft();
-
-        g2.setColor(Color.WHITE);
-        g2.fillRoundRect(x, y, 100, 40, 10, 10);
-
-        g2.setColor(Color.DARK_GRAY);
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
-        String text = String.format("%02d", timeLeft);
-        int textWidth = g2.getFontMetrics().stringWidth(text);
-        g2.drawString(text, x + (100 - textWidth) / 2, y + 35);
-
-        g2.setFont(new Font("Arial", Font.PLAIN, 14));
-        g2.drawString("TIME", x + 35, y + 15);
     }
 }

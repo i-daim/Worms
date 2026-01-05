@@ -15,7 +15,6 @@ import upc.model.entites.projectiles.Projectile;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
@@ -31,6 +30,8 @@ public class GamePanel extends JPanel {
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final double ZOOM = 1.5 * SCREEN_WIDTH / DEFAULT_WIDTH;
 
+    private double currentZoom = ZOOM;
+
     private final GameManager gameManager;
     private final Terrain terrain;
     private final HUDPanel hudPanel;
@@ -39,9 +40,7 @@ public class GamePanel extends JPanel {
     private double cameraX = 0;
     private double cameraY = 0;
 
-    private boolean inventoryVisible = false;
-
-    private List<ActiveAnimation> activeAnimations;
+    private final List<ActiveAnimation> activeAnimations;
 
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -49,7 +48,7 @@ public class GamePanel extends JPanel {
         this.hudPanel = new HUDPanel(gameManager);
         this.pausePanel = new PausePanel();
 
-        this.setLayout(null); // Pour "superposer" les JPnaels
+        this.setLayout(null);
         this.add(pausePanel);
         this.add(hudPanel);
 
@@ -65,12 +64,12 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                            RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
         // Zoom + ajustement de la caméra
-        g2.scale(ZOOM, ZOOM);
+        g2.scale(currentZoom, currentZoom);
         g2.translate(-cameraX, -cameraY);
 
         // Affichage du background
@@ -81,7 +80,18 @@ public class GamePanel extends JPanel {
 
         // Affichage de l'eau (arrière plan)
         int waterY = terrain.getHeight() - (Terrain.WATER_LEVEL);
-        Animation waterAnim = AnimationManager.getAnimation("water");
+
+        String waterKey = terrain.getWaterAnimationKey();
+        Animation waterAnim;
+
+        if (waterKey != null && waterKey.contains("poison")) {
+            waterAnim = AnimationManager.getAnimation("water_poison");
+        } else if (waterKey != null && waterKey.contains("hell")) {
+            waterAnim = AnimationManager.getAnimation("water_hell");
+        } else {
+            waterAnim = AnimationManager.getAnimation("water");
+        }
+
         drawAnimation(g2, waterAnim, 0, waterY, 0, 100, true);
 
         // Affichage du terrain
@@ -90,8 +100,8 @@ public class GamePanel extends JPanel {
         // Affichage des entites
         drawAliens(g2);
 
-        // Affichage de l'eau (avant-plan)
-        drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
+        // Affichage des Projectiles
+        drawProjectiles(g2);
 
         // Affichage des barres de vie
         hudPanel.drawAlienInfo(g2, gameManager);
@@ -99,20 +109,15 @@ public class GamePanel extends JPanel {
         // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
-        // Affichage de l'inventaire
-        if (inventoryVisible) {
-            drawInventory(g2);
-        }
-
-        // Affichage des Projectiles
-        drawProjectiles(g2);
+        // Affichage de l'eau (avant-plan)
+        drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
         // Annulation du zoom
         g2.translate(cameraX, cameraY);
-        g2.scale(1.0 / ZOOM, 1.0 / ZOOM);
+        g2.scale(1.0 / currentZoom, 1.0 / currentZoom);
 
         // Affichage du HUD (après le zoom car non concerné)
-        hudPanel.setSize(getWidth(), 100);
+        hudPanel.setBounds(0, 0, getWidth(), getHeight());
 
         g2.dispose();
     }
@@ -184,6 +189,9 @@ public class GamePanel extends JPanel {
     public void drawAlienWeapon(Graphics2D g2, Alien alien, boolean direction,
                                 int posX, int posY) {
         Item currentItem = alien.getEquippedItem();
+        if (currentItem == null) {
+            return;
+        }
 
         BufferedImage weaponImage = ImageManager.get(currentItem.getName());
 
@@ -246,21 +254,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void drawInventory(Graphics2D g2) {
-        Alien activeAlien = gameManager.getActiveAlien();
-        if (activeAlien != null && activeAlien.isAlive()) {
-            int alienPosX = activeAlien.getPosition().getX();
-
-            int inventoryY = activeAlien.getPosition().getY() - 80;
-            int inventoryX = alienPosX - InventoryPanel.TOTAL_WIDTH / 2;
-
-            InventoryPanel.drawAlienInventory(g2, inventoryX, inventoryY,
-                    activeAlien.getSelectedItemIndex());
-        }
-    }
-
-
-
 ////    AUTRES METHODES    ////
     public void togglePauseMenu(boolean paused) {
         pausePanel.setVisible(paused);
@@ -275,25 +268,19 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public Point screenToWorld(Point screenPoint) {
-        double worldX = (screenPoint.x / ZOOM) + cameraX;
-        double worldY = (screenPoint.y / ZOOM) + cameraY;
-        return new Point((int) worldX, (int) worldY);
-    }
-
-    public void centralizeCamera(Entity entity) {
-        if (entity == null || isCameraCentered(entity)) {
+    public void centerCamera(Entity entity) {
+        if (entity == null) {
             return;
         }
+        currentZoom += (ZOOM - currentZoom) * 0.05;
 
         int posX = entity.getPosition().getX();
         int posY = entity.getPosition().getY();
+        double viewX = posX - (getWidth() / (2 * currentZoom));
+        double viewY = posY - (getHeight() / (2 * currentZoom));
 
-        double viewX = posX - (getWidth() / (2 * ZOOM));
-        double viewY = posY - (getHeight() / (2 * ZOOM));
-
-        double maxX = terrain.getWidth() - getWidth() / ZOOM;
-        double maxY = terrain.getHeight() - getHeight() / ZOOM;
+        double maxX = terrain.getWidth() - getWidth() / currentZoom;
+        double maxY = terrain.getHeight() - getHeight() / currentZoom;
 
         double targetCamX = Math.max(0, Math.min(viewX, maxX));
         double targetCamY = Math.max(0, Math.min(viewY, maxY));
@@ -309,23 +296,30 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public boolean isCameraCentered(Entity entity) {
-        if (entity == null) {
-            return false;
+    public void unzoomCamera() {
+        double targetZoom = Math.max(
+                (double) getWidth() / terrain.getWidth(),
+                (double) getHeight() / terrain.getHeight()
+        );
+        currentZoom += (targetZoom - currentZoom) * 0.05;
+
+        double visibleWidth = getWidth() / currentZoom;
+        double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
+
+        double delayFactor = Math.min(1.0, Math.max(0.0, (gameManager.getDelay() - 50) / 200.0));
+
+        double targetCamX = delayFactor * maxCamX;
+        double targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
+
+        cameraX += (targetCamX - cameraX) * 0.1;
+        cameraY += (targetCamY - cameraY) * 0.1;
+
+        if (Math.abs(targetCamX - cameraX) < 0.1) {
+            cameraX = targetCamX;
         }
-        int posX = entity.getPosition().getX();
-        int posY = entity.getPosition().getY();
-
-        double viewX = posX - (getWidth() / (2 * ZOOM));
-        double viewY = posY - (getHeight() / (2 * ZOOM));
-
-        double maxX = terrain.getWidth() - getWidth() / ZOOM;
-        double maxY = terrain.getHeight() - getHeight() / ZOOM;
-
-        double camX = Math.max(0, Math.min(viewX, maxX));
-        double camY = Math.max(0, Math.min(viewY, maxY));
-
-        return (Math.abs(camX - cameraX) < 8) && (Math.abs(camY - cameraY) < 8);
+        if (Math.abs(targetCamY - cameraY) < 0.1) {
+            cameraY = targetCamY;
+        }
     }
 
 
@@ -344,15 +338,6 @@ public class GamePanel extends JPanel {
         return cameraY;
     }
 
-    public boolean isInventoryVisible() {
-        return inventoryVisible;
-    }
-
-    public void toggleInventory() {
-        inventoryVisible = !inventoryVisible;
-        repaint();
-    }
-
     public Terrain getTerrain() {
         return terrain;
     }
@@ -363,5 +348,9 @@ public class GamePanel extends JPanel {
 
     public PausePanel getPausePanel() {
         return pausePanel;
+    }
+
+    public HUDPanel getHudPanel() {
+        return hudPanel;
     }
 }

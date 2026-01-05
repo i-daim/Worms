@@ -22,7 +22,8 @@ public class TestWeapons {
     @BeforeEach
     public void setUp() {
         // Crée un environnement minimal pour construire un Alien valide
-        GameManager manager = new GameManager();
+        upc.model.jeu.Terrain terrainTest = upc.model.jeu.TerrainGenerator.createEmptyTerrain(100, 50);
+        GameManager manager = new GameManager(terrainTest, 2);
         GameWorld world = manager.getWorld();
         Team team = new Team("TestTeam", 1);
 
@@ -39,7 +40,7 @@ public class TestWeapons {
         assertEquals("Uzi", uzi.getName());
         assertEquals(10, uzi.getDamage());
         assertEquals(30, uzi.getNbOfShots());
-        assertEquals(80, uzi.getSpeed());
+        assertEquals(20, uzi.getBasePower());
     }
     @Test
     public void testGrenadeConstructeur() {
@@ -48,7 +49,7 @@ public class TestWeapons {
         assertEquals("Grenade", grenade.getName());
         assertEquals(50, grenade.getDamage());
         assertEquals(1, grenade.getNbOfShots());
-        assertEquals(50, grenade.getSpeed());
+        assertEquals(10, grenade.getBasePower());
     }
     @Test
     public void testShotgunConstructeur() {
@@ -57,13 +58,13 @@ public class TestWeapons {
         assertEquals("Shotgun", shotgun.getName());
         assertEquals(35, shotgun.getDamage());
         assertEquals(8, shotgun.getNbOfShots());
-        assertEquals(80, shotgun.getSpeed());
+        assertEquals(20, shotgun.getBasePower());
     }
     @Test
     public void testMineConstantes() {
         assertEquals(45, Mine.DAMAGE);
         assertEquals(30, Mine.EXPLOSION_RADIUS);
-        assertEquals(3, Mine.ACTIVATION_RADIUS);
+        assertEquals(20, Mine.ACTIVATION_RADIUS);
     }
 
     @Test
@@ -73,7 +74,7 @@ public class TestWeapons {
         assertEquals("Mine", mine.getName());
         assertEquals(45, mine.getDamage());
         assertEquals(1, mine.getNbOfShots());
-        assertEquals(15, mine.getSpeed());
+        assertEquals(5, mine.getBasePower());
     }
     @Test
     public void testBazookaConstructeur() {
@@ -81,7 +82,7 @@ public class TestWeapons {
 
         assertEquals("Bazooka", bazooka.getName());
         assertEquals(45, bazooka.getDamage());
-        assertEquals(3, bazooka.getNbOfShots());
-        assertEquals(70, bazooka.getSpeed());
+        assertEquals(1, bazooka.getNbOfShots());
+        assertEquals(20, bazooka.getBasePower());
     }
 }

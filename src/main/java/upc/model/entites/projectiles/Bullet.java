@@ -12,7 +12,7 @@ public class Bullet extends Projectile {
                 weapon.getDamage(),
                 0,
                 false,
-                weapon.getSpeed(),
+                weapon.getBasePower(),
                 weapon
         );
     }

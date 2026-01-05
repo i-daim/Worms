@@ -7,6 +7,7 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.jeu.Terrain;
@@ -19,7 +20,7 @@ import java.util.Set;
 public class AlienPhysics {
 
     private final World<Body> world;
-    private final Terrain terrain;
+    private Terrain terrain;
 
 
     // Les Maps sont remplacés par une classe qui rassemble les valeurs par alien
@@ -72,6 +73,12 @@ public class AlienPhysics {
             int pixelX = Converter.toPixels(v.x);
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
+            int tileY = pixelY / TerrainGenerator.TILE_SIZE;
+            if (terrain.isWater(tileY)) {
+                if (alien.getHealthPoints() > 0) {
+                    SoundManager.playEffect("Splash");
+                }
+            }
 
             int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
             if (collisionY >= Terrain.getWaterLevel()) {
@@ -119,6 +126,13 @@ public class AlienPhysics {
         if (state != null) {
             world.removeBody(state.body);
         }
+    }
+
+    public void clearAliens() {
+        for (AlienState state : alienStates.values()) {
+            world.removeBody(state.body);
+        }
+        alienStates.clear();
     }
 
     public void moveAlien(Alien alien, double direction) {
@@ -217,5 +231,9 @@ public class AlienPhysics {
     public Body getAlienBody(Alien alien) {
         AlienState state = alienStates.get(alien);
         return state != null ? state.body : null;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 }

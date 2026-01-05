@@ -1,12 +1,16 @@
 package upc.controller;
 
+
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import upc.model.jeu.GameManager;
+import upc.model.save.GameSave;
 import upc.view.gui.GamePanel;
+import upc.view.gui.GameSetupPanel;
 import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
 import upc.view.gui.SettingsPanel;
-
-import java.awt.event.ActionListener;
 
 public class MenuActions {
 
@@ -20,20 +24,33 @@ public class MenuActions {
 
     public ActionListener getNewGameAction() {
         return e -> {
-            GameManager gameManager = new GameManager();
-            GamePanel gamePanel = new GamePanel(gameManager);
-            new GameController(gamePanel, gameManager);
+            GameSetupPanel setupPanel = new GameSetupPanel(mainFrame);
 
-            mainFrame.setContentPane(gamePanel);
+            mainFrame.setContentPane(setupPanel);
             mainFrame.revalidate();
             mainFrame.repaint();
 
-            gamePanel.requestFocusInWindow();
+            setupPanel.requestFocusInWindow();
         };
     }
 
     public ActionListener getLoadGameAction() {
-        return e -> System.out.println("Load Game non implémenté pour le moment.");
+        return e -> {
+            try {
+                GameSave save = GameSave.load();
+                GameManager gameManager = new GameManager("");
+                save.applyTo(gameManager);
+                GamePanel gamePanel = new GamePanel(gameManager);
+                new GameController(gamePanel, gameManager);
+
+                mainFrame.setContentPane(gamePanel);
+                gamePanel.requestFocusInWindow();
+                mainFrame.revalidate();
+                mainFrame.repaint();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
     }
 
     public ActionListener getSettingsAction() {

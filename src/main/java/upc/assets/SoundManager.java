@@ -1,5 +1,6 @@
 package upc.assets;
 
+
 import java.util.HashMap;
 
 public class SoundManager {
@@ -20,6 +21,8 @@ public class SoundManager {
         MUSICS.put("What Is Glorb", loadMusic("what_is_glorb"));
         MUSICS.put("Five Glorbs At Zippy", loadMusic("five_glorbs_at_zippy"));
         MUSICS.put("Victory Music", loadMusic("victory_music"));
+        MUSICS.put("Zip The Zoop Of Us", loadMusic("zip_the_zoop_of_us"));
+        MUSICS.put("Caramellzlerpen", loadMusic("caramellzlerpen"));
 
         EFFECTS.put("Damage", loadEffect("damage"));
         EFFECTS.put("Explosion", loadEffect("explosion"));
@@ -28,6 +31,9 @@ public class SoundManager {
         EFFECTS.put("Shotgun", loadEffect("shotgun"));
         EFFECTS.put("Uzi", loadEffect("uzi"));
         EFFECTS.put("Mine", loadEffect("mine_deploy"));
+        EFFECTS.put("Impact", loadEffect("Impact"));
+        EFFECTS.put("Grenade", loadEffect("grenade"));
+        EFFECTS.put("Splash", loadEffect("water"));
     }
 
 
@@ -43,6 +49,7 @@ public class SoundManager {
         if (currentMusic != null) {
             currentMusic.play();
             currentMusic.loop();
+            currentMusic.setVolume(-10f);
         }
     }
 
@@ -56,8 +63,9 @@ public class SoundManager {
         if (isAudioDisabled()) {
             return;
         }
-        Sound effect = EFFECTS.get(name);
-        if (effect != null) {
+        if (EFFECTS.get(name) != null) {
+            Sound effect = EFFECTS.get(name).duplicate();
+            effect.setVolume(-10f);
             effect.play();
         }
     }
@@ -72,6 +80,7 @@ public class SoundManager {
         }
         if (index >= 0 && index < voices.length && voices[index] != null) {
             voices[index].play();
+            voices[index].setVolume(-5f);
         }
     }
 

@@ -7,12 +7,16 @@ import upc.model.entites.projectiles.Projectile;
 
 public class Bazooka extends Weapon {
 
+    private static final int DAMAGE = 45;
+    private static final int NB_OF_SHOTS = 1;
+    private static final int BASE_POWER = 20;
+
     public Bazooka() {
-        super("Bazooka", 45, 3, 70);
+        super("Bazooka", DAMAGE, NB_OF_SHOTS, BASE_POWER);
     }
 
     @Override
-    public void useItem(GameWorld gameWorld, Alien shooter) {
+    public Projectile useItem(GameWorld gameWorld, Alien shooter) {
 
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
@@ -33,5 +37,11 @@ public class Bazooka extends Weapon {
 
         Projectile proj = new Rocket(this, shooter, startPos);
         gameWorld.getPhysicsEngine().addProjectile(proj, angle, power);
+        return proj;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.BAZOOKA;
     }
 }

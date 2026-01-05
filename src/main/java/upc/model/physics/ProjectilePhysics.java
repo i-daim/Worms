@@ -6,7 +6,7 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
-
+import upc.assets.SoundManager;
 import upc.model.entites.Alien;
 import upc.model.entites.Position;
 import upc.model.entites.projectiles.Projectile;
@@ -21,6 +21,7 @@ import upc.model.items.Weapon;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.Terrain;
 import upc.model.entites.projectiles.Bullet;
+import upc.model.jeu.TerrainGenerator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,7 +70,7 @@ public class ProjectilePhysics {
             fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.1);
             fixture.setRestitution(0.1);
-            fixture.setDensity(1.0);
+            fixture.setDensity(3.0);
             body.setBullet(true);
 
         } else if (weapon instanceof Mine) {
@@ -113,8 +114,9 @@ public class ProjectilePhysics {
             angleRad = Math.PI - angleRad;
         }
 
-        double baseVelocity = projectile.getWeapon().getSpeed();
-        double velocityMagnitude = (baseVelocity * powerPercent) / 100.0;
+        double baseVelocity = projectile.getWeapon().getBasePower();
+        double velocityMagnitude =
+                Math.max(baseVelocity, powerPercent * baseVelocity / 20);
 
         double vx = velocityMagnitude * Math.cos(angleRad);
         double vy = -velocityMagnitude * Math.sin(angleRad);
@@ -132,7 +134,7 @@ public class ProjectilePhysics {
             if (proj.isActive()) {
                 Body body = proj.getBody();
                 if (body != null) {
-                    Vector2 windForce = wind.product(0.5); // 50% de la force du vent
+                    Vector2 windForce = wind.product(1); // 50% de la force du vent
                     body.applyForce(windForce);
                 }
             }
@@ -145,28 +147,24 @@ public class ProjectilePhysics {
      * <p>
      * Cette méthode effectue plusieurs tâches essentielles :
      * <ul>
-     *     <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
-     *     <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
-     *     <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son
-     *     explosion.</li>
-     *     <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts
-     *     ou sortis.</li>
+     *      <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
+     *      <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
+     *      <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son
+     *      explosion.</li>
+     *      <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts
+     *      ou sortis.</li>
      * </ul>
-     *
+     * *
      * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
      */
     public void updateProjectiles(Terrain terrain) {
+
+        applyWindToProjectiles();
         // L'itérateur permet de supprimer des éléments en toute sécurité pendant la boucle.
         Iterator<Projectile> iterator = activeProjectiles.iterator();
         while (iterator.hasNext()) {
-
             Projectile proj = iterator.next();
             Body body = proj.getBody();
-
-            if (body == null) {
-                iterator.remove();
-                continue;
-            }
 
             proj.incrementFrame();
 
@@ -184,6 +182,14 @@ public class ProjectilePhysics {
             if (proj instanceof Trap trap) {
                 trap.activation(gameWorld);
             }
+            int tileY = y / TerrainGenerator.TILE_SIZE;
+            if (terrain.isWater(tileY)) {
+                SoundManager.playEffect("Splash");
+                proj.setState(Projectile.State.OUT_OF_BOUNDS);
+                world.removeBody(body);
+                iterator.remove();
+                continue;
+            }
 
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
@@ -194,12 +200,46 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
-
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
+                continue;
             }
+            if (proj instanceof Throwable || proj instanceof Trap) {
+                double triggerDistancePixels = 20.0;
+
+                if (proj instanceof Trap) {
+                    triggerDistancePixels = ((Trap) proj).getActivationRadius();
+                }
+                boolean exploded = false;
+                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
+                    if (!alien.isAlive()) {
+                        continue;
+                    }
+
+                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
+                        continue;
+                    }
+
+                    Position alienPos = alien.getPosition();
+                    double dx = alienPos.getX() - x;
+                    double dy = alienPos.getY() - y;
+                    double distSq = dx * dx + dy * dy;
+                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
+                        proj.setState(Projectile.State.EXPLODED);
+                        explodeProjectile(proj);
+                        world.removeBody(body);
+                        iterator.remove();
+                        exploded = true;
+                        break;
+                    }
+                }
+                if (exploded) {
+                    continue;
+                }
+            }
+
         }
     }
 
@@ -209,23 +249,25 @@ public class ProjectilePhysics {
      * <p>
      * Cette méthode applique les conséquences de l'explosion :
      * <ul>
-     *     <li>Calcule les dégâts infligés aux Aliens en fonction de leur distance
-     *     à l'impact.</li>
-     *     <li>Applique une force de recul (knockback) physique aux Aliens touchés.</li>
-     *     <li>(Note : La destruction du terrain est généralement gérée ailleurs
-     *     ou pourrait être ajoutée ici).</li>
+     *      <li>Calcule les dégâts infligés aux Aliens en fonction de leur distance
+     *      à l'impact.</li>
+     *      <li>Applique une force de recul (knockback) physique aux Aliens touchés.</li>
+     *      <li>(Note : La destruction du terrain est généralement gérée ailleurs
+     *      ou pourrait être ajoutée ici).</li>
      * </ul>
-     *
+     * *
      * @param proj Le projectile qui vient d'exploser.
      */
     public void explodeProjectile(Projectile proj) {
         if (proj instanceof Bullet) {
             return;
         }
+
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
-        physicsEngine.getGameWorld().explode(explosionX, explosionY, proj);
+        physicsEngine.getGameWorld().explode(explosionX, explosionY, radius);
+        SoundManager.playEffect("Explosion");
 
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();
@@ -236,7 +278,6 @@ public class ProjectilePhysics {
 
             double dx = (alienPos.getX() - explosionX) / distance;
             double dy = (alienPos.getY() - explosionY) / distance;
-
             Body alienBody = physicsEngine.getAlienBodies().get(alien);
             if (alienBody != null) {
                 alienBody.applyImpulse(
@@ -260,6 +301,7 @@ public class ProjectilePhysics {
             }
             if (p instanceof Rocket && b2 != null) {
                 p.setState(Projectile.State.EXPLODED);
+
             } else if (p instanceof Bullet && b2 != null) {
                 handleBulletImpact((Bullet) p, b2);
             }
@@ -276,9 +318,14 @@ public class ProjectilePhysics {
             target.applyImpulse(5);
         }
         bullet.setState(Projectile.State.EXPLODED);
+        SoundManager.playEffect("Impact");
     }
 
     public List<Projectile> getActiveProjectiles() {
         return activeProjectiles;
+    }
+
+    public void setWind(Vector2 wind) {
+        this.wind = wind;
     }
 }

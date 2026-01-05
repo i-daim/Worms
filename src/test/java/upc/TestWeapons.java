@@ -99,6 +99,10 @@ public class TestWeapons {
         assertEquals(1, mine.getNbOfShots());
         assertEquals(5, mine.getBasePower());
     }
+    /**
+     * Vérifie que le constructeur du bazooka initialise
+     * correctement ses valeurs.
+     */
     @Test
     public void testBazookaConstructeur() {
         Bazooka bazooka = new Bazooka();

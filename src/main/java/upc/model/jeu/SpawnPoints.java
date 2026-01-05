@@ -21,18 +21,118 @@ public class SpawnPoints {
      * sur le terrain de jeu Liberty
      */
     static {
-        // Equipe 1
+
+        //Equipe 1
         LIBERTY_SPAWNS.put(0, Arrays.asList(
-                new Position(150, 280),  // Missile à gauche
-                new Position(890, 30),   // Tête de statue
-                new Position(1350, 280)  // Tank (gauche)
+                new Position(150, 280),
+                new Position(890, 145),
+                new Position(1350, 280),
+                new Position(960, 580)
         ));
 
-        // Equipe 2
+        //Equipe 2
         LIBERTY_SPAWNS.put(1, Arrays.asList(
-                new Position(480, 280),  // Barres electriques
-                new Position(800, 90),   // Tête de statue
-                new Position(1580, 280)  // Tank (droite)
+                new Position(480, 330),
+                new Position(800, 155),
+                new Position(1580, 280),
+                new Position(60, 280)
+        ));
+    }
+
+    /// SPAWNS POUR LA MAP ICE ///
+
+    /**
+     * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
+     * pour le terrain de jeu Ice
+     */
+    private static final HashMap<Integer, List<Position>> ICE_SPAWNS = new HashMap<>();
+
+    /**
+     * Initialise la position de départ des aliens de chaque équipe
+     * sur le terrain de jeu Ice
+     */
+    static {
+
+        //Equipe 1
+        ICE_SPAWNS.put(0, Arrays.asList(
+                new Position(118, 452),
+                new Position(433, 158),
+                new Position(591, 413),
+                new Position(441, 435)
+        ));
+
+        //Equipe 2
+        ICE_SPAWNS.put(1, Arrays.asList(
+                new Position(1254, 287),
+                new Position(1047, 374),
+                new Position(1398, 216),
+                new Position(1586, 156)
+        ));
+    }
+
+
+    /// SPAWNS POUR LA MAP POISON ///
+
+    /**
+     * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
+     * pour le terrain de jeu Poison
+     */
+    private static final HashMap<Integer, List<Position>> POISON_SPAWNS = new HashMap<>();
+
+
+    /**
+     * Initialise la position de départ des aliens de chaque équipe
+     * sur le terrain de jeu Poison
+     */
+    static {
+
+        //Equipe 1
+        POISON_SPAWNS.put(0, Arrays.asList(
+                new Position(347, 221),
+                new Position(366, 465),
+                new Position(546, 410),
+                new Position(477, 410)
+        ));
+
+
+        //Equipe 2
+        POISON_SPAWNS.put(1, Arrays.asList(
+                new Position(1252, 152),
+                new Position(1411, 290),
+                new Position(1367, 478),
+                new Position(1285, 465)
+        ));
+    }
+
+    /// SPAWNS POUR LA MAP HELL ///
+
+    /**
+     * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
+     * pour le terrain de jeu Hell
+     */
+    private static final HashMap<Integer, List<Position>> HELL_SPAWNS = new HashMap<>();
+
+
+    /**
+     * Initialise la position de départ des aliens de chaque équipe
+     * sur le terrain de jeu Hell
+     */
+    static {
+
+        //Equipe 1
+        HELL_SPAWNS.put(0, Arrays.asList(
+                new Position(168, 150),
+                new Position(489, 190),
+                new Position(290, 324),
+                new Position(205, 100)
+        ));
+
+        //Equipe 2
+        HELL_SPAWNS.put(1, Arrays.asList(
+                new Position(843, 238),
+                new Position(1218, 187),
+                new Position(697, 186),
+                new Position(946, 395)
         ));
     }
 
@@ -106,12 +206,21 @@ public class SpawnPoints {
      * @param mapName : Nom du terrain
      * @param team : Indice d'équipe
      * @return la liste de position {@link List<Position>} des aliens d'une équipe
-     * si le nom de terrain choisi est liberty, spaceship ou vide
+     * si le nom de terrain choisi est liberty, spaceship, ice, poison, hell ou vide
      * ou {@code null} si le nom du terrain n'est pas reconnu
      */
     public static List<Position> getSpawns(String mapName, int team) {
         if (mapName.equals("liberty")) {
             return LIBERTY_SPAWNS.get(team);
+        }
+        if (mapName.equals("ice")) {
+            return ICE_SPAWNS.get(team);
+        }
+        if (mapName.equals("poison")) {
+            return POISON_SPAWNS.get(team);
+        }
+        if (mapName.equals("hell")) {
+            return HELL_SPAWNS.get(team);
         }
         if (mapName.equals("spaceship")) {
             return SPACESHIP_SPAWNS.get(team);

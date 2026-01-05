@@ -38,7 +38,10 @@ public class TestWeapons {
         dummyShooter.setAimAngle(0);
         dummyShooter.setShootPower(0);
     }
-
+    /**
+     * Vérifie que le constructeur de l'Uzi initialise correctement
+     * ses attributs (nom, dégâts, nombre de tirs et puissance).
+     */
     @Test
     public void testUziConstructeur() {
         Uzi uzi = new Uzi();

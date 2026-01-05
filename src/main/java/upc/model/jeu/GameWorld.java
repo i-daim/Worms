@@ -60,18 +60,16 @@ public class GameWorld {
         return aliens;
     }
 
+
     /**
      * Méthode permettant de représenter le point d'impact des armes sur le terrain du jeu
      * En mettant à jour la physique du terrain
-     * Et activant l'animation requise au point d'impacy
+     * Et activant l'animation requise au point d'impact
      * @param x : Position du projectile en x
      * @param y : Position du projectile en y
-     * @param projectile : Projectile sélectionné
+     * @param radius : rayon d'action
      */
-    public void explode(int x, int y, Projectile projectile) {
-        int radius = projectile.getExplosionRadius();
-        projectile.applyExplosionDamage(this);
-
+    public void explode(int x, int y, int radius) {
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);
         gameManager.addActiveAnimation("explosion", x, y);
@@ -86,6 +84,9 @@ public class GameWorld {
      * Et dans le moteur physique
      */
     public void initializePhysics() {
+        physicsEngine.clearAliens();
+        activeAliens.clear();
+
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);

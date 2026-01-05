@@ -301,11 +301,21 @@ public class GamePanel extends JPanel {
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (cameraX < 0) cameraX = 0;
-        if (cameraX > maxX) cameraX = maxX;
+        // --- CORRECTION BANDE BLANCHE (Clamping strict) ---
+        // Ajout des accolades {} pour Checkstyle
+        if (cameraX < 0) {
+            cameraX = 0;
+        }
+        if (cameraX > maxX) {
+            cameraX = maxX;
+        }
 
-        if (cameraY < 0) cameraY = 0;
-        if (cameraY > maxY) cameraY = maxY;
+        if (cameraY < 0) {
+            cameraY = 0;
+        }
+        if (cameraY > maxY) {
+            cameraY = maxY;
+        }
 
         // 4. Détection : Est-ce qu'on est encore en train de bouger ?
         boolean zoomChanged = Math.abs(oldZoom - currentZoom) > 0.001;
@@ -323,9 +333,8 @@ public class GamePanel extends JPanel {
         double oldZoom = currentZoom;
         currentZoom += (targetZoom - currentZoom) * 0.05;
 
-        // Calcul des dimensions visibles
         double visibleWidth = getWidth() / currentZoom;
-        double visibleHeight = getHeight() / currentZoom;
+        double visibleHeight = getHeight() / currentZoom; // Variable ajoutée
 
         double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
         double maxY = Math.max(0, terrain.getHeight() - visibleHeight);
@@ -342,11 +351,21 @@ public class GamePanel extends JPanel {
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (cameraX < 0) cameraX = 0;
-        if (cameraX > maxCamX) cameraX = maxCamX;
+        // --- CORRECTION BANDE BLANCHE ---
+        // Ajout des accolades {} pour Checkstyle
+        if (cameraX < 0) {
+            cameraX = 0;
+        }
+        if (cameraX > maxCamX) {
+            cameraX = maxCamX;
+        }
 
-        if (cameraY < 0) cameraY = 0;
-        if (cameraY > maxY) cameraY = maxY;
+        if (cameraY < 0) {
+            cameraY = 0;
+        }
+        if (cameraY > maxY) {
+            cameraY = maxY;
+        }
 
         boolean zoomChanged = Math.abs(oldZoom - currentZoom) > 0.001;
         boolean posChanged = Math.abs(oldCamX - cameraX) > 0.5 || Math.abs(oldCamY - cameraY) > 0.5;

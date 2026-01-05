@@ -59,7 +59,7 @@ public class GameController {
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
-////    GESTION DE LA BOUCLE DU JEU    ////
+    ////    GESTION DE LA BOUCLE DU JEU    ////
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();
@@ -97,21 +97,31 @@ public class GameController {
             return;
         }
 
-        handleCameraScroll();
+        boolean isAnimating = false;
+        Alien activeAlien = gameManager.getActiveAlien();
+
+        // Cas 1 : Projectile en vol
+        if (gameManager.getActiveProjectile() != null) {
+            isAnimating = gamePanel.centerCamera(gameManager.getActiveProjectile());
+        }
+        // Cas 2 : Tour du joueur ou Pause active
+        else if (activeAlien != null && activeAlien.isAlive()) {
+            if (gameManager.isPaused()) {
+                isAnimating = gamePanel.unzoomCamera();
+            } else {
+                // Suit le joueur et nous dit si ça bouge encore
+                isAnimating = gamePanel.centerCamera(activeAlien);
+            }
+        }
+
+        // Cas 3 : Mouvement manuel à la souris
+        if (!isAnimating && mouseHandler.isMouseNearEdge(gamePanel)) {
+            handleCameraScroll();
+        }
+
         handleControls();
 
         // Ne centre pas la caméra si la souris est sur le bord
-        if (!mouseHandler.isMouseNearEdge(gamePanel)) {
-            Alien activeAlien = gameManager.getActiveAlien();
-            if (gameManager.isPaused()) {
-                gamePanel.unzoomCamera();
-            } else if (activeAlien != null && activeAlien.isAlive()) {
-                gamePanel.centerCamera(activeAlien);
-            }
-        }
-        if (gameManager.getActiveProjectile() != null) {
-            gamePanel.centerCamera(gameManager.getActiveProjectile());
-        }
 
         gameManager.update(1.0 / 60.0);
 
@@ -126,7 +136,7 @@ public class GameController {
         gamePanel.repaint();
     }
 
-////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
         Item equipped = activeAlien.getEquippedItem();
@@ -179,14 +189,14 @@ public class GameController {
                     }
                     frameCount++;
                 }
-            // Le shotgun tire directement sans jauge de puissance
+                // Le shotgun tire directement sans jauge de puissance
             } else if (equipped instanceof upc.model.items.Shotgun) {
                 if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
                     activeAlien.setShootPower(100);
                     activeAlien.useEquippedItem();
                     activeAlien.setShootPower(0);
                 }
-            // Pour le reste, on peut maintenir le clic pour plus de puissance
+                // Pour le reste, on peut maintenir le clic pour plus de puissance
             } else {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     activeAlien.incrementPower();
@@ -223,7 +233,7 @@ public class GameController {
     }
 
 
-////    ARRET DU JEU    ////
+    ////    ARRET DU JEU    ////
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
             togglePause();

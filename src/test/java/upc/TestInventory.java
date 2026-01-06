@@ -17,7 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestInventory {
 
     private Inventory inventory;
-
+    /**
+     * Méthode exécutée avant chaque test.
+     * Initialise un inventaire avec les valeurs par défaut.
+     * Toutes les munitions sont initialisées à 50.
+     */
     @BeforeEach
     public void setUp() {
         inventory = new Inventory();

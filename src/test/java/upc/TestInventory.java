@@ -137,7 +137,9 @@ public class TestInventory {
         inventory.useAmmo(Type.SHOTGUN, 50);
         assertEquals(ammoStockShotgun, inventory.getAmmoStock().get(Type.SHOTGUN));
     }
-
+    /**
+     * Vérifie l'accès au type d'item à partir d'un index.
+     */
     @Test
     public void testGetItemTypeAt(){
         Item item = inventory.getItem(Item.Type.SHOTGUN);

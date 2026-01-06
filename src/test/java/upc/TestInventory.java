@@ -46,6 +46,10 @@ public class TestInventory {
 
         assertEquals(65, inventory.getAmmoStock().get(Type.GRENADE));
     }
+    /**
+     * Vérifie que l'ajout de munitions négatives
+     * n'a aucun effet sur le stock.
+     */
 
     @Test
     public void testAddAmmoNegative() {

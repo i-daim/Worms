@@ -146,7 +146,9 @@ public class TestInventory {
         assertEquals(item, inventory.getItem(inventory.getItemTypeAt(0)));
         assertNull(inventory.getItemTypeAt(-1));
     }
-
+    /**
+     * Vérifie l'accès à un item à partir de son index.
+     */
     @Test
     public void testGetItemByIndex(){
         assertNull(inventory.getItemByIndex(-1));

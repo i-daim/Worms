@@ -76,7 +76,10 @@ public class TestInventory {
 
         assertTrue(inventory.isAvailable(Type.GRENADE));
     }
-
+    /**
+     * Vérifie qu'un objet n'est plus disponible
+     * lorsque son stock est vide.
+     */
     @Test
     public void testIsAvailableSansStock() {
         inventory.useAmmo(Type.GRENADE, 50);

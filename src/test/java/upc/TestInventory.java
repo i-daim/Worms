@@ -67,7 +67,9 @@ public class TestInventory {
 
         assertEquals(50, inventory.getAmmoStock().get(Type.GRENADE));
     }
-
+    /**
+     * Vérifie qu'un objet est disponible lorsqu'il reste du stock.
+     */
     @Test
     public void testIsAvailableAvecStock() {
         inventory.addAmmo(Type.GRENADE, 10);

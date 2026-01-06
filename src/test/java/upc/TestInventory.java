@@ -9,7 +9,11 @@ import upc.model.items.Item.Type;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Classe de tests unitaires pour la classe {@link Inventory}.
+ * Elle vérifie la gestion des munitions, la disponibilité des objets
+ * et l'accès aux items par type ou par index.
+ */
 public class TestInventory {
 
     private Inventory inventory;

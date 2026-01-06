@@ -115,7 +115,10 @@ public class TestInventory {
         inventory.useAmmo(Type.UZI, -10);
         assertEquals(ammoStockUzi, inventory.getAmmoStock().get(Type.UZI));
     }
-
+    /**
+     * Vérifie que l'utilisation de zéro munition
+     * ne modifie pas le stock.
+     */
     @Test
     public void testUseAmmoZero() {
         int ammoStockUzi = inventory.getAmmoStock().get(Type.UZI);

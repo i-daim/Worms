@@ -27,7 +27,9 @@ public class TestInventory {
         inventory = new Inventory();
         // PS: Toutes les munitions sont initialisées à 50
     }
-
+    /**
+     * Vérifie l'ajout simple de munitions à un type d'objet.
+     */
     @Test
     public void testAjouterMunitionSimple() {
         inventory.addAmmo(Type.GRENADE, 10);

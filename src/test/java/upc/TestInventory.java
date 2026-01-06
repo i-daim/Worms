@@ -86,7 +86,10 @@ public class TestInventory {
 
         assertFalse(inventory.isAvailable(Type.GRENADE));
     }
-
+    /**
+     * Vérifie qu'un objet avec des munitions illimitées
+     * est toujours considéré comme disponible.
+     */
     @Test
     public void testIsAvailableIllimite() {
         inventory.getAmmoStock().put(Type.UZI, -1);

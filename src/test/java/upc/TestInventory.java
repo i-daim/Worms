@@ -57,7 +57,10 @@ public class TestInventory {
 
         assertEquals(50, inventory.getAmmoStock().get(Type.GRENADE));
     }
-
+    /**
+     * Vérifie que l'ajout de zéro munition
+     * ne modifie pas le stock.
+     */
     @Test
     public void testAddAmmoZero() {
         inventory.addAmmo(Type.GRENADE, 0);

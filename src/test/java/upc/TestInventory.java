@@ -36,7 +36,9 @@ public class TestInventory {
 
         assertEquals(60, inventory.getAmmoStock().get(Type.GRENADE));
     }
-
+    /**
+     * Vérifie l'ajout successif de plusieurs quantités de munitions.
+     */
     @Test
     public void testAddAmmoPlusieurs() {
         inventory.addAmmo(Type.GRENADE, 10);

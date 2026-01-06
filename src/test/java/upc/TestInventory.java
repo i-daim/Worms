@@ -104,7 +104,10 @@ public class TestInventory {
         assertNotNull(inventory.getAmmoStock());
         assertFalse(inventory.getAmmoStock().isEmpty());
     }
-
+    /**
+     * Vérifie que l'utilisation d'une quantité négative de munitions
+     * ne modifie pas le stock.
+     */
     @Test
     public void testUseAmmoNegative() {
         int ammoStockUzi = inventory.getAmmoStock().get(Type.UZI);

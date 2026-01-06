@@ -96,7 +96,9 @@ public class TestInventory {
 
         assertTrue(inventory.isAvailable(Type.UZI));
     }
-
+    /**
+     * Vérifie que la méthode getAmmoStock retourne une structure valide.
+     */
     @Test
     public void testGetAmmoStock() {
         assertNotNull(inventory.getAmmoStock());

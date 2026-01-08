@@ -106,6 +106,21 @@ public class AlienPhysics {
         }
     }
 
+    private void updateMovementPhysics(Alien alien, Body body, boolean isOnGround) {
+        BodyFixture fixture = body.getFixture(0);
+
+        if (isOnGround && alien.getState() == Alien.State.IDLE) {
+            body.setGravityScale(0.0);
+            body.setLinearVelocity(0, 0);
+            body.setAngularVelocity(0);
+            fixture.setFriction(FRICTION_STATIC);
+        } else {
+            body.setGravityScale(1.0);
+            body.setAtRest(false);
+            fixture.setFriction(FRICTION_MOVING);
+        }
+    }
+
 
 
     public void addAlienBody(Alien alien) {

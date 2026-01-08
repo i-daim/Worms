@@ -108,7 +108,7 @@ public class AlienPhysics {
 
 /*Cette méthode permet la modification de la friction en fonction de l'etat de l'alien*/
     private void updateMovementPhysics(Alien alien, Body body, boolean isOnGround) {
-        BodyFixture fixture = body.getFixture(0);
+        BodyFixture fixture = body.getFixture(0);x
 
         if (isOnGround && alien.getState() == Alien.State.IDLE) {
             body.setGravityScale(0.0);

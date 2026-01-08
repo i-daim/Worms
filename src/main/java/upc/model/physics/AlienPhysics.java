@@ -69,7 +69,8 @@ public class AlienPhysics {
             // Gestion de l'atterrissage (Transition JUMP -> IDLE)
             if (reallyOnGround) {
                 state.hasJumped = false;
-                if (alien.getState() == Alien.State.JUMP || alien.getState() == Alien.State.JUMP_START) {
+                if (alien.getState()
+                        == Alien.State.JUMP || alien.getState() == Alien.State.JUMP_START) {
                     alien.setState(Alien.State.IDLE);
                 }
             } else {
@@ -108,7 +109,7 @@ public class AlienPhysics {
 
 /*Cette méthode permet la modification de la friction en fonction de l'etat de l'alien*/
     private void updateMovementPhysics(Alien alien, Body body, boolean isOnGround) {
-        BodyFixture fixture = body.getFixture(0);x
+        BodyFixture fixture = body.getFixture(0);
 
         if (isOnGround && alien.getState() == Alien.State.IDLE) {
             body.setGravityScale(0.0);

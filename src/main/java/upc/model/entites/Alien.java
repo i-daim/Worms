@@ -139,6 +139,7 @@ public class Alien extends Entity {
      * Utilise l'objet actuellement sélectionné dans l'inventaire.
      * Si l'objet n'est pas disponible, rien ne se passe.
      * Si l'objet est un jetpack, l'alien vole.
+     * @return : Projectile tiré par l'item (si c'est une arme)
      */
     public Projectile useEquippedItem() {
         Item item = inventory.getItemByIndex(selectedItemIndex);

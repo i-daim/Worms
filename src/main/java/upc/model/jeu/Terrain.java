@@ -28,6 +28,7 @@ public class Terrain {
     /**
      * Constructeur pour {@code Terrain}.
      *
+     * @param mapName Le nom de la map.
      * @param collisions Le tableau de collisions ({@code true} = solide, {@code false} = vide).
      * @param image L'image du terrain (premier plan, destructible).
      * @param background L'image de fond (non destructible).
@@ -254,6 +255,7 @@ public class Terrain {
     /**
      * Retourne la clé (le nom) de l'animation à utiliser pour l'eau
      * en fonction du nom de la map.
+     * @return la clé de l'animation pour {@link upc.assets.AnimationManager}
      */
     public String getWaterAnimationKey() {
         if (mapName == null) {

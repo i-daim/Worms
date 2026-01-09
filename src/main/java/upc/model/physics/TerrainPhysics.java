@@ -80,6 +80,9 @@ public class TerrainPhysics {
 
     /**
      * Crée une fixture rectangle pour une ligne de collisions
+     * @param tileX Position X de la fixture à créer
+     * @param tileY Position Y de la fixture à créer
+     * @param tileWidth Largeur de la fixture à créer
      */
     private void createRectangleFixture(int tileX, int tileY, int tileWidth) {
         double width = Converter.toMeters(tileWidth * TerrainGenerator.TILE_SIZE);

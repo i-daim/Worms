@@ -8,7 +8,8 @@ import java.util.List;
 
 public class SpawnPoints {
 
-    /// SPAWNS POUR LA MAP LIBERTY ///
+
+/// SPAWNS POUR LA MAP LIBERTY ///
 
     /**
      * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
@@ -16,7 +17,7 @@ public class SpawnPoints {
      */
     private static final HashMap<Integer, List<Position>> LIBERTY_SPAWNS = new HashMap<>();
 
-    /**
+    /*
      * Initialise la position de départ des aliens de chaque équipe
      * sur le terrain de jeu Liberty
      */
@@ -39,7 +40,7 @@ public class SpawnPoints {
         ));
     }
 
-    /// SPAWNS POUR LA MAP ICE ///
+/// SPAWNS POUR LA MAP ICE ///
 
     /**
      * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
@@ -47,7 +48,7 @@ public class SpawnPoints {
      */
     private static final HashMap<Integer, List<Position>> ICE_SPAWNS = new HashMap<>();
 
-    /**
+    /*
      * Initialise la position de départ des aliens de chaque équipe
      * sur le terrain de jeu Ice
      */
@@ -71,7 +72,7 @@ public class SpawnPoints {
     }
 
 
-    /// SPAWNS POUR LA MAP POISON ///
+/// SPAWNS POUR LA MAP POISON ///
 
     /**
      * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
@@ -80,7 +81,7 @@ public class SpawnPoints {
     private static final HashMap<Integer, List<Position>> POISON_SPAWNS = new HashMap<>();
 
 
-    /**
+    /*
      * Initialise la position de départ des aliens de chaque équipe
      * sur le terrain de jeu Poison
      */
@@ -104,7 +105,7 @@ public class SpawnPoints {
         ));
     }
 
-    /// SPAWNS POUR LA MAP HELL ///
+/// SPAWNS POUR LA MAP HELL ///
 
     /**
      * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
@@ -113,7 +114,7 @@ public class SpawnPoints {
     private static final HashMap<Integer, List<Position>> HELL_SPAWNS = new HashMap<>();
 
 
-    /**
+    /*
      * Initialise la position de départ des aliens de chaque équipe
      * sur le terrain de jeu Hell
      */
@@ -136,7 +137,7 @@ public class SpawnPoints {
         ));
     }
 
-    /// SPAWNS POUR LA MAP SPACESHIP ///
+/// SPAWNS POUR LA MAP SPACESHIP ///
 
     /**
      * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
@@ -144,7 +145,7 @@ public class SpawnPoints {
      */
     private static final HashMap<Integer, List<Position>> SPACESHIP_SPAWNS = new HashMap<>();
 
-    /**
+    /*
      * Initialise la position de départ des aliens de chaque équipe
      * sur le terrain de jeu Spaceship
      */
@@ -168,7 +169,7 @@ public class SpawnPoints {
     }
 
 
-    /// SPAWNS POUR CONSOLE ///
+/// SPAWNS POUR CONSOLE ///
 
     /**
      * Constante représentant l'ensemble des positions de départ des alien de chaque équipe
@@ -176,7 +177,7 @@ public class SpawnPoints {
      */
     private static final HashMap<Integer, List<Position>> CONSOLE_SPAWNS = new HashMap<>();
 
-    /**
+    /*
      * Initialise la position de départ des aliens de chaque équipe
      * sur le terrain de jeu Console
      */
@@ -199,7 +200,7 @@ public class SpawnPoints {
 
 
 
-    /// GETTER ///
+/// GETTER ///
 
     /**
      * Retourne l'ensemble des positions des aliens selon le terrain et l'équipe choisi

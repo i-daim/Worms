@@ -508,17 +508,19 @@ public class GameManager {
     /**
      * Permet de changer le projective active
      * selon qu'il soit de type piège
+     * @param proj : Projectile selectionné
      * */
-    public void setActiveProjectile(Projectile p) {
+    public void setActiveProjectile(Projectile proj) {
         if (activeProjectile instanceof Trap) {
             return;
         }
-        this.activeProjectile = p;
+        this.activeProjectile = proj;
     }
 
 
     /**
      * Permet d'activer ou de désactiver le vent
+     * @param enabled : Pour activer ou désactiver le vent
      */
     public void setWindEnabled(boolean enabled) {
         this.windEnabled = enabled;
@@ -549,6 +551,7 @@ public class GameManager {
 
     /**
      * Retourne le temps restant avant la fin du délai en cours
+     * @return : un entier représentant le temps restant
      */
     public int getDelay() {
         return (int) (delayEndTime - System.currentTimeMillis()) / 10;

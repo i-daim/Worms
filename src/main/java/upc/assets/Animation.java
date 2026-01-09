@@ -27,7 +27,7 @@ public class Animation {
      * en ajoutant les champs requis.
      * @param index : L'index de l'image, fourni par la boucle qui appelle la méthode
      * @param flip : Permet d'inverser l'image pour les animations des aliens
-     * @return
+     * @return : BufferedImage de la frame
      */
     private BufferedImage loadFrame(int index, boolean flip) {
         String path = "/" + name + index + ".png";

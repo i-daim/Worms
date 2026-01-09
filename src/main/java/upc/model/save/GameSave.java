@@ -57,6 +57,7 @@ public class GameSave {
     }
 
     /** Méthode permettant de charger la sauvegarde du jeu
+     * @return L'objet GameSave contenant les données de la sauvegarde
      */
     public static GameSave load() throws IOException {
 
@@ -125,6 +126,8 @@ public class GameSave {
 
         /**
          * Méthode permettant de convertir une TeamSave en Team
+         * @param world : Le monde de jeu auquel les Aliens appartiennent
+         * @return : L'objet Team avec les données sauvegardées
          */
         public Team toTeam(GameWorld world) {
             Team team = new Team(name, aliens.size());
@@ -148,6 +151,7 @@ public class GameSave {
         }
 
         /** Méthode permettant de convertir un InventorySave en Inventory
+         * @return L'objet Inventory avec les données sauvegardées
          */
         public Inventory toInventory() {
             return new Inventory(this);
@@ -182,6 +186,9 @@ public class GameSave {
         }
 
         /** Méthode permettant de convertir un AlienSave en Alien
+         * @param world : Le monde de jeu auquel l'alien appartient
+         * @param team : L'équipe à laquelle l'alien appartient
+         * @return : L'objet Alien avec les données sauvegardées
          */
         public Alien toAlien(GameWorld world, Team team) {
             return new Alien(this, world, team);

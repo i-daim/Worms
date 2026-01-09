@@ -159,6 +159,10 @@ public class InventoryPanel extends JPanel {
     /**
      * Vérifie si un clic est dans un slot de l'inventaire et retourne l'index du slot.
      * Retourne -1 si aucun slot est cliqué.
+     * @param clickPoint Le point de clic
+     * @param screenWidth La longueur de l'écran
+     * @param screenHeight La largeur de l'écran
+     * @return : L'index du slot cliqué, ou -1 si aucun slot n'est cliqué
      */
     public static int getClickedSlotIndex(Point clickPoint, int screenWidth, int screenHeight) {
         int drawX = (screenWidth - TOTAL_WIDTH) / 2;

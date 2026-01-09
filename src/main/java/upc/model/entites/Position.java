@@ -27,7 +27,7 @@ public class Position {
      *  La position courante n'est pas modifiée.
      * @param dx déplacement sur l'axe x
      * @param dy déplacement sur l'axe y
-     * @return
+     * @return : la nouvelle position après déplacement
      */
     public Position deplacer(int dx, int dy) {
         return new Position(x + dx, y + dy);

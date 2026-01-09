@@ -38,6 +38,8 @@ public class ConsoleView {
 
     /**
      * Affiche la liste des aliens avec un thème couleur alterné (Violet/Vert).
+     * @param gameManager : Le manager du jeu qui contient les informations sur
+     *                    les equipes
      */
     public void printAliensList(GameManager gameManager) {
         System.out.println("\n📊 ÉTAT DES TROUPES :");

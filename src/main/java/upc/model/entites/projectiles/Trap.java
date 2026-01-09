@@ -24,6 +24,7 @@ public class Trap extends Projectile {
 
     /**
      * Méthode pour voir si un vers se situe dans la zone d'activation et provoque son explosion
+     * @param gameWorld : Le monde du jeu pour y chercher les aliens dans le rayon d'activation
      */
     public void activation(GameWorld gameWorld) {
         if (!isActive()) {

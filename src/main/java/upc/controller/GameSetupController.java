@@ -61,7 +61,7 @@ public class GameSetupController {
 
         upc.model.jeu.Terrain terrain;
 
-        if (mapName.equalsIgnoreCase("Aléatoire")) {
+        if (mapName.equalsIgnoreCase("Random")) {
             terrain = upc.model.jeu.TerrainGenerator.chooseRandomMap();
         } else {
             terrain = upc.model.jeu.TerrainGenerator.createTerrain(mapName.toLowerCase());

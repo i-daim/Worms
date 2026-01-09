@@ -38,8 +38,7 @@ public class MenuActions {
         return e -> {
             try {
                 GameSave save = GameSave.load();
-                GameManager gameManager = new GameManager("");
-                save.applyTo(gameManager);
+                GameManager gameManager = save.toGameManager();
                 GamePanel gamePanel = new GamePanel(gameManager);
                 new GameController(gamePanel, gameManager);
 

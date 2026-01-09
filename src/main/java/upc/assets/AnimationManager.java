@@ -18,6 +18,7 @@ public class AnimationManager {
 
     static {
         // Animations aliens //
+        // --- ZLERPS (Team 0) ---
         zlerps.put("idle_right",
                 new Animation("characters/zlerp/idle", 1, false));
         zlerps.put("idle_left",
@@ -27,6 +28,18 @@ public class AnimationManager {
         zlerps.put("walk_left",
                 new Animation("characters/zlerp/walk", 5, true));
 
+        //Animations de saut
+        zlerps.put("jump_right",
+                new Animation("characters/zlerp/jump_z", 1, false));
+        zlerps.put("jump_left",
+                new Animation("characters/zlerp/jump_z", 1, true));
+        zlerps.put("jump_start_right",
+                new Animation("characters/zlerp/jump_z", 6, false));
+        zlerps.put("jump_start_left",
+                new Animation("characters/zlerp/jump_z", 6, true));
+
+
+        // --- GLORBS (Team 1) ---
         glorbs.put("idle_right",
                 new Animation("characters/glorb/idle", 1, false));
         glorbs.put("idle_left",
@@ -35,6 +48,16 @@ public class AnimationManager {
                 new Animation("characters/glorb/walk", 5, false));
         glorbs.put("walk_left",
                 new Animation("characters/glorb/walk", 5, true));
+
+        // Animations de saut
+        glorbs.put("jump_right",
+                new Animation("characters/glorb/jump_g", 1, false));
+        glorbs.put("jump_left",
+                new Animation("characters/glorb/jump_g", 1, true));
+        glorbs.put("jump_start_right",
+                new Animation("characters/glorb/jump_g", 6, false));
+        glorbs.put("jump_start_left",
+                new Animation("characters/glorb/jump_g", 6, true));
 
 
         // Animations monde //
@@ -69,7 +92,7 @@ public class AnimationManager {
     }
 
 
-////    GETTERS    ////
+    ////    GETTERS    ////
     public static Animation getAnimation(String name) {
         if (!animations.containsKey(name)) {
             throw new RuntimeException("Erreur lors du chargement de l'animation : " + name);

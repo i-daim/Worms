@@ -33,6 +33,8 @@ public class GameOverPanel extends JPanel {
     private final Team winningTeam;
     private ActiveAnimation victoryAnimation;
 
+    private final double zoom = GamePanel.ZOOM;
+
     public GameOverPanel(Team winningTeam) {
         this.winningTeam = winningTeam;
 
@@ -52,13 +54,13 @@ public class GameOverPanel extends JPanel {
 
         centerPanel.add(Box.createVerticalGlue());
         centerPanel.add(createTitleLabel());
-        centerPanel.add(Box.createVerticalStrut(30));
+        centerPanel.add(Box.createVerticalStrut((int) (15 * zoom)));
         centerPanel.add(createWinnerLabel());
-        centerPanel.add(Box.createVerticalStrut(20));
+        centerPanel.add(Box.createVerticalStrut((int) (10 * zoom)));
         centerPanel.add(createStatsLabel());
-        centerPanel.add(Box.createVerticalStrut(50));
+        centerPanel.add(Box.createVerticalStrut((int) (30 * zoom)));
         centerPanel.add(createBackButton());
-        centerPanel.add(Box.createVerticalStrut(20));
+        centerPanel.add(Box.createVerticalStrut((int) (10 * zoom)));
         centerPanel.add(createQuitButton());
         centerPanel.add(Box.createVerticalGlue());
 
@@ -102,13 +104,14 @@ public class GameOverPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
-        panel.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
+        int vMargin = (int) (60 * zoom);
+        panel.setBorder(BorderFactory.createEmptyBorder(vMargin, 50, vMargin, 50));
         return panel;
     }
 
     private JLabel createTitleLabel() {
         JLabel label = new JLabel("VICTOIRE !");
-        label.setFont(new Font("Arial", Font.BOLD, 72));
+        label.setFont(new Font("Arial", Font.BOLD, (int) (45 * zoom)));
         label.setForeground(TITLE_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
@@ -116,7 +119,7 @@ public class GameOverPanel extends JPanel {
 
     private JLabel createWinnerLabel() {
         JLabel label = new JLabel("Les " + winningTeam.getName() + " ont gagné !");
-        label.setFont(new Font("Arial", Font.BOLD, 48));
+        label.setFont(new Font("Arial", Font.BOLD, (int) (30 * zoom)));
         label.setForeground(TEXT_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
@@ -124,7 +127,7 @@ public class GameOverPanel extends JPanel {
 
     private JLabel createStatsLabel() {
         JLabel label = new JLabel(winningTeam.getAliveAliensNumber() + " aliens survivants");
-        label.setFont(new Font("Arial", Font.PLAIN, 24));
+        label.setFont(new Font("Arial", Font.PLAIN, (int) (16 * zoom)));
         label.setForeground(STATS_COLOR);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;

@@ -32,6 +32,7 @@ public class Alien extends Entity {
     public enum State {
         IDLE,
         WALK,
+        JUMP_START,
         JUMP
     }
     private State state;
@@ -70,31 +71,37 @@ public class Alien extends Entity {
         this.state = State.IDLE;
     }
 
-////    Mouvements de l'alien    ////
+    ////    Mouvements de l'alien    ////
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
-        setState(State.WALK);
         direction = true;
+        if (state != State.JUMP && state != State.JUMP_START) {
+            setState(State.WALK);
+        }
     }
 
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
-        setState(State.WALK);
         direction = false;
+        if (state != State.JUMP && state != State.JUMP_START) {
+            setState(State.WALK);
+        }
     }
 
     public void jump() {
         alienPhysics.jumpAlien(this);
-        setState(State.JUMP);
+        setState(State.JUMP_START);
     }
 
     public void idle() {
         alienPhysics.moveAlien(this, 0);
-        setState(State.IDLE);
+        if (state != State.JUMP && state != State.JUMP_START) {
+            setState(State.IDLE);
+        }
     }
 
 
-////    Autres Méthodes    ////
+    ////    Autres Méthodes    ////
     public Projectile useEquippedItem() {
         Item item = inventory.getItemByIndex(selectedItemIndex);
         Item.Type equippedItem = Inventory.getItemTypeAt(selectedItemIndex);
@@ -130,7 +137,7 @@ public class Alien extends Entity {
         }
     }
 
-////    GETTERS & SETTERS    ////
+    ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
         return healthPoints;
     }

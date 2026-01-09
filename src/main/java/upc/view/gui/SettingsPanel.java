@@ -25,11 +25,13 @@ public class SettingsPanel extends JPanel {
     private JComboBox<String> musicSelection;
     private JSlider volumeSlider;
 
+    private final double zoom = GamePanel.ZOOM;
+
     public SettingsPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Settings");
-        title.setFont(new Font("Arial", Font.BOLD, 28));
+        title.setFont(new Font("Arial", Font.BOLD, (int) (14 * zoom)));
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
         title.setAlignmentY(Component.TOP_ALIGNMENT);
         title.setForeground(Color.WHITE);
@@ -40,11 +42,11 @@ public class SettingsPanel extends JPanel {
 
         this.add(Box.createHorizontalStrut(30));
         this.add(title);
-        this.add(Box.createVerticalStrut(30));
+        this.add(Box.createVerticalStrut((int) (16 * zoom)));
 
         initControls();
 
-        this.add(Box.createVerticalStrut(30));
+        this.add(Box.createVerticalStrut((int) (16 * zoom)));
         this.add(backButton);
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalGlue());
@@ -52,7 +54,7 @@ public class SettingsPanel extends JPanel {
 
     private void initControls() {
         JLabel musicLabel = new JLabel("Music:");
-        musicLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        musicLabel.setFont(new Font("Arial", Font.BOLD, (int) (10 * zoom)));
         musicLabel.setForeground(Color.WHITE);
         musicLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -60,30 +62,30 @@ public class SettingsPanel extends JPanel {
         musicSelection = new JComboBox<>(musics);
         musicSelection.setSelectedIndex(0);
         musicSelection.setAlignmentX(Component.LEFT_ALIGNMENT);
-        musicSelection.setFont(new Font("Arial", Font.BOLD, 16));
+        musicSelection.setFont(new Font("Arial", Font.BOLD, (int) (9 * zoom)));
         musicSelection.setForeground(new Color(126, 217, 87));
         musicSelection.setBackground(new Color(55, 65, 75));
         musicSelection.setSelectedIndex(1);
 
-        Dimension d = new Dimension(300, 40);
+        Dimension d = new Dimension((int) (140 * zoom), (int) (20 * zoom));
         musicSelection.setMaximumSize(d);
         musicSelection.setPreferredSize(d);
 
         JLabel volumeLabel = new JLabel("Volume:");
-        volumeLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        volumeLabel.setFont(new Font("Arial", Font.BOLD, (int) (10 * zoom)));
         volumeLabel.setForeground(Color.WHITE);
         volumeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         volumeSlider = new JSlider(0, 100, 50);
         volumeSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
         volumeSlider.setOpaque(false);
-        volumeSlider.setMaximumSize(new Dimension(300, 50));
-        volumeSlider.setPreferredSize(new Dimension(300, 50));
+        volumeSlider.setMaximumSize(new Dimension((int) (150 * zoom), (int) (25 * zoom)));
+        volumeSlider.setPreferredSize(new Dimension((int) (150 * zoom), (int) (25 * zoom)));
 
         this.add(musicLabel);
-        this.add(Box.createVerticalStrut(5));
+        this.add(Box.createVerticalStrut(10));
         this.add(musicSelection);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut((int) (15 * zoom)));
         this.add(volumeLabel);
         this.add(Box.createVerticalStrut(5));
         this.add(volumeSlider);

@@ -16,11 +16,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
+
 public class HUDPanel extends JPanel {
 
     private final GameManager gameManager;
     private boolean inventoryVisible = false;
     private JButton inventoryButton;
+
+    private final double zoom = GamePanel.ZOOM;
 
     public HUDPanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -72,8 +75,8 @@ public class HUDPanel extends JPanel {
         // Sinon après un clic, les flèches contrôleraient plus l'alien
         skipButton.setFocusable(false);
         // Positionnement et taille
-        skipButton.setBounds(20, 5, 120, 40);
-        skipButton.setFont(new Font("Arial", Font.BOLD, 16));
+        skipButton.setBounds(20, 5, (int) (60 * zoom), (int) (20 * zoom));
+        skipButton.setFont(new Font("Arial", Font.BOLD, (int) (8 * zoom)));
         this.add(skipButton);
     }
 
@@ -81,8 +84,8 @@ public class HUDPanel extends JPanel {
         inventoryButton = ButtonManager.createGameButton("Inventaire");
         inventoryButton.addActionListener(e -> toggleInventory());
         inventoryButton.setFocusable(false);
-        inventoryButton.setSize(150, 50);
-        inventoryButton.setFont(new Font("Arial", Font.BOLD, 16));
+        inventoryButton.setSize((int) (80 * zoom), (int) (25 * zoom));
+        inventoryButton.setFont(new Font("Arial", Font.BOLD, (int) (8 * zoom)));
         this.add(inventoryButton);
     }
 
@@ -99,7 +102,7 @@ public class HUDPanel extends JPanel {
 ////    AFFICHAGE DU HUD EN HAUT DE L'ECRAN    ////
     private void drawTopBar(Graphics2D g2) {
         int width = this.getWidth();
-        int height = 50;
+        int height = (int) (25 * zoom);
 
         g2.setColor(new Color(0, 0, 0, 180));
         g2.fillRect(0, 0, width, height);
@@ -160,7 +163,7 @@ public class HUDPanel extends JPanel {
             return;
         }
         int x = getWidth() - 100;
-        int y = 80;
+        int y = (int) (40 * zoom);
         int width = 80;
         int height = 20;
 

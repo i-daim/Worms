@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 public class ButtonManager {
 
     public static JButton createGameButton(String text) {
+        double zoom = GamePanel.ZOOM;
+
         JButton btn = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -43,14 +45,14 @@ public class ButtonManager {
 
         // Style du texte affiché
         btn.setForeground(new Color(126, 217, 87));
-        btn.setFont(new Font("Arial", Font.BOLD, 22));
+        btn.setFont(new Font("Arial", Font.BOLD, (int) (10 * zoom)));
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
         btn.setContentAreaFilled(false);
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Dimensions du bouton
-        Dimension size = new Dimension(250, 60);
+        Dimension size = new Dimension((int) (111 * zoom), (int) (27 * zoom));
         btn.setMaximumSize(size); // pour avoir les mm dimensions
         btn.setPreferredSize(size);
 

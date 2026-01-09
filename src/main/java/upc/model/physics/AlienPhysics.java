@@ -22,8 +22,6 @@ public class AlienPhysics {
     private final World<Body> world;
     private Terrain terrain;
 
-
-    // Les Maps sont remplacés par une classe qui rassemble les valeurs par alien
     private static class AlienState {
         private final Body body;
         private boolean hasJumped = false;
@@ -40,7 +38,8 @@ public class AlienPhysics {
     private static final double MAX_FALL_SPEED = 35.0;
     private static final double DMG_MULTIPLIER = 0.75;
 
-    private static final double FRICTION = 0.0;
+    private static final double FRICTION_MOVING = 0.0;
+    private static final double FRICTION_STATIC = 100.0;
     private static final double DENSITY = 2;
     private static final double LINEAR_DAMPING = 4.0;
 
@@ -61,38 +60,70 @@ public class AlienPhysics {
             if (!alien.isAlive()) {
                 continue;
             }
-            boolean isOnGround = isOnGround(body);
-            if (isOnGround) {
+
+            // On vérifie le sol, mais on s'assure aussi qu'on ne monte pas (début de saut)
+            boolean physicalContact = isOnGround(body);
+            boolean movingUp = body.getLinearVelocity().y < -1.0;
+            boolean reallyOnGround = physicalContact && !movingUp;
+
+            // Gestion de l'atterrissage (Transition JUMP -> IDLE)
+            if (reallyOnGround) {
                 state.hasJumped = false;
+                if (alien.getState()
+                        == Alien.State.JUMP || alien.getState() == Alien.State.JUMP_START) {
+                    alien.setState(Alien.State.IDLE);
+                }
+            } else {
+                // Gestion de l'air (Transition IDLE/WALK -> JUMP si on tombe)
+                double fallSpeed = body.getLinearVelocity().y;
+                if (fallSpeed > 1.0 && alien.getState() != Alien.State.JUMP_START) {
+                    alien.setState(Alien.State.JUMP);
+                }
             }
 
-            checkFallDamage(alien, state, isOnGround);
-            checkAirFriction(body, isOnGround);
+            // Application de la physique (Friction / Ancrage)
+            updateMovementPhysics(alien, body, reallyOnGround);
 
+            // Dégâts de chute
+            checkFallDamage(alien, state, reallyOnGround);
+            checkAirFriction(body, reallyOnGround);
+
+            // Mise à jour visuelle
             Vector2 v = body.getTransform().getTranslation();
             int pixelX = Converter.toPixels(v.x);
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
+
+            // Eau
             int tileY = pixelY / TerrainGenerator.TILE_SIZE;
-            if (terrain.isWater(tileY)) {
-                if (alien.getHealthPoints() > 0) {
-                    SoundManager.playEffect("Splash");
-                }
+            if (terrain.isWater(tileY) && alien.getHealthPoints() > 0) {
+                SoundManager.playEffect("Splash");
             }
-
-            int collisionY = pixelY / TerrainGenerator.TILE_SIZE;
-            if (collisionY >= Terrain.getWaterLevel()) {
+            if (tileY >= Terrain.getWaterLevel()) {
                 alien.receiveDmg(alien.getHealthPoints());
-            }
-
-            if (body.getLinearVelocity().getMagnitude() < 0.1) {
-                body.setLinearVelocity(0, 0);
-                body.setAngularVelocity(0);
             }
 
             state.previousVelocityY = body.getLinearVelocity().y;
         }
     }
+
+/*Cette méthode permet la modification de la friction en fonction de l'etat de l'alien*/
+    private void updateMovementPhysics(Alien alien, Body body, boolean isOnGround) {
+        BodyFixture fixture = body.getFixture(0);
+
+        if (isOnGround && alien.getState() == Alien.State.IDLE) {
+            body.setGravityScale(0.0);
+            body.setLinearVelocity(0, 0);
+            body.setAngularVelocity(0);
+            fixture.setFriction(FRICTION_STATIC);
+        } else {
+            body.setGravityScale(1.0);
+            body.setAtRest(false);
+            fixture.setFriction(FRICTION_MOVING);
+        }
+    }
+
+
 
     public void addAlienBody(Alien alien) {
         Body body = createAlienBody(alien);
@@ -104,12 +135,13 @@ public class AlienPhysics {
         Body body = new Body();
         Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);
         BodyFixture fixture = new BodyFixture(capsuleShape);
-        fixture.setFriction(FRICTION);
+
+        fixture.setFriction(FRICTION_STATIC);
         fixture.setRestitution(0.0);
         fixture.setDensity(DENSITY);
         body.addFixture(fixture);
 
-        body.setMass(MassType.NORMAL);
+        body.setMass(MassType.FIXED_ANGULAR_VELOCITY);
         body.setLinearDamping(LINEAR_DAMPING);
         body.setAngularDamping(10.0);
 
@@ -138,31 +170,46 @@ public class AlienPhysics {
     public void moveAlien(Alien alien, double direction) {
         AlienState state = alienStates.get(alien);
         if (state != null) {
+            // Déverrouillage immédiat pour permettre le mouvement
+            state.body.setGravityScale(1.0);
+            state.body.setAtRest(false);
+            if (state.body.getFixtureCount() > 0) {
+                state.body.getFixture(0).setFriction(FRICTION_MOVING);
+            }
+
             double speed = 3.0 * direction;
             double velY = state.body.getLinearVelocity().y;
             state.body.setLinearVelocity(new Vector2(speed, velY));
-            state.body.setAtRest(false);
         }
     }
 
     public void jumpAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
-        if (state != null) {
-            if (!state.hasJumped) {
-                Vector2 vel = state.body.getLinearVelocity();
-                state.body.setLinearVelocity(vel.x, -20.0);
-                state.body.setAtRest(false);
-                state.hasJumped = true;
+        if (state != null && !state.hasJumped) {
+            // Déverrouillage complet pour le saut
+            state.body.setGravityScale(1.0);
+            state.body.setAtRest(false);
+            if (state.body.getFixtureCount() > 0) {
+                state.body.getFixture(0).setFriction(FRICTION_MOVING);
             }
+
+            Vector2 vel = state.body.getLinearVelocity();
+            state.body.setLinearVelocity(vel.x, -20.0);
+            state.hasJumped = true;
         }
     }
 
     public void flyAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
         if (state != null) {
+            state.body.setGravityScale(1.0);
+            state.body.setAtRest(false);
+            if (state.body.getFixtureCount() > 0) {
+                state.body.getFixture(0).setFriction(FRICTION_MOVING);
+            }
+
             Vector2 vel = state.body.getLinearVelocity();
             state.body.setLinearVelocity(vel.x, -10.0);
-            state.body.setAtRest(false);
             state.hasJumped = true;
         }
     }
@@ -185,7 +232,6 @@ public class AlienPhysics {
 
     private boolean isOnGround(Body body) {
         Vector2 pos = body.getTransform().getTranslation();
-
         double x = pos.x;
         double feetY = pos.y + (ALIEN_HEIGHT / 2) + Converter.toMeters(2);
         double halfWidth = ALIEN_WIDTH / 2;

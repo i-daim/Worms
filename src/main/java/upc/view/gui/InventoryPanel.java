@@ -17,16 +17,16 @@ import java.awt.image.BufferedImage;
 public class InventoryPanel extends JPanel {
 
     public static final int INVENTORY_SLOTS = 6;
-    public static final int SLOT_SIZE = 80;
-    public static final int GAP = 12;
-    public static final int CONTAINER_MARGIN = 15;
 
-    public static final int TOTAL_WIDTH = (INVENTORY_SLOTS * SLOT_SIZE)
+    private static final int SLOT_SIZE = (int) (50 * GamePanel.ZOOM);
+    private static final int GAP = (int) (8 * GamePanel.ZOOM);
+    private static final int CONTAINER_MARGIN = (int) (10 * GamePanel.ZOOM);
+
+    private static final int TOTAL_WIDTH = (INVENTORY_SLOTS * SLOT_SIZE)
             + ((INVENTORY_SLOTS - 1) * GAP)
             + (2 * CONTAINER_MARGIN);
 
-    public static final int TOTAL_HEIGHT = SLOT_SIZE + (2 * CONTAINER_MARGIN);
-
+    private static final int TOTAL_HEIGHT = SLOT_SIZE + (2 * CONTAINER_MARGIN);
 
     private static final Color GLOBAL_BG_COLOR = new Color(20, 20, 20, 230);
 
@@ -38,9 +38,6 @@ public class InventoryPanel extends JPanel {
     private static final Color SLOT_BG_SELECTED = new Color(255, 255, 255, 50);
     private static final Color SLOT_BORDER_SELECTED = new Color(255, 215, 0);
 
-    private InventoryPanel() {
-
-    }
 
     public static void drawInventory(Graphics2D g2, int screenWidth, int screenHeight,
                                      Alien alien) {

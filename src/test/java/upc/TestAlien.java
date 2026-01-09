@@ -112,7 +112,7 @@ public class TestAlien {
     @Test
     void testJump() {
         alien.jump();
-        assertEquals(Alien.State.JUMP, alien.getState());
+        assertEquals(Alien.State.JUMP_START, alien.getState());
     }
     /**
      * Vérifie la modification de l'angle de visée.

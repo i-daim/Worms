@@ -123,7 +123,7 @@ public class GamePanel extends JPanel {
     }
 
 
-////    METHODES D'AFFICHAGE    ////
+    ////    METHODES D'AFFICHAGE    ////
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
@@ -171,6 +171,9 @@ public class GamePanel extends JPanel {
             case JUMP:
                 animation = AnimationManager.getSprite(type, "jump", direction);
                 break;
+            case JUMP_START:
+                animation = AnimationManager.getSprite(type, "jump_start", direction);
+                break;
             default:
                 animation = AnimationManager.getSprite(type, "idle", direction);
                 break;
@@ -179,10 +182,12 @@ public class GamePanel extends JPanel {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
-        int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
-        int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
+        if (animation != null && !animation.getFrames().isEmpty()) {
+            int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
+            int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
+            drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+        }
 
-        drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
         drawAlienWeapon(g2, alien, direction, posX, posY);
     }
 
@@ -254,7 +259,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-////    AUTRES METHODES    ////
+    ////    AUTRES METHODES    ////
     public void togglePauseMenu(boolean paused) {
         pausePanel.setVisible(paused);
         hudPanel.setVisible(!paused);
@@ -323,7 +328,7 @@ public class GamePanel extends JPanel {
     }
 
 
-////    SETTERS & GETTERS    ////
+    ////    SETTERS & GETTERS    ////
     public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;

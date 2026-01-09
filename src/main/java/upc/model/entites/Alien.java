@@ -32,11 +32,10 @@ public class Alien extends Entity {
     public enum State {
         //Immobile
         IDLE,
-
         //En marche
         WALK,
-
         //En saut
+        JUMP_START,
         JUMP
     }
     private State state;
@@ -86,6 +85,7 @@ public class Alien extends Entity {
         this.state = State.IDLE;
     }
 
+
 ////    Mouvements de l'alien    ////
 
     /**
@@ -95,8 +95,10 @@ public class Alien extends Entity {
      */
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
-        setState(State.WALK);
         direction = true;
+        if (state != State.JUMP && state != State.JUMP_START) {
+            setState(State.WALK);
+        }
     }
 
     /**
@@ -106,8 +108,10 @@ public class Alien extends Entity {
      */
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
-        setState(State.WALK);
         direction = false;
+        if (state != State.JUMP && state != State.JUMP_START) {
+            setState(State.WALK);
+        }
     }
 
     /**
@@ -117,7 +121,7 @@ public class Alien extends Entity {
      */
     public void jump() {
         alienPhysics.jumpAlien(this);
-        setState(State.JUMP);
+        setState(State.JUMP_START);
     }
 
     /**
@@ -127,7 +131,9 @@ public class Alien extends Entity {
      */
     public void idle() {
         alienPhysics.moveAlien(this, 0);
-        setState(State.IDLE);
+        if (state != State.JUMP && state != State.JUMP_START) {
+            setState(State.IDLE);
+        }
     }
 
 
@@ -196,6 +202,7 @@ public class Alien extends Entity {
             shootPower = 100;
         }
     }
+
 
 ////    GETTERS & SETTERS    ////
 

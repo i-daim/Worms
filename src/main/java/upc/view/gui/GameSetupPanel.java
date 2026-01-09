@@ -54,20 +54,26 @@ public class GameSetupPanel extends JPanel {
     private static final Color ACCENT_COLOR = new Color(100, 255, 201);
     private static final Font MAIN_FONT = new Font("Arial", Font.BOLD, 22);
 
+    private final double zoom = GamePanel.ZOOM;
+    private final int iconSize = (int) (40 * zoom);
+
     public GameSetupPanel(MainFrame frame) {
         this.setDoubleBuffered(true);
         this.setLayout(new BorderLayout());
 
+        int topMargin = (int) (90 * zoom);
+        int weaponHeight = (int) (170 * zoom);
+
         JPanel mainContentPanel = new JPanel();
         mainContentPanel.setLayout(new BoxLayout(mainContentPanel, BoxLayout.Y_AXIS));
         mainContentPanel.setOpaque(false);
-        mainContentPanel.setBorder(new EmptyBorder(200, 50, 20, 50)); // Marges
+        mainContentPanel.setBorder(new EmptyBorder(topMargin, 50, 20, 50)); // Marges
 
         mainContentPanel.add(Box.createVerticalGlue());
 
         JPanel configPanel = createRoundedPanel();
         configPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 20));
-        configPanel.setMaximumSize(new Dimension(1000, 140));
+        configPanel.setMaximumSize(new Dimension(1000, (int) (62 * zoom)));
 
         JPanel mapBox = createSection("CARTE", 240);
         String[] maps = {"Aléatoire", "Liberty", "Spaceship", "Ice", "Poison", "Hell"};
@@ -87,11 +93,11 @@ public class GameSetupPanel extends JPanel {
 
         JPanel weaponPanel = createRoundedPanel();
         weaponPanel.setLayout(new BorderLayout());
-        weaponPanel.setMaximumSize(new Dimension(900, 380));
-        weaponPanel.setPreferredSize(new Dimension(900, 380));
+        weaponPanel.setMaximumSize(new Dimension(900, weaponHeight));
+        weaponPanel.setPreferredSize(new Dimension(900, weaponHeight));
 
         JLabel weaponTitle = new JLabel("ARSENAL AUTORISÉ", SwingConstants.CENTER);
-        weaponTitle.setFont(new Font("Arial", Font.BOLD, 28));
+        weaponTitle.setFont(new Font("Arial", Font.BOLD, (int) (12 * zoom)));
         weaponTitle.setForeground(ACCENT_COLOR);
         weaponTitle.setBorder(new EmptyBorder(15, 0, 15, 0));
         weaponPanel.add(weaponTitle, BorderLayout.NORTH);
@@ -168,7 +174,7 @@ public class GameSetupPanel extends JPanel {
         p.setPreferredSize(new Dimension(width, 80));
 
         JLabel l = new JLabel(labelTitle);
-        l.setFont(new Font("Arial", Font.BOLD, 18));
+        l.setFont(new Font("Arial", Font.BOLD, (int) (8 * GamePanel.ZOOM)));
         l.setForeground(ACCENT_COLOR);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -218,7 +224,7 @@ public class GameSetupPanel extends JPanel {
         box.setContentAreaFilled(false);
         box.setBorderPainted(false);
         box.setForeground(Color.WHITE);
-        box.setFont(new Font("Arial", Font.BOLD, 18));
+        box.setFont(new Font("Arial", Font.BOLD, (int) (8 * GamePanel.ZOOM)));
         box.setHorizontalAlignment(SwingConstants.LEFT);
         box.setIconTextGap(20);
 
@@ -228,8 +234,8 @@ public class GameSetupPanel extends JPanel {
             return;
         }
 
-        int iconW = 90;
-        int iconH = 90;
+        int iconW = this.iconSize;
+        int iconH = this.iconSize;
         box.setIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, false)));
         box.setSelectedIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, true)));
         box.setPressedIcon(box.getSelectedIcon());

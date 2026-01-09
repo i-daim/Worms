@@ -89,9 +89,7 @@ public class TestSave {
         gameSave.save();
 
         GameSave loadedGameSave = GameSave.load();
-        Terrain dummyMap = TerrainGenerator.chooseRandomMap();
-        GameManager loadedGameManager = new GameManager(dummyMap, 5);
-        loadedGameSave.applyTo(loadedGameManager);
+        GameManager loadedGameManager = loadedGameSave.toGameManager();
 
         Terrain loadedTerrain = loadedGameManager.getTerrain();
 

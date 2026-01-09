@@ -77,7 +77,7 @@ public class GameSetupPanel extends JPanel {
         configPanel.add(mapBox);
 
         JPanel teamBox = createSection("VERS PAR ÉQUIPE", 320);
-        teamSizeSlider = new JSlider(1, 5, 2);
+        teamSizeSlider = new JSlider(1, 4, 2);
         styleSlider(teamSizeSlider);
         teamBox.add(teamSizeSlider);
         configPanel.add(teamBox);

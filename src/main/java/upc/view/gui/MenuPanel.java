@@ -25,15 +25,18 @@ public class MenuPanel extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        double zoom = GamePanel.ZOOM;
+        int strut = (int) (10 * zoom);
+
         this.add(Box.createVerticalGlue());
         this.add(newGame);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(strut));
         this.add(loadGame);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(strut));
         this.add(settingsButton);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(strut));
         this.add(quitGame);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(strut));
         this.add(Box.createVerticalGlue());
 
         SoundManager.playMusic("Menu Theme");
@@ -61,9 +64,5 @@ public class MenuPanel extends JPanel {
 
     public void addSettingsListener(ActionListener listener) {
         settingsButton.addActionListener(listener);
-    }
-
-    public void stopMusic() {
-        SoundManager.stopMusic();
     }
 }

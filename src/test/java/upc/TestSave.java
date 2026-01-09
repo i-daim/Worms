@@ -28,14 +28,14 @@ public class TestSave {
 
     @BeforeEach
     void setup() {
-        zlerps = new Team("Zlerps", 5);
-        glorbs = new Team("Glorbs", 5);
+        zlerps = new Team("Zlerps", 4);
+        glorbs = new Team("Glorbs", 4);
 
         zlerpsInventory = new Inventory();
         glorbsInventory = new Inventory();
         Terrain realMap = TerrainGenerator.chooseRandomMap();
 
-        gameManager = new GameManager(realMap, 5);
+        gameManager = new GameManager(realMap, 4);
 
         terrain = gameManager.getTerrain();
     }
@@ -49,7 +49,7 @@ public class TestSave {
     @Test
     /*Méthode test permettant de tester la classe SaveTeam*/
     public void testSaveTeam() {
-        for (int i =0; i < 5; i++) {
+        for (int i =0; i < 4; i++) {
             zlerps.getAliens()[i] = createTestAlien(gameManager, zlerps, i, i + 1);
             glorbs.getAliens()[i] = createTestAlien(gameManager, zlerps, i + 1, i);
         }

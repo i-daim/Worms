@@ -7,7 +7,7 @@ import java.io.IOException;
 import upc.model.jeu.GameManager;
 import upc.model.save.GameSave;
 import upc.view.gui.GamePanel;
-import upc.view.gui.GameSetupPanel;
+import upc.view.gui.SetupPanel;
 import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
 import upc.view.gui.SettingsPanel;
@@ -24,7 +24,7 @@ public class MenuActions {
 
     public ActionListener getNewGameAction() {
         return e -> {
-            GameSetupPanel setupPanel = new GameSetupPanel(mainFrame);
+            SetupPanel setupPanel = new SetupPanel(mainFrame);
 
             mainFrame.setContentPane(setupPanel);
             mainFrame.revalidate();

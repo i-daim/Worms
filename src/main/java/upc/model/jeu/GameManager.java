@@ -305,10 +305,11 @@ public class GameManager {
     }
 
     public void setActiveProjectile(Projectile p) {
-        if (activeProjectile instanceof Trap) {
+        if (actionDone || activeProjectile instanceof Trap) {
             return;
         }
         this.activeProjectile = p;
+        actionDone = true;
     }
 
     public boolean isWindEnabled() {

@@ -28,7 +28,7 @@ public class AnimationManager {
         zlerps.put("walk_left",
                 new Animation("characters/zlerp/walk", 5, true));
 
-        // AJOUT : Animations de saut
+        //Animations de saut
         zlerps.put("jump_right",
                 new Animation("characters/zlerp/jump_z", 1, false));
         zlerps.put("jump_left",

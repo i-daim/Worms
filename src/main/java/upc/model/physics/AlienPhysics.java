@@ -397,6 +397,10 @@ public class AlienPhysics {
         return false;
     }
 
+    /**
+     * Limite la vitesse de chute maximale pour éviter que les aliens traversent le sol
+     * (tunneling) s'ils tombent de trop haut.
+     */
     public void limitFallVelocities() {
         for (AlienState state : alienStates.values()) {
             Vector2 vel = state.body.getLinearVelocity();

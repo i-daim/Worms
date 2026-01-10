@@ -68,6 +68,7 @@ public class AlienPhysics {
     // Facteur pour convertir la vitesse supérieure à la max fall speed en points de dégâts
     private static final double DMG_MULTIPLIER = 0.75;
 
+    // Friction nulle quand on bouge pour avancer fluidement
     private static final double FRICTION_MOVING = 0.0;
     private static final double FRICTION_STATIC = 100.0;
     private static final double DENSITY = 2;

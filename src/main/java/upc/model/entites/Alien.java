@@ -30,10 +30,7 @@ public class Alien extends Entity {
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {
-        IDLE,
-        WALK,
-        JUMP_START,
-        JUMP
+        IDLE, WALK, JUMP, AIR, LAND
     }
     private State state;
 
@@ -75,7 +72,7 @@ public class Alien extends Entity {
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
         direction = true;
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (state != State.JUMP && state != State.AIR) {
             setState(State.WALK);
         }
     }
@@ -83,19 +80,19 @@ public class Alien extends Entity {
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
         direction = false;
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (state != State.JUMP && state != State.AIR) {
             setState(State.WALK);
         }
     }
 
     public void jump() {
         alienPhysics.jumpAlien(this);
-        setState(State.JUMP_START);
+        setState(State.JUMP);
     }
 
     public void idle() {
         alienPhysics.moveAlien(this, 0);
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (state != State.JUMP && state != State.AIR && state != State.LAND) {
             setState(State.IDLE);
         }
     }

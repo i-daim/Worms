@@ -192,7 +192,8 @@ public class AlienPhysics {
 
     public void jumpAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
-        if (state != null && !state.hasJumped) {
+        if (state != null && !state.hasJumped
+                || alien.getEquippedItem().getName().equals("Jetpack")) {
             // Déverrouillage complet pour le saut
             state.body.setGravityScale(1.0);
             state.body.setAtRest(false);

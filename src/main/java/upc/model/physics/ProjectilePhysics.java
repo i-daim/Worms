@@ -160,19 +160,8 @@ public class ProjectilePhysics {
     }
 
     /**
-     * Met à jour l'état de tous les projectiles actifs à chaque frame.
-     * <p>
-     * Cette méthode effectue plusieurs tâches essentielles :
-     * <ul>
-     * <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
-     * <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
-     * <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son
-     * explosion.</li>
-     * <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts
-     * ou sortis.</li>
-     * </ul>
-     * *
-     * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
+     * Applique la force du vent sur tous les projectiles actifs.
+     * Parcourt la liste et ajoute une force vectorielle au body Dyn4j.
      */
     private void applyWindToProjectiles() {
         for (Projectile proj : activeProjectiles) {
@@ -192,12 +181,12 @@ public class ProjectilePhysics {
      * <p>
      * Cette méthode effectue plusieurs tâches essentielles :
      * <ul>
-     *      <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
-     *      <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
-     *      <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son
-     *      explosion.</li>
-     *      <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts
-     *      ou sortis.</li>
+     * <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
+     * <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
+     * <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son
+     * explosion.</li>
+     * <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts
+     * ou sortis.</li>
      * </ul>
      * *
      * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
@@ -308,11 +297,11 @@ public class ProjectilePhysics {
      * <p>
      * Cette méthode applique les conséquences de l'explosion :
      * <ul>
-     *      <li>Calcule les dégâts infligés aux Aliens en fonction de leur distance
-     *      à l'impact.</li>
-     *      <li>Applique une force de recul (knockback) physique aux Aliens touchés.</li>
-     *      <li>(Note : La destruction du terrain est généralement gérée ailleurs
-     *      ou pourrait être ajoutée ici).</li>
+     * <li>Calcule les dégâts infligés aux Aliens en fonction de leur distance
+     * à l'impact.</li>
+     * <li>Applique une force de recul (knockback) physique aux Aliens touchés.</li>
+     * <li>(Note : La destruction du terrain est généralement gérée ailleurs
+     * ou pourrait être ajoutée ici).</li>
      * </ul>
      * *
      * @param proj Le projectile qui vient d'exploser.
@@ -351,7 +340,11 @@ public class ProjectilePhysics {
 
 
     /**
-     * appelé par le moteur physique lors d'un contact direct.
+     * Appelé par le moteur physique lors d'un contact direct entre deux corps.
+     * Vérifie si c'est un projectile qui touche quelque chose.
+     *
+     * @param b1 Le premier corps impliqué dans la collision
+     * @param b2 Le second corps impliqué dans la collision
      */
     public void checkProjectileCollision(Body b1, Body b2) {
         if (b1 != null && b1.getUserData() instanceof Projectile p) {
@@ -380,6 +373,9 @@ public class ProjectilePhysics {
     /**
      * Gère l'impact d'une balle standard (Uzi, Shotgun).
      * Dégâts directs sur la cible, pas d'explosion de zone.
+     *
+     * @param bullet Le projectile de type Balle
+     * @param target Le corps physique touché
      */
     public void handleBulletImpact(Bullet bullet, Body target) {
         if (target == null || target.getUserData() instanceof Bullet) {

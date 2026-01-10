@@ -33,22 +33,34 @@ import java.util.Random;
  */
 public class PhysicsEngine {
 
+    // Références au monde du jeu et au terrain
     private final GameWorld gameWorld;
     private Terrain terrain;
+
+    // Le monde physique (Dyn4j) qui contient tous les corps
     private final World<Body> world;
 
+    // Sous-systèmes spécialisés pour éviter d'avoir une classe avec trop de lignes
     private final TerrainPhysics terrainPhysics;
     private final AlienPhysics alienPhysics;
     private final ProjectilePhysics projectilePhysics;
 
+    // --- Paramètres de simulation ---
     private Vector2 wind = new Vector2(0, 0);
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 60.0);
 
+    // Utilitaires
     private final Random random = new Random();
     private static final double MAX_WIND_POWER = 15.0;
 
-    ////    CONSTRUCTEUR    ////
+    /**
+     * Constructeur du moteur physique.
+     * Initialise Dyn4j, configure la gravité et met en place l'écouteur
+     * (listener) de collisions
+     *
+     * @param gameWorld : Référence au monde de jeu global.
+     */
     public PhysicsEngine(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         this.terrain = gameWorld.getTerrain();

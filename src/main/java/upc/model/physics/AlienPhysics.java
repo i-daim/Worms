@@ -105,6 +105,7 @@ public class AlienPhysics {
             AlienState state = entry.getValue();
             Body body = state.body;
 
+            // Si l'alien est mort, on ne fais plus de calculs pour celui ci
             if (!alien.isAlive()) {
                 continue;
             }

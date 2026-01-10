@@ -246,7 +246,7 @@ public class PhysicsEngine {
     }
 
     /**
-     * Change le terrain actif (ex: chargement d'un niveau).
+     * Change le terrain actif .
      * Propage le changement aux sous-systèmes physiques.
      *
      * @param terrain Le nouveau terrain à utiliser.

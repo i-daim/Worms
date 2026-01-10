@@ -65,6 +65,7 @@ public class AlienPhysics {
     private static final double SAFE_FALL_SPEED = 17.5;
     // Vitesse max de chute (terminal velocity) pour éviter les bugs de collision
     private static final double MAX_FALL_SPEED = 35.0;
+    // Facteur pour convertir la vitesse supérieure à la max fall speed en points de dégâts
     private static final double DMG_MULTIPLIER = 0.75;
 
     private static final double FRICTION_MOVING = 0.0;

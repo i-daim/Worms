@@ -20,6 +20,7 @@ public class ImageManager {
         ImageManager.load("Shotgun", "/items/shotgun.png");
         ImageManager.load("Grenade", "/items/grenade.png");
         ImageManager.load("Mine", "/items/mine.png");
+        ImageManager.load("jetpack", "/items/jetpack.png");
 
         ImageManager.load("Bazooka_Inv", "/items/bazooka_inv.png");
         ImageManager.load("Uzi_Inv", "/items/uzi_inv.png");

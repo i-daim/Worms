@@ -211,25 +211,31 @@ public class ProjectilePhysics {
             Projectile proj = iterator.next();
             Body body = proj.getBody();
 
+            // Gestion des timers internes
             proj.incrementFrame();
 
+            // Sync Physique (Mètres) -> Visuel (Pixels)
             Vector2 pos = body.getTransform().getTranslation();
             int x = Converter.toPixels(pos.x);
             int y = Converter.toPixels(pos.y);
             proj.setPosition(new Position(x, y));
 
+            // Explosion sur Timer
             if (proj instanceof Throwable t) {
                 t.decrementTimer();
                 if (t.isReadyToExplode()) {
                     proj.setState(Projectile.State.EXPLODED);
                 }
             }
+            // Activation des pièges
             if (proj instanceof Trap trap) {
                 trap.activation(gameWorld);
             }
+
+            // --- Vérification Eau / Sortie de Map ---
             int tileY = y / TerrainGenerator.TILE_SIZE;
             if (terrain.isWater(tileY)) {
-                SoundManager.playEffect("Splash");
+                SoundManager.playEffect("Splash"); // Effet sonore
                 proj.setState(Projectile.State.OUT_OF_BOUNDS);
                 world.removeBody(body);
                 iterator.remove();
@@ -239,18 +245,22 @@ public class ProjectilePhysics {
             int mapWidth = terrain.getWidth();
             int mapHeight = terrain.getHeight();
 
+            // Si le projectile va trop loin il disparait
             if (y > mapHeight + 100 || x < -500 || x > mapWidth + 500) {
                 proj.setState(Projectile.State.OUT_OF_BOUNDS);
                 world.removeBody(body);
                 iterator.remove();
                 continue;
             }
+            // --- Gestion de l'Explosion ---
+            // Si marqué "EXPLODED", on déclenche l'effet
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
                 continue;
             }
+            // --- Détection de Proximité
             if (proj instanceof Throwable || proj instanceof Trap) {
                 double triggerDistancePixels = 20.0;
 
@@ -258,15 +268,19 @@ public class ProjectilePhysics {
                     triggerDistancePixels = ((Trap) proj).getActivationRadius();
                 }
                 boolean exploded = false;
+
+                // On check tous les aliens
                 for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
                     if (!alien.isAlive()) {
                         continue;
                     }
 
+                    // Sécurité : On ne s'explose pas dessus
                     if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
                         continue;
                     }
 
+                    // Calcul de distance optimisé
                     Position alienPos = alien.getPosition();
                     double dx = alienPos.getX() - x;
                     double dy = alienPos.getY() - y;
@@ -311,9 +325,12 @@ public class ProjectilePhysics {
         int explosionX = proj.getPosition().getX();
         int explosionY = proj.getPosition().getY();
         int radius = proj.getExplosionRadius();
+
+        //Explosion sonore
         physicsEngine.getGameWorld().explode(explosionX, explosionY, radius);
         SoundManager.playEffect("Explosion");
 
+        // Calcul Physique :
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();
             double distance = alienPos.distance(explosionX, explosionY);
@@ -333,6 +350,9 @@ public class ProjectilePhysics {
     }
 
 
+    /**
+     * appelé par le moteur physique lors d'un contact direct.
+     */
     public void checkProjectileCollision(Body b1, Body b2) {
         if (b1 != null && b1.getUserData() instanceof Projectile p) {
 

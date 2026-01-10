@@ -154,11 +154,14 @@ public class AlienPhysics {
             int pixelY = Converter.toPixels(v.y);
             alien.setPosition(new Position(pixelX, pixelY));
 
-            // Eau
+            // --- Gestion de l'Eau ---
             int tileY = pixelY / TerrainGenerator.TILE_SIZE;
+
+            // Si on touche l'eau, petit effet sonore "Splash"
             if (terrain.isWater(tileY) && alien.getHealthPoints() > 0) {
                 SoundManager.playEffect("Splash");
             }
+            // Si on dépasse le niveau de l'eau (noyade), l'alien meurt direct
             if (tileY >= Terrain.getWaterLevel()) {
                 alien.receiveDmg(alien.getHealthPoints());
             }

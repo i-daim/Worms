@@ -34,7 +34,7 @@ import upc.controller.GameSetupController;
 import java.awt.RenderingHints;
 import java.awt.Cursor;
 
-public class GameSetupPanel extends JPanel {
+public class SetupPanel extends JPanel {
     private final Image background = ImageManager.get("menu_background");
 
     private final JComboBox<String> mapSelector;
@@ -57,7 +57,7 @@ public class GameSetupPanel extends JPanel {
     private final double zoom = GamePanel.ZOOM;
     private final int iconSize = (int) (40 * zoom);
 
-    public GameSetupPanel(MainFrame frame) {
+    public SetupPanel(MainFrame frame) {
         this.setDoubleBuffered(true);
         this.setLayout(new BorderLayout());
 
@@ -75,18 +75,25 @@ public class GameSetupPanel extends JPanel {
         configPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 20));
         configPanel.setMaximumSize(new Dimension(1000, (int) (62 * zoom)));
 
-        JPanel mapBox = createSection("CARTE", 240);
-        String[] maps = {"Aléatoire", "Liberty", "Spaceship", "Ice", "Poison", "Hell"};
+        JPanel mapBox = createSection("Map", 240);
+        String[] maps = {"Random", "Liberty", "Spaceship", "Ice", "Poison", "Hell"};
         mapSelector = new JComboBox<>(maps);
         styleComboBox(mapSelector);
         mapBox.add(mapSelector);
         configPanel.add(mapBox);
 
-        JPanel teamBox = createSection("VERS PAR ÉQUIPE", 320);
-        teamSizeSlider = new JSlider(1, 5, 2);
+        JPanel teamBox = createSection("Team Size", 250);
+        teamSizeSlider = new JSlider(1, 4, 2);
         styleSlider(teamSizeSlider);
         teamBox.add(teamSizeSlider);
         configPanel.add(teamBox);
+
+        JPanel windBox = createSection("Wind", 200);
+        chkWind = createWeaponCheckbox("Activated");
+        chkWind.setSelected(false); // Désactivé par défaut
+        chkWind.setAlignmentX(Component.CENTER_ALIGNMENT);
+        windBox.add(chkWind);
+        configPanel.add(windBox);
 
         mainContentPanel.add(configPanel);
         mainContentPanel.add(Box.createVerticalStrut(30));
@@ -96,7 +103,7 @@ public class GameSetupPanel extends JPanel {
         weaponPanel.setMaximumSize(new Dimension(900, weaponHeight));
         weaponPanel.setPreferredSize(new Dimension(900, weaponHeight));
 
-        JLabel weaponTitle = new JLabel("ARSENAL AUTORISÉ", SwingConstants.CENTER);
+        JLabel weaponTitle = new JLabel("Allowed Items", SwingConstants.CENTER);
         weaponTitle.setFont(new Font("Arial", Font.BOLD, (int) (12 * zoom)));
         weaponTitle.setForeground(ACCENT_COLOR);
         weaponTitle.setBorder(new EmptyBorder(15, 0, 15, 0));
@@ -112,8 +119,6 @@ public class GameSetupPanel extends JPanel {
         chkGrenade = createWeaponCheckbox("Grenade");
         chkMine = createWeaponCheckbox("Mine");
         chkJetpack = createWeaponCheckbox("Jetpack");
-        chkWind = createWeaponCheckbox("Vent");
-        chkWind.setSelected(false); // Désactivé par défaut
 
         itemsGrid.add(chkBazooka);
         itemsGrid.add(chkUzi);
@@ -121,7 +126,6 @@ public class GameSetupPanel extends JPanel {
         itemsGrid.add(chkGrenade);
         itemsGrid.add(chkMine);
         itemsGrid.add(chkJetpack);
-        itemsGrid.add(chkWind);
 
         weaponPanel.add(itemsGrid, BorderLayout.CENTER);
 
@@ -131,8 +135,8 @@ public class GameSetupPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
         buttonPanel.setOpaque(false);
 
-        backButton = ButtonManager.createGameButton("Retour");
-        startButton = ButtonManager.createGameButton("Lancer le combat");
+        backButton = ButtonManager.createGameButton("Back");
+        startButton = ButtonManager.createGameButton("Start Game");
 
         buttonPanel.add(backButton);
         buttonPanel.add(startButton);

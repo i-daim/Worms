@@ -25,11 +25,13 @@ import java.util.Objects;
 public class GameSave {
 
     //Attribut minimal pour sauvegarder le jeu
+    private final int teamSize;
     private final TeamSave[] teams;
     private final Terrain terrain;
 
     //Constructeur
     public GameSave(GameManager gameManager) {
+        this.teamSize = gameManager.getTeamSize();
         this.teams = new TeamSave[gameManager.getTeams().length];
         for (int i = 0; i < gameManager.getTeams().length; i++) {
             this.teams[i] = new TeamSave(gameManager.getTeams()[i]);
@@ -69,10 +71,10 @@ public class GameSave {
     }
 
     /**
-     * Méthode permettant d'appliquer les données enregistrées à un jeu
-     * @param gameManager La partie de jeu sur laquelle appliquer le save
+     * Méthode permettant de créer un GameManager à partir de la sauvegarde
+     * @return Le GameManager restauré
      */
-    public void applyTo(GameManager gameManager) throws IOException {
+    public GameManager toGameManager() throws IOException {
         //Permet de récupérer l'image de fond de la map
         String cheminBackground = "/maps/" + terrain.getMapName() + "_background.png";
         BufferedImage imageBackground = ImageIO.read(Objects.requireNonNull(
@@ -88,8 +90,8 @@ public class GameSave {
         //Pour mettre à jour la map en fonction des collisions de la sauvegarde
         terrain.updateMapImage();
 
-        //Permet de récupérer le terrain sauvegardé
-        gameManager.setMap(terrain);
+        // Création du GameManager
+        GameManager gameManager = new GameManager(terrain, teamSize);
 
         //Implémente les équipes sauvegardées
         Team[] gameTeams = new Team[teams.length];
@@ -102,6 +104,8 @@ public class GameSave {
 
         // Réinitialise la physique avec les nouveaux aliens
         gameManager.getWorld().initializePhysics();
+
+        return gameManager;
     }
 
     //Classe permettant de générér une équipe avec les informations minimales à sauvegarder

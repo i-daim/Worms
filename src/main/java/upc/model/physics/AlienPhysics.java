@@ -78,6 +78,7 @@ public class AlienPhysics {
     // Résistance à l'air
     private static final double LINEAR_DAMPING = 4.0;
 
+    // Dimensions de la hitbox de l'alien (converties en mètres)
     private static final double ALIEN_WIDTH = Converter.toMeters(18);
     private static final double ALIEN_HEIGHT = Converter.toMeters(25);
 

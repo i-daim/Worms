@@ -370,9 +370,11 @@ public class AlienPhysics {
     private boolean isOnGround(Body body) {
         Vector2 pos = body.getTransform().getTranslation();
         double x = pos.x;
+        // Check juste en dessous des pieds (avec 2 pixels de marge)
         double feetY = pos.y + (ALIEN_HEIGHT / 2) + Converter.toMeters(2);
         double halfWidth = ALIEN_WIDTH / 2;
 
+        // On va faire des tests , centre ou gauche ou droite
         return isSolid(x, feetY)
                 || isSolid(x - halfWidth + Converter.toMeters(1), feetY)
                 || isSolid(x + halfWidth - Converter.toMeters(1), feetY);

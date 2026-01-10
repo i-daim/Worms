@@ -294,8 +294,13 @@ public class AlienPhysics {
         }
     }
 
+    /**
+     * Fait sauter l'alien (impulsion vers le haut).
+     * @param alien : L'alien qui saute
+     */
     public void jumpAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
+        // On ne saute que si on n'a pas déjà sauté (éviter le double saut infini)
         if (state != null && !state.hasJumped) {
             // Déverrouillage complet pour le saut
             state.body.setGravityScale(1.0);

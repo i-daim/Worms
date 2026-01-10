@@ -69,14 +69,15 @@ public class AlienPhysics {
             // Gestion de l'atterrissage (Transition JUMP -> IDLE)
             if (reallyOnGround) {
                 state.hasJumped = false;
-                if (alien.getState()
-                        == Alien.State.JUMP || alien.getState() == Alien.State.JUMP_START) {
-                    alien.setState(Alien.State.IDLE);
+                if (alien.getState() == Alien.State.JUMP || alien.getState() == Alien.State.AIR) {
+                    alien.setState(Alien.State.LAND);
                 }
             } else {
                 // Gestion de l'air (Transition IDLE/WALK -> JUMP si on tombe)
                 double fallSpeed = body.getLinearVelocity().y;
-                if (fallSpeed > 1.0 && alien.getState() != Alien.State.JUMP_START) {
+                if (fallSpeed > 1.0 && alien.getState() != Alien.State.WALK) {
+                    alien.setState(Alien.State.AIR);
+                } else if (movingUp && alien.getState() != Alien.State.WALK) {
                     alien.setState(Alien.State.JUMP);
                 }
             }

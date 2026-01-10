@@ -237,6 +237,10 @@ public class PhysicsEngine {
         return terrain;
     }
 
+    /**
+     * Change le terrain actif (ex: chargement d'un niveau).
+     * Propage le changement aux sous-systèmes physiques.
+     */
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
         this.alienPhysics.setTerrain(terrain);

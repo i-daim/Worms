@@ -143,13 +143,16 @@ public class TerrainPhysics {
     // --- Setters ---
 
     /**
-     * Marque le terrain comme "sale" (modifié).
-     * Sera reconstruit au prochain appel de updateTerrain().
+     * Marque le terrain comme modifié.
+     * Sera reconstruis au prochain appel de updateTerrain().
      */
     public void setModified(boolean modified) {
         this.modified = modified;
     }
 
+    /**
+     * Change le terrain actif (chargement de niveau).
+     */
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
         setModified(true);

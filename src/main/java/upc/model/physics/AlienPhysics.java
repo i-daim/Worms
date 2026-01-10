@@ -259,6 +259,9 @@ public class AlienPhysics {
         }
     }
 
+    /**
+     * Nettoie tout le monde (pour une fin de partie).
+     */
     public void clearAliens() {
         for (AlienState state : alienStates.values()) {
             world.removeBody(state.body);

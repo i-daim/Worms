@@ -15,11 +15,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GameManager {
     /** Constantes */
     public static final int ROUND_TIME = 60;
-    public static final int TEAM_SIZE = 2;
 
     private Terrain terrain;
     private final String mapName;
     private final GameWorld gameWorld;
+    private final int teamSize;
     private Team[] teams;
 
     /** Attribut en lien à la partie */
@@ -45,10 +45,11 @@ public class GameManager {
     public GameManager(Terrain terrain, int teamSize) {
         this.terrain = terrain;
         this.mapName = terrain.getMapName();
+        this.teamSize = teamSize;
 
         this.teams = new Team[2];
-        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
-        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+        this.teams[0] = new Team("Zlerps", teamSize);
+        this.teams[1] = new Team("Glorbs", teamSize);
 
         this.gameWorld = new GameWorld(this, this.terrain);
         this.activeAnimations = new CopyOnWriteArrayList<>();
@@ -59,14 +60,16 @@ public class GameManager {
     /**
      * Constructeur pour {@code GameManager}
      * @param mapName : Crée le terrain de jeu selon le nom de terrain donnée
+     * @param teamSize : Taille de l'équipe
      */
-    public GameManager(String mapName) {
+    public GameManager(String mapName, int teamSize) {
         this.terrain = TerrainGenerator.createTerrain(mapName);
         this.mapName = mapName;
+        this.teamSize = teamSize;
 
         this.teams = new Team[2];
-        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
-        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+        this.teams[0] = new Team("Zlerps", teamSize);
+        this.teams[1] = new Team("Glorbs", teamSize);
 
         this.gameWorld = new GameWorld(this, this.terrain);
         this.activeAnimations = new CopyOnWriteArrayList<>();
@@ -367,6 +370,15 @@ public class GameManager {
      */
     public Team[] getTeams() {
         return teams;
+    }
+
+
+    /**
+     * Retourne la taille de l'équipe
+     * @return l'attribut teamSize
+     */
+    public int getTeamSize() {
+        return teamSize;
     }
 
     /**

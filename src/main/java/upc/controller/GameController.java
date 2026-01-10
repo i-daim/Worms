@@ -151,12 +151,12 @@ public class GameController {
         }
 
         // Gestion des mouvements
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_Z)) {
             activeAlien.jump();
         }
-        if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
+        if (keyHandler.isKeyPressed(KeyEvent.VK_Q)) {
             activeAlien.moveLeft();
-        } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_D)) {
             activeAlien.moveRight();
         } else {
             activeAlien.idle();

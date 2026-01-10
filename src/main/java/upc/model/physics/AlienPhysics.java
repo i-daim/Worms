@@ -362,6 +362,11 @@ public class AlienPhysics {
         }
     }
 
+    /**
+     * Détecte si l'alien touche le sol.
+     * Utilise 3 points de contrôle sous les pieds (gauche, centre, droite) pour éviter
+     * de tomber si on est à moitié sur un bord.
+     */
     private boolean isOnGround(Body body) {
         Vector2 pos = body.getTransform().getTranslation();
         double x = pos.x;

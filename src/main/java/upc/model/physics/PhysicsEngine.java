@@ -149,6 +149,13 @@ public class PhysicsEngine {
     }
 
 ////    FONCTIONS POUR PROJECTILES    ////
+
+    /**
+     * Tire un projectile.
+     * @param projectile : L'objet projectile logique.
+     * @param angleDegrees : L'angle de tir en degrés.
+     * @param powerPercent : La puissance du tir (0 à 100).
+     */
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }

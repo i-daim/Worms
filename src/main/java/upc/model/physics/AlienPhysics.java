@@ -61,6 +61,7 @@ public class AlienPhysics {
 
     // --- Constantes de Physique ---
 
+    // Vitesse à partir de laquelle on commence à se faire mal en tombant
     private static final double SAFE_FALL_SPEED = 17.5;
     private static final double MAX_FALL_SPEED = 35.0;
     private static final double DMG_MULTIPLIER = 0.75;

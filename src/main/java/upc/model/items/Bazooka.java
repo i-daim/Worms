@@ -8,7 +8,7 @@ import upc.model.entites.projectiles.Projectile;
 public class Bazooka extends Weapon {
 
 
-    /**Constantes représentants les dégats, le nombre de tir et la puissande de base*/
+    /**Constantes représentants les dégats, le nombre de tir et la puissance de base*/
     private static final int DAMAGE = 45;
     private static final int NB_OF_SHOTS = 1;
     private static final int BASE_POWER = 20;
@@ -31,7 +31,6 @@ public class Bazooka extends Weapon {
     @Override
     public Projectile useItem(GameWorld gameWorld, Alien shooter) {
 
-        //
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
         double distance = 20.0;

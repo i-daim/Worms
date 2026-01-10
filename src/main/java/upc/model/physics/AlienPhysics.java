@@ -166,6 +166,7 @@ public class AlienPhysics {
                 alien.receiveDmg(alien.getHealthPoints());
             }
 
+            // On stocke la vitesse actuelle pour le calcul de dégâts au prochain tour
             state.previousVelocityY = body.getLinearVelocity().y;
         }
     }

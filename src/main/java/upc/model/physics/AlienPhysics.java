@@ -280,12 +280,16 @@ public class AlienPhysics {
             // Déverrouillage immédiat pour permettre le mouvement
             state.body.setGravityScale(1.0);
             state.body.setAtRest(false);
+
+            // On passe en friction 0 pour glisser sur le sol sans ralentir
             if (state.body.getFixtureCount() > 0) {
                 state.body.getFixture(0).setFriction(FRICTION_MOVING);
             }
 
+            // On applique la vitesse directement
             double speed = 3.0 * direction;
             double velY = state.body.getLinearVelocity().y;
+            // On garde la vitesse verticale actuelle (chute/saut)
             state.body.setLinearVelocity(new Vector2(speed, velY));
         }
     }

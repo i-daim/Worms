@@ -248,6 +248,10 @@ public class AlienPhysics {
         return body;
     }
 
+    /**
+     * Supprime un alien du monde physique (ex: quand il meurt et disparaît).
+     * @param alien : L'alien à retirer.
+     */
     public void removeAlien(Alien alien) {
         AlienState state = alienStates.remove(alien);
         if (state != null) {

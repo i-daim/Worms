@@ -356,6 +356,7 @@ public class ProjectilePhysics {
     public void checkProjectileCollision(Body b1, Body b2) {
         if (b1 != null && b1.getUserData() instanceof Projectile p) {
 
+            // Ignore la collision avec le tireur au tout début
             if (b2 != null && b2.getUserData() instanceof Alien alien) {
                 if (p.getShooter() == alien && p.getFrameCount() < 30) {
                     return;
@@ -364,7 +365,9 @@ public class ProjectilePhysics {
             if (!p.isActive()) {
                 return;
             }
+            // La roquette explose apres un contact
             if (p instanceof Rocket && b2 != null) {
+                // Gestion spécifique balle
                 p.setState(Projectile.State.EXPLODED);
 
             } else if (p instanceof Bullet && b2 != null) {
@@ -374,6 +377,10 @@ public class ProjectilePhysics {
     }
 
 
+    /**
+     * Gère l'impact d'une balle standard (Uzi, Shotgun).
+     * Dégâts directs sur la cible, pas d'explosion de zone.
+     */
     public void handleBulletImpact(Bullet bullet, Body target) {
         if (target == null || target.getUserData() instanceof Bullet) {
             return;

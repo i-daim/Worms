@@ -62,7 +62,8 @@ public class Shotgun extends Weapon {
             //Angle changeant selon la dispersion choisi pour la balle
             int angle = baseAngle + spread;
 
-            // Crée le projectile en lien avec l'arme en prenant en compte l'arme, le tireur et la position du tir
+            // Crée le projectile en lien avec l'arme en prenant en compte l'arme, le tireur
+            // Et la position du tir
             proj = new Bullet(this, shooter, startPos);
 
             //Ajout du projectile dans le moteur physique

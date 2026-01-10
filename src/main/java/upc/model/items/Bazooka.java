@@ -50,7 +50,8 @@ public class Bazooka extends Weapon {
                 shooter.getPosition().getY() + offsetY - 5// Légèrement plus haut (épaules)
         );
 
-        // Crée le projectile en lien avec l'arme en prenant en compte l'arme, le tireur et la position du tir
+        // Crée le projectile en lien avec l'arme en prenant en compte l'arme, le tireur
+        // Et la position du tir
         Projectile proj = new Rocket(this, shooter, startPos);
 
         //Ajout du projectile dans le moteur physique

@@ -56,6 +56,7 @@ public class AlienPhysics {
         }
     }
 
+    // Map qui lie chaque entité "Alien" (logique jeu) à son "AlienState" (physique)
     private final Map<Alien, AlienState> alienStates = new HashMap<>();
 
     private static final double SAFE_FALL_SPEED = 17.5;

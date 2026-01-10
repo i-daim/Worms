@@ -160,9 +160,14 @@ public class PhysicsEngine {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
 
+    /**
+     * Méthode interne appelée par le CollisionListener.
+     * Vérifie si 'b1' est un projectile et gère l'impact sur 'b2'.
+     */
     private void checkProjectileCollision(Body b1, Body b2) {
         projectilePhysics.checkProjectileCollision(b1, b2);
     }
+
 
 
     public void randomizeWind() {

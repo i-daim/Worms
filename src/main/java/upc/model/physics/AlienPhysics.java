@@ -309,6 +309,7 @@ public class AlienPhysics {
                 state.body.getFixture(0).setFriction(FRICTION_MOVING);
             }
 
+            // On conserve la vitesse X, et on set une vitesse Y négative (vers le haut)
             Vector2 vel = state.body.getLinearVelocity();
             state.body.setLinearVelocity(vel.x, -20.0);
             state.hasJumped = true;

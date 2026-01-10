@@ -269,6 +269,8 @@ public class ProjectilePhysics {
         physicsEngine.getGameWorld().explode(explosionX, explosionY, radius);
         SoundManager.playEffect("Explosion");
 
+        proj.applyExplosionDamage(gameWorld);
+
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();
             double distance = alienPos.distance(explosionX, explosionY);
@@ -286,6 +288,7 @@ public class ProjectilePhysics {
             }
         }
     }
+
 
 
     public void checkProjectileCollision(Body b1, Body b2) {

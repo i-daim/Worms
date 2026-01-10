@@ -113,6 +113,8 @@ public class AlienPhysics {
             // --- Détection du sol ---
             // On regarde si les pieds touchent un bloc solide
             boolean physicalContact = isOnGround(body);
+            // On vérifie si on est en train de monter (vitesse Y négative = vers le haut)
+            // C'est important pour ne pas considérer qu'on est "au sol" pile au moment où on est en train de sauter
             boolean movingUp = body.getLinearVelocity().y < -1.0;
             boolean reallyOnGround = physicalContact && !movingUp;
 

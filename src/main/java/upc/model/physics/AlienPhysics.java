@@ -380,11 +380,16 @@ public class AlienPhysics {
                 || isSolid(x + halfWidth - Converter.toMeters(1), feetY);
     }
 
+    /**
+     * Vérifie dans le tableau de collisions du terrain si une coordonnée (x, y) est un mur.
+     */
     private boolean isSolid(double x, double y) {
+        // Conversion position (mètres) -> Index grille (cases)
         int tileX = Converter.toPixels(x) / TerrainGenerator.TILE_SIZE;
         int tileY = Converter.toPixels(y) / TerrainGenerator.TILE_SIZE;
         boolean[][] collisions = terrain.getCollisions();
 
+        // Vérification des bornes du tableau pour éviter un Crash
         if (tileY >= 0 && tileY < collisions.length
                 && tileX >= 0 && tileX < collisions[0].length) {
             return collisions[tileY][tileX];

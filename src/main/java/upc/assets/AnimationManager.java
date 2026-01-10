@@ -27,16 +27,19 @@ public class AnimationManager {
                 new Animation("characters/zlerp/walk", 5, false));
         zlerps.put("walk_left",
                 new Animation("characters/zlerp/walk", 5, true));
-
-        //Animations de saut
         zlerps.put("jump_right",
-                new Animation("characters/zlerp/jump_z", 1, false));
+                new Animation("characters/zlerp/jump", 2, false));
         zlerps.put("jump_left",
-                new Animation("characters/zlerp/jump_z", 1, true));
-        zlerps.put("jump_start_right",
-                new Animation("characters/zlerp/jump_z", 6, false));
-        zlerps.put("jump_start_left",
-                new Animation("characters/zlerp/jump_z", 6, true));
+                new Animation("characters/zlerp/jump", 2, true));
+        zlerps.put("air_right",
+                new Animation("characters/zlerp/air", 2, false));
+        zlerps.put("air_left",
+                new Animation("characters/zlerp/air", 2, true));
+        zlerps.put("land_right",
+                new Animation("characters/zlerp/land", 2, false));
+        zlerps.put("land_left",
+                new Animation("characters/zlerp/land", 2, true));
+
 
 
         // --- GLORBS (Team 1) ---
@@ -48,17 +51,18 @@ public class AnimationManager {
                 new Animation("characters/glorb/walk", 5, false));
         glorbs.put("walk_left",
                 new Animation("characters/glorb/walk", 5, true));
-
-        // Animations de saut
         glorbs.put("jump_right",
-                new Animation("characters/glorb/jump_g", 1, false));
+                new Animation("characters/glorb/jump", 2, false));
         glorbs.put("jump_left",
-                new Animation("characters/glorb/jump_g", 1, true));
-        glorbs.put("jump_start_right",
-                new Animation("characters/glorb/jump_g", 6, false));
-        glorbs.put("jump_start_left",
-                new Animation("characters/glorb/jump_g", 6, true));
-
+                new Animation("characters/glorb/jump", 2, true));
+        glorbs.put("air_right",
+                new Animation("characters/glorb/air", 2, false));
+        glorbs.put("air_left",
+                new Animation("characters/glorb/air", 2, true));
+        glorbs.put("land_right",
+                new Animation("characters/glorb/land", 2, false));
+        glorbs.put("land_left",
+                new Animation("characters/glorb/land", 2, true));
 
         // Animations monde //
         animations.put("water",

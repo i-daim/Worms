@@ -116,6 +116,8 @@ public class AlienPhysics {
             // On vérifie si on est en train de monter (vitesse Y négative = vers le haut)
             // C'est important pour ne pas considérer qu'on est "au sol" pile au moment où on est en train de sauter
             boolean movingUp = body.getLinearVelocity().y < -1.0;
+
+            // On est vraiment au sol si on touche le bas et qu'on ne décolle pas
             boolean reallyOnGround = physicalContact && !movingUp;
 
             // Gestion de l'atterrissage (Transition JUMP -> IDLE)

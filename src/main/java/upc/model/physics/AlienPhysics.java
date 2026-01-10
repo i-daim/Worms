@@ -316,6 +316,10 @@ public class AlienPhysics {
         }
     }
 
+    /**
+     * Fait voler l'alien (petit bond).
+     * Similaire au saut mais moins puissant.
+     */
     public void flyAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
         if (state != null) {

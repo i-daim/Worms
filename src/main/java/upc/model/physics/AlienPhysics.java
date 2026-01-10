@@ -142,11 +142,13 @@ public class AlienPhysics {
             // Ajuste la friction (glissant ou collant) selon si on bouge ou pas
             updateMovementPhysics(alien, body, reallyOnGround);
 
-            // Dégâts de chute
+            // Vérifie si la chute était violente (dégâts)
             checkFallDamage(alien, state, reallyOnGround);
+            // Ajuste la résistance à l'air qui est modifiée quand on est dans les airs
             checkAirFriction(body, reallyOnGround);
 
-            // Mise à jour visuelle
+            // --- Synchronisation Visuelle ---
+            // On récupère la pos du corps physique (mètres) et on update l'objet Alien (pixels)
             Vector2 v = body.getTransform().getTranslation();
             int pixelX = Converter.toPixels(v.x);
             int pixelY = Converter.toPixels(v.y);

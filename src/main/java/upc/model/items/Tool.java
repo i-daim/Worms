@@ -7,6 +7,7 @@ public abstract class Tool implements Item {
 
     /**
      * Constructeur pour {@code Tool}
+     * @param name : Nom de l'outil
      */
     public Tool(String name) {
         this.name = name;

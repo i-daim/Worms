@@ -72,6 +72,8 @@ public class AlienPhysics {
     private static final double FRICTION_MOVING = 0.0;
     // Friction très forte quand on s'arrête pour ne pas que l'Alien glisse
     private static final double FRICTION_STATIC = 100.0;
+
+    // Propriétés du corps physique
     private static final double DENSITY = 2;
     private static final double LINEAR_DAMPING = 4.0;
 

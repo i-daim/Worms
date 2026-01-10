@@ -75,6 +75,7 @@ public class AlienPhysics {
 
     // Propriétés du corps physique
     private static final double DENSITY = 2;
+    // Résistance à l'air
     private static final double LINEAR_DAMPING = 4.0;
 
     private static final double ALIEN_WIDTH = Converter.toMeters(18);

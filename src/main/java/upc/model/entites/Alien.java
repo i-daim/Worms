@@ -30,7 +30,7 @@ public class Alien extends Entity {
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {
-        IDLE, WALK, JUMP, AIR, LAND
+        IDLE, WALK, JUMP, AIR, LAND, FLY
     }
     private State state;
 
@@ -107,8 +107,8 @@ public class Alien extends Entity {
             return null;
         }
         if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
-            alienPhysics.flyAlien(this);
-            setState(State.JUMP);
+            alienPhysics.jumpAlien(this);
+            setState(State.FLY);
         }
         SoundManager.playEffect(item.getName());
         inventory.useAmmo(equippedItem, 1);

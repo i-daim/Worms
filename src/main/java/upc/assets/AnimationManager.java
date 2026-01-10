@@ -39,7 +39,10 @@ public class AnimationManager {
                 new Animation("characters/zlerp/land", 2, false));
         zlerps.put("land_left",
                 new Animation("characters/zlerp/land", 2, true));
-
+        zlerps.put("fly_right",
+                new Animation("characters/zlerp/fly", 3, false));
+        zlerps.put("fly_left",
+                new Animation("characters/zlerp/fly", 3, true));
 
 
         // --- GLORBS (Team 1) ---
@@ -63,6 +66,11 @@ public class AnimationManager {
                 new Animation("characters/glorb/land", 2, false));
         glorbs.put("land_left",
                 new Animation("characters/glorb/land", 2, true));
+        glorbs.put("fly_right",
+                new Animation("characters/glorb/fly", 3, false));
+        glorbs.put("fly_left",
+                new Animation("characters/glorb/fly", 3, true));
+
 
         // Animations monde //
         animations.put("water",
@@ -89,6 +97,7 @@ public class AnimationManager {
 
 
         // Autres //
+
         animations.put("victory_glorbs",
                 new Animation("animations/victory/glorb/victory_glorb", 45, false));
         animations.put("victory_zlerps",

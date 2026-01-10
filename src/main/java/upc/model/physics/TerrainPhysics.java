@@ -17,6 +17,20 @@ public class TerrainPhysics {
 
     private boolean modified = false;
 
+    /**
+     * <b>TerrainPhysics</b>
+     * <p>
+     * Cette classe gère la représentation physique du niveau (le sol, les murs).
+     * Elle transforme la grille logique du jeu (Tableau 2D de booléens) en objets physiques solides
+     * sur lesquels les Aliens peuvent marcher.
+     * </p>
+     * <p>
+     * <b>Optimisation importante :</b>
+     * Pour ne pas surcharger le moteur physique, on ne crée pas un carré par bloc.
+     * On fusionne les blocs adjacents horizontalement pour créer de longs rectangles.
+     * Cela réduit drastiquement le nombre de formes à gérer par et optimise énormement le code.
+     * </p>
+     */
     public TerrainPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
         this.terrain = terrain;

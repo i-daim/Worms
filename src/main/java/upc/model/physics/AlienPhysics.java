@@ -86,6 +86,9 @@ public class AlienPhysics {
                 } else if (movingUp && alien.getState() != Alien.State.WALK) {
                     alien.setState(Alien.State.JUMP);
                 }
+                if (alien.getEquippedItem().getName().equals("Jetpack")) {
+                    alien.setState(Alien.State.FLY);
+                }
             }
 
             // Application de la physique (Friction / Ancrage)

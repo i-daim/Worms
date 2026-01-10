@@ -171,8 +171,11 @@ public class GamePanel extends JPanel {
             case JUMP:
                 animation = AnimationManager.getSprite(type, "jump", direction);
                 break;
-            case JUMP_START:
-                animation = AnimationManager.getSprite(type, "jump_start", direction);
+            case AIR:
+                animation = AnimationManager.getSprite(type, "air", direction);
+                break;
+            case LAND:
+                animation = AnimationManager.getSprite(type, "land", direction);
                 break;
             default:
                 animation = AnimationManager.getSprite(type, "idle", direction);

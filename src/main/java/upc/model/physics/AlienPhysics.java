@@ -120,7 +120,7 @@ public class AlienPhysics {
             // On est vraiment au sol si on touche le bas et qu'on ne décolle pas
             boolean reallyOnGround = physicalContact && !movingUp;
 
-            // Gestion de l'atterrissage (Transition JUMP -> IDLE)
+            // --- Gestion des États ---
             if (reallyOnGround) {
                 state.hasJumped = false;
                 if (alien.getState()

@@ -212,6 +212,9 @@ public class PhysicsEngine {
         return wind;
     }
 
+    /**
+     * Définit manuellement le vent (utilisé pour le debug).
+     */
     public void setWind(double windX, double windY) {
         Vector2 v = new Vector2(windX, windY);
         this.wind = v;

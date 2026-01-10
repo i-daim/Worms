@@ -15,6 +15,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * <b>PhysicsEngine</b>
+ * <p>
+ * C'est le moteur central de la simulation physique du jeu.
+ * Il agit comme le moteur qui synchronise le reste.
+ * </p>
+ * <p>
+ * <b>Ses responsabilités :</b>
+ * <ul>
+ * <li>Posséder et mettre à jour le {@link World} de Dyn4j (le cœur de la simulation).</li>
+ * <li>Gérer les constantes globales : Gravité, Vent, Temps (Delta Time).</li>
+ * <li>Détecter les collisions (via le ContactListener) pour savoir quand un projectile touche quelque chose.</li>
+ * <li>Déléguer la gestion spécifique aux sous-modules : {@link AlienPhysics}, {@link ProjectilePhysics}, {@link TerrainPhysics}.</li>
+ * </ul>
+ * </p>
+ */
 public class PhysicsEngine {
 
     private final GameWorld gameWorld;

@@ -139,7 +139,11 @@ public class PhysicsEngine {
     }
 
 
-////    FONCTIONS POUR ALIENS    ////
+
+    /**
+     * Ajoute un alien dans la simulation physique.
+     * @param alien : L'entité à ajouter.
+     */
     public void addAlien(Alien alien) {
         alienPhysics.addAlienBody(alien);
     }

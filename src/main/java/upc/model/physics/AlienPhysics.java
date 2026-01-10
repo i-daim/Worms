@@ -41,6 +41,11 @@ public class AlienPhysics {
     // Référence au terrain pour savoir où sont les murs et le sol
     private Terrain terrain;
 
+    /**
+     * Petite classe interne pour stocker l'état physique spécifique d'un Alien.
+     * On garde une ref au Body Dyn4j et on track si l'alien a sauté ou sa vitesse précédente
+     * peut etre utilisé pour calculer l'impact d'une chute.
+     */
     private static class AlienState {
         private final Body body;
         private boolean hasJumped = false;

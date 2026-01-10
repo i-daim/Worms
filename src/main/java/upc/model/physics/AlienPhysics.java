@@ -92,6 +92,12 @@ public class AlienPhysics {
         this.terrain = terrain;
     }
 
+    /**
+     * <b>Méthode principale de mise à jour (boucle de jeu).</b><br>
+     * À appeler à chaque frame. Elle parcourt tous les aliens, met à jour leur physique,
+     * vérifie s'ils touchent le sol, gère les transitions entre différents états (IDLE, JUMP)
+     * et applique les dégâts ou les sons si nécessaire.
+     */
     public void updateAliens() {
         for (Map.Entry<Alien, AlienState> entry : alienStates.entrySet()) {
             Alien alien = entry.getKey();

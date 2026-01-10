@@ -219,22 +219,31 @@ public class AlienPhysics {
      */
     private Body createAlienBody(Alien alien) {
         Body body = new Body();
+
+        // On utilise une Capsule : c'est mieux qu'un rectangle pour se déplacer
+        // sur un terrain irrégulier (ça ne cogne pas contre les blocs)
         Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);
         BodyFixture fixture = new BodyFixture(capsuleShape);
 
+        // Config des matériaux
         fixture.setFriction(FRICTION_STATIC);
+        //Ici on configure a 0 le rebond
         fixture.setRestitution(0.0);
         fixture.setDensity(DENSITY);
         body.addFixture(fixture);
 
+        // FIXED_ANGULAR_VELOCITY empêche l'alien de rouler sur lui-même
         body.setMass(MassType.FIXED_ANGULAR_VELOCITY);
+        //Frein physique automatique
         body.setLinearDamping(LINEAR_DAMPING);
         body.setAngularDamping(10.0);
 
+        // Positionnement initial (conversion pixels -> mètres)
         body.translate(
                 Converter.toMeters(alien.getPosition().getX()),
                 Converter.toMeters(alien.getPosition().getY())
         );
+        // Lien inverse Body -> Alien
         body.setUserData(alien);
         return body;
     }

@@ -351,7 +351,9 @@ public class AlienPhysics {
     private void checkFallDamage(Alien alien, AlienState state, boolean isOnGround) {
         if (isOnGround) {
             double impactSpeed = state.previousVelocityY;
+            // Si on tombe plus vite que la limite de sécurité
             if (impactSpeed > SAFE_FALL_SPEED) {
+                // Formule : (Vitesse - Limite) * Multiplicateur
                 int damage = (int) ((impactSpeed - SAFE_FALL_SPEED) * DMG_MULTIPLIER);
                 if (damage > 0) {
                     alien.receiveDmg(damage);

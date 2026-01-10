@@ -122,7 +122,10 @@ public class AlienPhysics {
 
             // --- Gestion des États ---
             if (reallyOnGround) {
+                // Atterrissage confirmé
                 state.hasJumped = false;
+
+                // Si on était en l'air (JUMP ou JUMP_START), on repasse en IDLE
                 if (alien.getState()
                         == Alien.State.JUMP || alien.getState() == Alien.State.JUMP_START) {
                     alien.setState(Alien.State.IDLE);
@@ -135,7 +138,8 @@ public class AlienPhysics {
                 }
             }
 
-            // Application de la physique (Friction / Ancrage)
+            // --- Application Physique ---
+            // Ajuste la friction (glissant ou collant) selon si on bouge ou pas
             updateMovementPhysics(alien, body, reallyOnGround);
 
             // Dégâts de chute

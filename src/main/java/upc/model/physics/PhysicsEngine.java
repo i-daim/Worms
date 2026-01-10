@@ -26,8 +26,10 @@ import java.util.Random;
  * <ul>
  * <li>Posséder et mettre à jour le {@link World} de Dyn4j (le cœur de la simulation).</li>
  * <li>Gérer les constantes globales : Gravité, Vent, Temps (Delta Time).</li>
- * <li>Détecter les collisions (via le ContactListener) pour savoir quand un projectile touche quelque chose.</li>
- * <li>Déléguer la gestion spécifique aux sous-modules : {@link AlienPhysics}, {@link ProjectilePhysics}, {@link TerrainPhysics}.</li>
+ * <li>Détecter les collisions (via le ContactListener) pour savoir quand un projectile
+ * touche quelque chose.</li>
+ * <li>Déléguer la gestion spécifique aux sous-modules : {@link AlienPhysics}, {
+ * @link ProjectilePhysics}, {@link TerrainPhysics}.</li>
  * </ul>
  * </p>
  */
@@ -163,6 +165,9 @@ public class PhysicsEngine {
     /**
      * Méthode interne appelée par le CollisionListener.
      * Vérifie si 'b1' est un projectile et gère l'impact sur 'b2'.
+     *
+     * @param b1 Le premier corps impliqué dans la collision.
+     * @param b2 Le second corps impliqué dans la collision.
      */
     private void checkProjectileCollision(Body b1, Body b2) {
         projectilePhysics.checkProjectileCollision(b1, b2);
@@ -191,7 +196,7 @@ public class PhysicsEngine {
     }
 
 
-////    GETTERS & SETTERS    ////
+    ////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {
         return world;
     }
@@ -214,6 +219,9 @@ public class PhysicsEngine {
 
     /**
      * Définit manuellement le vent (utilisé pour le debug).
+     *
+     * @param windX La force du vent sur l'axe horizontal.
+     * @param windY La force du vent sur l'axe vertical.
      */
     public void setWind(double windX, double windY) {
         Vector2 v = new Vector2(windX, windY);
@@ -240,6 +248,8 @@ public class PhysicsEngine {
     /**
      * Change le terrain actif (ex: chargement d'un niveau).
      * Propage le changement aux sous-systèmes physiques.
+     *
+     * @param terrain Le nouveau terrain à utiliser.
      */
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;

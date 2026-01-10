@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * <b>AlienPhysics</b>
  * <p>
- * Cette classe est le chef d'orchestre de la physique pour tous les ennemis (Aliens).
+ * Cette classe est le chef de la physique pour tous les ennemis (Aliens).
  * Elle fait le lien entre les objets du jeu (les entités Alien) et le moteur physique (Dyn4j).
  * </p>
  * <p>
@@ -43,7 +43,7 @@ public class AlienPhysics {
 
     /**
      * Petite classe interne pour stocker l'état physique spécifique d'un Alien.
-     * On garde une ref au Body Dyn4j et on track si l'alien a sauté ou sa vitesse précédente
+     * On garde une ref au Body Dyn4j et on rgrd si l'alien a sauté ou sa vitesse précédente
      * peut etre utilisé pour calculer l'impact d'une chute.
      */
     private static class AlienState {
@@ -114,7 +114,9 @@ public class AlienPhysics {
             // On regarde si les pieds touchent un bloc solide
             boolean physicalContact = isOnGround(body);
             // On vérifie si on est en train de monter (vitesse Y négative = vers le haut)
-            // C'est important pour ne pas considérer qu'on est "au sol" pile au moment où on est en train de sauter
+
+            // C'est important pour ne pas considérer qu'on est "au sol" pile
+            // au moment où on est en train de sauter (Correction LineLength)
             boolean movingUp = body.getLinearVelocity().y < -1.0;
 
             // On est vraiment au sol si on touche le bas et qu'on ne décolle pas
@@ -174,7 +176,7 @@ public class AlienPhysics {
     /**
      * Ajuste dynamiquement la friction et la gravité de l'alien.
      * <br>
-     * - Si <b>IDLE au sol</b> : On "colle" l'alien (friction max, gravité 0) pour qu'il ne glisse pas sur les pentes.
+     * - Si <b>IDLE au sol</b> : On "colle" l'alien.
      * <br>
      * - Sinon (marche/saut) : On libère la physique (friction 0, gravité normale).
      *
@@ -319,6 +321,7 @@ public class AlienPhysics {
     /**
      * Fait voler l'alien (petit bond).
      * Similaire au saut mais moins puissant.
+     * @param alien L'alien qui vole.
      */
     public void flyAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
@@ -339,6 +342,9 @@ public class AlienPhysics {
     /**
      * Modifie la résistance à l'air.
      * En l'air, on réduit le "Damping" pour permettre des sauts plus fluides et contrôlables.
+     *
+     * @param body Le corps physique à modifier.
+     * @param isOnGround Si l'entité est au sol.
      */
     private void checkAirFriction(Body body, boolean isOnGround) {
         body.setLinearDamping(isOnGround ? LINEAR_DAMPING : 0.5);
@@ -347,6 +353,10 @@ public class AlienPhysics {
     /**
      * Vérifie si l'alien s'est écrasé au sol trop vite.
      * Si la vitesse précédente était supérieure à SAFE_FALL_SPEED, on applique des dégâts.
+     *
+     * @param alien L'entité alien qui subit potentiellement les dégâts.
+     * @param state L'état physique de l'alien (pour la vitesse précédente).
+     * @param isOnGround Si l'alien vient de toucher le sol.
      */
     private void checkFallDamage(Alien alien, AlienState state, boolean isOnGround) {
         if (isOnGround) {
@@ -366,6 +376,9 @@ public class AlienPhysics {
      * Détecte si l'alien touche le sol.
      * Utilise 3 points de contrôle sous les pieds (gauche, centre, droite) pour éviter
      * de tomber si on est à moitié sur un bord.
+     *
+     * @param body Le corps de l'alien.
+     * @return true si au moins un point de contrôle touche un bloc solide.
      */
     private boolean isOnGround(Body body) {
         Vector2 pos = body.getTransform().getTranslation();
@@ -382,6 +395,10 @@ public class AlienPhysics {
 
     /**
      * Vérifie dans le tableau de collisions du terrain si une coordonnée (x, y) est un mur.
+     *
+     * @param x Coordonnée X en mètres.
+     * @param y Coordonnée Y en mètres.
+     * @return true si la case correspondante est un obstacle solide.
      */
     private boolean isSolid(double x, double y) {
         // Conversion position (mètres) -> Index grille (cases)

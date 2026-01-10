@@ -189,7 +189,7 @@ public class ProjectilePhysics {
      * ou sortis.</li>
      * </ul>
      * *
-     * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
+     * @param terrain Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
      */
     public void updateProjectiles(Terrain terrain) {
 

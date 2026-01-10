@@ -145,6 +145,8 @@ public class TerrainPhysics {
     /**
      * Marque le terrain comme modifié.
      * Sera reconstruis au prochain appel de updateTerrain().
+     *
+     *  @param modified true si le terrain a été changé.
      */
     public void setModified(boolean modified) {
         this.modified = modified;
@@ -152,6 +154,8 @@ public class TerrainPhysics {
 
     /**
      * Change le terrain actif (chargement de niveau).
+     *
+     * @param terrain Le nouvel objet Terrain à utiliser pour la physique
      */
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;

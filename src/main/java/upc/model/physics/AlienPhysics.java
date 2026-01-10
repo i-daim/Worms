@@ -171,7 +171,17 @@ public class AlienPhysics {
         }
     }
 
-/*Cette méthode permet la modification de la friction en fonction de l'etat de l'alien*/
+    /**
+     * Ajuste dynamiquement la friction et la gravité de l'alien.
+     * <br>
+     * - Si <b>IDLE au sol</b> : On "colle" l'alien (friction max, gravité 0) pour qu'il ne glisse pas sur les pentes.
+     * <br>
+     * - Sinon (marche/saut) : On libère la physique (friction 0, gravité normale).
+     *
+     * @param alien : L'entité alien
+     * @param body : Son corps physique
+     * @param isOnGround : Si il est au sol ou non
+     */
     private void updateMovementPhysics(Alien alien, Body body, boolean isOnGround) {
         BodyFixture fixture = body.getFixture(0);
 

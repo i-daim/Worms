@@ -47,6 +47,7 @@ public class ProjectilePhysics {
 
     private final PhysicsEngine physicsEngine;
     private final World<Body> world;
+    // Liste locale pour gérer les projectiles sans devoir demander au GameWorld
     private final List<Projectile> activeProjectiles;
     private final GameWorld gameWorld;
 
@@ -74,39 +75,47 @@ public class ProjectilePhysics {
 
         Weapon weapon = projectile.getWeapon();
 
+        // --- Configuration du Matériau selon l'arme ---
+        // On définit ici si ça rebondit et si ça glisse
+
         if (weapon instanceof Grenade) {
+            // La grenade est une balle rebondissante classique
             double radius = Converter.toMeters(5);
             fixture = new BodyFixture(Geometry.createCircle(radius));
-            fixture.setFriction(1.0);
-            fixture.setRestitution(0.5);
+            fixture.setFriction(1.0); // ici ca roule
+            fixture.setRestitution(0.5); // et ca rebondit un peu
             fixture.setDensity(2.0);
 
         } else if (weapon instanceof Uzi) {
+            // Petite balle rapide
             double radius = Converter.toMeters(2);
             fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.1);
-            fixture.setRestitution(0.1);
+            fixture.setRestitution(0.1); // Pas de rebond
             fixture.setDensity(3.0);
-            body.setBullet(true);
+            body.setBullet(true); // Ne peut pas traverser les murs
 
         } else if (weapon instanceof Mine) {
+            // Un bloc lourd qui ne peut bouger
             double width = Converter.toMeters(10);
             double height = Converter.toMeters(5);
             fixture = new BodyFixture(Geometry.createRectangle(width, height));
-            fixture.setFriction(5.0);
-            fixture.setRestitution(0.0);
-            fixture.setDensity(10.0);
+            fixture.setFriction(5.0); // Grosse friction pour ne pas glisser
+            fixture.setRestitution(0.0); // Pas de rebond
+            fixture.setDensity(10.0); // Lourd
 
         }  else if (weapon instanceof Shotgun) {
+            // Chevrotine
             double radius = Converter.toMeters(3);
             fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(10.0);
             fixture.setRestitution(0.0);
             fixture.setDensity(5.0);
-            body.setLinearDamping(0.8);
+            body.setLinearDamping(0.8); // Freinage rapide
             body.setBullet(true);
 
         } else if (projectile instanceof Rocket) {
+            // Missile : vole droit et explose à l'impact
             double radius = Converter.toMeters(5);
             fixture = new BodyFixture(Geometry.createCircle(radius));
             fixture.setFriction(0.3);
@@ -118,9 +127,12 @@ public class ProjectilePhysics {
         body.addFixture(fixture);
         body.setMass(MassType.NORMAL);
 
+        // --- Positionnement Initial ---
         double startX = Converter.toMeters(projectile.getPosition().getX());
         double startY = Converter.toMeters(projectile.getPosition().getY());
         body.translate(startX, startY);
+
+        // --- Calcul du Vecteur de Vitesse ---
         double angleRad = Math.toRadians(angleDegrees);
 
         Alien shooter = projectile.getShooter();
@@ -130,10 +142,12 @@ public class ProjectilePhysics {
             angleRad = Math.PI - angleRad;
         }
 
+        // Vitesse finale = Vitesse de base de l'arme + charge
         double baseVelocity = projectile.getWeapon().getBasePower();
         double velocityMagnitude =
                 Math.max(baseVelocity, powerPercent * baseVelocity / 20);
 
+        // Projection sur les axes X et Y
         double vx = velocityMagnitude * Math.cos(angleRad);
         double vy = -velocityMagnitude * Math.sin(angleRad);
 
@@ -145,6 +159,21 @@ public class ProjectilePhysics {
         activeProjectiles.add(projectile);
     }
 
+    /**
+     * Met à jour l'état de tous les projectiles actifs à chaque frame.
+     * <p>
+     * Cette méthode effectue plusieurs tâches essentielles :
+     * <ul>
+     * <li>Synchronise la position du projectile logique avec celle du corps physique.</li>
+     * <li>Vérifie si le projectile est sorti des limites de la carte (Out of Bounds).</li>
+     * <li>Détecte si le projectile s'est arrêté (vitesse quasi nulle) pour déclencher son
+     * explosion.</li>
+     * <li>Nettoie la liste des projectiles actifs en retirant ceux qui sont morts
+     * ou sortis.</li>
+     * </ul>
+     * *
+     * @param terrain  Le terrain de jeu actuel, utilisé pour vérifier les limites de la carte.
+     */
     private void applyWindToProjectiles() {
         for (Projectile proj : activeProjectiles) {
             if (proj.isActive()) {

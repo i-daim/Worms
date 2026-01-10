@@ -336,6 +336,10 @@ public class AlienPhysics {
         }
     }
 
+    /**
+     * Modifie la résistance à l'air.
+     * En l'air, on réduit le "Damping" pour permettre des sauts plus fluides et contrôlables.
+     */
     private void checkAirFriction(Body body, boolean isOnGround) {
         body.setLinearDamping(isOnGround ? LINEAR_DAMPING : 0.5);
     }

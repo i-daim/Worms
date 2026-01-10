@@ -99,6 +99,7 @@ public class AlienPhysics {
      * et applique les dégâts ou les sons si nécessaire.
      */
     public void updateAliens() {
+        // On itère sur chaque duo Alien,State
         for (Map.Entry<Alien, AlienState> entry : alienStates.entrySet()) {
             Alien alien = entry.getKey();
             AlienState state = entry.getValue();

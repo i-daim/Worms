@@ -169,7 +169,10 @@ public class PhysicsEngine {
     }
 
 
-
+    /**
+     * Génère un vent aléatoire pour le tour.
+     * Modifie la direction et la puissance du vent appliqué aux projectiles.
+     */
     public void randomizeWind() {
         // Calcul du facteur entre 0.1 et 1.0
         double powerFactor = 0.1 + (random.nextDouble() * 0.75);

@@ -82,6 +82,11 @@ public class AlienPhysics {
     private static final double ALIEN_WIDTH = Converter.toMeters(18);
     private static final double ALIEN_HEIGHT = Converter.toMeters(25);
 
+    /**
+     * Constructeur du gestionnaire de physique.
+     * @param world : Le monde Dyn4j dans lequel ajouter les bodies.
+     * @param terrain : Le terrain actuel pour vérifier les collisions.
+     */
     public AlienPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
         this.terrain = terrain;

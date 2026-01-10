@@ -208,9 +208,15 @@ public class AlienPhysics {
     public void addAlienBody(Alien alien) {
         Body body = createAlienBody(alien);
         this.world.addBody(body);
+        // On l'enregistre dans notre map pour le suivre
         this.alienStates.put(alien, new AlienState(body));
     }
 
+    /**
+     * Configure le Body Dyn4j : Forme, masse, position initiale.
+     * @param alien : L'alien source
+     * @return Le Body prêt à être ajouté au monde
+     */
     private Body createAlienBody(Alien alien) {
         Body body = new Body();
         Capsule capsuleShape = Geometry.createCapsule(ALIEN_WIDTH, ALIEN_HEIGHT);

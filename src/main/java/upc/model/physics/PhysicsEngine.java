@@ -102,12 +102,22 @@ public class PhysicsEngine {
      * Elle fait avancer le temps et met à jour tous les sous-systèmes.
      */
     public void update() {
+        // 1. On fait avancer la simulation d'un pas
         world.update(dt);
+
+        // 2. On met à jour la logique des Aliens (mouvements, sauts, chutes)
         updateAliens();
+
+        // 3. On met à jour les projectiles (trajectoires, vent)
         updateProjectiles();
+
+        // 4. On met à jour le terrain
         updateTerrain();
     }
 
+    /**
+     * Délègue la mise à jour des aliens et limite leur vitesse de chute.
+     */
     public void updateAliens() {
         alienPhysics.updateAliens();
         alienPhysics.limitFallVelocities();

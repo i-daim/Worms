@@ -17,6 +17,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * <b>AlienPhysics</b>
+ * <p>
+ * Cette classe est le chef d'orchestre de la physique pour tous les ennemis (Aliens).
+ * Elle fait le lien entre les objets du jeu (les entités Alien) et le moteur physique (Dyn4j).
+ * </p>
+ * <p>
+ * <b>Ses missions principales :</b>
+ * <ul>
+ * <li>Gérer les corps physiques (création, suppression).</li>
+ * <li>Synchroniser la physique (mètres) avec l'affichage (pixels).</li>
+ * <li>Gérer les états physiques : gravité, friction, sauts, chutes.</li>
+ * <li>Calculer les dégâts de chute basés sur la vitesse d'impact.</li>
+ * <li>Gérer les collisions avec le terrain (sol solide) et l'eau.</li>
+ * </ul>
+ * </p>
+ */
 public class AlienPhysics {
 
     private final World<Body> world;

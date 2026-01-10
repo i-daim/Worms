@@ -410,6 +410,8 @@ public class AlienPhysics {
         }
     }
 
+    // --- Getters et Setters utilitaires ---
+
     public Map<Alien, Body> getAlienBodies() {
         Map<Alien, Body> bodies = new HashMap<>();
         for (Map.Entry<Alien, AlienState> entry : alienStates.entrySet()) {

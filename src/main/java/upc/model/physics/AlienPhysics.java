@@ -38,6 +38,7 @@ public class AlienPhysics {
 
     // Le monde physique de Dyn4j où vivent les corps
     private final World<Body> world;
+    // Référence au terrain pour savoir où sont les murs et le sol
     private Terrain terrain;
 
     private static class AlienState {

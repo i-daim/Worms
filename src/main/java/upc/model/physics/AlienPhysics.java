@@ -26,6 +26,7 @@ public class AlienPhysics {
         private final Body body;
         private boolean hasJumped = false;
         private double previousVelocityY = 0.0;
+        private long landStartTime = 0;
 
         AlienState(Body body) {
             this.body = body;
@@ -66,14 +67,19 @@ public class AlienPhysics {
             boolean movingUp = body.getLinearVelocity().y < -1.0;
             boolean reallyOnGround = physicalContact && !movingUp;
 
-            // Gestion de l'atterrissage (Transition JUMP -> IDLE)
+            // Gestion de l'atterrissage (AIR -> LAND -> IDLE)
             if (reallyOnGround) {
                 state.hasJumped = false;
                 if (alien.getState() == Alien.State.JUMP || alien.getState() == Alien.State.AIR) {
                     alien.setState(Alien.State.LAND);
+                    state.landStartTime = System.currentTimeMillis();
+                } else if (alien.getState() == Alien.State.LAND) {
+                    if (System.currentTimeMillis() - state.landStartTime > 200) {
+                        alien.setState(Alien.State.IDLE);
+                    }
                 }
             } else {
-                // Gestion de l'air (Transition IDLE/WALK -> JUMP si on tombe)
+                // Gestion de l'état dans l'air (AIR/JUMP)
                 double fallSpeed = body.getLinearVelocity().y;
                 if (fallSpeed > 1.0 && alien.getState() != Alien.State.WALK) {
                     alien.setState(Alien.State.AIR);
@@ -108,7 +114,9 @@ public class AlienPhysics {
         }
     }
 
-/*Cette méthode permet la modification de la friction en fonction de l'etat de l'alien*/
+    /**
+     * Cette méthode permet la modification de la friction en fonction de l'etat de l'alien
+     */
     private void updateMovementPhysics(Alien alien, Body body, boolean isOnGround) {
         BodyFixture fixture = body.getFixture(0);
 
@@ -123,8 +131,6 @@ public class AlienPhysics {
             fixture.setFriction(FRICTION_MOVING);
         }
     }
-
-
 
     public void addAlienBody(Alien alien) {
         Body body = createAlienBody(alien);

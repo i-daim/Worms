@@ -344,6 +344,10 @@ public class AlienPhysics {
         body.setLinearDamping(isOnGround ? LINEAR_DAMPING : 0.5);
     }
 
+    /**
+     * Vérifie si l'alien s'est écrasé au sol trop vite.
+     * Si la vitesse précédente était supérieure à SAFE_FALL_SPEED, on applique des dégâts.
+     */
     private void checkFallDamage(Alien alien, AlienState state, boolean isOnGround) {
         if (isOnGround) {
             double impactSpeed = state.previousVelocityY;

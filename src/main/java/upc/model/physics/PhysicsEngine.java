@@ -120,13 +120,20 @@ public class PhysicsEngine {
      */
     public void updateAliens() {
         alienPhysics.updateAliens();
+        // Important pour éviter que les aliens traversent le sol
         alienPhysics.limitFallVelocities();
     }
 
+    /**
+     * Délègue la mise à jour des projectiles.
+     */
     public void updateProjectiles() {
         projectilePhysics.updateProjectiles(terrain);
     }
 
+    /**
+     * Délègue la mise à jour du terrain.
+     */
     public void updateTerrain() {
         terrainPhysics.updateTerrain();
     }

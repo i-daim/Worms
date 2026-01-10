@@ -27,6 +27,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * <b>ProjectilePhysics</b>
+ * <p>
+ * C'est le module balistique du moteur physique.
+ * Il s'occupe de tout ce qui est tiré, lancé ou posé par les Aliens.
+ * </p>
+ * <p>
+ * <b>Rôles principaux :</b>
+ * <ul>
+ * <li>Donner une forme et des propriétés physiques (rebond, poids) aux armes.</li>
+ * <li>Calculer les trajectoires de tir (angle + puissance).</li>
+ * <li>Gérer le vent et les collisions.</li>
+ * <li>Calculer les explosions et l'effet de souffle (Knockback).</li>
+ * </ul>
+ * </p>
+ */
 public class ProjectilePhysics {
 
     private final PhysicsEngine physicsEngine;

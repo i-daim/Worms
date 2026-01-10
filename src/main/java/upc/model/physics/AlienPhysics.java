@@ -186,13 +186,17 @@ public class AlienPhysics {
         BodyFixture fixture = body.getFixture(0);
 
         if (isOnGround && alien.getState() == Alien.State.IDLE) {
+            // Mode "bloqué" : on arrête tout mouvement minime
             body.setGravityScale(0.0);
             body.setLinearVelocity(0, 0);
             body.setAngularVelocity(0);
             fixture.setFriction(FRICTION_STATIC);
         } else {
+            // Mode "Libéré"
             body.setGravityScale(1.0);
+            // Réveille le body s'il dormait
             body.setAtRest(false);
+            // Ça glisse (pas de frottement au sol)
             fixture.setFriction(FRICTION_MOVING);
         }
     }

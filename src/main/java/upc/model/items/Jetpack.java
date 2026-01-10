@@ -6,6 +6,9 @@ import upc.model.jeu.GameWorld;
 
 public class Jetpack extends Tool {
 
+    /**
+     * Constructeur pour {@code Jetpack}
+     */
     public Jetpack() {
         super("Jetpack");
     }
@@ -16,6 +19,10 @@ public class Jetpack extends Tool {
         return null;
     }
 
+    /**
+     * Retourne le type d'item correspondant à l'outil
+     * @return l'objet {@link Type} représentant l'item en lien avec l'outil
+     */
     @Override
     public Type getType() {
         return Type.JETPACK;

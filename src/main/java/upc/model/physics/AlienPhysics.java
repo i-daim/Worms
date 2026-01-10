@@ -269,6 +269,11 @@ public class AlienPhysics {
         alienStates.clear();
     }
 
+    /**
+     * Applique une vitesse horizontale à l'alien pour le faire marcher.
+     * @param alien : L'alien à bouger
+     * @param direction : -1.0 (gauche) ou 1.0 (droite)
+     */
     public void moveAlien(Alien alien, double direction) {
         AlienState state = alienStates.get(alien);
         if (state != null) {

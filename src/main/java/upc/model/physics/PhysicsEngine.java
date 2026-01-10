@@ -64,28 +64,43 @@ public class PhysicsEngine {
     public PhysicsEngine(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         this.terrain = gameWorld.getTerrain();
+
+        // Création du monde Dyn4j
         this.world = new World<>();
         this.world.setGravity(gravity);
 
+        // --- Gestion des Collisions ---
+        // On ajoute un listener qui se déclenche dès que deux objets se touchent
         this.world.addContactListener(new ContactListenerAdapter<Body>() {
             @Override
             public void begin(ContactCollisionData<Body> collision, Contact contact) {
+                // On récupère les deux corps impliqués dans le choc
                 Body body1 = collision.getBody1();
                 Body body2 = collision.getBody2();
+
+                // On vérifie si l'un des deux est un projectile qui doit exploser
                 checkProjectileCollision(body1, body2);
                 checkProjectileCollision(body2, body1);
             }
         });
 
         this.alienPhysics = new AlienPhysics(world, terrain);
+        // ProjectilePhysics a besoin d'une ref au moteur complet pour lire le vent
         this.projectilePhysics = new ProjectilePhysics(this);
         this.terrainPhysics = new TerrainPhysics(world, terrain);
 
+        // Construction initiale des murs du terrain
         terrainPhysics.rebuildTerrain();
     }
 
 
 ////    UPDATE DES PHYSIQUES    ////
+
+    /**
+     * <b>Boucle principale de la physique.</b><br>
+     * À appeler à chaque frame du jeu.
+     * Elle fait avancer le temps et met à jour tous les sous-systèmes.
+     */
     public void update() {
         world.update(dt);
         updateAliens();

@@ -36,6 +36,7 @@ import java.util.Set;
  */
 public class AlienPhysics {
 
+    // Le monde physique de Dyn4j où vivent les corps
     private final World<Body> world;
     private Terrain terrain;
 

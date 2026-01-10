@@ -8,6 +8,21 @@ import org.dyn4j.world.World;
 import upc.model.jeu.Terrain;
 import upc.model.jeu.TerrainGenerator;
 
+
+/**
+ * <b>TerrainPhysics</b>
+ * <p>
+ * Cette classe gère la représentation physique du niveau (le sol, les murs).
+ * Elle transforme la grille logique du jeu (Tableau 2D de booléens) en objets physiques solides
+ * sur lesquels les Aliens peuvent marcher.
+ * </p>
+ * <p>
+ * <b>Optimisation importante :</b>
+ * Pour ne pas surcharger le moteur physique, on ne crée pas un carré par bloc.
+ * On fusionne les blocs adjacents horizontalement pour créer de longs rectangles.
+ * Cela réduit drastiquement le nombre de formes à gérer par et optimise énormement le code.
+ * </p>
+ */
 public class TerrainPhysics {
 
     private final World<Body> world;
@@ -15,29 +30,22 @@ public class TerrainPhysics {
 
     private Body terrainBody;
 
+    // Flag pour savoir si le terrain a changé (ex: explosion) et doit être recréé
     private boolean modified = false;
 
-    /**
-     * <b>TerrainPhysics</b>
-     * <p>
-     * Cette classe gère la représentation physique du niveau (le sol, les murs).
-     * Elle transforme la grille logique du jeu (Tableau 2D de booléens) en objets physiques solides
-     * sur lesquels les Aliens peuvent marcher.
-     * </p>
-     * <p>
-     * <b>Optimisation importante :</b>
-     * Pour ne pas surcharger le moteur physique, on ne crée pas un carré par bloc.
-     * On fusionne les blocs adjacents horizontalement pour créer de longs rectangles.
-     * Cela réduit drastiquement le nombre de formes à gérer par et optimise énormement le code.
-     * </p>
-     */
+
     public TerrainPhysics(World<Body> world, Terrain terrain) {
         this.world = world;
         this.terrain = terrain;
 
+        // Construction initiale du sol
         rebuildTerrain();
     }
 
+    /**
+     * Vérifie à chaque frame si le terrain a été modifié (creusé par une explosion).
+     * Si oui, on reconstruit la physique.
+     */
     public void updateTerrain() {
         if (modified) {
             rebuildTerrain();

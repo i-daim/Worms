@@ -177,6 +177,9 @@ public class GamePanel extends JPanel {
             case LAND:
                 animation = AnimationManager.getSprite(type, "land", direction);
                 break;
+            case FLY:
+                animation = AnimationManager.getSprite(type, "fly", direction);
+                break;
             default:
                 animation = AnimationManager.getSprite(type, "idle", direction);
                 break;
@@ -185,12 +188,22 @@ public class GamePanel extends JPanel {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
+        // Dessine les ailes avant l'alien si elles sont sélectionnées
+        if (alien.getEquippedItem().getName().equals("Wings") && !alien.isInAir()) {
+            // Affiche seulement une image quand l'alien ne vole pas
+            BufferedImage weaponImage = ImageManager.get("wings");
+            if (weaponImage != null) {
+                int drawX = posX - weaponImage.getWidth() / 2 - 2;
+                int drawY = posY - weaponImage.getHeight() / 2;
+                g2.drawImage(weaponImage, drawX, drawY, null);
+            }
+        }
+
         if (animation != null && !animation.getFrames().isEmpty()) {
             int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
             int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
             drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
         }
-
         drawAlienWeapon(g2, alien, direction, posX, posY);
     }
 
@@ -211,11 +224,8 @@ public class GamePanel extends JPanel {
             if (!direction) {
                 angleRad = Math.PI - angleRad;
             }
-            int pivotX = posX;
-            int pivotY = posY - 5;
-            g2.translate(pivotX, pivotY);
+            g2.translate(posX, posY - 5);
             g2.rotate(-angleRad);
-            int weaponW = weaponImage.getWidth();
             int weaponH = weaponImage.getHeight();
             if (direction) {
                 g2.drawImage(weaponImage, 0, -weaponH / 2, null);

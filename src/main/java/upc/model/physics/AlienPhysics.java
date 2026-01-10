@@ -201,8 +201,10 @@ public class AlienPhysics {
         }
     }
 
-
-
+    /**
+     * Crée un corps physique pour un nouvel alien et l'ajoute au monde.
+     * @param alien : L'objet Alien à implementer physiquement.
+     */
     public void addAlienBody(Alien alien) {
         Body body = createAlienBody(alien);
         this.world.addBody(body);

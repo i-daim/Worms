@@ -330,6 +330,7 @@ public class AlienPhysics {
             }
 
             Vector2 vel = state.body.getLinearVelocity();
+            // Plus petit qu'un saut (-10 vs -20)
             state.body.setLinearVelocity(vel.x, -10.0);
             state.hasJumped = true;
         }

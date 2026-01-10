@@ -39,6 +39,8 @@ public class GamePanel extends JPanel {
 
     private double cameraX = 0;
     private double cameraY = 0;
+    private double targetCamX = 0;
+    private double targetCamY = 0;
 
     private final List<ActiveAnimation> activeAnimations;
 
@@ -68,17 +70,14 @@ public class GamePanel extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
-        // Zoom + ajustement de la caméra
         g2.scale(currentZoom, currentZoom);
         g2.translate(-cameraX, -cameraY);
 
-        // Affichage du background
         BufferedImage backgroundImage = terrain.getBackground();
         if (backgroundImage != null) {
             g2.drawImage(backgroundImage, 0, 0, this);
         }
 
-        // Affichage de l'eau (arrière plan)
         int waterY = terrain.getHeight() - (Terrain.WATER_LEVEL);
 
         String waterKey = terrain.getWaterAnimationKey();
@@ -94,36 +93,27 @@ public class GamePanel extends JPanel {
 
         drawAnimation(g2, waterAnim, 0, waterY, 0, 100, true);
 
-        // Affichage du terrain
         g2.drawImage(terrain.getImage(), 0, 0, this);
 
-        // Affichage des entites
         drawAliens(g2);
 
-        // Affichage des Projectiles
         drawProjectiles(g2);
 
-        // Affichage des barres de vie
         hudPanel.drawAlienInfo(g2, gameManager);
 
-        // Affichage des animations du jeu
         drawActiveAnimations(g2);
 
-        // Affichage de l'eau (avant-plan)
         drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
-        // Annulation du zoom
         g2.translate(cameraX, cameraY);
         g2.scale(1.0 / currentZoom, 1.0 / currentZoom);
 
-        // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setBounds(0, 0, getWidth(), getHeight());
 
         g2.dispose();
     }
 
 
-    ////    METHODES D'AFFICHAGE    ////
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
@@ -221,7 +211,6 @@ public class GamePanel extends JPanel {
                 g2.drawImage(weaponImage, 0, -weaponH / 2, null);
             }
 
-            // Restauration de la transformation
             g2.setTransform(oldTransform);
         }
     }
@@ -259,13 +248,11 @@ public class GamePanel extends JPanel {
         }
     }
 
-    ////    AUTRES METHODES    ////
     public void togglePauseMenu(boolean paused) {
         pausePanel.setVisible(paused);
         hudPanel.setVisible(!paused);
 
         if (paused) {
-            // Pour mettre le pausePanel au premier plan (et en plein écran)
             pausePanel.setBounds(0, 0, getWidth(), getHeight());
             setComponentZOrder(pausePanel, 0);
 
@@ -287,8 +274,8 @@ public class GamePanel extends JPanel {
         double maxX = terrain.getWidth() - getWidth() / currentZoom;
         double maxY = terrain.getHeight() - getHeight() / currentZoom;
 
-        double targetCamX = Math.max(0, Math.min(viewX, maxX));
-        double targetCamY = Math.max(0, Math.min(viewY, maxY));
+        targetCamX = Math.max(0, Math.min(viewX, maxX));
+        targetCamY = Math.max(0, Math.min(viewY, maxY));
 
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
@@ -313,8 +300,8 @@ public class GamePanel extends JPanel {
 
         double delayFactor = Math.min(1.0, Math.max(0.0, (gameManager.getDelay() - 50) / 200.0));
 
-        double targetCamX = delayFactor * maxCamX;
-        double targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
+        targetCamX = delayFactor * maxCamX;
+        targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
 
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
@@ -327,11 +314,11 @@ public class GamePanel extends JPanel {
         }
     }
 
-
-    ////    SETTERS & GETTERS    ////
     public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;
+        targetCamX = x;
+        targetCamY = y;
         repaint();
     }
 

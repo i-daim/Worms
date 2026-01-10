@@ -86,7 +86,7 @@ public class AlienPhysics {
                 } else if (movingUp && alien.getState() != Alien.State.WALK) {
                     alien.setState(Alien.State.JUMP);
                 }
-                if (alien.getEquippedItem().getName().equals("Jetpack")) {
+                if (alien.getEquippedItem().getName().equals("Wings")) {
                     alien.setState(Alien.State.FLY);
                 }
             }
@@ -196,7 +196,7 @@ public class AlienPhysics {
     public void jumpAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
         if (state != null && !state.hasJumped
-                || alien.getEquippedItem().getName().equals("Jetpack")) {
+                || alien.getEquippedItem().getName().equals("Wings")) {
             // Déverrouillage complet pour le saut
             state.body.setGravityScale(1.0);
             state.body.setAtRest(false);

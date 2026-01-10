@@ -2,11 +2,11 @@ package upc.controller;
 
 import upc.model.entites.projectiles.Projectile;
 import upc.model.items.Item;
+import upc.model.items.Wings;
 import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.model.save.GameSave;
-import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.InventoryPanel;
@@ -169,7 +169,7 @@ public class GameController {
         // Utilisation de l'item
         if (equipped != null && canShoot && !isMouseOnInv()) {
             // Peut être utilisé plusieurs fois si c'est un Uzi ou un jetpack
-            if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
+            if (equipped instanceof Wings || equipped instanceof upc.model.items.Uzi) {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
                         activeAlien.setShootPower(100);

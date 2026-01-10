@@ -20,14 +20,14 @@ public class ImageManager {
         ImageManager.load("Shotgun", "/items/shotgun.png");
         ImageManager.load("Grenade", "/items/grenade.png");
         ImageManager.load("Mine", "/items/mine.png");
-        ImageManager.load("jetpack", "/items/jetpack.png");
+        ImageManager.load("wings", "/items/wings.png");
 
         ImageManager.load("Bazooka_Inv", "/items/bazooka_inv.png");
         ImageManager.load("Uzi_Inv", "/items/uzi_inv.png");
         ImageManager.load("Shotgun_Inv", "/items/shotgun_inv.png");
         ImageManager.load("Grenade_Inv", "/items/grenade_inv.png");
         ImageManager.load("Mine_Inv", "/items/mine_inv.png");
-        ImageManager.load("Jetpack_Inv", "/items/jetpack_inv.png");
+        ImageManager.load("Wings_Inv", "/items/wings_inv.png");
     }
 
     public static void load(String name, String path) {

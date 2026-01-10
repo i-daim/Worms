@@ -87,9 +87,9 @@ public class Alien extends Entity {
 
     public void jump() {
         alienPhysics.jumpAlien(this);
-        if (getEquippedItem().getName().equals("Jetpack")) {
+        if (getEquippedItem().getName().equals("Wings")) {
             setState(State.FLY);
-            inventory.useAmmo(Item.Type.JETPACK, 1);
+            inventory.useAmmo(Item.Type.WINGS, 1);
         } else {
             setState(State.JUMP);
         }
@@ -116,7 +116,7 @@ public class Alien extends Entity {
         if (item == null || !inventory.isAvailable(equippedItem)) {
             return null;
         }
-        if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
+        if (equippedItem == Item.Type.WINGS && inventory.isAvailable(equippedItem)) {
             alienPhysics.jumpAlien(this);
             setState(State.FLY);
         }

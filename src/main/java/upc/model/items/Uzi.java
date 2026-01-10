@@ -51,7 +51,8 @@ public class Uzi extends Weapon {
                 shooter.getPosition().getY() + offsetY - 6
         );
 
-        // Crée le projectile en lien avec l'arme en prenant en compte l'arme, le tireur et la position du tir
+        // Crée le projectile en lien avec l'arme en prenant en compte l'arme, le tireur
+        // Et la position du tir
         Projectile proj = new Bullet(this, shooter, startPos);
 
         //Ajout du projectile dans le moteur physique

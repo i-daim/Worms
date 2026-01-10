@@ -2,7 +2,10 @@ package upc.model.items;
 
 public abstract class Weapon implements Item {
 
-    /**Attributs représentants le nom, les dégâts, le nombre de tir et la puissance de base d'une arme*/
+    /**
+     * Attributs représentants le nom, les dégâts, le nombre de tir
+     * Et la puissance de base d'une arme
+     */
     private final String name;
     private final int damage;
     private final int nbOfShots;

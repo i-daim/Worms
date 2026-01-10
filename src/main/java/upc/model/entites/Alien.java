@@ -72,7 +72,7 @@ public class Alien extends Entity {
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
         direction = true;
-        if (state != State.JUMP && state != State.AIR) {
+        if (!isInAir()) {
             setState(State.WALK);
         }
     }
@@ -80,14 +80,19 @@ public class Alien extends Entity {
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
         direction = false;
-        if (state != State.JUMP && state != State.AIR) {
+        if (!isInAir()) {
             setState(State.WALK);
         }
     }
 
     public void jump() {
         alienPhysics.jumpAlien(this);
-        setState(State.JUMP);
+        if (getEquippedItem().getName().equals("Jetpack")) {
+            setState(State.FLY);
+            inventory.useAmmo(Item.Type.JETPACK, 1);
+        } else {
+            setState(State.JUMP);
+        }
     }
 
     public void idle() {
@@ -95,6 +100,11 @@ public class Alien extends Entity {
         if (state != State.JUMP && state != State.AIR && state != State.LAND) {
             setState(State.IDLE);
         }
+    }
+
+    public boolean isInAir() {
+        return state == State.AIR || state == State.JUMP
+                || state == State.FLY || state == State.LAND;
     }
 
 

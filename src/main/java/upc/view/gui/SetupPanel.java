@@ -34,6 +34,18 @@ import upc.controller.GameSetupController;
 import java.awt.RenderingHints;
 import java.awt.Cursor;
 
+/**
+ * Setup de la partie.
+ * <p>
+ * Ce panneau permet au joueur de définir les paramètres de la partie avant de la lancer.
+ * Il propose une interface stylisée permettant de configurer :
+ * <ul>
+ * <li><b>La carte</b> : Choix du thème (Glace, Enfer, Poison, etc.).</li>
+ * <li><b>Les équipes</b> : Taille des effectifs via un slider.</li>
+ * <li><b>L'environnement</b> : Activation ou désactivation du vent.</li>
+ * <li><b>L'arsenal</b> : Sélection des armes autorisées via des cases à cocher illustrées.</li>
+ * </ul>
+ */
 public class SetupPanel extends JPanel {
     private final Image background = ImageManager.get("menu_background");
 
@@ -57,6 +69,19 @@ public class SetupPanel extends JPanel {
     private final double zoom = GamePanel.ZOOM;
     private final int iconSize = (int) (40 * zoom);
 
+    /**
+     * Constructeur du panneau de configuration.
+     * <p>
+     * Initialise l'ensemble de l'interface graphique :
+     * <ul>
+     * <li>Crée les panneaux arrondis semi-transparents pour grouper les options.</li>
+     * <li>Initialise les composants interactifs.</li>
+     * <li>Configure la grille de sélection des armes avec icônes.</li>
+     * <li>Instancie le {@link GameSetupController} pour gérer la logique.</li>
+     * </ul>
+     *
+     * @param frame La fenêtre principale de l'application.
+     */
     public SetupPanel(MainFrame frame) {
         this.setDoubleBuffered(true);
         this.setLayout(new BorderLayout());
@@ -151,6 +176,14 @@ public class SetupPanel extends JPanel {
 
 
 
+    /**
+     * Crée un panneau personnalisé avec des coins arrondis et un fond semi-transparent.
+     * <p>
+     * Surcharge la méthode {@code paintComponent} pour dessiner un rectangle arrondi
+     * avec une bordure fine.
+     * </p>
+     * @return Le JPanel stylisé.
+     */
     private JPanel createRoundedPanel() {
         JPanel p = new JPanel() {
             @Override
@@ -171,6 +204,13 @@ public class SetupPanel extends JPanel {
         return p;
     }
 
+    /**
+     * Crée une section verticale contenant un titre et de l'espace pour un composant.
+     *
+     * @param labelTitle Le titre de la section.
+     * @param width La largeur préférée de la section.
+     * @return Le JPanel conteneur.
+     */
     private JPanel createSection(String labelTitle, int width) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -187,6 +227,10 @@ public class SetupPanel extends JPanel {
         return p;
     }
 
+    /**
+     * Applique le style graphique à une ComboBox.
+     * @param combo La ComboBox à styliser.
+     */
     private void styleComboBox(JComboBox<String> combo) {
         combo.setFont(MAIN_FONT);
         combo.setPreferredSize(new Dimension(200, 40));
@@ -196,6 +240,10 @@ public class SetupPanel extends JPanel {
         combo.setRenderer(centerRenderer);
     }
 
+    /**
+     * Applique le style graphique au slider de taille d'équipe.
+     * @param slider Le JSlider à styliser.
+     */
     private void styleSlider(JSlider slider) {
         slider.setOpaque(false);
         slider.setForeground(Color.WHITE);
@@ -205,6 +253,15 @@ public class SetupPanel extends JPanel {
         slider.setPaintLabels(true);
     }
 
+    /**
+     * Crée une case à cocher personnalisée pour une arme ou une option.
+     * <p>
+     * Ajoute un écouteur de souris pour changer la couleur et le curseur au survol.
+     * Délègue le chargement de l'icône à {@link #styleCheckBoxWithIcon}.
+     * </p>
+     * @param name Le nom de l'arme/option.
+     * @return La JCheckBox configurée.
+     */
     private JCheckBox createWeaponCheckbox(String name) {
         JCheckBox box = new JCheckBox(name);
         box.setSelected(true);
@@ -222,6 +279,11 @@ public class SetupPanel extends JPanel {
         return box;
     }
 
+    /**
+     * Configure l'aspect visuel de la CheckBox et charge ses icônes.
+     * @param box La CheckBox à configurer.
+     * @param imageName Le nom de l'image à charger via ImageManager.
+     */
     private void styleCheckBoxWithIcon(JCheckBox box, String imageName) {
         box.setOpaque(false);
         box.setFocusPainted(false);
@@ -245,6 +307,21 @@ public class SetupPanel extends JPanel {
         box.setPressedIcon(box.getSelectedIcon());
     }
 
+    /**
+     * Génère une icône dynamique pour la CheckBox en fonction de l'image de
+     * l'arme et de l'état de sélection.
+     * <p>
+     * <ul>
+     * <li><b>Sélectionné</b> : Fond vert clair, bordure dorée.</li>
+     * <li><b>Non sélectionné</b> : Fond sombre, image semi-transparente, bordure blanche.</li>
+     * </ul>
+     *
+     * @param img L'image source de l'arme.
+     * @param w La largeur de l'icône.
+     * @param h La hauteur de l'icône.
+     * @param selected Indique si l'état à générer est "sélectionné".
+     * @return Une BufferedImage représentant l'icône.
+     */
     private BufferedImage createIcon(Image img, int w, int h, boolean selected) {
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = image.createGraphics();
@@ -269,6 +346,10 @@ public class SetupPanel extends JPanel {
         return image;
     }
 
+    /**
+     * Dessine l'arrière-plan du panneau et applique un filtre sombre.
+     * @param g Le contexte graphique.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -279,36 +360,69 @@ public class SetupPanel extends JPanel {
         g.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    /**
+     * @return Le bouton pour démarrer la partie.
+     */
     public JButton getStartButton() {
         return startButton;
     }
+    /**
+     * @return Le bouton pour revenir au menu principal.
+     */
     public JButton getBackButton() {
         return backButton;
     }
+    /**
+     * @return Le nom de la carte sélectionnée.
+     */
     public String getSelectedMap() {
         return (String) mapSelector.getSelectedItem();
     }
+    /**
+     * @return La taille de l'équipe sélectionnée (1-4).
+     */
     public int getTeamSize() {
         return teamSizeSlider.getValue();
     }
+    /**
+     * @return Vrai si le Bazooka est activé, Faux sinon.
+     */
     public boolean isBazookaEnabled() {
         return chkBazooka.isSelected();
     }
+    /**
+     * @return Vrai si l'Uzi est activé, Faux sinon.
+     */
     public boolean isUziEnabled() {
         return chkUzi.isSelected();
     }
+    /**
+     * @return Vrai si le Shotgun est activé, Faux sinon.
+     */
     public boolean isShotgunEnabled() {
         return chkShotgun.isSelected();
     }
+    /**
+     * @return Vrai si la Grenade est activée, Faux sinon.
+     */
     public boolean isGrenadeEnabled() {
         return chkGrenade.isSelected();
     }
+    /**
+     * @return Vrai si la Mine est activée, Faux sinon.
+     */
     public boolean isMineEnabled() {
         return chkMine.isSelected();
     }
+    /**
+     * @return Vrai si le Jetpack est activé, Faux sinon.
+     */
     public boolean isJetpackEnabled() {
         return chkJetpack.isSelected();
     }
+    /**
+     * @return Vrai si le Vent est activé, Faux sinon.
+     */
     public boolean isWindEnabled() {
         return chkWind.isSelected();
     }

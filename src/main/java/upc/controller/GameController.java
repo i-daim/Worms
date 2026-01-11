@@ -92,8 +92,17 @@ public class GameController {
     }
 
     private void update() {
-        handlePause();
+        // Si le jeu est pausé on ne met pas à jour le reste
+        handlePause(); // gestion des entrées necéssaires seulement
         if (paused) {
+            return;
+        }
+        // Mise à jour du modèle
+        gameManager.update(1.0 / 60.0);
+
+        // Gestion de la fin de jeu
+        if (gameManager.isOver()) {
+            showGameOver();
             return;
         }
 
@@ -118,13 +127,6 @@ public class GameController {
         }
 
         handleControls();
-
-        gameManager.update(1.0 / 60.0);
-
-        if (gameManager.isOver()) {
-            showGameOver();
-            return;
-        }
 
         keyHandler.clearJustPressed();
         mouseHandler.clearJustPressed();

@@ -89,7 +89,8 @@ public class GameManager {
         checkGameOver();
 
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
-        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
+        if (getActiveAlien() == null || !getActiveAlien().isAlive()
+            || !getActiveAlien().canShoot()) {
             skipTurn();
             return;
         }
@@ -128,6 +129,7 @@ public class GameManager {
         setDelay(2000, () -> {
             nextTurn();
             timeLeft = ROUND_TIME;
+            getActiveAlien().resetUseCount();
         });
     }
 
@@ -138,7 +140,7 @@ public class GameManager {
         // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        // [MODIFICATION] Délégation à la physique
+        // Délégation à la physique
         if (windEnabled) {
             applyWindChange();
         }

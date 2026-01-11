@@ -3,8 +3,8 @@
 Ce projet suit les directives du cours de Conduite de Projet (L2 Informatique).
 Les versions suivent le format [SemVer](https://semver.org/).
 
-## [Unreleased]
-*Travaux en cours pour le Sprint 3 : utilisation des armes, animations, inventaire, sauvegarde du jeu*
+## [0.3] - 2025-12-15
+*Sprint 3 : utilisation des armes, animations, inventaire, sauvegarde du jeu*
 
 ### Added
 - Possibilité d’utiliser les armes en jeu.

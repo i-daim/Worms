@@ -20,6 +20,13 @@ public class MenuActions {
     /** Panneau du menu principal */
     private final MenuPanel menuPanel;
 
+
+    /**
+     * Construit un gestionnaire d'actions pour le menu.
+     *
+     * @param mainFrame La fenêtre principale.
+     * @param menuPanel Le panneau du menu.
+     */
     public MenuActions(MainFrame mainFrame, MenuPanel menuPanel) {
         this.mainFrame = mainFrame;
         this.menuPanel = menuPanel;

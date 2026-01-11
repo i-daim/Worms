@@ -8,7 +8,12 @@ import upc.view.gui.SettingsPanel;
 
 import javax.swing.SwingUtilities;
 import java.awt.event.ActionListener;
-
+/**
+ * Gestionnaire des actions du menu pause.
+ * <p>
+ * Cette classe crée et retourne les {@link ActionListener} pour chaque bouton
+ * du menu pause (Reprendre, Sauvegarder, Menu principal, Paramètres, Quitter).
+ */
 public class PauseActions {
 
     /** Contrôleur principal du jeu pour accéder aux fonctions de sauvegarde et pause */
@@ -84,6 +89,14 @@ public class PauseActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Paramètres".
+     * <p>
+     * Affiche l'écran de paramètres depuis le menu pause. Le bouton retour
+     * des paramètres ramène au jeu en pause.
+     *
+     * @return L'ActionListener pour accéder aux paramètres depuis la pause.
+     */
     public ActionListener getSettingsAction() {
         return e -> {
 

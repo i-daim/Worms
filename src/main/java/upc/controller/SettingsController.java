@@ -33,6 +33,16 @@ public class SettingsController {
         initListeners();
     }
 
+    /**
+     * Initialise les listeners pour les contrôles de paramètres.
+     * <p>
+     * Cette méthode configure :
+     * <ul>
+     *     <li>Sélection de musique → change la musique et applique le volume</li>
+     *     <li>Slider de volume → ajuste le volume de la musique en cours</li>
+     *     <li>Bouton retour → retourne au menu précédent</li>
+     * </ul>
+     */
     private void initListeners() {
         settingsPanel.getMusicSelection().addActionListener(e -> {
             String selectedMusicName = (String)

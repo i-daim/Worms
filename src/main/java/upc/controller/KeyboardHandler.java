@@ -6,7 +6,10 @@ import java.util.HashSet;
 
 public class KeyboardHandler extends KeyAdapter {
 
+    /** Ensemble des codes de touches actuellement enfoncées (maintenues) */
     private final HashSet<Integer> pressedKeys = new HashSet<>();
+
+    /** Ensemble des codes de touches qui viennent d'être pressées cette frame */
     private final HashSet<Integer> justPressedKeys = new HashSet<>();
 
     @Override

@@ -319,6 +319,8 @@ public class ProjectilePhysics {
         physicsEngine.getGameWorld().explode(explosionX, explosionY, radius);
         SoundManager.playEffect("Explosion");
 
+        proj.applyExplosionDamage(gameWorld);
+
         // Calcul Physique :
         for (Alien alien : gameWorld.aliensInRadius(explosionX, explosionY, radius)) {
             Position alienPos = alien.getPosition();

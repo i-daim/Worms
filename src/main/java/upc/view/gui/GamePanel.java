@@ -39,6 +39,8 @@ public class GamePanel extends JPanel {
 
     private double cameraX = 0;
     private double cameraY = 0;
+    private double targetCamX = 0;
+    private double targetCamY = 0;
 
     private final List<ActiveAnimation> activeAnimations;
 
@@ -171,8 +173,14 @@ public class GamePanel extends JPanel {
             case JUMP:
                 animation = AnimationManager.getSprite(type, "jump", direction);
                 break;
-            case JUMP_START:
-                animation = AnimationManager.getSprite(type, "jump_start", direction);
+            case AIR:
+                animation = AnimationManager.getSprite(type, "air", direction);
+                break;
+            case LAND:
+                animation = AnimationManager.getSprite(type, "land", direction);
+                break;
+            case FLY:
+                animation = AnimationManager.getSprite(type, "fly", direction);
                 break;
             default:
                 animation = AnimationManager.getSprite(type, "idle", direction);
@@ -182,12 +190,22 @@ public class GamePanel extends JPanel {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
+        // Dessine les ailes avant l'alien si elles sont sélectionnées
+        if (alien.getEquippedItem().getName().equals("Wings") && !alien.isInAir()) {
+            // Affiche seulement une image quand l'alien ne vole pas
+            BufferedImage weaponImage = ImageManager.get("wings");
+            if (weaponImage != null) {
+                int drawX = posX - weaponImage.getWidth() / 2 - 2;
+                int drawY = posY - weaponImage.getHeight() / 2;
+                g2.drawImage(weaponImage, drawX, drawY, null);
+            }
+        }
+
         if (animation != null && !animation.getFrames().isEmpty()) {
             int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
             int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
             drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
         }
-
         drawAlienWeapon(g2, alien, direction, posX, posY);
     }
 
@@ -208,11 +226,8 @@ public class GamePanel extends JPanel {
             if (!direction) {
                 angleRad = Math.PI - angleRad;
             }
-            int pivotX = posX;
-            int pivotY = posY - 5;
-            g2.translate(pivotX, pivotY);
+            g2.translate(posX, posY - 5);
             g2.rotate(-angleRad);
-            int weaponW = weaponImage.getWidth();
             int weaponH = weaponImage.getHeight();
             if (direction) {
                 g2.drawImage(weaponImage, 0, -weaponH / 2, null);
@@ -277,27 +292,44 @@ public class GamePanel extends JPanel {
         if (entity == null) {
             return;
         }
+
+        // 1. Zoom progressif
         currentZoom += (ZOOM - currentZoom) * 0.05;
 
+        // 2. Calculs de la vue
         int posX = entity.getPosition().getX();
         int posY = entity.getPosition().getY();
-        double viewX = posX - (getWidth() / (2 * currentZoom));
-        double viewY = posY - (getHeight() / (2 * currentZoom));
 
-        double maxX = terrain.getWidth() - getWidth() / currentZoom;
-        double maxY = terrain.getHeight() - getHeight() / currentZoom;
+        double visibleWidth = getWidth() / currentZoom;
+        double visibleHeight = getHeight() / currentZoom;
 
-        double targetCamX = Math.max(0, Math.min(viewX, maxX));
-        double targetCamY = Math.max(0, Math.min(viewY, maxY));
+        double viewX = posX - (visibleWidth / 2);
+        double viewY = posY - (visibleHeight / 2);
 
+        // Limites du terrain
+        double maxX = Math.max(0, terrain.getWidth() - visibleWidth);
+        double maxY = Math.max(0, terrain.getHeight() - visibleHeight);
+
+        targetCamX = Math.max(0, Math.min(viewX, maxX));
+        targetCamY = Math.max(0, Math.min(viewY, maxY));
+
+        // 3. Application du mouvement fluide
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (Math.abs(targetCamX - cameraX) < 0.1) {
-            cameraX = targetCamX;
+        // Pour rester dans les limites du panel
+        if (cameraX < 0) {
+            cameraX = 0;
         }
-        if (Math.abs(targetCamY - cameraY) < 0.1) {
-            cameraY = targetCamY;
+        if (cameraX > maxX) {
+            cameraX = maxX;
+        }
+
+        if (cameraY < 0) {
+            cameraY = 0;
+        }
+        if (cameraY > maxY) {
+            cameraY = maxY;
         }
     }
 
@@ -306,24 +338,36 @@ public class GamePanel extends JPanel {
                 (double) getWidth() / terrain.getWidth(),
                 (double) getHeight() / terrain.getHeight()
         );
+
         currentZoom += (targetZoom - currentZoom) * 0.05;
 
         double visibleWidth = getWidth() / currentZoom;
-        double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
+        double visibleHeight = getHeight() / currentZoom;
 
+        double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
+        double maxY = Math.max(0, terrain.getHeight() - visibleHeight);
+
+        // Calcul du délai
         double delayFactor = Math.min(1.0, Math.max(0.0, (gameManager.getDelay() - 50) / 200.0));
 
-        double targetCamX = delayFactor * maxCamX;
-        double targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
+        targetCamX = delayFactor * maxCamX;
+        targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
 
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (Math.abs(targetCamX - cameraX) < 0.1) {
-            cameraX = targetCamX;
+        // Pour rester dans les limites du panel
+        if (cameraX < 0) {
+            cameraX = 0;
         }
-        if (Math.abs(targetCamY - cameraY) < 0.1) {
-            cameraY = targetCamY;
+        if (cameraX > maxCamX) {
+            cameraX = maxCamX;
+        }
+        if (cameraY < 0) {
+            cameraY = 0;
+        }
+        if (cameraY > maxY) {
+            cameraY = maxY;
         }
     }
 
@@ -332,6 +376,8 @@ public class GamePanel extends JPanel {
     public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;
+        targetCamX = x;
+        targetCamY = y;
         repaint();
     }
 
@@ -358,4 +404,14 @@ public class GamePanel extends JPanel {
     public HUDPanel getHudPanel() {
         return hudPanel;
     }
+
+    public double getCurrentZoom() {
+        return currentZoom;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+
 }

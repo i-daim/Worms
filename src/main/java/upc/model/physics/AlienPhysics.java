@@ -50,6 +50,7 @@ public class AlienPhysics {
         private final Body body;
         private boolean hasJumped = false;
         private double previousVelocityY = 0.0;
+        private long landStartTime = 0;
 
         AlienState(Body body) {
             this.body = body;
@@ -123,20 +124,28 @@ public class AlienPhysics {
             boolean reallyOnGround = physicalContact && !movingUp;
 
             // --- Gestion des États ---
+            // Gestion de l'atterrissage (AIR -> LAND -> IDLE)
             if (reallyOnGround) {
                 // Atterrissage confirmé
                 state.hasJumped = false;
-
-                // Si on était en l'air (JUMP ou JUMP_START), on repasse en IDLE
-                if (alien.getState()
-                        == Alien.State.JUMP || alien.getState() == Alien.State.JUMP_START) {
-                    alien.setState(Alien.State.IDLE);
+                if (alien.getState() == Alien.State.JUMP || alien.getState() == Alien.State.AIR) {
+                    alien.setState(Alien.State.LAND);
+                    state.landStartTime = System.currentTimeMillis();
+                } else if (alien.getState() == Alien.State.LAND) {
+                    if (System.currentTimeMillis() - state.landStartTime > 200) {
+                        alien.setState(Alien.State.IDLE);
+                    }
                 }
             } else {
-                // Gestion de l'air (Transition IDLE/WALK -> JUMP si on tombe)
+                // Gestion de l'état dans l'air (AIR/JUMP)
                 double fallSpeed = body.getLinearVelocity().y;
-                if (fallSpeed > 1.0 && alien.getState() != Alien.State.JUMP_START) {
+                if (fallSpeed > 1.0 && alien.getState() != Alien.State.WALK) {
+                    alien.setState(Alien.State.AIR);
+                } else if (movingUp && alien.getState() != Alien.State.WALK) {
                     alien.setState(Alien.State.JUMP);
+                }
+                if (alien.getEquippedItem().getName().equals("Wings")) {
+                    alien.setState(Alien.State.FLY);
                 }
             }
 
@@ -302,8 +311,9 @@ public class AlienPhysics {
      */
     public void jumpAlien(Alien alien) {
         AlienState state = alienStates.get(alien);
-        // On ne saute que si on n'a pas déjà sauté (éviter le double saut infini)
-        if (state != null && !state.hasJumped) {
+        // On ne saute que si on n'a pas déjà sauté ou si les ailes sont équippées
+        if (state != null && !state.hasJumped
+                || alien.getEquippedItem().getName().equals("Wings")) {
             // Déverrouillage complet pour le saut
             state.body.setGravityScale(1.0);
             state.body.setAtRest(false);

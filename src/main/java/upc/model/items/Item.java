@@ -14,7 +14,7 @@ public interface Item {
         BAZOOKA,
         GRENADE,
         MINE,
-        JETPACK
+        WINGS
     }
 
     /**

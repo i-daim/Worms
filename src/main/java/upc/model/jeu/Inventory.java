@@ -12,7 +12,7 @@ import upc.model.items.Mine;
 import upc.model.items.Shotgun;
 import upc.model.items.Uzi;
 import upc.model.save.GameSave;
-import upc.model.items.Jetpack;
+import upc.model.items.Wings;
 
 public class Inventory {
 
@@ -23,7 +23,7 @@ public class Inventory {
     /** Constantes contenant les différentes items présent dans l'inventaire*/
     private static final Item.Type[] ITEMS = {
             Item.Type.SHOTGUN, Item.Type.UZI, Item.Type.BAZOOKA,
-            Item.Type.GRENADE, Item.Type.MINE, Item.Type.JETPACK};
+            Item.Type.GRENADE, Item.Type.MINE, Item.Type.WINGS};
 
     /** Stock des armes et des munitions de l'équipe */
     private final HashMap<Item.Type, Item> weaponStock;
@@ -75,8 +75,8 @@ public class Inventory {
         if (allowedWeapons.contains(Item.Type.MINE)) {
             weaponStock.put(Item.Type.MINE, new Mine());
         }
-        if (allowedWeapons.contains(Item.Type.JETPACK)) {
-            weaponStock.put(Item.Type.JETPACK, new Jetpack());
+        if (allowedWeapons.contains(Item.Type.WINGS)) {
+            weaponStock.put(Item.Type.WINGS, new Wings());
         }
     }
 
@@ -101,8 +101,8 @@ public class Inventory {
         if (allowedWeapons.contains(Item.Type.BAZOOKA)) {
             addAmmo(Item.Type.BAZOOKA, 50);
         }
-        if (allowedWeapons.contains(Item.Type.JETPACK)) {
-            addAmmo(Item.Type.JETPACK, 200);
+        if (allowedWeapons.contains(Item.Type.WINGS)) {
+            addAmmo(Item.Type.WINGS, 200);
         }
     }
 

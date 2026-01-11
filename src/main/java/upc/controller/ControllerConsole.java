@@ -117,13 +117,25 @@ public class ControllerConsole {
                 sleep(1000);
         }
     }
-
+    /**
+     * Termine le tour de l'alien actif et passe au suivant.
+     * <p>
+     * Cette méthode notifie le GameManager que le tour est terminé,
+     * affiche un message de confirmation, et marque une courte pause.
+     */
     private void skipTurn() {
         gameManager.skipTurn();
         view.printTurnSkipped();
         sleep(1000);
     }
-
+    /**
+     * Met en pause le thread actuel pendant une durée donnée.
+     * <p>
+     * Cette méthode est utilisée pour créer des pauses visuelles entre les actions,
+     * améliorant ainsi la lisibilité du jeu en mode console.
+     *
+     * @param ms Durée de la pause en millisecondes.
+     */
     private void sleep(int ms) {
         try {
             Thread.sleep(ms);

@@ -26,8 +26,9 @@ public class TestTeam {
 
         world = manager.getWorld();
     }
-
-
+    /**
+     * Vérifie que le constructeur initialise correctement le nom et la taille de l'équipe.
+     */
     @Test
     public void testConstructeur() {
         Team a = new Team("TEAM A", 3);

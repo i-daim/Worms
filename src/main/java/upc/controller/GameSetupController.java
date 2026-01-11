@@ -10,8 +10,21 @@ import upc.view.gui.MenuPanel;
 
 import java.util.HashSet;
 import java.util.Set;
-
-
+/**
+ * Contrôleur de l'écran de configuration de partie.
+ * <p>
+ * Cette classe gère l'interface de configuration avant le lancement d'une partie.
+ * Elle permet au joueur de personnaliser les paramètres de jeu :
+ * <ul>
+ *     <li>Sélection de la carte (ou génération aléatoire)</li>
+ *     <li>Nombre d'aliens par équipe</li>
+ *     <li>Activation/désactivation de chaque arme et outil</li>
+ *     <li>Activation/désactivation du vent</li>
+ * </ul>
+ * <p>
+ * Une fois la configuration validée, le contrôleur crée le GameManager
+ * avec les paramètres choisis et lance la partie.
+ */
 public class GameSetupController {
     /** Vue de l'écran de configuration contenant les options et les boutons */
     private final SetupPanel view;

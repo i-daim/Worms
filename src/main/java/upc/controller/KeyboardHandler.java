@@ -32,6 +32,15 @@ public class KeyboardHandler extends KeyAdapter {
         pressedKeys.add(e.getKeyCode());
     }
 
+    /**
+     * Appelée automatiquement lorsqu'une touche est relâchée.
+     * <p>
+     * Cette méthode retire la touche de l'ensemble des touches maintenues.
+     * L'état "vient d'être pressée" n'est pas modifié ici, il sera nettoyé
+     * manuellement à la fin de la frame.
+     *
+     * @param e L'événement clavier contenant le code de la touche relâchée.
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         pressedKeys.remove(e.getKeyCode());

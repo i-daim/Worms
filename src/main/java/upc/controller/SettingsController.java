@@ -17,6 +17,14 @@ public class SettingsController {
     /** Panneau de menu pour le retour (peut être null si vient du jeu) */
     private final MenuPanel menuPanel;
 
+
+    /**
+     * Construit le contrôleur des paramètres et initialise les listeners.
+     *
+     * @param settingsPanel Le panneau de paramètres à contrôler.
+     * @param mainFrame     La fenêtre principale.
+     * @param menuPanel     Le panneau de menu (null si appelé depuis le jeu en pause).
+     */
     public SettingsController(SettingsPanel settingsPanel,
                               MainFrame mainFrame, MenuPanel menuPanel) {
         this.settingsPanel = settingsPanel;

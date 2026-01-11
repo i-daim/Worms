@@ -89,6 +89,16 @@ public class MouseHandler extends MouseAdapter {
         justReleasedButtons.clear();
     }
 
+    /**
+     * Vérifie si la souris est proche d'un bord de l'écran.
+     * <p>
+     * Cette méthode est utilisée pour déclencher le scroll manuel de la caméra.
+     * La zone sensible s'adapte au zoom actuel. Retourne false si le jeu est en pause
+     * ou si la souris est trop en haut (zone du bouton Skip).
+     *
+     * @param gamePanel Le panneau de jeu pour obtenir les dimensions et l'état.
+     * @return true si la souris est près d'un bord, false sinon.
+     */
     public boolean isMouseNearEdge(GamePanel gamePanel) {
         if (gamePanel.getGameManager().isPaused()) {
             return false;

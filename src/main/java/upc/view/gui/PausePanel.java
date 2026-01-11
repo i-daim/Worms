@@ -6,6 +6,18 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+/**
+ * Panneau affiché lorsque le jeu est en pause.
+ * <p>
+ * Cet overlay agis comme une superposition semi transparente sur le {@link GamePanel}.
+ * Il bloque les interactions avec le jeu et propose les options suivantes :
+ * <ul>
+ * <li><b>Continue</b> : Reprendre la partie en cours.</li>
+ * <li><b>Settings</b> : Accéder aux réglages.</li>
+ * <li><b>Menu</b> : Retourner au menu principal.</li>
+ * <li><b>Quit</b> : Quitter l'application.</li>
+ * </ul>
+ */
 public class PausePanel extends JPanel {
 
     private int menuX = (int) (20 * GamePanel.ZOOM);
@@ -18,6 +30,13 @@ public class PausePanel extends JPanel {
     private final JButton mainMenuButton;
     private final JButton quitButton;
 
+    /**
+     * Constructeur du panneau de pause.
+     * <p>
+     * Initialise les boutons via {@link ButtonManager}, configure le panneau pour être invisible
+     * par défaut et définit un layout nul (positionnement absolu).
+     * </p>
+     */
     public PausePanel() {
         this.setLayout(null);
         this.setOpaque(false);
@@ -31,6 +50,17 @@ public class PausePanel extends JPanel {
         initButtons();
     }
 
+    /**
+     * Dessine l'arrière-plan du menu de pause.
+     * <p>
+     * Cette méthode réalise deux rendus graphiques :
+     * <ol>
+     * <li>Un voile noir semi-transparent sur toute la fenêtre pour assombrir le jeu.</li>
+     * <li>Un cadre rectangulaire contenant les boutons.</li>
+     * </ol>
+     *
+     * @param g L'objet Graphics contextuel.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -44,6 +74,13 @@ public class PausePanel extends JPanel {
         g2.fillRect(menuX + 5, menuY + 5, menuWidth, menuHeight);
     }
 
+    /**
+     * Calcule la position des boutons et les ajoute au panneau.
+     * <p>
+     * Les boutons sont empilés verticalement et centrés horizontalement par rapport
+     * au cadre du menu défini par {@code menuX} et {@code menuWidth}.
+     * </p>
+     */
     private void initButtons() {
         int btnWidth = (int) (200 * GamePanel.ZOOM);
         int btnHeight = (int) (50 * GamePanel.ZOOM);
@@ -66,18 +103,34 @@ public class PausePanel extends JPanel {
     }
 
 
+    /**
+     * Récupère le bouton de reprise du jeu.
+     * @return Le bouton "Continue".
+     */
     public JButton getResumeButton() {
         return resumeButton;
     }
 
+    /**
+     * Récupère le bouton de retour au menu principal.
+     * @return Le bouton "Return to menu".
+     */
     public JButton getMainMenuButton() {
         return mainMenuButton;
     }
 
+    /**
+     * Récupère le bouton d'accès aux paramètre.
+     * @return Le bouton "Settings".
+     */
     public JButton getSettingsButton() {
         return settingsButton;
     }
 
+    /**
+     * Récupère le bouton permettant de quitter le jeu.
+     * @return Le bouton "Quit Game".
+     */
     public JButton getQuitButton() {
         return quitButton;
     }

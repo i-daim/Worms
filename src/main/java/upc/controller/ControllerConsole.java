@@ -7,8 +7,14 @@ import upc.model.jeu.TerrainGenerator;
 import upc.view.console.ConsoleView;
 
 public class ControllerConsole {
+
+    /** Gestionnaire du jeu contenant la logique métier et l'état de la partie */
     private final GameManager gameManager;
+
+    /** Vue console gérant l'affichage et la saisie utilisateur */
     private final ConsoleView view;
+
+    /** Indicateur de continuation de la boucle de jeu */
     private boolean enCours;
 
 

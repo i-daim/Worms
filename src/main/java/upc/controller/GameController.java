@@ -295,12 +295,23 @@ public class GameController {
                 mousePos, gamePanel.getWidth(), gamePanel.getHeight());
     }
 
+    /**
+     * Déplace la caméra manuellement lorsque la souris est proche des bords de l'écran.
+     * <p>
+     * Cette méthode délègue le calcul et l'application du scroll au MouseHandler.
+     */
     private void handleCameraScroll() {
         mouseHandler.handleCameraScroll(gamePanel);
     }
 
 
-////    ARRET DU JEU    ////
+    /**
+     * Gère la mise en pause du jeu via la touche Échap.
+     * <p>
+     * Cette méthode détecte l'appui sur Échap, bascule l'état de pause,
+     * affiche ou cache le menu pause, et nettoie les entrées clavier pour éviter
+     * des actions involontaires lors de la reprise.
+     */
     public void handlePause() {
         if (keyHandler.isJustKeyPressed(KeyEvent.VK_ESCAPE)) {
             togglePause();

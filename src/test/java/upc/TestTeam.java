@@ -148,6 +148,9 @@ public class TestTeam {
         a.skipToNextAlien();
         assertNotEquals(activeAlien,a.getActiveAlien());
     }
+    /**
+     * Vérifie que l'affichage textuel de l'équipe contient le nom.
+     */
 
     @Test
     public void testToString() {

@@ -1,5 +1,6 @@
 package upc.view.gui;
 
+import upc.controller.GameController;
 import upc.model.entites.Alien;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
@@ -32,6 +33,7 @@ public class HUDPanel extends JPanel {
         this.setLayout(null); // pour positionner le bouton librement
         this.setPreferredSize(new Dimension(800, 100));
 
+        addPauseButton();
         addSkipButton();
         addInventoryButton();
     }
@@ -63,6 +65,19 @@ public class HUDPanel extends JPanel {
         }
     }
 
+    private void addPauseButton() {
+        JButton pauseButton = ButtonManager.createGameButton("Pause");
+        pauseButton.addActionListener(e -> {
+            if (!gameManager.isOver()) {
+                GameController.togglePause();
+            }
+        });
+        pauseButton.setFocusable(false);
+        pauseButton.setBounds(20, 5, (int) (60 * zoom), (int) (20 * zoom));
+        pauseButton.setFont(new Font("Arial", Font.BOLD, (int) (8 * zoom)));
+        this.add(pauseButton);
+    }
+
     private void addSkipButton() {
         JButton skipButton = ButtonManager.createGameButton("Passer");
         // passer le tour quand on clique
@@ -75,7 +90,9 @@ public class HUDPanel extends JPanel {
         // Sinon après un clic, les flèches contrôleraient plus l'alien
         skipButton.setFocusable(false);
         // Positionnement et taille
-        skipButton.setBounds(20, 5, (int) (60 * zoom), (int) (20 * zoom));
+        int x = (int) (40 + 60 * zoom);
+        int y = 5;
+        skipButton.setBounds(x, y, (int) (60 * zoom), (int) (20 * zoom));
         skipButton.setFont(new Font("Arial", Font.BOLD, (int) (8 * zoom)));
         this.add(skipButton);
     }

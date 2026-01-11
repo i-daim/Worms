@@ -16,6 +16,8 @@ public interface Item {
 
     Projectile useItem(GameWorld gameWorld, Alien alienActif);
 
+    int getNbOfShots();
+
     String getName();
 
     Type getType();

@@ -23,6 +23,7 @@ public class Alien extends Entity {
 
     private final Inventory inventory;
     private int selectedItemIndex = 0;
+    private int itemUseCount = 0;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -89,6 +90,7 @@ public class Alien extends Entity {
         alienPhysics.jumpAlien(this);
         if (getEquippedItem().getName().equals("Wings")) {
             setState(State.FLY);
+            itemUseCount++;
             inventory.useAmmo(Item.Type.WINGS, 1);
         } else {
             setState(State.JUMP);
@@ -121,6 +123,7 @@ public class Alien extends Entity {
             setState(State.FLY);
         }
         SoundManager.playEffect(item.getName());
+        itemUseCount++;
         inventory.useAmmo(equippedItem, 1);
         return item.useItem(world, this);
     }
@@ -144,6 +147,16 @@ public class Alien extends Entity {
         }
     }
 
+    public boolean canShoot() {
+        Item item = inventory.getItemByIndex(selectedItemIndex);
+
+        return itemUseCount < item.getNbOfShots();
+    }
+
+    public void resetUseCount() {
+        itemUseCount = 0;
+    }
+
     ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
         return healthPoints;
@@ -159,6 +172,10 @@ public class Alien extends Entity {
 
     public int getAimAngle() {
         return aimAngle;
+    }
+
+    public int getItemUseCount() {
+        return itemUseCount;
     }
 
     public Item getEquippedItem() {

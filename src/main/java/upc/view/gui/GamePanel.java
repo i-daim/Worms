@@ -275,13 +275,12 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public boolean centerCamera(Entity entity) {
+    public void centerCamera(Entity entity) {
         if (entity == null) {
-            return false;
+            return;
         }
 
         // 1. Zoom progressif
-        double oldZoom = currentZoom;
         currentZoom += (ZOOM - currentZoom) * 0.05;
 
         // 2. Calculs de la vue
@@ -302,14 +301,10 @@ public class GamePanel extends JPanel {
         targetCamY = Math.max(0, Math.min(viewY, maxY));
 
         // 3. Application du mouvement fluide
-        double oldCamX = cameraX;
-        double oldCamY = cameraY;
-
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        // --- CORRECTION BANDE BLANCHE (Clamping strict) ---
-        // Ajout des accolades {} pour Checkstyle
+        // Pour rester dans les limites du panel
         if (cameraX < 0) {
             cameraX = 0;
         }
@@ -323,25 +318,18 @@ public class GamePanel extends JPanel {
         if (cameraY > maxY) {
             cameraY = maxY;
         }
-
-        // 4. Détection : Est-ce qu'on est encore en train de bouger ?
-        boolean zoomChanged = Math.abs(oldZoom - currentZoom) > 0.001;
-        boolean posChanged = Math.abs(oldCamX - cameraX) > 0.5 || Math.abs(oldCamY - cameraY) > 0.5;
-
-        return zoomChanged || posChanged;
     }
 
-    public boolean unzoomCamera() {
+    public void unzoomCamera() {
         double targetZoom = Math.max(
                 (double) getWidth() / terrain.getWidth(),
                 (double) getHeight() / terrain.getHeight()
         );
 
-        double oldZoom = currentZoom;
         currentZoom += (targetZoom - currentZoom) * 0.05;
 
         double visibleWidth = getWidth() / currentZoom;
-        double visibleHeight = getHeight() / currentZoom; // Variable ajoutée
+        double visibleHeight = getHeight() / currentZoom;
 
         double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
         double maxY = Math.max(0, terrain.getHeight() - visibleHeight);
@@ -352,32 +340,22 @@ public class GamePanel extends JPanel {
         targetCamX = delayFactor * maxCamX;
         targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
 
-        double oldCamX = cameraX;
-        double oldCamY = cameraY;
-
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        // --- CORRECTION BANDE BLANCHE ---
-        // Ajout des accolades {} pour Checkstyle
+        // Pour rester dans les limites du panel
         if (cameraX < 0) {
             cameraX = 0;
         }
         if (cameraX > maxCamX) {
             cameraX = maxCamX;
         }
-
         if (cameraY < 0) {
             cameraY = 0;
         }
         if (cameraY > maxY) {
             cameraY = maxY;
         }
-
-        boolean zoomChanged = Math.abs(oldZoom - currentZoom) > 0.001;
-        boolean posChanged = Math.abs(oldCamX - cameraX) > 0.5 || Math.abs(oldCamY - cameraY) > 0.5;
-
-        return zoomChanged || posChanged;
     }
 
 

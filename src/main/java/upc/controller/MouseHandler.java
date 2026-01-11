@@ -8,6 +8,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import static upc.controller.GameController.CAMERA_SPEED;
+/**
+ * Gestionnaire des entrées souris pour le jeu.
+ * <p>
+ * Cette classe hérite de {@link MouseAdapter} et gère :
+ * <ul>
+ *     <li>La position de la souris à l'écran</li>
+ *     <li>Les clics (pressés, maintenus, relâchés)</li>
+ *     <li>La visée automatique vers la souris</li>
+ *     <li>Le scroll de caméra quand la souris est près des bords</li>
+ * </ul>
+ * <p>
+ * Comme pour le clavier, les états "vient d'être pressé/relâché" doivent être
+ * nettoyés manuellement à chaque frame via {@link #clearJustPressed()} et {@link #clearJustReleased()}.
+ */
 
 public class MouseHandler extends MouseAdapter {
     /** Position actuelle de la souris à l'écran */

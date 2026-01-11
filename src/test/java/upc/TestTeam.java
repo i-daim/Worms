@@ -15,7 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestTeam {
 
     private GameWorld world;
-
+    /**
+     * Prépare l'environnement de test avant chaque méthode.
+     * Initialise un terrain vide et un monde de jeu.
+     */
     @BeforeEach
     public void setUp() {
         upc.model.jeu.Terrain terrainTest = upc.model.jeu.TerrainGenerator.createEmptyTerrain(100, 50);

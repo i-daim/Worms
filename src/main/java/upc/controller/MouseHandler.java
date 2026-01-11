@@ -71,11 +71,20 @@ public class MouseHandler extends MouseAdapter {
     }
 
 
-////    FONCTIONS    ////
+    /**
+     * Nettoie l'ensemble des boutons "viennent d'être pressés".
+     * <p>
+     * Doit être appelée à la fin de chaque frame de jeu.
+     */
     public void clearJustPressed() {
         justPressedButtons.clear();
     }
 
+    /**
+     * Nettoie l'ensemble des boutons "viennent d'être relâchés".
+     * <p>
+     * Doit être appelée à la fin de chaque frame de jeu.
+     */
     public void clearJustReleased() {
         justReleasedButtons.clear();
     }

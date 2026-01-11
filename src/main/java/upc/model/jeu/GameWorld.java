@@ -61,6 +61,10 @@ public class GameWorld {
         physicsEngine.clearAliens();
         activeAliens.clear();
 
+        if (gameManager == null) {
+            return;
+        }
+
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
                 activeAliens.add(a);

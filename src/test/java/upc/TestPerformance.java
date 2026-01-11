@@ -21,7 +21,6 @@ public class TestPerformance {
 
     @Test
     public void testMaxLoadCapacity() {
-
         Terrain terrain = TerrainGenerator.createEmptyTerrain(500, 300);
         GameWorld gameWorld = new GameWorld(null, terrain);
         PhysicsEngine physicsEngine = gameWorld.getPhysicsEngine();
@@ -64,35 +63,67 @@ public class TestPerformance {
                 limitReached = true;
             }
 
-            if (alienCount >= 2000) { // Sécurité
+            if (alienCount >= 3000) {
                 break;
             }
         }
-        // Affichage sur la console pour voir les perfs
-        System.out.println("==================================================");
-        System.out.println("          RAPPORT DE PERFORMANCE DU JEU           ");
-        System.out.println("==================================================");
-        System.out.println(" Limite FPS visée    : 50 FPS (20ms/frame)");
-        System.out.println(" Aliens supportés    : " + alienCount);
-        System.out.println(" Temps moyen frame   : " + String.format("%.3f", averageDuration / 1_000_000.0) + " ms");
-        System.out.println("--------------------------------------------------");
 
-        if (alienCount >= MIN_ALIENS_REQUIRED) {
-            System.out.println(" RÉSULTAT : [SUCCÈS] Performance validée ✅");
-        } else {
-            System.out.println(" RÉSULTAT : [ÉCHEC] Optimisation requise ❌");
+        printReport("CHARGE MAXIMALE", alienCount, averageDuration);
+
+        assertTrue(alienCount >= MIN_ALIENS_REQUIRED, "Le moteur ne supporte pas assez d'entités.");
+    }
+
+    @Test
+    public void testStability() {
+        Terrain terrain = TerrainGenerator.createEmptyTerrain(500, 300);
+        GameWorld gameWorld = new GameWorld(null, terrain);
+        PhysicsEngine physicsEngine = gameWorld.getPhysicsEngine();
+        Team dummyTeam = new Team("TestTeam", 10000);
+
+        // On charge directement 200 aliens
+        int fixedLoad = 200;
+        for (int i = 0; i < fixedLoad; i++) {
+            Position pos = new Position(100 + (i % 400), 50);
+            Alien alien = new Alien(gameWorld, dummyTeam, pos);
+            physicsEngine.addAlien(alien);
         }
+
+        // Test sur la durée (1000 tours de jeu)
+        long totalTime = 0;
+        int frames = 1000;
+
+        for (int i = 0; i < frames; i++) {
+            long start = System.nanoTime();
+            gameWorld.update(0.0);
+            long end = System.nanoTime();
+            totalTime += (end - start);
+        }
+
+        double averageTimePerFrame = (double) totalTime / frames;
+
+        System.out.println("==================================================");
+        System.out.println("          TEST DE STABILITÉ (ENDURANCE)           ");
+        System.out.println("==================================================");
+        System.out.println(" Charge fixe         : " + fixedLoad + " aliens");
+        System.out.println(" Frames simulées     : " + frames);
+        System.out.println(" Temps moyen/frame   : " + String.format("%.3f", averageTimePerFrame / 1_000_000.0) + " ms");
         System.out.println("==================================================");
 
+        assertTrue(averageTimePerFrame < 16_600_000, "Le jeu est instable ou trop lent avec 200 aliens.");
+    }
 
-        String failureMessage = String.format(
-                "Échec Performance : Charge max = %d aliens (Moyenne Frame: %.2f ms). Attendu > %d.",
-                alienCount,
-                averageDuration / 1_000_000.0,
-                MIN_ALIENS_REQUIRED
-        );
+    private void printReport(String title, int count, double duration) {
+        System.out.println("\n==================================================");
+        System.out.println("          TEST : " + title);
+        System.out.println("==================================================");
+        System.out.println(" Limite atteinte à   : " + count + " aliens");
+        System.out.println(" Temps par frame     : " + String.format("%.3f", duration / 1_000_000.0) + " ms");
 
-        // On passe le test uniquement si on a le minimum
-        assertTrue(alienCount >= MIN_ALIENS_REQUIRED, failureMessage);
+        if (count >= MIN_ALIENS_REQUIRED) {
+            System.out.println(" RÉSULTAT : ✅ VALIDÉ");
+        } else {
+            System.out.println(" RÉSULTAT : ❌ ÉCHEC");
+        }
+        System.out.println("==================================================\n");
     }
 }

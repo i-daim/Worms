@@ -106,6 +106,13 @@ public class PauseActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Quitter".
+     * <p>
+     * Ferme l'application immédiatement sans sauvegarder.
+     *
+     * @return L'ActionListener pour quitter le jeu.
+     */
     public ActionListener getQuitAction() {
         return e -> System.exit(0);
     }

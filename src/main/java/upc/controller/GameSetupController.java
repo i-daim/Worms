@@ -51,7 +51,7 @@ public class GameSetupController {
             allowed.add(Item.Type.MINE);
         }
         if (view.isJetpackEnabled()) {
-            allowed.add(Item.Type.JETPACK);
+            allowed.add(Item.Type.WINGS);
         }
 
         Inventory.setAllowedWeapons(allowed);

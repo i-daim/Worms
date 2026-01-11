@@ -47,7 +47,7 @@ public class SetupPanel extends JPanel {
     private final JCheckBox chkShotgun;
     private final JCheckBox chkGrenade;
     private final JCheckBox chkMine;
-    private final JCheckBox chkJetpack;
+    private final JCheckBox chkWings;
     private final JCheckBox chkWind;
 
     private static final Color PANEL_BG_COLOR = new Color(30, 30, 40, 220);
@@ -118,14 +118,14 @@ public class SetupPanel extends JPanel {
         chkShotgun = createWeaponCheckbox("Shotgun");
         chkGrenade = createWeaponCheckbox("Grenade");
         chkMine = createWeaponCheckbox("Mine");
-        chkJetpack = createWeaponCheckbox("Jetpack");
+        chkWings = createWeaponCheckbox("Wings");
 
         itemsGrid.add(chkBazooka);
         itemsGrid.add(chkUzi);
         itemsGrid.add(chkShotgun);
         itemsGrid.add(chkGrenade);
         itemsGrid.add(chkMine);
-        itemsGrid.add(chkJetpack);
+        itemsGrid.add(chkWings);
 
         weaponPanel.add(itemsGrid, BorderLayout.CENTER);
 
@@ -307,7 +307,7 @@ public class SetupPanel extends JPanel {
         return chkMine.isSelected();
     }
     public boolean isJetpackEnabled() {
-        return chkJetpack.isSelected();
+        return chkWings.isSelected();
     }
     public boolean isWindEnabled() {
         return chkWind.isSelected();

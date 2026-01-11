@@ -6,7 +6,6 @@ import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.model.save.GameSave;
-import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.InventoryPanel;
@@ -168,8 +167,8 @@ public class GameController {
 
         // Utilisation de l'item
         if (equipped != null && canShoot && !isMouseOnInv()) {
-            // Peut être utilisé plusieurs fois si c'est un Uzi ou un jetpack
-            if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
+            // Peut être utilisé plusieurs fois si c'est un Uzi
+            if (equipped instanceof upc.model.items.Uzi) {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
                         activeAlien.setShootPower(100);
@@ -180,7 +179,8 @@ public class GameController {
                     frameCount++;
                 }
             // Le shotgun tire directement sans jauge de puissance
-            } else if (equipped instanceof upc.model.items.Shotgun) {
+            } else if (equipped instanceof upc.model.items.Shotgun
+                || equipped instanceof upc.model.items.Wings) {
                 if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
                     activeAlien.setShootPower(100);
                     activeAlien.useEquippedItem();

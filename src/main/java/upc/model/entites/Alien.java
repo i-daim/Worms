@@ -30,10 +30,7 @@ public class Alien extends Entity {
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {
-        IDLE,
-        WALK,
-        JUMP_START,
-        JUMP
+        IDLE, WALK, JUMP, AIR, LAND, FLY
     }
     private State state;
 
@@ -75,7 +72,7 @@ public class Alien extends Entity {
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
         direction = true;
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (!isInAir()) {
             setState(State.WALK);
         }
     }
@@ -83,21 +80,31 @@ public class Alien extends Entity {
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
         direction = false;
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (!isInAir()) {
             setState(State.WALK);
         }
     }
 
     public void jump() {
         alienPhysics.jumpAlien(this);
-        setState(State.JUMP_START);
+        if (getEquippedItem().getName().equals("Wings")) {
+            setState(State.FLY);
+            inventory.useAmmo(Item.Type.WINGS, 1);
+        } else {
+            setState(State.JUMP);
+        }
     }
 
     public void idle() {
         alienPhysics.moveAlien(this, 0);
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (state != State.JUMP && state != State.AIR && state != State.LAND) {
             setState(State.IDLE);
         }
+    }
+
+    public boolean isInAir() {
+        return state == State.AIR || state == State.JUMP
+                || state == State.FLY || state == State.LAND;
     }
 
 
@@ -109,9 +116,9 @@ public class Alien extends Entity {
         if (item == null || !inventory.isAvailable(equippedItem)) {
             return null;
         }
-        if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
-            alienPhysics.flyAlien(this);
-            setState(State.JUMP);
+        if (equippedItem == Item.Type.WINGS && inventory.isAvailable(equippedItem)) {
+            alienPhysics.jumpAlien(this);
+            setState(State.FLY);
         }
         SoundManager.playEffect(item.getName());
         inventory.useAmmo(equippedItem, 1);

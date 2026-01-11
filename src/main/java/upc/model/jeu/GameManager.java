@@ -313,7 +313,7 @@ public class GameManager {
     }
 
     public void setActiveProjectile(Projectile p) {
-        if ( activeProjectile instanceof Trap) {
+        if (activeProjectile instanceof Trap) {
             return;
         }
         this.activeProjectile = p;

@@ -33,6 +33,14 @@ public class ControllerConsole {
         this.enCours = true;
     }
 
+    /**
+     * Démarre la boucle principale du jeu en mode console.
+     * <p>
+     * Cette méthode affiche le message de bienvenue, puis entre dans une boucle
+     * qui se répète jusqu'à ce que la partie soit terminée ou que l'utilisateur quitte.
+     * À chaque tour, elle affiche l'état du jeu, demande une commande à l'utilisateur,
+     * et l'exécute.
+     */
 
     public void start() {
         view.printWelcome();

@@ -127,7 +127,18 @@ public class GameController {
         gameThread.setDaemon(true);
         gameThread.start();
     }
-
+    /**
+     * Met à jour l'état du jeu pour une frame (1/60ème de seconde).
+     * <p>
+     * Cette méthode coordonne toutes les mises à jour nécessaires :
+     * <ul>
+     *     <li>Gestion de la pause</li>
+     *     <li>Mise à jour du modèle (physique, projectiles, aliens)</li>
+     *     <li>Gestion de la caméra (suivi automatique ou manuel)</li>
+     *     <li>Traitement des entrées utilisateur</li>
+     *     <li>Détection de fin de partie</li>
+     * </ul>
+     */
     private void update() {
         // Si le jeu est pausé on ne met pas à jour le reste
         handlePause(); // gestion des entrées necéssaires seulement

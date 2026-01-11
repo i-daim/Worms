@@ -54,6 +54,21 @@ public class GameSetupController {
         view.getStartButton().addActionListener(e -> startGame());
     }
 
+    /**
+     * Démarre une nouvelle partie avec les paramètres configurés par le joueur.
+     * <p>
+     * Cette méthode effectue les étapes suivantes :
+     * <ol>
+     *     <li>Récupère les armes/outils activés par le joueur et configure l'inventaire global</li>
+     *     <li>Récupère la carte sélectionnée (ou génère aléatoirement)</li>
+     *     <li>Récupère la taille des équipes</li>
+     *     <li>Crée le terrain selon la carte choisie</li>
+     *     <li>Initialise le GameManager avec ces paramètres</li>
+     *     <li>Active/désactive le vent selon le choix du joueur</li>
+     *     <li>Crée le GamePanel et son contrôleur</li>
+     *     <li>Affiche le jeu dans la fenêtre principale</li>
+     * </ol>
+     */
     private void startGame() {
         Set<Item.Type> allowed = new HashSet<>();
         if (view.isBazookaEnabled()) {

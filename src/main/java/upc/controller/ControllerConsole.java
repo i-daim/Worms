@@ -55,7 +55,14 @@ public class ControllerConsole {
         view.printGameOver(gameManager);
         view.close();
     }
-
+    /**
+     * Traite une commande saisie par l'utilisateur.
+     * <p>
+     * Cette méthode analyse la commande et exécute l'action correspondante :
+     * déplacement, saut, attaque, affichage des statistiques, ou fin de tour.
+     *
+     * @param command La commande saisie par l'utilisateur (peut être null).
+     */
     private void requestCommand(String command) {
         if (command == null) {
             return;

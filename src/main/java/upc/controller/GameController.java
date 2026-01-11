@@ -182,7 +182,18 @@ public class GameController {
         gamePanel.repaint();
     }
 
-////    GESTION DES ENTREES SOURIS/CLAVIER    ////
+    /**
+     * Traite toutes les entrées utilisateur (clavier et souris) pour contrôler l'alien actif.
+     * <p>
+     * Cette méthode gère :
+     * <ul>
+     *     <li>La sélection d'items dans l'inventaire (clic souris)</li>
+     *     <li>Les déplacements (Q/D) et le saut (Z)</li>
+     *     <li>La visée automatique vers la souris</li>
+     *     <li>L'utilisation des items avec des comportements spécifiques par arme</li>
+     *     <li>La sauvegarde rapide (F5)</li>
+     * </ul>
+     */
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
 

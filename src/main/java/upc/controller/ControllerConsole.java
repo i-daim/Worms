@@ -17,7 +17,15 @@ public class ControllerConsole {
     /** Indicateur de continuation de la boucle de jeu */
     private boolean enCours;
 
-
+    /**
+     * Construit un nouveau contrôleur console et initialise une partie.
+     * <p>
+     * Le constructeur crée automatiquement un terrain "liberty" et initialise
+     * une partie avec 2 équipes.
+     *
+     * @param gameManager Le gestionnaire de jeu (paramètre actuellement non utilisé,
+     *                    remplacé par une nouvelle instance).
+     */
     public ControllerConsole(GameManager gameManager) {
         Terrain terrainConsole = TerrainGenerator.createTerrain("liberty");
         this.gameManager = new GameManager(terrainConsole, 2);

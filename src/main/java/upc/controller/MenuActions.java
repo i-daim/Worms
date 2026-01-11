@@ -12,6 +12,12 @@ import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
 import upc.view.gui.SettingsPanel;
 
+/**
+ * Gestionnaire des actions du menu principal.
+ * <p>
+ * Cette classe crée et retourne les {@link ActionListener} pour chaque bouton
+ * du menu (Nouvelle partie, Charger, Paramètres, Quitter).
+ */
 public class MenuActions {
 
     /** Fenêtre principale de l'application */

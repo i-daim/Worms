@@ -74,6 +74,19 @@ public class KeyboardHandler extends KeyAdapter {
         return pressedKeys.contains(keyCode);
     }
 
+    /**
+     * Vérifie si une touche vient d'être pressée cette frame.
+     * <p>
+     * Cette méthode retourne true une seule fois lors de la première pression,
+     * puis false tant que la touche n'est pas relâchée puis pressée à nouveau.
+     * C'est utile pour les actions ponctuelles comme le saut, la pause, ou la sauvegarde.
+     * <p>
+     * <b>Important :</b> {@link #clearJustPressed()} doit être appelé à chaque frame
+     * pour que cette méthode fonctionne correctement.
+     *
+     * @param keyCode Le code de la touche à vérifier (ex: {@link KeyEvent#VK_SPACE}).
+     * @return true si la touche vient d'être pressée cette frame, false sinon.
+     */
     public boolean isJustKeyPressed(int keyCode) {
         return justPressedKeys.contains(keyCode);
     }

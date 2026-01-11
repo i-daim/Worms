@@ -61,6 +61,13 @@ public class PauseActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Menu Principal".
+     * <p>
+     * Arrête la partie en cours, lance la musique du menu et retourne au menu principal.
+     *
+     * @return L'ActionListener pour retourner au menu.
+     */
     public ActionListener getMainMenuAction() {
         return e -> {
             MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(gamePanel);

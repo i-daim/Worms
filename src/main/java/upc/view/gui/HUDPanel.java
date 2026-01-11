@@ -144,7 +144,8 @@ public class HUDPanel extends JPanel {
             g2.setFont(new Font("Arial", Font.BOLD, 18));
             g2.drawString(item.getName(), x + 15, y + 30);
 
-            int ammo = activeAlien.getTeam().getInventory().getAmmo(item.getType());
+            int ammo = activeAlien.getEquippedItem().getNbOfShots()
+                    - activeAlien.getItemUseCount();
             String info = (ammo < 0) ? "Infini" : "x" + ammo;
             g2.setFont(new Font("Arial", Font.PLAIN, 14));
             g2.setColor(Color.YELLOW);
@@ -206,7 +207,6 @@ public class HUDPanel extends JPanel {
 
                     if (active) {
                         drawAlienAim(g2, alien);
-                        drawEquippedWeapon(g2, alien);
                     }
                 }
             }
@@ -273,24 +273,6 @@ public class HUDPanel extends JPanel {
         // On revient à l'état original
         g2.setTransform(originalTransform);
     }
-
-
-    private void drawEquippedWeapon(Graphics2D g2, Alien alien) {
-        Item item = alien.getEquippedItem();
-        if (item == null) {
-            return;
-        }
-        int posX = alien.getPosition().getX();
-        int posY = alien.getPosition().getY();
-
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 12));
-        String text = alien.getEquippedItem().getName();
-        int textWidth = g2.getFontMetrics().stringWidth(text);
-
-        g2.drawString(text, posX - textWidth / 2, posY - 42);
-    }
-
 
     private void drawAlienHealthBar(Graphics2D g2, Alien alien, boolean active) {
         int posX = alien.getPosition().getX();

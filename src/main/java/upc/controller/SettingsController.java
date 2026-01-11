@@ -8,8 +8,13 @@ import upc.view.gui.SettingsPanel;
 
 public class SettingsController {
 
+    /** Panneau de paramètres contenant les contrôles (slider, sélecteur, boutons) */
     private final SettingsPanel settingsPanel;
+
+    /** Fenêtre principale de l'application */
     private final MainFrame mainFrame;
+
+    /** Panneau de menu pour le retour (peut être null si vient du jeu) */
     private final MenuPanel menuPanel;
 
     public SettingsController(SettingsPanel settingsPanel,

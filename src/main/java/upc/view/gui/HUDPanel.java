@@ -79,7 +79,7 @@ public class HUDPanel extends JPanel {
     }
 
     private void addSkipButton() {
-        JButton skipButton = ButtonManager.createGameButton("Passer");
+        JButton skipButton = ButtonManager.createGameButton("Skip");
         // passer le tour quand on clique
         skipButton.addActionListener(e -> {
             if (!gameManager.isOver()) {

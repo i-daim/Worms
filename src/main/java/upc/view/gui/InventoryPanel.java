@@ -14,6 +14,18 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
+/**
+ * Composant graphique responsable de l'affichage de l'inventaire des armes.
+ * <p>
+ * Cette classe agit principalement comme un moteur de rendu statique pour l'interface d'inventaire.
+ * Elle gère :
+ * <ul>
+ * <li>Le dessin du conteneur et des slots d'armes.</li>
+ * <li>L'affichage des icônes et des munitions restantes.</li>
+ * <li>La mise en évidence de l'arme sélectionnée.</li>
+ * <li>La détection des clics souris sur les slots.</li>
+ * </ul>
+ */
 public class InventoryPanel extends JPanel {
 
     public static final int INVENTORY_SLOTS = 6;
@@ -39,6 +51,17 @@ public class InventoryPanel extends JPanel {
     private static final Color SLOT_BORDER_SELECTED = new Color(255, 215, 0);
 
 
+    /**
+     * Point d'entrée principal pour dessiner l'inventaire à l'écran.
+     * <p>
+     * Calcule automatiquement la position centrée en bas de l'écran avant de déléguer
+     * le dessin à {@link #drawAlienInventory}.
+     * </p>
+     * @param g2 La graphique 2D.
+     * @param screenWidth La largeur de l'écran.
+     * @param screenHeight La hauteur de l'écran.
+     * @param alien L'alien dont l'inventaire doit être affiché.
+     */
     public static void drawInventory(Graphics2D g2, int screenWidth, int screenHeight,
                                      Alien alien) {
         int x = (screenWidth - TOTAL_WIDTH) / 2;
@@ -48,6 +71,21 @@ public class InventoryPanel extends JPanel {
     }
 
 
+    /**
+     * Dessine l'inventaire complet à une position donnée.
+     * <p>
+     * Cette méthode orchestre le rendu :
+     * <ol>
+     * <li>Configuration de la qualité graphique.</li>
+     * <li>Dessin du conteneur.</li>
+     * <li>Itération sur les slots pour afficher les items et munitions.</li>
+     * </ol>
+     *
+     * @param g2 La graphique 2d.
+     * @param drawX La position X du coin haut-gauche de l'inventaire.
+     * @param drawY La position Y du coin haut-gauche de l'inventaire.
+     * @param alien L'alien actif pour récupérer l'inventaire d'équipe et la sélection.
+     */
     public static void drawAlienInventory(Graphics2D g2, int drawX, int drawY, Alien alien) {
         if (alien == null) {
             return;
@@ -75,12 +113,25 @@ public class InventoryPanel extends JPanel {
         }
     }
 
+    /**
+     * Active l'anti-aliasing pour le texte et les formes géométriques.
+     * @param g2 La graphique 2d.
+     */
     private static void setupGraphics(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
+    /**
+     * Dessine l'arrière-plan du panneau d'inventaire.
+     * <p>
+     * Inclut une ombre portée, un fond semi-transparent et une double bordure.
+     * </p>
+     * @param g2 Le contexte graphique.
+     * @param x Position X.
+     * @param y Position Y.
+     */
     private static void drawContainer(Graphics2D g2, int x, int y) {
         // Ombre
         g2.setColor(new Color(0, 0, 0, 150));
@@ -101,6 +152,17 @@ public class InventoryPanel extends JPanel {
         g2.drawRoundRect(x + 5, y + 5, TOTAL_WIDTH - 10, TOTAL_HEIGHT - 10, 20, 20);
     }
 
+    /**
+     * Dessine un slot individuel.
+     * <p>
+     * Si le slot est sélectionné, il est mis en évidence avec une bordure dorée
+     * et un fond plus clair.
+     * </p>
+     * @param g2 La graphique 2d.
+     * @param x Position X.
+     * @param y Position Y.
+     * @param isSelected Vrai si c'est l'arme actuellement choisie par l'alien.
+     */
     private static void drawSlot(Graphics2D g2, int x, int y, boolean isSelected) {
         g2.setColor(isSelected ? SLOT_BG_SELECTED : SLOT_BG_NORMAL);
         g2.fillRoundRect(x, y, SLOT_SIZE, SLOT_SIZE, 15, 15);
@@ -116,6 +178,17 @@ public class InventoryPanel extends JPanel {
         }
     }
 
+    /**
+     * Dessine l'icône de l'arme à l'intérieur d'un slot.
+     * <p>
+     * Récupère l'image via {@link ImageManager}. Si l'image n'est pas trouvée,
+     * affiche les 3 premières lettres du nom de l'item en secours.
+     * </p>
+     * @param g2 La graphique 2d.
+     * @param x Position X du slot.
+     * @param y Position Y du slot.
+     * @param itemType Le type d'item à dessiner.
+     */
     private static void drawItemIcon(Graphics2D g2, int x, int y, Item.Type itemType) {
         if (itemType == null) {
             return;
@@ -133,6 +206,18 @@ public class InventoryPanel extends JPanel {
         }
     }
 
+    /**
+     * Affiche le nombre de munitions restantes dans le coin du slot.
+     * <p>
+     * Affiche "∞" si le nombre de munitions est -1.
+     * </p>
+     * @param g2 Le contexte graphique.
+     * @param x Position X du slot.
+     * @param y Position Y du slot.
+     * @param itemType Le type d'item.
+     * @param ammoCount Le nombre de munitions.
+     * @param isSelected Si le slot est sélectionné.
+     */
     private static void drawAmmoCount(Graphics2D g2, int x, int y, Item.Type itemType,
                                       int ammoCount, boolean isSelected) {
         if (itemType == null) {
@@ -146,6 +231,14 @@ public class InventoryPanel extends JPanel {
         g2.drawString(ammoText, x + SLOT_SIZE - textWidth - 8, y + SLOT_SIZE - 8);
     }
 
+    /**
+     * Formate le nom de l'énum pour correspondre aux clés des ressources.
+     * <p>
+     * Exemple : "BAZOOKA" devient "Bazooka".
+     * </p>
+     * @param name Le nom de l'énum.
+     * @return Le nom formaté.
+     */
     private static String formatEnumName(String name) {
         if (name == null || name.isEmpty()) {
             return "";
@@ -153,6 +246,14 @@ public class InventoryPanel extends JPanel {
         return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 
+    /**
+     * Détermine si un clic de souris correspond à un slot d'inventaire.
+     *
+     * @param clickPoint Les coordonnées du clic.
+     * @param screenWidth Largeur de l'écran.
+     * @param screenHeight Hauteur de l'écran.
+     * @return L'index du slot cliqué (0 à INVENTORY_SLOTS-1), ou -1 si aucun slot n'est touché.
+     */
     /**
      * Vérifie si un clic est dans un slot de l'inventaire et retourne l'index du slot.
      * Retourne -1 si aucun slot est cliqué.
@@ -174,6 +275,17 @@ public class InventoryPanel extends JPanel {
         return -1;
     }
 
+    /**
+     * Vérifie si un point donné se trouve à l'intérieur de la zone globale de l'inventaire.
+     * <p>
+     * Utile pour empêcher les clics de traverser l'interface et d'interagir avec
+     * le jeu en arrière-plan.
+     * </p>
+     * @param p Le point à tester.
+     * @param screenWidth Largeur de l'écran.
+     * @param screenHeight Hauteur de l'écran.
+     * @return Vrai si le point est dans l'inventaire, Faux sinon.
+     */
     public static boolean isInsideInventory(Point p, int screenWidth, int screenHeight) {
         if (p == null) {
             return false;

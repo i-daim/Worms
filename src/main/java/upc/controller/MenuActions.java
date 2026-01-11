@@ -95,6 +95,13 @@ public class MenuActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Quitter".
+     * <p>
+     * Ferme l'application immédiatement.
+     *
+     * @return L'ActionListener pour quitter le jeu.
+     */
     public ActionListener getQuitAction() {
         return e -> System.exit(0);
     }

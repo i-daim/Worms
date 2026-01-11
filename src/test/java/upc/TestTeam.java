@@ -68,7 +68,9 @@ public class TestTeam {
 
         assertTrue(b.isEliminated());
     }
-
+    /**
+     * Vérifie que la méthode getName() retourne le bon nom d'équipe.
+     */
     @Test
     public void testGetNom() {
         Team a = new Team("TEAM A", 3);

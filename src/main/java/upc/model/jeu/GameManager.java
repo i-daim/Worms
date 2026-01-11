@@ -109,7 +109,8 @@ public class GameManager {
         checkGameOver();
 
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
-        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
+        if (getActiveAlien() == null || !getActiveAlien().isAlive()
+            || !getActiveAlien().canShoot()) {
             skipTurn();
             return;
         }
@@ -159,6 +160,7 @@ public class GameManager {
         setDelay(2000, () -> {
             nextTurn();
             timeLeft = ROUND_TIME;
+            getActiveAlien().resetUseCount();
         });
     }
 
@@ -172,7 +174,7 @@ public class GameManager {
         // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        // [MODIFICATION] Délégation à la physique
+        // Délégation à la physique
         if (windEnabled) {
             applyWindChange();
         }
@@ -295,14 +297,16 @@ public class GameManager {
      * selon qu'il soit de type piège ou en vol
      * */
     private void checkActiveProjectile() {
-        if (activeProjectile == null || activeProjectile instanceof Trap) {
-            activeProjectile = null;
+        if (activeProjectile == null) {
             return;
         }
-        if (activeProjectile.getState().equals(Projectile.State.FLYING)) {
-            delayEndTime += 20;
+        if (activeProjectile.getState().equals(Projectile.State.FLYING)
+            && !(activeProjectile instanceof Trap)) {
+            delayEndTime += 18;
         } else {
             activeProjectile = null;
+            actionDone = true;
+            skipTurn();
         }
     }
 

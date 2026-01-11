@@ -10,7 +10,7 @@ public class Uzi extends Weapon {
 
     /**Constantes représentants les dégats, le nombre de tir et la puissance de base*/
     private static final int DAMAGE = 10;
-    private static final int NB_OF_SHOTS = 30;
+    private static final int NB_OF_SHOTS = 15;
     private static final int BASE_POWER = 20;
 
     /**

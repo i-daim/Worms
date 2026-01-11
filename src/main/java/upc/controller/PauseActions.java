@@ -21,9 +21,20 @@ public class PauseActions {
 
     public ActionListener getResumeAction() {
         return e -> {
-            gameController.togglePause();
+            GameController.togglePause();
             gamePanel.togglePauseMenu(false);
             gamePanel.requestFocusInWindow();
+        };
+    }
+
+    public ActionListener getSaveGameAction() {
+        return e -> {
+            try {
+                gameController.saveGame();
+            } catch (Exception ex) {
+                System.err.println("Erreur lors de la sauvegarde :"
+                        + ex.getMessage());
+            }
         };
     }
 

@@ -26,6 +26,12 @@ public interface Item {
     Projectile useItem(GameWorld gameWorld, Alien alienActif);
 
     /**
+     * Renvoie le nombre max d'utilisations par tour pour l'item
+     * @return
+     */
+    int getNbOfShots();
+
+    /**
      * Retourne le nom de l'outil
      * @return le string {@link String} représentant le nom de l'outil
      */

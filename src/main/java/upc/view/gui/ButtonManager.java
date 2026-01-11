@@ -11,8 +11,36 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 
+/**
+ * Classe utilitaire pour la création et la personnalisation des boutons de l'interface graphique.
+ * <p>
+ * Cette classe agit comme une fabrique de boutons Swing, garantissant une cohérence visuelle
+ * dans toute l'application. Elle permet de créer des boutons avec :
+ * <ul>
+ * <li>Un rendu graphique personnalisé.</li>
+ * <li>Des couleurs réactives aux états (survol, clic, etc).</li>
+ * <li>Une mise à l'échelle automatique basé sur {@link GamePanel#ZOOM}.</li>
+ * </ul>
+ */
 public class ButtonManager {
 
+    /**
+     * Crée un bouton entièrement stylisé avec un rendu graphique personnalisé.
+     * <p>
+     * Cette méthode surcharge la méthode {@code paintComponent} du bouton pour dessiner
+     * manuellement le fond et les bordures avec des formes arrondies.
+     * </p>
+     * <p>
+     * Les états gérés visuellement sont :
+     * <ul>
+     * <li><b>Normal</b> : Gris foncé (55, 65, 75).</li>
+     * <li><b>Survol </b> : Gris plus clair (75, 85, 95).</li>
+     * <li><b>Appuyé </b> : Gris très sombre (35, 45, 55).</li>
+     * </ul>
+     *
+     * @param text Le texte à afficher sur le bouton.
+     * @return Une instance de {@link JButton} configurée avec les dimensions et le style du jeu.
+     */
     public static JButton createGameButton(String text) {
         double zoom = GamePanel.ZOOM;
 
@@ -59,6 +87,17 @@ public class ButtonManager {
         return btn;
     }
 
+    /**
+     * Crée un bouton stylisé et lui associe directement une action.
+     * <p>
+     * C'est une méthode de commodité qui appelle {@link #createGameButton(String)}
+     * puis ajoute l'{@link ActionListener} fourni.
+     * </p>
+     *
+     * @param text Le texte du bouton.
+     * @param listener L'écouteur d'événement à déclencher lors du clic.
+     * @return Le bouton configuré et prêt à l'emploi.
+     */
     public static JButton createGameButton(String text, ActionListener listener) {
         JButton btn = createGameButton(text);
         btn.addActionListener(listener);

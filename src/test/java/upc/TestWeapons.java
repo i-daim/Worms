@@ -48,7 +48,7 @@ public class TestWeapons {
 
         assertEquals("Uzi", uzi.getName());
         assertEquals(10, uzi.getDamage());
-        assertEquals(30, uzi.getNbOfShots());
+        assertEquals(15, uzi.getNbOfShots());
         assertEquals(20, uzi.getBasePower());
     }
     /**
@@ -74,7 +74,7 @@ public class TestWeapons {
 
         assertEquals("Shotgun", shotgun.getName());
         assertEquals(35, shotgun.getDamage());
-        assertEquals(8, shotgun.getNbOfShots());
+        assertEquals(2, shotgun.getNbOfShots());
         assertEquals(20, shotgun.getBasePower());
     }
     /**

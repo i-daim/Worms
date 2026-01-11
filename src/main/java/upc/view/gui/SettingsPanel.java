@@ -17,6 +17,16 @@ import java.awt.Image;
 import java.awt.Font;
 import java.awt.Dimension;
 
+/**
+ * Panneau de configuration et de réglages du jeu.
+ * <p>
+ * Ce panneau permet à l'utilisateur de modifier les préférences globales, telles que :
+ * <ul>
+ * <li>La musique de fond (via liste déroulante).</li>
+ * <li>Le volume sonore global (via curseur).</li>
+ * </ul>
+ * Il contient également un bouton de retour pour revenir au menu précédent.
+ */
 public class SettingsPanel extends JPanel {
 
     private final Image background = ImageManager.get("settings_background");
@@ -27,6 +37,14 @@ public class SettingsPanel extends JPanel {
 
     private final double zoom = GamePanel.ZOOM;
 
+    /**
+     * Constructeur du panneau de réglages.
+     * <p>
+     * Initialise la mise en page via BoxLayout verticale "Settings"
+     * et le bouton de retour. Appelle ensuite {@link #initControls()} pour placer
+     * les composants interactifs.
+     * </p>
+     */
     public SettingsPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -52,6 +70,16 @@ public class SettingsPanel extends JPanel {
         this.add(Box.createVerticalGlue());
     }
 
+    /**
+     * Initialise les composants de contrôle audio et leurs labels.
+     * <p>
+     * Crée et configure graphiquement :
+     * <ul>
+     * <li><b>Sélecteur de musique</b> : Une {@link JComboBox} remplie avec
+     * les musiques disponibles dans le {@link SoundManager}.</li>
+     * <li><b>Contrôle du volume</b> : Un {@link JSlider} allant de 0 à 100 (défaut 50).</li>
+     * </ul>
+     */
     private void initControls() {
         JLabel musicLabel = new JLabel("Music:");
         musicLabel.setFont(new Font("Arial", Font.BOLD, (int) (10 * zoom)));
@@ -91,6 +119,13 @@ public class SettingsPanel extends JPanel {
         this.add(volumeSlider);
     }
 
+    /**
+     * Dessine l'arrière-plan du panneau de paramètres.
+     * <p>
+     * Utilise "settings_background" chargée via {@link ImageManager}.
+     * </p>
+     * @param g L'objet Graphics.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -99,14 +134,26 @@ public class SettingsPanel extends JPanel {
         }
     }
 
+    /**
+     * Récupère le bouton de retour.
+     * @return Le JButton "Back".
+     */
     public JButton getBackButton() {
         return backButton;
     }
 
+    /**
+     * Récupère la liste déroulante de sélection de musique.
+     * @return La JComboBox contenant les titres de musique.
+     */
     public JComboBox<String> getMusicSelection() {
         return musicSelection;
     }
 
+    /**
+     * Récupère le curseur de volume.
+     * @return Le JSlider de volume.
+     */
     public JSlider getVolumeSlider() {
         return volumeSlider;
     }

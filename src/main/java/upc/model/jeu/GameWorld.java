@@ -11,6 +11,7 @@ public class GameWorld {
     /** Attributs principaux du monde de jeu */
     private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
+    private final Terrain terrain;
 
     private final ArrayList<Alien> activeAliens;
 
@@ -22,6 +23,7 @@ public class GameWorld {
      */
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
+        this.terrain = terrain;
         this.physicsEngine = new PhysicsEngine(this);
 
         this.activeAliens = new ArrayList<>();
@@ -37,7 +39,6 @@ public class GameWorld {
      */
     public void update(double elapsedTime) {
         physicsEngine.update();
-
     }
 
 
@@ -72,9 +73,10 @@ public class GameWorld {
     public void explode(int x, int y, int radius) {
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);
-        gameManager.addActiveAnimation("explosion", x, y);
+        if (gameManager != null) {
+            gameManager.addActiveAnimation("explosion", x, y);
+        }
     }
-
 
 
     /**
@@ -86,6 +88,10 @@ public class GameWorld {
     public void initializePhysics() {
         physicsEngine.clearAliens();
         activeAliens.clear();
+
+        if (gameManager == null) {
+            return;
+        }
 
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
@@ -124,7 +130,7 @@ public class GameWorld {
      * @return le terrain de jeu via l'attribut gameManager
      */
     public Terrain getTerrain() {
-        return gameManager.getTerrain();
+        return this.terrain;
     }
 
     /**
@@ -133,7 +139,6 @@ public class GameWorld {
      */
     public PhysicsEngine getPhysicsEngine() {
         return physicsEngine;
-
     }
 
     /**

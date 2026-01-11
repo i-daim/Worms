@@ -23,6 +23,7 @@ public class Alien extends Entity {
 
     private final Inventory inventory;
     private int selectedItemIndex = 0;
+    private int itemUseCount = 0;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -116,7 +117,9 @@ public class Alien extends Entity {
     public void jump() {
         alienPhysics.jumpAlien(this);
         if (getEquippedItem().getName().equals("Wings")) {
+            SoundManager.playEffect("Wings");
             setState(State.FLY);
+            itemUseCount++;
             inventory.useAmmo(Item.Type.WINGS, 1);
         } else {
             setState(State.JUMP);
@@ -160,12 +163,14 @@ public class Alien extends Entity {
         //Si l'item équipé est le jetpack et le nombre de munition suffisant
         if (equippedItem == Item.Type.WINGS && inventory.isAvailable(equippedItem)) {
             alienPhysics.jumpAlien(this);
+            SoundManager.playEffect("Wings");
             //Met l'alien dans l'état de vol
             setState(State.FLY);
         }
         SoundManager.playEffect(item.getName());
 
-        //Décremente de un le nombre de munitions présent dans l'arme
+        //Utilise une munition et la compte pour le tour
+        itemUseCount++;
         inventory.useAmmo(equippedItem, 1);
         return item.useItem(world, this);
     }
@@ -194,14 +199,29 @@ public class Alien extends Entity {
 
     /**
      * Méthode permettant d'augmenter  la puissance de tir
-     * En bloquant le seuil de la puissance de tir à 100
+     * Revient à zéro s'il atteint le max pour augmenter en boucle
      */
     public void incrementPower() {
-        shootPower++;
-        if (shootPower > 100) {
-            shootPower = 100;
-        }
+        shootPower = (shootPower + 1) % 100;
     }
+
+    /**
+     * Vérifie si le nombre d'utilisations est inférieur à celui autorisé
+     * @return true si on a utilisé l'item moins que nbOfShots
+     */
+    public boolean canShoot() {
+        Item item = inventory.getItemByIndex(selectedItemIndex);
+
+        return itemUseCount < item.getNbOfShots();
+    }
+
+    /**
+     * Réinitialise le compteur pour le nombre d'utilisations de l'item
+     */
+    public void resetUseCount() {
+        itemUseCount = 0;
+    }
+
 
 
 ////    GETTERS & SETTERS    ////
@@ -236,6 +256,14 @@ public class Alien extends Entity {
      */
     public int getAimAngle() {
         return aimAngle;
+    }
+
+    /**
+     * Retourne le nombre d'utilisations de l'item
+     * @return L'attribut itemUseCount
+     */
+    public int getItemUseCount() {
+        return itemUseCount;
     }
 
     /**

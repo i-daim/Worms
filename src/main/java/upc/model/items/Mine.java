@@ -38,7 +38,7 @@ public class Mine extends Weapon {
         int power = shooter.getShootPower();
 
         // Crée le projectile en lien avec l'arme
-        Projectile mineProj = createProjectile(shooter);
+        Trap mineProj = createProjectile(shooter);
 
         //Ajout du projectile dans le moteur physique
         gameWorld.getPhysicsEngine().addProjectile(mineProj, angle, power);
@@ -53,7 +53,7 @@ public class Mine extends Weapon {
      * @param shooter : le tireur
      * @return l'objet {@link Projectile} représentant le projectile de l'arme
      */
-    public Projectile createProjectile(Alien shooter) {
+    public Trap createProjectile(Alien shooter) {
 
         // Crée le projectile en lien avec l'arme en prenant en compte l'arme, le tireur
         // Et le champ d'action de l'explosion et d'activation

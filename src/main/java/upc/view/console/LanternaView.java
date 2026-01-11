@@ -14,6 +14,16 @@ import upc.model.jeu.Terrain;
 
 import java.io.IOException;
 
+/**
+ * Classe gérant l'affichage du jeu dans le terminal en utilisant la bibliothèque Lanterna.
+ * <p>
+ * Elle s'occupe de :
+ * <ul>
+ * <li>L'interface utilisateur et les menus.</li>
+ * <li>L'affichage du terrain et des entités.</li>
+ * <li>La lecture des entrées clavier.</li>
+ * </ul>
+ */
 public class LanternaView {
     //attribut permettant la réprésentation du terminal et de le styliser
     private Screen screen;
@@ -21,7 +31,13 @@ public class LanternaView {
     //attribut permettant l'écriture du texte, des caractères avec coordonnées et couleur
     private TextGraphics graphics;
 
-    /*Constructeur*/
+    /**
+     * Constructeur de la vue Lanterna.
+     * <p>
+     * Initialise le terminal, crée l'écran et prépare l'objet graphique pour le dessin.
+     * </p>
+     * @throws RuntimeException si une erreur survient lors de l'initialisation du terminal.
+     */
     public LanternaView() {
         //Gestion des exceptions
         try {
@@ -43,14 +59,28 @@ public class LanternaView {
         }
 
     }
-    /*Méthode permettant de vider l'écran (avant de redessiner)*/
+
+    /**
+     * Efface tout le contenu actuellement affiché à l'écran.
+     * <p>
+     * Cette méthode est appelée avant de redessiner une nouvelle frame pour éviter
+     * les superpositions d'images.
+     * </p>
+     */
     public void clear() {
 
         this.screen.clear();
 
     }
 
-    /*Méthode permettant d'afficher tout ce qui a été dessiné*/
+    /**
+     * Actualise l'écran physique.
+     * <p>
+     * Cette méthode applique les changements effectués dans la mémoire tampon
+     * à l'écran visible par l'utilisateur.
+     * </p>
+     * @throws RuntimeException si une erreur survient lors du rafraîchissement.
+     */
     public void refresh() {
 
         //Gestion des exceptions
@@ -65,7 +95,13 @@ public class LanternaView {
         }
     }
 
-    /*Méthode permettant d'écrire un texte à une position donnée*/
+    /**
+     * Dessine une chaîne de caractères à une position spécifique.
+     *
+     * @param x La coordonnée horizontale (colonne).
+     * @param y La coordonnée verticale (ligne).
+     * @param string Le texte à afficher.
+     */
     public void drawString(int x, int y, String string) {
 
         //Gestion des exceptions
@@ -80,7 +116,14 @@ public class LanternaView {
         }
     }
 
-    /*Méthode permettant d'écrire un texte à une position donnée dans une couleur prédéfini*/
+    /**
+     * Dessine une chaîne de caractères à une position spécifique avec une couleur donnée.
+     *
+     * @param x La coordonnée horizontale.
+     * @param y La coordonnée verticale.
+     * @param string Le texte à afficher.
+     * @param color La couleur du texte.
+     */
     public void drawColored(int x, int y, String string, TextColor color) {
 
         //Gestion des exceptions
@@ -95,6 +138,19 @@ public class LanternaView {
         }
     }
 
+    /**
+     * Affiche l'écran d'accueil du jeu.
+     * <p>
+     * Liste les commandes disponibles pour l'utilisateur :
+     * <ul>
+     * <li><b>Flèches</b> : Déplacement et saut.</li>
+     * <li><b>D</b> : Attaquer.</li>
+     * <li><b>A</b> : Voir les aliens.</li>
+     * <li><b>M</b> : Voir la carte.</li>
+     * <li><b>Espace</b> : Passer le tour.</li>
+     * <li><b>Echap</b> : Quitter.</li>
+     * </ul>
+     */
     public void printWelcome() {
         this.clear();
         int x = 0;
@@ -117,8 +173,23 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permettant de lire la touche pressée par l'utilisateur
-     Et renvoie le string correspondant à la touche*/
+    /**
+     * Lit la prochaine touche pressée par l'utilisateur et la traduit en commande textuelle.
+     * <p>
+     * Correspondances :
+     * <ul>
+     * <li>Flèche Gauche  "gauche"</li>
+     * <li>Flèche Droite "droite"</li>
+     * <li>Flèche Haut "sauter"</li>
+     * <li>Echap "exit"</li>
+     * <li>'m' "map"</li>
+     * <li>'a' "aliens"</li>
+     * <li>'d' "attaquer"</li>
+     * <li>'i'  "info"</li>
+     * <li>Espace -> "passer"</li>
+     * </ul>
+     * @return Une chaîne représentant l'action ou null si la touche est inconnue.
+     */
     public String readKey() {
 
         //Gestion des exceptions
@@ -191,7 +262,19 @@ public class LanternaView {
         }
     }
 
-    /*Méthode permettant l'affichage du terrain de dans le terminal*/
+    /**
+     * Affiche le terrain de jeu complet.
+     * <p>
+     * Les éléments sont dessiné selon la logique suivante :
+     * <ul>
+     * <li><b>W</b> (Rouge) : Alien</li>
+     * <li><b>~</b> : Eau avec collision</li>
+     * <li><b>X</b> : Terrain solide</li>
+     * <li> Espace : Vide</li>
+     * </ul>
+     *
+     * @param gameManager Le gestionnaire de jeu contenant les informations du terrain.
+     */
     public void printTerrain(GameManager gameManager) {
         Terrain terrain = gameManager.getTerrain();
 
@@ -230,7 +313,20 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permettant d'envoyer le bon caractère à la position donnée */
+    /**
+     * Détermine le symbole à afficher pour une coordonnée donnée.
+     *
+     * @param x La coordonnée X.
+     * @param y La coordonnée Y.
+     * @param gameManager Le gestionnaire de jeu.
+     * @return Le caractère représentant l'élément :
+     * <ul>
+     * <li>"W" : Alien vivant</li>
+     * <li>"~" : Eau</li>
+     * <li>"X" : Collision</li>
+     * <li>" " : Vide</li>
+     * </ul>
+     */
     private String symbolForTile(int x, int y, GameManager gameManager) {
         Alien w = gameManager.getAlienAtPosition(x, y);
         Terrain terrain = gameManager.getTerrain();
@@ -254,7 +350,22 @@ public class LanternaView {
         return " ";
     }
 
-    /*Methode permettant d'afficher les stats de l'alien active*/
+    /**
+     * Affiche les statistiques détaillées de l'alien actuellement actif.
+     * <p>
+     * Affiche :
+     * <ul>
+     * <li>Le nom de l'équipe</li>
+     * <li>La position (x, y)</li>
+     * <li>Les points de vie (PV) numériques</li>
+     * <li>Une barre de vie graphique</li>
+     * </ul>
+     *
+     * @param gameManager Le gestionnaire de jeu.
+     * @param x La coordonnée X d'affichage.
+     * @param y La coordonnée Y d'affichage.
+     * @return La nouvelle coordonnée Y après l'affichage.
+     */
     private int printActiveAlienStats(GameManager gameManager, int x, int y) {
         Alien alien = gameManager.getActiveAlien();
 
@@ -284,7 +395,12 @@ public class LanternaView {
         return y;
     }
 
-    /*Méthode permettant la représentation de la barre de vie d'un alien*/
+    /**
+     * Génère une barre de vie visuelle.
+     *
+     * @param pv Les points de vie de l'alien allant de 0-100.
+     * @return Une chaîne représentant la barre exemple: <code>[█████░░░░░]</code>.
+     */
     private String printHealthBar(int pv) {
         int barres = pv / 10;
         String healthBar = "[";
@@ -300,7 +416,17 @@ public class LanternaView {
         return healthBar;
     }
 
-    /*Méthode permettant d'afficher les stats des équipes*/
+    /**
+     * Affiche un récap complet de l'etat de tous les aliens vivants.
+     * <p>
+     * Sépare l'affichage en deux sections :
+     * <ul>
+     * <li>Équipe Alliée en vert</li>
+     * <li>Équipe Ennemie en rouge</li>
+     * </ul>
+     *
+     * @param gameManager Le gestionnaire de jeu.
+     */
     public void printAliensStats(GameManager gameManager) {
 
         //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
@@ -343,7 +469,15 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permettant d'afficher les stats de chaque alien d'une équipe*/
+    /**
+     * Affiche les statistiques pour tous les aliens d'une équipe donnée.
+     *
+     * @param team L'équipe à afficher.
+     * @param alienActif L'alien actif qui sera marqué par un curseur.
+     * @param x La coordonnée X.
+     * @param y La coordonnée Y.
+     * @return La nouvelle coordonnée Y.
+     */
     private int printAliensTeam(Team team, Alien alienActif, int x, int y) {
 
         Alien[] aliens = team.getAliens();
@@ -388,7 +522,13 @@ public class LanternaView {
         return y;
     }
 
-    /*Méthode permettant de les stats d'une équipe + stats de l'alien actif*/
+    /**
+     * Affiche l'état global du jeu.
+     * <p>
+     * Combine l'affichage des équipes et les statistiques détaillées de l'alien actif.
+     * </p>
+     * @param gameManager Le gestionnaire de jeu.
+     */
     public void printGameState(GameManager gameManager) {
 
         //Coordonnées d'affichage par défaut à modifier selon où on veut placer l'affichage
@@ -416,7 +556,16 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permettant les stats d'une équipe*/
+    /**
+     * Affiche la liste des équipes.
+     * <p>
+     * Indique l'équipe active par un curseur.
+     * </p>
+     * @param gameManager Le gestionnaire de jeu.
+     * @param x La coordonnée X.
+     * @param y La coordonnée Y.
+     * @return La nouvelle coordonnée Y.
+     */
     private int printTeamStats(GameManager gameManager, int x, int y) {
         drawString(x, y, "🏆 État des équipes:");
 
@@ -434,7 +583,13 @@ public class LanternaView {
         return y;
     }
 
-    /*Méthode permmettant d'afficher le message de déplacement d'un alien*/
+    /**
+     * Affiche le résultat d'un déplacement.
+     *
+     * @param success Indique si le déplacement a réussi.
+     * @param direction La direction.
+     * @param gameManager Le gestionnaire de jeu.
+     */
     public void printMovementResult(boolean success, String direction, GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
 
@@ -457,7 +612,12 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permmettant d'afficher le message de déplacement d'un alien(saut)*/
+    /**
+     * Affiche le résultat d'un saut.
+     *
+     * @param success Indique si le saut a réussi.
+     * @param gameManager Le gestionnaire de jeu.
+     */
     public void printJumpResult(boolean success, GameManager gameManager) {
         Alien alien = gameManager.getActiveAlien();
         Position pos = alien.getPosition();
@@ -479,7 +639,21 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permettant d'afficher le message après une attaque*/
+    /**
+     * Affiche le résultat d'une attaque.
+     * <p>
+     * Gère plusieurs cas de figure :
+     * <ul>
+     * <li>Aucune cible trouvée.</li>
+     * <li>Tir ami.</li>
+     * <li>Tir ennemi.</li>
+     * </ul>
+     *
+     * @param target L'alien ciblé.
+     * @param x La coordonnée X de l'attaque.
+     * @param y La coordonnée Y de l'attaque.
+     * @param activeTeam L'équipe attaquante pour vérif le tir allié.
+     */
     public void printAttackResult(Alien target, int x, int y, Team activeTeam) {
 
         //Vérifie si la cible n'existe pas alors :
@@ -514,7 +688,7 @@ public class LanternaView {
 
             }
 
-        //Si la cible n'appartient pas à l'équique active
+            //Si la cible n'appartient pas à l'équique active
         } else {
 
             //Si la cible n'appartient pas à l'équipe active et est morte alors :
@@ -534,7 +708,13 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permettant d'afficher le message de fin de partie et l'équipe gagnante*/
+    /**
+     * Affiche l'écran de fin de partie.
+     * <p>
+     * Affiche le message "PARTIE TERMINÉE" et désigne le vainqueur.
+     * </p>
+     * @param gameManager Le gestionnaire de jeu.
+     */
     public void printGameOver(GameManager gameManager) {
 
         //Vide l'écran car on affiche seulement le message
@@ -570,7 +750,11 @@ public class LanternaView {
         this.refresh();
     }
 
-    /*Méthode permettant d'afficher le message des aliens après la chute (avec leurs stats) */
+    /**
+     * Affiche l'état des aliens après application de la gravité.
+     *
+     * @param gameManager Le gestionnaire de jeu.
+     */
     public void printStateAfterFall(GameManager gameManager) {
 
         //Coordonnées par défaut d'affichage
@@ -601,24 +785,38 @@ public class LanternaView {
         this.refresh();
     }
 
+    /**
+     * Affiche un message indiquant que le tour a été passé.
+     */
     public void printTurnSkipped() {
         drawString(0, 0, "⏭️  Tour passé");
         refresh();
     }
 
+    /**
+     * Affiche un message indiquant l'abandon de la partie.
+     */
     public void printGameAbandoned() {
         this.clear();
         drawString(2, 2, "❌ Partie abandonnée.");
         refresh();
     }
 
+    /**
+     * Affiche un message d'erreur pour une commande inconnue.
+     */
     public void printUnknownCommand() {
         this.clear();
         drawString(2, 2, "❌ Commande inconnue ! Appuyer sur i pour l'aide.");
         refresh();
     }
 
-    /*Méthode permettant de d'afficher le message de fin de partie + fermeture du terminal*/
+    /**
+     * Ferme proprement l'application.
+     * <p>
+     * Affiche un message d'au revoir, attend 2 secondes, puis ferme le terminal.
+     * </p>
+     */
     public void close() {
         //Gestion des exceptions
         try {
@@ -642,7 +840,17 @@ public class LanternaView {
         }
     }
 
-    /*Méthode permmettant à l'utilisateur de choisir les dégats provoqués*/
+    /**
+     * Demande à l'utilisateur de choisir la valeur des dégâts.
+     * <p>
+     * Commandes :
+     * <ul>
+     * <li><b>Gauche</b> : -5 dégâts</li>
+     * <li><b>Droite</b> : +5 dégâts</li>
+     * <li><b>Espace</b> : Valider</li>
+     * </ul>
+     * @return La valeur de dégâts sélectionnée.
+     */
     public int chooseDamage() {
         //Dégat par défaut
         int degat = 20;
@@ -680,7 +888,17 @@ public class LanternaView {
         }
     }
 
-    /*Méthode permmettant à l'utilisateur de choisir la coordonnée en x*/
+    /**
+     * Demande à l'utilisateur de choisir la coordonnée X.
+     * <p>
+     * Commandes :
+     * <ul>
+     * <li><b>Gauche</b> : x - 1</li>
+     * <li><b>Droite</b> : x + 1</li>
+     * <li><b>Espace</b> : Valider</li>
+     * </ul>
+     * @return La coordonnée X choisie.
+     */
     public int chooseX() {
         //Coordonnée x par défaut
         int x = 1;
@@ -717,7 +935,17 @@ public class LanternaView {
         }
     }
 
-    /*Méthode permmettant à l'utilisateur de choisir la coordonnée en y*/
+    /**
+     * Demande à l'utilisateur de choisir la coordonnée Y.
+     * <p>
+     * Commandes :
+     * <ul>
+     * <li><b>Gauche</b> : y - 1</li>
+     * <li><b>Droite</b> : y + 1</li>
+     * <li><b>Espace</b> : Valider</li>
+     * </ul>
+     * @return La coordonnée Y choisie.
+     */
     public int chooseY() {
 
         //Coordonnée y par défaut

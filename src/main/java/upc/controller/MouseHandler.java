@@ -222,19 +222,42 @@ public class MouseHandler extends MouseAdapter {
 
 
 
-    ////    GETTERS    ////
+    /**
+     * Retourne la position actuelle de la souris à l'écran.
+     *
+     * @return La position de la souris en pixels.
+     */
     public Point getPosition() {
         return position;
     }
 
+    /**
+     * Vérifie si un bouton de souris est actuellement enfoncé (maintenu).
+     *
+     * @param buttonCode Le code du bouton (ex: {@link MouseEvent#BUTTON1}).
+     * @return true si le bouton est enfoncé, false sinon.
+     */
     public boolean isPressed(int buttonCode) {
         return pressedButtons.contains(buttonCode);
     }
 
+    /**
+     * Vérifie si un bouton de souris vient d'être pressé cette frame.
+     *
+     * @param buttonCode Le code du bouton (ex: {@link MouseEvent#BUTTON1}).
+     * @return true si le bouton vient d'être pressé, false sinon.
+     */
     public boolean isJustPressed(int buttonCode) {
         return justPressedButtons.contains(buttonCode);
     }
 
+
+    /**
+     * Vérifie si un bouton de souris vient d'être relâché cette frame.
+     *
+     * @param buttonCode Le code du bouton (ex: {@link MouseEvent#BUTTON1}).
+     * @return true si le bouton vient d'être relâché, false sinon.
+     */
     public boolean isJustReleased(int buttonCode) {
         return justReleasedButtons.contains(buttonCode);
     }

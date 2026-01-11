@@ -47,7 +47,10 @@ public class TestTeam {
             assertNotNull(w);
         }
     }
-
+    /**
+     * Vérifie qu'une équipe est considérée comme éliminée seulement
+     * lorsque tous ses membres ont perdu tous leurs points de vie.
+     */
     @Test
     public void testEquipeEliminee() {
         Team b = new Team("TEAM B", 3);

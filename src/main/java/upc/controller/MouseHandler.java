@@ -120,7 +120,22 @@ public class MouseHandler extends MouseAdapter {
                 || position.y > height - limit || position.y < limit;
     }
 
-
+    /**
+     * Calcule et applique l'angle de visée de l'alien actif vers la position de la souris.
+     * <p>
+     * Cette méthode effectue les conversions suivantes :
+     * <ol>
+     *     <li>Convertit la position souris écran → coordonnées monde</li>
+     *     <li>Calcule l'angle entre l'alien et la souris</li>
+     *     <li>Ajuste la direction de l'alien (gauche/droite)</li>
+     *     <li>Limite l'angle entre -80° et +80° pour réalisme</li>
+     * </ol>
+     *
+     * @param activeAlien L'alien dont on veut définir la visée.
+     * @param cameraX     La position X de la caméra (pour conversion écran → monde).
+     * @param cameraY     La position Y de la caméra (pour conversion écran → monde).
+     * @param zoom        Le niveau de zoom actuel (pour conversion écran → monde).
+     */
     public void handleAim(Alien activeAlien, double cameraX, double cameraY, double zoom) {
         if (position != null) {
             // Convertit la position de la souris en coordonnées utilisables

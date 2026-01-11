@@ -76,7 +76,9 @@ public class TestTeam {
         Team a = new Team("TEAM A", 3);
         assertEquals("TEAM A", a.getName());
     }
-
+    /**
+     * Vérifie l'accès à la liste des Aliens de l'équipe.
+     */
     @Test
     public void testGetAliens() {
         Team a = new Team("TEAM A", 3);

@@ -57,7 +57,7 @@ public class TestPerformance {
 
             long endTime = System.nanoTime();
 
-            // On fait la moyenne pour avoir le tempss sur une seule frame
+            // On fait la moyenne pour avoir le temps sur une seule frame
             averageDuration = (endTime - startTime) / 5.0;
 
             if (averageDuration > MAX_FRAME_TIME_NS) {
@@ -68,6 +68,22 @@ public class TestPerformance {
                 break;
             }
         }
+        // Affichage sur la console pour voir les perfs
+        System.out.println("==================================================");
+        System.out.println("          RAPPORT DE PERFORMANCE DU JEU           ");
+        System.out.println("==================================================");
+        System.out.println(" Limite FPS visée    : 50 FPS (20ms/frame)");
+        System.out.println(" Aliens supportés    : " + alienCount);
+        System.out.println(" Temps moyen frame   : " + String.format("%.3f", averageDuration / 1_000_000.0) + " ms");
+        System.out.println("--------------------------------------------------");
+
+        if (alienCount >= MIN_ALIENS_REQUIRED) {
+            System.out.println(" RÉSULTAT : [SUCCÈS] Performance validée ✅");
+        } else {
+            System.out.println(" RÉSULTAT : [ÉCHEC] Optimisation requise ❌");
+        }
+        System.out.println("==================================================");
+
 
         String failureMessage = String.format(
                 "Échec Performance : Charge max = %d aliens (Moyenne Frame: %.2f ms). Attendu > %d.",
@@ -76,6 +92,7 @@ public class TestPerformance {
                 MIN_ALIENS_REQUIRED
         );
 
+        // On passe le test uniquement si on a le minimum
         assertTrue(alienCount >= MIN_ALIENS_REQUIRED, failureMessage);
     }
 }

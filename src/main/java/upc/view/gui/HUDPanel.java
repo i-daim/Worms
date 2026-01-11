@@ -247,33 +247,6 @@ public class HUDPanel extends JPanel {
         // Rotation du viseur en fonction de l'angle
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
 
-        // Indice de puissance de tir
-        int power = alien.getShootPower();
-
-        // Dimensions du cône
-        int coneLength = power / 2;
-        int coneWidth = 4 + (power / 8);
-
-        if (power < 30) {
-            g2.setColor(Color.GREEN);
-        } else if (power < 70) {
-            g2.setColor(Color.ORANGE);
-        } else {
-            g2.setColor(Color.RED);
-        }
-
-        if (power > 0) {
-            int startX = 15;
-            // Points du triangle (cône)
-            int[] xPoints = {startX, startX + coneLength, startX + coneLength};
-            int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
-
-            g2.fillPolygon(xPoints, yPoints, 3);
-
-            g2.setColor(Color.BLACK);
-            g2.drawPolygon(xPoints, yPoints, 3);
-        }
-
         // Viseur représenté par un cercle
         int distance = 50;
         int radius = 6;
@@ -286,6 +259,37 @@ public class HUDPanel extends JPanel {
         // Croix au milieu
         g2.drawLine(circleX, circleY + 3, circleX + 6, circleY + 3);
         g2.drawLine(circleX + 3, circleY, circleX + 3, circleY + 6);
+
+        // Affichage de la jauge de puissance (que pour certaines armes)
+        String itemName = alien.getEquippedItem().getName();
+        if (itemName.equals("Bazooka") || itemName.equals("Grenade") || itemName.equals("Mine")) {
+            // Indice de puissance de tir
+            int power = alien.getShootPower();
+
+            // Dimensions du cône
+            int coneLength = power / 2;
+            int coneWidth = 4 + (power / 8);
+
+            if (power < 30) {
+                g2.setColor(Color.GREEN);
+            } else if (power < 70) {
+                g2.setColor(Color.ORANGE);
+            } else {
+                g2.setColor(Color.RED);
+            }
+
+            if (power > 0) {
+                int startX = 15;
+                // Points du triangle (cône)
+                int[] xPoints = {startX, startX + coneLength, startX + coneLength};
+                int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
+
+                g2.fillPolygon(xPoints, yPoints, 3);
+
+                g2.setColor(Color.BLACK);
+                g2.drawPolygon(xPoints, yPoints, 3);
+            }
+        }
 
         // On revient à l'état original
         g2.setTransform(originalTransform);

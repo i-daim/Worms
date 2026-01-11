@@ -77,6 +77,13 @@ public class MenuActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Paramètres".
+     * <p>
+     * Affiche l'écran de paramètres (volume, contrôles, etc.).
+     *
+     * @return L'ActionListener pour accéder aux paramètres.
+     */
     public ActionListener getSettingsAction() {
         return e -> {
             SettingsPanel settingsPanel = new SettingsPanel();

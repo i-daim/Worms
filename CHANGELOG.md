@@ -3,6 +3,26 @@
 Ce projet suit les directives du cours de Conduite de Projet (L2 Informatique).
 Les versions suivent le format [SemVer](https://semver.org/).
 
+## [1.0.0] - 2026-01-12
+*Version Finale – Sprint 5 : Finalisation du Jeu*
+
+### Added
+- Bouton dédié pour la sauvegarde accessible directement en jeu.
+- Remplacement du Jetpack par les "Wings" (permet le double saut et le vol).
+- Animations avancées pour l'Alien (états AIR, LAND, FLY).
+- Tests de performance et classes de tests unitaires.
+- Documentation technique complète (DESIGN, View, Items, JavaDoc).
+
+### Changed
+- Changement des touches par défaut (Z pour sauter, Q/D pour se déplacer).
+- Ajustement dynamique des dimensions de l'interface selon l'écran.
+- Traduction et uniformisation des textes du jeu.
+- Optimisation du lancement de la partie et de la gestion des équipes.
+
+### Fixed
+- Correction du bug lors du zoom de la caméra.
+- Modification et équilibrage du système de combat.
+
 ---
 
 ## [0.4] - 2026-01-05

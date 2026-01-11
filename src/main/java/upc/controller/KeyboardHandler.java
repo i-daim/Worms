@@ -4,6 +4,22 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 
+/**
+ * Gestionnaire d'entrées clavier pour le jeu.
+ * <p>
+ * Cette classe hérite de {@link KeyAdapter} et gère deux types d'états pour chaque touche :
+ * <ul>
+ *     <li><b>Pressée</b> : la touche est actuellement enfoncée (maintenue)</li>
+ *     <li><b>Vient d'être pressée</b> : la touche vient d'être enfoncée cette frame
+ *         (utile pour les actions ponctuelles comme le saut ou la pause)</li>
+ * </ul>
+ * <p>
+ * Le gestionnaire permet d'éviter les répétitions automatiques du système d'exploitation
+ * et offre un contrôle précis sur les événements clavier frame par frame.
+ * <p>
+ * L'état "vient d'être pressée" doit être nettoyé manuellement à chaque frame
+ * via {@link #clearJustPressed()} pour fonctionner correctement.
+ */
 public class KeyboardHandler extends KeyAdapter {
 
     /** Ensemble des codes de touches actuellement enfoncées (maintenues) */

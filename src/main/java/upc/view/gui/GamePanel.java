@@ -70,12 +70,9 @@ public class GamePanel extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
 
-        // Sauvegarde du transform
-        AffineTransform old = g2.getTransform();
-
         // Zoom + ajustement de la caméra
-        g2.translate(-cameraX, -cameraY);
         g2.scale(currentZoom, currentZoom);
+        g2.translate(-cameraX, -cameraY);
 
         // Affichage du background
         BufferedImage backgroundImage = terrain.getBackground();
@@ -118,7 +115,8 @@ public class GamePanel extends JPanel {
         drawAnimation(g2, waterAnim, 0, waterY + 30, 0, 100, true);
 
         // Annulation du zoom
-        g2.setTransform(old);
+        g2.translate(cameraX, cameraY);
+        g2.scale(1.0 / currentZoom, 1.0 / currentZoom);
 
         // Affichage du HUD (après le zoom car non concerné)
         hudPanel.setBounds(0, 0, getWidth(), getHeight());

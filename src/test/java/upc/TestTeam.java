@@ -35,7 +35,9 @@ public class TestTeam {
         assertEquals("TEAM A", a.getName());
         assertEquals(3, a.getAliens().length);
     }
-
+    /**
+     * Vérifie que l'initialisation de l'équipe crée bien des instances d'Aliens non nulles.
+     */
     @Test
     public void testInitializeTeam() {
         Team a = new Team("TEAM A", 3);

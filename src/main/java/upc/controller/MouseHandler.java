@@ -173,6 +173,14 @@ public class MouseHandler extends MouseAdapter {
         }
     }
 
+    /**
+     * Déplace la caméra manuellement lorsque la souris est près des bords.
+     * <p>
+     * La caméra se déplace à vitesse constante ({@link GameController#CAMERA_SPEED})
+     * vers le bord survolé. Les déplacements sont limités pour ne pas sortir du terrain.
+     *
+     * @param gamePanel Le panneau de jeu contenant la caméra et le terrain.
+     */
     public void handleCameraScroll(GamePanel gamePanel) {
         if (gamePanel.getGameManager().isPaused()) {
             return;

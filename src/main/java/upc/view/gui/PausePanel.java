@@ -61,6 +61,7 @@ public class PausePanel extends JPanel {
         mainMenuButton.setBounds(btnX, btnY + gap * 3, btnWidth, btnHeight);
         quitButton.setBounds(btnX, btnY + gap * 4, btnWidth, btnHeight);
 
+        saveButton.setFocusable(false);
 
         this.add(resumeButton);
         this.add(saveButton);

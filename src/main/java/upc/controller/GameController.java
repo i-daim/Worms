@@ -31,7 +31,7 @@ public class GameController {
     public static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
-    private boolean paused = false;
+    private static boolean paused = false;
     private Thread gameThread;
     private int frameCount;
 
@@ -53,6 +53,7 @@ public class GameController {
 
         PausePanel pausePanel = gamePanel.getPausePanel();
         pausePanel.getResumeButton().addActionListener(pauseActions.getResumeAction());
+        pausePanel.getSaveButton().addActionListener(pauseActions.getSaveGameAction());
         pausePanel.getMainMenuButton().addActionListener(pauseActions.getMainMenuAction());
         pausePanel.getSettingsButton().addActionListener(pauseActions.getSettingsAction());
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
@@ -244,7 +245,7 @@ public class GameController {
         }
     }
 
-    public void togglePause() {
+    public static void togglePause() {
         paused = !paused;
     }
 

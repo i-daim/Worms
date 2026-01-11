@@ -20,7 +20,8 @@ import static upc.controller.GameController.CAMERA_SPEED;
  * </ul>
  * <p>
  * Comme pour le clavier, les états "vient d'être pressé/relâché" doivent être
- * nettoyés manuellement à chaque frame via {@link #clearJustPressed()} et {@link #clearJustReleased()}.
+ * nettoyés manuellement à chaque frame via {@link #clearJustPressed()} et
+ * {@link #clearJustReleased()}.
  */
 
 public class MouseHandler extends MouseAdapter {

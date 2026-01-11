@@ -21,18 +21,34 @@ import javax.swing.SwingUtilities;
 
 public class GameController {
 
+    /** Gestionnaire des entrées clavier */
     private final KeyboardHandler keyHandler = new KeyboardHandler();
+
+    /** Gestionnaire des entrées souris (position, clics, survol) */
     private final MouseHandler mouseHandler = new MouseHandler();
 
+    /** Panneau graphique principal du jeu (vue) */
     private final GamePanel gamePanel;
+
+    /** Gestionnaire de la logique métier et de l'état du jeu (modèle) */
     private final GameManager gameManager;
+
+    /** Gestionnaire des actions du menu pause */
     private final PauseActions pauseActions;
 
+    /** Vitesse de déplacement de la caméra lors du scroll manuel (en pixels par frame) */
     public static final int CAMERA_SPEED = 10;
 
+    /** Indicateur de continuation de la boucle de jeu */
     private volatile boolean running = true;
+
+    /** Indicateur d'état de pause du jeu */
     private static boolean paused = false;
+
+    /** Thread dédié à la boucle de jeu (60 FPS) */
     private Thread gameThread;
+
+    /** Compteur de frames pour gérer la cadence de tir de certaines armes (Uzi) */
     private int frameCount;
 
     // Constructeur //

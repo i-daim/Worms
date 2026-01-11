@@ -19,6 +19,15 @@ public class GameSetupController {
     /** Fenêtre principale de l'application (pour changer de panneau) */
     private final MainFrame mainFrame;
 
+    /**
+     * Construit un nouveau contrôleur pour l'écran de configuration.
+     * <p>
+     * Le constructeur initialise les listeners sur les boutons de la vue
+     * (Retour au menu, Démarrer la partie).
+     *
+     * @param view      Le panneau de configuration contenant les options et boutons.
+     * @param mainFrame La fenêtre principale de l'application.
+     */
     public GameSetupController(SetupPanel view, MainFrame mainFrame) {
         this.view = view;
         this.mainFrame = mainFrame;

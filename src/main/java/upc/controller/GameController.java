@@ -17,6 +17,21 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+/**
+ * Contrôleur principal du jeu en mode graphique.
+ * <p>
+ * Cette classe orchestre la boucle de jeu, gère les entrées utilisateur (clavier et souris),
+ * coordonne les mises à jour du modèle (GameManager) et de la vue (GamePanel),
+ * et gère les états du jeu (pause, game over, sauvegarde).
+ * <p>
+ * Le contrôleur fonctionne avec un thread dédié tournant à 60 FPS et s'occupe notamment :
+ * <ul>
+ *     <li>Du suivi automatique de la caméra (alien actif, projectile en vol, souris)</li>
+ *     <li>De la gestion des actions des aliens (déplacement, saut, tir)</li>
+ *     <li>De la gestion de l'inventaire et de la sélection d'items</li>
+ *     <li>De la détection de fin de partie et de l'affichage du Game Over</li>
+ * </ul>
+ */
 
 
 public class GameController {

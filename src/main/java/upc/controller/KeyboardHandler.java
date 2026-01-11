@@ -46,6 +46,17 @@ public class KeyboardHandler extends KeyAdapter {
         pressedKeys.remove(e.getKeyCode());
     }
 
+
+    /**
+     * Nettoie l'ensemble des touches "vient d'être pressées".
+     * <p>
+     * Cette méthode doit être appelée à la fin de chaque frame de jeu,
+     * après avoir traité toutes les entrées clavier. Cela permet de détecter
+     * correctement les pressions ponctuelles (une seule frame) et d'éviter
+     * qu'une action se répète involontairement.
+     * <p>
+     * Typiquement appelée dans la méthode {@code update()} du contrôleur principal.
+     */
     public void clearJustPressed() {
         justPressedKeys.clear();
     }

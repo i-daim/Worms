@@ -6,6 +6,14 @@ import upc.model.jeu.Terrain;
 import upc.model.jeu.TerrainGenerator;
 import upc.view.console.ConsoleView;
 
+/**
+ * Contrôleur principal pour le mode console du jeu.
+ * <p>
+ * Cette classe gère la boucle de jeu en mode texte, coordonne les interactions
+ * entre le modèle (GameManager) et la vue (ConsoleView), et traite les commandes
+ * saisies par l'utilisateur.
+ */
+
 public class ControllerConsole {
 
     /** Gestionnaire du jeu contenant la logique métier et l'état de la partie */

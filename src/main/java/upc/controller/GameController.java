@@ -346,6 +346,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Affiche l'écran de Game Over avec l'équipe gagnante.
+     * <p>
+     * Cette méthode arrête la boucle de jeu, coupe la musique, détermine l'équipe gagnante,
+     * puis remplace le panneau de jeu par un panneau de Game Over dans l'interface Swing.
+     */
     private void showGameOver() {
         stop();
         gamePanel.stopMusic();
@@ -363,7 +369,12 @@ public class GameController {
     }
 
     /**
-     * Méthode permettant la sauvegarde du jeu
+     * Sauvegarde l'état actuel de la partie dans un fichier.
+     * <p>
+     * Cette méthode crée un objet GameSave contenant l'état complet du GameManager
+     * (terrain, aliens, équipes, scores, etc.) et le sérialise dans un fichier.
+     *
+     * @throws IOException Si une erreur d'écriture survient lors de la sauvegarde.
      */
     public void saveGame() throws IOException {
         GameSave gameSave = new GameSave(gameManager);

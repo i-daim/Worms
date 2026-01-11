@@ -222,13 +222,14 @@ public class GameManager {
 
     private void checkActiveProjectile() {
         if (activeProjectile == null || activeProjectile instanceof Trap) {
-            activeProjectile = null;
             return;
         }
         if (activeProjectile.getState().equals(Projectile.State.FLYING)) {
             delayEndTime += 20;
         } else {
             activeProjectile = null;
+            actionDone = true;
+            skipTurn();
         }
     }
 

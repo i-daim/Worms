@@ -68,7 +68,12 @@ public class GameController {
         addListeners();
         startGameLoop();
     }
-
+    /**
+     * Configure tous les listeners nécessaires au jeu.
+     * <p>
+     * Cette méthode enregistre les gestionnaires d'entrées (clavier, souris) sur le GamePanel
+     * et associe les actions aux boutons du menu pause (reprendre, sauvegarder, quitter, etc.).
+     */
     private void addListeners() {
         gamePanel.addKeyListener(keyHandler);
         gamePanel.addMouseMotionListener(mouseHandler);
@@ -83,7 +88,15 @@ public class GameController {
         pausePanel.getQuitButton().addActionListener(pauseActions.getQuitAction());
     }
 
-////    GESTION DE LA BOUCLE DU JEU    ////
+    /**
+     * Démarre la boucle principale du jeu dans un thread dédié.
+     * <p>
+     * La boucle tourne à 60 FPS (frames par seconde) et appelle la méthode {@link #update()}
+     * à chaque frame. Le thread dort entre chaque frame pour maintenir une cadence stable.
+     * <p>
+     * Le thread est marqué comme daemon pour qu'il se termine automatiquement
+     * lorsque l'application se ferme.
+     */
     private void startGameLoop() {
         gameThread = new Thread(() -> {
             long lastTime = System.nanoTime();

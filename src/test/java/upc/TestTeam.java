@@ -84,7 +84,9 @@ public class TestTeam {
         Team a = new Team("TEAM A", 3);
         assertEquals(a.getAliens(), a.getAliens());
     }
-
+    /**
+     * Vérifie la récupération de l'Alien actuellement actif dans le tour de jeu.
+     */
     @Test
     public void testGetActiveAlien() {
         Team a = new Team("TEAM A", 3);

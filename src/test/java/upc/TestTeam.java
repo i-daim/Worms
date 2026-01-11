@@ -136,7 +136,9 @@ public class TestTeam {
         assertEquals(activeAlien, a.getActiveAlienIndex());
 
     }
-
+    /**
+     * Vérifie le passage à l'Alien suivant dans l'équipe.
+     */
     @Test
     public void testSkipToNextAlien() {
         Team a = new Team("TEAM A", 2);

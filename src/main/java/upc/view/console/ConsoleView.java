@@ -336,19 +336,22 @@ public class ConsoleView {
     }
 
     /**
-     * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher le résultat d'un mouvement.
+     * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher
+     * le résultat d'un mouvement.
      */
     public void printMovementResult(boolean b, String s, GameManager g) {
     }
 
     /**
-     * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher le résultat d'un saut.
+     * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher
+     * le résultat d'un saut.
      */
     public void printJumpResult(boolean b, GameManager g) {
     }
 
     /**
-     * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher le résultat d'une attaque.
+     * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher
+     * le résultat d'une attaque.
      */
     public void printAttackResult(Alien t, int x, int y, Team tm) {
     }

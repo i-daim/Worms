@@ -278,7 +278,8 @@ public class InventoryPanel extends JPanel {
     /**
      * Vérifie si un point donné se trouve à l'intérieur de la zone globale de l'inventaire.
      * <p>
-     * Utile pour empêcher les clics de traverser l'interface et d'interagir avec le jeu en arrière-plan.
+     * Utile pour empêcher les clics de traverser l'interface et d'interagir avec
+     * le jeu en arrière-plan.
      * </p>
      * @param p Le point à tester.
      * @param screenWidth Largeur de l'écran.

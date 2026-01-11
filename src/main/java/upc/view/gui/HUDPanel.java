@@ -20,7 +20,8 @@ import java.awt.geom.AffineTransform;
 /**
  * Panneau gérant l'affichage tête haute (HUD - Heads-Up Display) du jeu.
  * <p>
- * Ce panneau est superposé au {@link GamePanel} avec fond transparent et est responsable de l'affichage :
+ * Ce panneau est superposé au {@link GamePanel} avec fond transparent et est
+ * responsable de l'affichage :
  * <ul>
  * <li>Des informations globales (Timer, Vent).</li>
  * <li>Des boutons d'interaction (Passer le tour, Inventaire).</li>

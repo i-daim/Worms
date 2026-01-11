@@ -11,7 +11,10 @@ import java.awt.event.ActionListener;
 
 public class PauseActions {
 
+    /** Contrôleur principal du jeu pour accéder aux fonctions de sauvegarde et pause */
     private final GameController gameController;
+
+    /** Panneau de jeu pour gérer l'affichage du menu pause */
     private final GamePanel gamePanel;
 
     public PauseActions(GameController gameController, GamePanel gamePanel) {

@@ -33,6 +33,15 @@ public class GameSetupController {
         this.mainFrame = mainFrame;
         initListeners();
     }
+    /**
+     * Initialise les listeners sur les boutons de l'interface.
+     * <p>
+     * Cette méthode associe les actions suivantes :
+     * <ul>
+     *     <li>Bouton "Retour" : retourne au menu principal</li>
+     *     <li>Bouton "Démarrer" : valide la configuration et lance la partie</li>
+     * </ul>
+     */
     private void initListeners() {
         view.getBackButton().addActionListener(e -> {
             MenuPanel menuPanel = new MenuPanel();

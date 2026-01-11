@@ -137,7 +137,8 @@ public class TerrainGenerator {
 
         int imgWidth = largeur * TILE_SIZE;
         int imgHeight = hauteur * TILE_SIZE;
-        BufferedImage blankImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage blankImage = new BufferedImage(imgWidth,
+                imgHeight, BufferedImage.TYPE_INT_ARGB);
 
         return new Terrain("", collisions, blankImage, null);
     }

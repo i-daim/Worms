@@ -31,7 +31,7 @@ public class GameController {
     public static final int CAMERA_SPEED = 10;
 
     private volatile boolean running = true;
-    private boolean paused = false;
+    private static boolean paused = false;
     private Thread gameThread;
     private int frameCount;
 
@@ -244,7 +244,7 @@ public class GameController {
         }
     }
 
-    public void togglePause() {
+    public static void togglePause() {
         paused = !paused;
     }
 

@@ -100,16 +100,16 @@ public class GameController {
         // Gestion de la caméra
         Alien activeAlien = gameManager.getActiveAlien();
 
-        // Cas 1 : Projectile en vol
         if (gameManager.getActiveProjectile() != null) {
+            // Cas 1 : Projectile en vol
             gamePanel.centerCamera(gameManager.getActiveProjectile());
-        } 
-        // Cas 2 : Mouvement manuel à la souris
-        else if (mouseHandler.isMouseNearEdge(gamePanel)) {
+
+        } else if (mouseHandler.isMouseNearEdge(gamePanel)) {
+            // Cas 2 : Mouvement manuel à la souris
             handleCameraScroll();
-        }
-        // Cas 3 : Suivi du joueur ou dézoom
-        else if (activeAlien != null && activeAlien.isAlive()) {
+
+        } else if (activeAlien != null && activeAlien.isAlive()) {
+            // Cas 3 : Suivi du joueur ou dézoom
             if (gameManager.isPaused()) {
                 gamePanel.unzoomCamera();
             } else {
@@ -170,7 +170,7 @@ public class GameController {
 
         // Gestion de la visée avec la souris
         mouseHandler.handleAim(activeAlien,
-                gamePanel.getCameraX(), gamePanel.getCameraY(), GamePanel.ZOOM);
+                gamePanel.getCameraX(), gamePanel.getCameraY(), gamePanel.getCurrentZoom());
 
         // Utilisation de l'item
         if (equipped != null && canShoot && !isMouseOnInv()) {

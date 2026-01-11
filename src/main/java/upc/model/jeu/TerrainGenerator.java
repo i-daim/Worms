@@ -134,6 +134,11 @@ public class TerrainGenerator {
                 collisions[y][x] = true;
             }
         }
-        return new Terrain("", collisions, null, null);
+
+        int imgWidth = largeur * TILE_SIZE;
+        int imgHeight = hauteur * TILE_SIZE;
+        BufferedImage blankImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+
+        return new Terrain("", collisions, blankImage, null);
     }
 }

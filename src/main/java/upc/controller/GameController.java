@@ -322,10 +322,19 @@ public class GameController {
         }
     }
 
+    /**
+     * Bascule l'état de pause du jeu (pause ↔ reprise).
+     */
     public static void togglePause() {
         paused = !paused;
     }
 
+    /**
+     * Arrête proprement la boucle de jeu et le thread associé.
+     * <p>
+     * Cette méthode met le flag running à false, ce qui provoque la sortie de la boucle,
+     * puis attend jusqu'à 100 ms que le thread se termine proprement.
+     */
     public void stop() {
         running = false;
         if (gameThread != null) {

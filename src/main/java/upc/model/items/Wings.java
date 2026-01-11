@@ -8,6 +8,9 @@ public class Wings extends Tool {
 
     private static final int NB_OF_SHOTS = 10;
 
+    /**
+     * Constructeur pour {@code Wings}
+     */
     public Wings() {
         super("Wings");
     }
@@ -23,6 +26,10 @@ public class Wings extends Tool {
     }
 
 
+    /**
+     * Retourne le type d'item correspondant à l'outil
+     * @return l'objet {@link Type} représentant l'item en lien avec l'outil
+     */
     @Override
     public Type getType() {
         return Type.WINGS;

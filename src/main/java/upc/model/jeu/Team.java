@@ -87,6 +87,7 @@ public class Team {
 
     /**
      * Modifie l'inventaire d'une équipe.
+     * @param inventory : L'inventaire de l'équipe
      */
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;

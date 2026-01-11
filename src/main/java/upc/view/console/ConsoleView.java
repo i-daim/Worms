@@ -83,9 +83,6 @@ public class ConsoleView {
      *
      * @param gameManager Le gestionnaire de jeu contenant les équipes.
      */
-    /**
-     * Affiche la liste des aliens avec un thème couleur alterné (Violet/Vert).
-     */
     public void printAliensList(GameManager gameManager) {
         System.out.println("\n📊 ÉTAT DES TROUPES :");
 
@@ -338,6 +335,9 @@ public class ConsoleView {
     /**
      * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher
      * le résultat d'un mouvement.
+     * @param b :
+     * @param s :
+     * @param g :
      */
     public void printMovementResult(boolean b, String s, GameManager g) {
     }
@@ -345,6 +345,8 @@ public class ConsoleView {
     /**
      * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher
      * le résultat d'un saut.
+     * @param b :
+     * @param g :
      */
     public void printJumpResult(boolean b, GameManager g) {
     }
@@ -352,6 +354,10 @@ public class ConsoleView {
     /**
      * Méthode vide destinée à être surchargée ou implémentée si besoin d'afficher
      * le résultat d'une attaque.
+     * @param t :
+     * @param x :
+     * @param y :
+     * @param tm :
      */
     public void printAttackResult(Alien t, int x, int y, Team tm) {
     }
@@ -380,6 +386,7 @@ public class ConsoleView {
     /**
      * Méthode vide destinée à l'affichage des stats des aliens.
      * C'est unr fonctionnalité gérée par {@link #printAliensList(GameManager)} dans cette vue.
+     * @param g Le gestionnaire de jeu.
      */
     public void printAliensStats(GameManager g) {
     }

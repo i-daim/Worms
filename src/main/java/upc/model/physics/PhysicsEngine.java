@@ -15,85 +15,169 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * <b>PhysicsEngine</b>
+ * <p>
+ * C'est le moteur central de la simulation physique du jeu.
+ * Il agit comme le moteur qui synchronise le reste.
+ * </p>
+ * <p>
+ * <b>Ses responsabilités :</b>
+ * <ul>
+ * <li>Posséder et mettre à jour le {@link World} de Dyn4j (le cœur de la simulation).</li>
+ * <li>Gérer les constantes globales : Gravité, Vent, Temps (Delta Time).</li>
+ * <li>Détecter les collisions (via le ContactListener) pour savoir quand un projectile
+ * touche quelque chose.</li>
+ * <li>Déléguer la gestion spécifique aux sous-modules : {@link AlienPhysics}, {
+ * @link ProjectilePhysics}, {@link TerrainPhysics}.</li>
+ * </ul>
+ * </p>
+ */
 public class PhysicsEngine {
 
+    // Références au monde du jeu et au terrain
     private final GameWorld gameWorld;
     private Terrain terrain;
+
+    // Le monde physique (Dyn4j) qui contient tous les corps
     private final World<Body> world;
 
+    // Sous-systèmes spécialisés pour éviter d'avoir une classe avec trop de lignes
     private final TerrainPhysics terrainPhysics;
     private final AlienPhysics alienPhysics;
     private final ProjectilePhysics projectilePhysics;
 
+    // --- Paramètres de simulation ---
     private Vector2 wind = new Vector2(0, 0);
     private final double dt = 1.0 / 60.0;
     private final Vector2 gravity = new Vector2(0, 60.0);
 
+    // Utilitaires
     private final Random random = new Random();
     private static final double MAX_WIND_POWER = 15.0;
 
-    ////    CONSTRUCTEUR    ////
+    /**
+     * Constructeur du moteur physique.
+     * Initialise Dyn4j, configure la gravité et met en place l'écouteur
+     * (listener) de collisions
+     *
+     * @param gameWorld : Référence au monde de jeu global.
+     */
     public PhysicsEngine(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         this.terrain = gameWorld.getTerrain();
+
+        // Création du monde Dyn4j
         this.world = new World<>();
         this.world.setGravity(gravity);
 
+        // --- Gestion des Collisions ---
+        // On ajoute un listener qui se déclenche dès que deux objets se touchent
         this.world.addContactListener(new ContactListenerAdapter<Body>() {
             @Override
             public void begin(ContactCollisionData<Body> collision, Contact contact) {
+                // On récupère les deux corps impliqués dans le choc
                 Body body1 = collision.getBody1();
                 Body body2 = collision.getBody2();
+
+                // On vérifie si l'un des deux est un projectile qui doit exploser
                 checkProjectileCollision(body1, body2);
                 checkProjectileCollision(body2, body1);
             }
         });
 
         this.alienPhysics = new AlienPhysics(world, terrain);
+        // ProjectilePhysics a besoin d'une ref au moteur complet pour lire le vent
         this.projectilePhysics = new ProjectilePhysics(this);
         this.terrainPhysics = new TerrainPhysics(world, terrain);
 
+        // Construction initiale des murs du terrain
         terrainPhysics.rebuildTerrain();
     }
 
 
 ////    UPDATE DES PHYSIQUES    ////
+
+    /**
+     * <b>Boucle principale de la physique.</b><br>
+     * À appeler à chaque frame du jeu.
+     * Elle fait avancer le temps et met à jour tous les sous-systèmes.
+     */
     public void update() {
+        // 1. On fait avancer la simulation d'un pas
         world.update(dt);
+
+        // 2. On met à jour la logique des Aliens (mouvements, sauts, chutes)
         updateAliens();
+
+        // 3. On met à jour les projectiles (trajectoires, vent)
         updateProjectiles();
+
+        // 4. On met à jour le terrain
         updateTerrain();
     }
 
+    /**
+     * Délègue la mise à jour des aliens et limite leur vitesse de chute.
+     */
     public void updateAliens() {
         alienPhysics.updateAliens();
+        // Important pour éviter que les aliens traversent le sol
         alienPhysics.limitFallVelocities();
     }
 
+    /**
+     * Délègue la mise à jour des projectiles.
+     */
     public void updateProjectiles() {
         projectilePhysics.updateProjectiles(terrain);
     }
 
+    /**
+     * Délègue la mise à jour du terrain.
+     */
     public void updateTerrain() {
         terrainPhysics.updateTerrain();
     }
 
 
-////    FONCTIONS POUR ALIENS    ////
+
+    /**
+     * Ajoute un alien dans la simulation physique.
+     * @param alien : L'entité à ajouter.
+     */
     public void addAlien(Alien alien) {
         alienPhysics.addAlienBody(alien);
     }
 
 ////    FONCTIONS POUR PROJECTILES    ////
+
+    /**
+     * Tire un projectile.
+     * @param projectile : L'objet projectile logique.
+     * @param angleDegrees : L'angle de tir en degrés.
+     * @param powerPercent : La puissance du tir (0 à 100).
+     */
     public void addProjectile(Projectile projectile, int angleDegrees, int powerPercent) {
         projectilePhysics.addProjectile(projectile, angleDegrees, powerPercent);
     }
 
+    /**
+     * Méthode interne appelée par le CollisionListener.
+     * Vérifie si 'b1' est un projectile et gère l'impact sur 'b2'.
+     *
+     * @param b1 Le premier corps impliqué dans la collision.
+     * @param b2 Le second corps impliqué dans la collision.
+     */
     private void checkProjectileCollision(Body b1, Body b2) {
         projectilePhysics.checkProjectileCollision(b1, b2);
     }
 
 
+    /**
+     * Génère un vent aléatoire pour le tour.
+     * Modifie la direction et la puissance du vent appliqué aux projectiles.
+     */
     public void randomizeWind() {
         // Calcul du facteur entre 0.1 et 1.0
         double powerFactor = 0.1 + (random.nextDouble() * 0.75);
@@ -112,7 +196,7 @@ public class PhysicsEngine {
     }
 
 
-////    GETTERS & SETTERS    ////
+    ////    GETTERS & SETTERS    ////
     public World<Body> getWorld() {
         return world;
     }
@@ -133,6 +217,12 @@ public class PhysicsEngine {
         return wind;
     }
 
+    /**
+     * Définit manuellement le vent (utilisé pour le debug).
+     *
+     * @param windX La force du vent sur l'axe horizontal.
+     * @param windY La force du vent sur l'axe vertical.
+     */
     public void setWind(double windX, double windY) {
         Vector2 v = new Vector2(windX, windY);
         this.wind = v;
@@ -155,6 +245,12 @@ public class PhysicsEngine {
         return terrain;
     }
 
+    /**
+     * Change le terrain actif .
+     * Propage le changement aux sous-systèmes physiques.
+     *
+     * @param terrain Le nouveau terrain à utiliser.
+     */
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
         this.alienPhysics.setTerrain(terrain);

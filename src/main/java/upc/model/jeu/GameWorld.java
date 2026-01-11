@@ -8,12 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameWorld {
+    /** Attributs principaux du monde de jeu */
     private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
     private final Terrain terrain;
 
     private final ArrayList<Alien> activeAliens;
 
+    /**
+     * Constructeur pour {@code GameWorld}
+     * @param gameManager : Le gestionnaire de jeu
+     * @param terrain : Le terrain de jeu
+     *
+     */
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
         this.terrain = terrain;
@@ -24,10 +31,26 @@ public class GameWorld {
         initializePhysics();
     }
 
+    ///Autres méthodes ///
+
+    /**
+     * Méthode permettant de mettre à jour la physique du jeu
+     * @param elapsedTime : temps écoulé depuis la dernière mise à jour
+     */
     public void update(double elapsedTime) {
         physicsEngine.update();
     }
 
+
+    /**
+     * Méthode permettant de retourner l'ensemble des aliens
+     * Situé dans un rayon donnée
+     * @param x : coordonnée du centre en x
+     * @param y : coordonnée du centre en y
+     * @param radius : rayon de recherche
+     * @return une liste {@link ArrayList<Alien>}
+     * représentant l'ensemble des aliens situés dans ce rayon
+     */
     public ArrayList<Alien> aliensInRadius(int x, int y, int radius) {
         ArrayList<Alien> aliens = new ArrayList<>();
         for (Alien a : this.activeAliens) {
@@ -38,6 +61,15 @@ public class GameWorld {
         return aliens;
     }
 
+
+    /**
+     * Méthode permettant de représenter le point d'impact des armes sur le terrain du jeu
+     * En mettant à jour la physique du terrain
+     * Et activant l'animation requise au point d'impact
+     * @param x : Position du projectile en x
+     * @param y : Position du projectile en y
+     * @param radius : rayon d'action
+     */
     public void explode(int x, int y, int radius) {
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);
@@ -46,20 +78,13 @@ public class GameWorld {
         }
     }
 
-    public Terrain getTerrain() {
-        return this.terrain;
-    }
 
-    public ArrayList<Alien> getActiveAliens() {
-        ArrayList<Alien> living = new ArrayList<>();
-        for (Alien a : activeAliens) {
-            if (a != null && a.isAlive()) {
-                living.add(a);
-            }
-        }
-        return living;
-    }
-
+    /**
+     * Méthode permettant d'initialiser la physique du jeu
+     * En ajoutant chaque alien de chaque équipe
+     * Dans l'ensemble des aliens actives
+     * Et dans le moteur physique
+     */
     public void initializePhysics() {
         physicsEngine.clearAliens();
         activeAliens.clear();
@@ -82,14 +107,52 @@ public class GameWorld {
         }
     }
 
+    /// Getter ///
+
+    /**
+     * Retourne l'ensemble des aliens encore en vie dans le jeu
+     * @return une liste {@link ArrayList<Alien>}
+     * représentant l'ensemble des aliens vivants
+     */
+    public ArrayList<Alien> getActiveAliens() {
+        ArrayList<Alien> living = new ArrayList<>();
+        for (Alien a : activeAliens) {
+            if (a != null && a.isAlive()) {
+                living.add(a);
+            }
+        }
+        return living;
+    }
+
+
+    /**
+     * Retourne le terrain de jeu
+     * @return le terrain de jeu via l'attribut gameManager
+     */
+    public Terrain getTerrain() {
+        return this.terrain;
+    }
+
+    /**
+     * Retourne la physique du jeu
+     * @return l'attribut physicsEngine
+     */
     public PhysicsEngine getPhysicsEngine() {
         return physicsEngine;
     }
 
+    /**
+     * Retourne l'ensemble des projectiles actuellement actives dans le jeu
+     * @return l'ensemble des projectiles via l'attribut physicsEngine
+     */
     public List<Projectile> getActiveProjectiles() {
         return physicsEngine.getActiveProjectiles();
     }
 
+    /**
+     * Retourne la classe gestionnaire du jeu
+     * @return l'attribut gameManager
+     * */
     public GameManager getGameManager() {
         return gameManager;
     }

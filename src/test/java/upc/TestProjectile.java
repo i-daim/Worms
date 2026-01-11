@@ -112,4 +112,42 @@ public class TestProjectile {
         assertEquals(0, p.getFrameCount());
     }
 
+    @Test
+    public void testGetAngle() {
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
+        assertEquals(0, p.getAngle());
+    }
+
+    @Test
+    public void testGetExplosionRadius(){
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
+
+        assertEquals(0, p.getExplosionRadius());
+    }
+
+    @Test
+    public void testGetDamage(){
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
+        assertEquals(0, p.getDamage());
+    }
+
+    @Test
+    public void testIsExplosive(){
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
+        assertFalse(p.isExplosive());
+
+        Projectile p2 = new Projectile(shooter, pos, 0, 0, true, 0, null);
+        assertTrue(p2.isExplosive());
+    }
+
+    @Test
+    public void testComputeDamageFromDistance(){
+        Projectile p = new Projectile(shooter, pos, 0, 0, false, 0, null);
+        assertEquals(0, p.computeDamageFromDistance(0));
+
+        Projectile p2 = new Projectile(shooter, pos, 20, 5, true, 0, null);
+        double ratio = 1.0 - (10 / 5);
+        int damage =  Math.max((int) (20 * ratio), 0);
+        assertEquals(damage, p2.computeDamageFromDistance(10));
+    }
 }

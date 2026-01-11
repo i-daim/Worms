@@ -51,7 +51,15 @@ public class GameController {
     /** Compteur de frames pour gérer la cadence de tir de certaines armes (Uzi) */
     private int frameCount;
 
-    // Constructeur //
+    /**
+     * Construit un nouveau contrôleur de jeu et démarre la boucle de jeu.
+     * <p>
+     * Le constructeur initialise les gestionnaires d'entrées, configure les listeners
+     * pour les boutons du menu pause, et lance immédiatement la boucle de jeu à 60 FPS.
+     *
+     * @param gamePanel   Le panneau graphique du jeu (vue).
+     * @param gameManager Le gestionnaire de la logique de jeu (modèle).
+     */
     public GameController(GamePanel gamePanel, GameManager gameManager) {
         this.gamePanel = gamePanel;
         this.gameManager = gameManager;

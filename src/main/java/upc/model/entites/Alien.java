@@ -142,10 +142,7 @@ public class Alien extends Entity {
     }
 
     public void incrementPower() {
-        shootPower++;
-        if (shootPower > 100) {
-            shootPower = 100;
-        }
+        shootPower = (shootPower + 1) % 100;
     }
 
     public boolean canShoot() {

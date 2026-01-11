@@ -5,7 +5,10 @@ import upc.view.gui.MenuPanel;
 
 public class MenuController {
 
+    /** Panneau du menu principal contenant les boutons */
     private final MenuPanel menuPanel;
+
+    /** Gestionnaire des actions associées aux boutons du menu */
     private final MenuActions menuActions;
 
     public MenuController(MainFrame mainFrame, MenuPanel menuPanel) {

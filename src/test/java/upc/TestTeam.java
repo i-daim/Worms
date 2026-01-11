@@ -107,6 +107,9 @@ public class TestTeam {
         a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
         assertEquals(1, a.getAliveAliensNumber());
     }
+    /**
+     * Vérifie si l'Alien actuel est bien le dernier de la liste des membres.
+     */
 
     @Test
     public void testIsActiveLastAlien() {

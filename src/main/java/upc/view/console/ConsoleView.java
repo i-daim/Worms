@@ -8,7 +8,7 @@ import upc.model.jeu.Terrain;
 import java.util.Scanner;
 
 /**
- * Vue gérant l'interaction avec l'utilisateur via la console standard (System.in / System.out).
+ * Vue gérant l'interaction avec l'utilisateur via la console standard.
  * <p>
  * Cette classe est responsable de :
  * <ul>
@@ -76,8 +76,8 @@ public class ConsoleView {
      * <p>
      * Utilise des icônes et couleurs spécifiques pour distinguer les équipes :
      * <ul>
-     * <li><b>Équipe 1 (Violet)</b> : 🟣, 💜, 👾</li>
-     * <li><b>Équipe 2 (Vert)</b> : 🟢, 💚, 👽</li>
+     * <li><b>Équipe 1 Violet</b> : 🟣, 💜, 👾</li>
+     * <li><b>Équipe 2 Vert</b> : 🟢, 💚, 👽</li>
      * </ul>
      * Indique également l'état (vivant/mort) et les PV de chaque unité.
      *
@@ -131,7 +131,7 @@ public class ConsoleView {
 
 
     /**
-     * Affiche le panneau d'information (HUD) du tour courant.
+     * Affiche l'HUD du tour courant.
      * <p>
      * Le panneau contient :
      * <ul>
@@ -197,10 +197,10 @@ public class ConsoleView {
      * Demande une commande à l'utilisateur et gère les commandes d'information en interne.
      * <p>
      * Si l'utilisateur tape "map" ou "aliens", la vue affiche l'information demandée
-     * puis redemande une commande (récursivement), sans passer la main au contrôleur.
+     * puis redemande une commande récursivement, sans passer la main au contrôleur.
      * </p>
      * @param gameManager Le gestionnaire de jeu pour récupérer les infos à afficher.
-     * @return La commande d'action finale (déplacement, attaque, etc.).
+     * @return La commande d'action finale.
      */
     // Modification ici pour gérer la commande "aliens"
     public String requestCommand(GameManager gameManager) {
@@ -245,7 +245,7 @@ public class ConsoleView {
     /**
      * Affiche une représentation ASCII de la carte complète du jeu.
      * <p>
-     * La carte est redimensionnée (downscaling) si elle dépasse les dimensions maximales (MAX_WIDTH/MAX_HEIGHT).
+     * La carte est redimensionnée si elle dépasse les dimensions maximales.
      * Les symboles affichés sont déterminés par {@link #getSymbolForArea}.
      * </p>
      * @param gameManager Le gestionnaire de jeu contenant le terrain.
@@ -293,7 +293,7 @@ public class ConsoleView {
      *
      * @param startX Coordonnée X de début de la zone.
      * @param startY Coordonnée Y de début de la zone.
-     * @param step Taille de la zone (pas d'échantillonnage).
+     * @param step Taille de la zone.
      * @param gm Le gestionnaire de jeu.
      * @return Le caractère représentant la zone.
      */
@@ -329,7 +329,7 @@ public class ConsoleView {
     }
 
     /**
-     * Ferme les ressources associées à la vue (Scanner).
+     * Ferme les ressources associées à la vue.
      */
     public void close() {
         scanner.close();
@@ -376,7 +376,7 @@ public class ConsoleView {
 
     /**
      * Méthode vide destinée à l'affichage des stats des aliens.
-     * (Fonctionnalité gérée par {@link #printAliensList(GameManager)} dans cette vue).
+     * C'est unr fonctionnalité gérée par {@link #printAliensList(GameManager)} dans cette vue.
      */
     public void printAliensStats(GameManager g) {
     }

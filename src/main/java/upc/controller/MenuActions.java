@@ -32,6 +32,13 @@ public class MenuActions {
         this.menuPanel = menuPanel;
     }
 
+    /**
+     * Retourne l'action du bouton "Nouvelle Partie".
+     * <p>
+     * Affiche l'écran de configuration de partie.
+     *
+     * @return L'ActionListener pour démarrer une nouvelle partie.
+     */
     public ActionListener getNewGameAction() {
         return e -> {
             SetupPanel setupPanel = new SetupPanel(mainFrame);

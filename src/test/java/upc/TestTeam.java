@@ -8,7 +8,10 @@ import upc.model.jeu.Team;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Classe de test unitaire pour la classe Team.
+ * Vérifie le cycle de vie d'une équipe, la gestion des Aliens et les conditions d'élimination.
+ */
 public class TestTeam {
 
     private GameWorld world;

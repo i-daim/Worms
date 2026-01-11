@@ -277,7 +277,14 @@ public class GameController {
             }
         }
     }
-
+    /**
+     * Vérifie si la souris survole actuellement la zone de l'inventaire.
+     * <p>
+     * Cette vérification permet d'éviter de déclencher des tirs lorsque l'utilisateur
+     * clique sur l'inventaire pour changer d'arme.
+     *
+     * @return true si la souris est sur l'inventaire, false sinon.
+     */
     private boolean isMouseOnInv() {
         if (!gamePanel.getHudPanel().isInventoryVisible()) {
             return false;

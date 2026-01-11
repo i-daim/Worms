@@ -13,7 +13,10 @@ import java.util.Set;
 
 
 public class GameSetupController {
+    /** Vue de l'écran de configuration contenant les options et les boutons */
     private final SetupPanel view;
+
+    /** Fenêtre principale de l'application (pour changer de panneau) */
     private final MainFrame mainFrame;
 
     public GameSetupController(SetupPanel view, MainFrame mainFrame) {

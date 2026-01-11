@@ -61,6 +61,15 @@ public class KeyboardHandler extends KeyAdapter {
         justPressedKeys.clear();
     }
 
+    /**
+     * Vérifie si une touche est actuellement enfoncée (maintenue).
+     * <p>
+     * Cette méthode retourne true tant que la touche reste enfoncée,
+     * ce qui est utile pour les actions continues comme les déplacements.
+     *
+     * @param keyCode Le code de la touche à vérifier (ex: {@link KeyEvent#VK_Q}).
+     * @return true si la touche est actuellement enfoncée, false sinon.
+     */
     public boolean isKeyPressed(int keyCode) {
         return pressedKeys.contains(keyCode);
     }

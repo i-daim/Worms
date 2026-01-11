@@ -22,13 +22,13 @@ public class Mine extends Weapon {
         int angle = shooter.getAimAngle();
         int power = shooter.getShootPower();
 
-        Projectile mineProj = createProjectile(shooter);
+        Trap mineProj = createProjectile(shooter);
         gameWorld.getPhysicsEngine().addProjectile(mineProj, angle, power);
         return mineProj;
     }
 
 
-    public Projectile createProjectile(Alien shooter) {
+    public Trap createProjectile(Alien shooter) {
         return new Trap(this, shooter, ACTIVATION_RADIUS, EXPLOSION_RADIUS);
     }
 

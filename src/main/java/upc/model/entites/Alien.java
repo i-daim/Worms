@@ -23,6 +23,7 @@ public class Alien extends Entity {
 
     private final Inventory inventory;
     private int selectedItemIndex = 0;
+    private int itemUseCount = 0;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -30,10 +31,7 @@ public class Alien extends Entity {
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {
-        IDLE,
-        WALK,
-        JUMP_START,
-        JUMP
+        IDLE, WALK, JUMP, AIR, LAND, FLY
     }
     private State state;
 
@@ -75,7 +73,7 @@ public class Alien extends Entity {
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
         direction = true;
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (!isInAir()) {
             setState(State.WALK);
         }
     }
@@ -83,21 +81,33 @@ public class Alien extends Entity {
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
         direction = false;
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (!isInAir()) {
             setState(State.WALK);
         }
     }
 
     public void jump() {
         alienPhysics.jumpAlien(this);
-        setState(State.JUMP_START);
+        if (getEquippedItem().getName().equals("Wings")) {
+            SoundManager.playEffect("Wings");
+            setState(State.FLY);
+            itemUseCount++;
+            inventory.useAmmo(Item.Type.WINGS, 1);
+        } else {
+            setState(State.JUMP);
+        }
     }
 
     public void idle() {
         alienPhysics.moveAlien(this, 0);
-        if (state != State.JUMP && state != State.JUMP_START) {
+        if (state != State.JUMP && state != State.AIR && state != State.LAND) {
             setState(State.IDLE);
         }
+    }
+
+    public boolean isInAir() {
+        return state == State.AIR || state == State.JUMP
+                || state == State.FLY || state == State.LAND;
     }
 
 
@@ -109,11 +119,13 @@ public class Alien extends Entity {
         if (item == null || !inventory.isAvailable(equippedItem)) {
             return null;
         }
-        if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
-            alienPhysics.flyAlien(this);
-            setState(State.JUMP);
+        if (equippedItem == Item.Type.WINGS && inventory.isAvailable(equippedItem)) {
+            alienPhysics.jumpAlien(this);
+            SoundManager.playEffect("Wings");
+            setState(State.FLY);
         }
         SoundManager.playEffect(item.getName());
+        itemUseCount++;
         inventory.useAmmo(equippedItem, 1);
         return item.useItem(world, this);
     }
@@ -131,11 +143,19 @@ public class Alien extends Entity {
     }
 
     public void incrementPower() {
-        shootPower++;
-        if (shootPower > 100) {
-            shootPower = 100;
-        }
+        shootPower = (shootPower + 1) % 100;
     }
+
+    public boolean canShoot() {
+        Item item = inventory.getItemByIndex(selectedItemIndex);
+
+        return itemUseCount < item.getNbOfShots();
+    }
+
+    public void resetUseCount() {
+        itemUseCount = 0;
+    }
+
 
     ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {
@@ -152,6 +172,10 @@ public class Alien extends Entity {
 
     public int getAimAngle() {
         return aimAngle;
+    }
+
+    public int getItemUseCount() {
+        return itemUseCount;
     }
 
     public Item getEquippedItem() {

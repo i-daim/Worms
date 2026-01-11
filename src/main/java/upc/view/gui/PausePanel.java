@@ -26,6 +26,7 @@ public class PausePanel extends JPanel {
     private int menuHeight = (int) ((GamePanel.DEFAULT_HEIGHT - 300) * GamePanel.ZOOM);
 
     private final JButton resumeButton;
+    private final JButton saveButton;
     private final JButton settingsButton;
     private final JButton mainMenuButton;
     private final JButton quitButton;
@@ -43,6 +44,7 @@ public class PausePanel extends JPanel {
         this.setVisible(false);
 
         resumeButton = ButtonManager.createGameButton("Continue");
+        saveButton = ButtonManager.createGameButton("Save Game");
         settingsButton = ButtonManager.createGameButton("Settings");
         mainMenuButton = ButtonManager.createGameButton("Return to menu");
         quitButton = ButtonManager.createGameButton("Quit Game");
@@ -91,12 +93,15 @@ public class PausePanel extends JPanel {
         int gap = (int) (20 * GamePanel.ZOOM) + btnHeight;
 
         resumeButton.setBounds(btnX, btnY, btnWidth, btnHeight);
-        settingsButton.setBounds(btnX, btnY + gap, btnWidth, btnHeight);
-        mainMenuButton.setBounds(btnX, btnY + gap * 2, btnWidth, btnHeight);
-        quitButton.setBounds(btnX, btnY + gap * 3, btnWidth, btnHeight);
+        saveButton.setBounds(btnX, btnY + gap, btnWidth, btnHeight);
+        settingsButton.setBounds(btnX, btnY + gap * 2, btnWidth, btnHeight);
+        mainMenuButton.setBounds(btnX, btnY + gap * 3, btnWidth, btnHeight);
+        quitButton.setBounds(btnX, btnY + gap * 4, btnWidth, btnHeight);
 
+        saveButton.setFocusable(false);
 
         this.add(resumeButton);
+        this.add(saveButton);
         this.add(settingsButton);
         this.add(mainMenuButton);
         this.add(quitButton);
@@ -109,6 +114,14 @@ public class PausePanel extends JPanel {
      */
     public JButton getResumeButton() {
         return resumeButton;
+    }
+
+    /**
+     * Récupère le bouton de sauvegarde du jeu.
+     * @return Le bouton "Save Game".
+     */
+    public JButton getSaveButton() {
+        return saveButton;
     }
 
     /**

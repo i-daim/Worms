@@ -11,10 +11,12 @@ public interface Item {
         BAZOOKA,
         GRENADE,
         MINE,
-        JETPACK
+        WINGS
     }
 
     Projectile useItem(GameWorld gameWorld, Alien alienActif);
+
+    int getNbOfShots();
 
     String getName();
 

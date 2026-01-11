@@ -1,5 +1,6 @@
 package upc.view.gui;
 
+import upc.controller.GameController;
 import upc.model.entites.Alien;
 import upc.model.jeu.Team;
 import upc.model.jeu.GameManager;
@@ -52,6 +53,7 @@ public class HUDPanel extends JPanel {
         this.setLayout(null); // pour positionner le bouton librement
         this.setPreferredSize(new Dimension(800, 100));
 
+        addPauseButton();
         addSkipButton();
         addInventoryButton();
     }
@@ -107,11 +109,24 @@ public class HUDPanel extends JPanel {
         }
     }
 
+    private void addPauseButton() {
+        JButton pauseButton = ButtonManager.createGameButton("Pause");
+        pauseButton.addActionListener(e -> {
+            if (!gameManager.isOver()) {
+                GameController.togglePause();
+            }
+        });
+        pauseButton.setFocusable(false);
+        pauseButton.setBounds(20, 5, (int) (60 * zoom), (int) (20 * zoom));
+        pauseButton.setFont(new Font("Arial", Font.BOLD, (int) (8 * zoom)));
+        this.add(pauseButton);
+    }
+
     /**
      * Crée et ajoute le bouton "Passer le tour".
      */
     private void addSkipButton() {
-        JButton skipButton = ButtonManager.createGameButton("Passer");
+        JButton skipButton = ButtonManager.createGameButton("Skip");
         // passer le tour quand on clique
         skipButton.addActionListener(e -> {
             if (!gameManager.isOver()) {
@@ -122,7 +137,9 @@ public class HUDPanel extends JPanel {
         // Sinon après un clic, les flèches contrôleraient plus l'alien
         skipButton.setFocusable(false);
         // Positionnement et taille
-        skipButton.setBounds(20, 5, (int) (60 * zoom), (int) (20 * zoom));
+        int x = (int) (40 + 60 * zoom);
+        int y = 5;
+        skipButton.setBounds(x, y, (int) (60 * zoom), (int) (20 * zoom));
         skipButton.setFont(new Font("Arial", Font.BOLD, (int) (8 * zoom)));
         this.add(skipButton);
     }
@@ -218,7 +235,8 @@ public class HUDPanel extends JPanel {
             g2.setFont(new Font("Arial", Font.BOLD, 18));
             g2.drawString(item.getName(), x + 15, y + 30);
 
-            int ammo = activeAlien.getTeam().getInventory().getAmmo(item.getType());
+            int ammo = activeAlien.getEquippedItem().getNbOfShots()
+                    - activeAlien.getItemUseCount();
             String info = (ammo < 0) ? "Infini" : "x" + ammo;
             g2.setFont(new Font("Arial", Font.PLAIN, 14));
             g2.setColor(Color.YELLOW);
@@ -302,7 +320,6 @@ public class HUDPanel extends JPanel {
 
                     if (active) {
                         drawAlienAim(g2, alien);
-                        drawEquippedWeapon(g2, alien);
                     }
                 }
             }
@@ -335,33 +352,6 @@ public class HUDPanel extends JPanel {
         // Rotation du viseur en fonction de l'angle
         g2.rotate(Math.toRadians(-alien.getAimAngle()));
 
-        // Indice de puissance de tir
-        int power = alien.getShootPower();
-
-        // Dimensions du cône
-        int coneLength = power / 2;
-        int coneWidth = 4 + (power / 8);
-
-        if (power < 30) {
-            g2.setColor(Color.GREEN);
-        } else if (power < 70) {
-            g2.setColor(Color.ORANGE);
-        } else {
-            g2.setColor(Color.RED);
-        }
-
-        if (power > 0) {
-            int startX = 15;
-            // Points du triangle (cône)
-            int[] xPoints = {startX, startX + coneLength, startX + coneLength};
-            int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
-
-            g2.fillPolygon(xPoints, yPoints, 3);
-
-            g2.setColor(Color.BLACK);
-            g2.drawPolygon(xPoints, yPoints, 3);
-        }
-
         // Viseur représenté par un cercle
         int distance = 50;
         int radius = 6;
@@ -375,30 +365,39 @@ public class HUDPanel extends JPanel {
         g2.drawLine(circleX, circleY + 3, circleX + 6, circleY + 3);
         g2.drawLine(circleX + 3, circleY, circleX + 3, circleY + 6);
 
+        // Affichage de la jauge de puissance (que pour certaines armes)
+        String itemName = alien.getEquippedItem().getName();
+        if (itemName.equals("Bazooka") || itemName.equals("Grenade") || itemName.equals("Mine")) {
+            // Indice de puissance de tir
+            int power = alien.getShootPower();
+
+        // Dimensions du cône
+        int coneLength = power / 2;
+        int coneWidth = 4 + (power / 8);
+
+            if (power < 30) {
+                g2.setColor(Color.GREEN);
+            } else if (power < 70) {
+                g2.setColor(Color.ORANGE);
+            } else {
+                g2.setColor(Color.RED);
+            }
+
+            if (power > 0) {
+                int startX = 15;
+                // Points du triangle (cône)
+                int[] xPoints = {startX, startX + coneLength, startX + coneLength};
+                int[] yPoints = {0, -coneWidth / 2, coneWidth / 2};
+
+                g2.fillPolygon(xPoints, yPoints, 3);
+
+                g2.setColor(Color.BLACK);
+                g2.drawPolygon(xPoints, yPoints, 3);
+            }
+        }
+
         // On revient à l'état original
         g2.setTransform(originalTransform);
-    }
-
-
-    /**
-     * Affiche le nom de l'arme équipée au-dessus de l'alien.
-     * @param g2 Le contexte graphique.
-     * @param alien L'alien concerné.
-     */
-    private void drawEquippedWeapon(Graphics2D g2, Alien alien) {
-        Item item = alien.getEquippedItem();
-        if (item == null) {
-            return;
-        }
-        int posX = alien.getPosition().getX();
-        int posY = alien.getPosition().getY();
-
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 12));
-        String text = alien.getEquippedItem().getName();
-        int textWidth = g2.getFontMetrics().stringWidth(text);
-
-        g2.drawString(text, posX - textWidth / 2, posY - 42);
     }
 
 

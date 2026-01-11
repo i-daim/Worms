@@ -30,6 +30,7 @@ public class GameManager {
     private final List<ActiveAnimation> activeAnimations;
     private Projectile activeProjectile;
 
+    private int frameCounter = 0;
     private long delayEndTime = 0;
     private boolean isPaused = false;
     private Runnable onDelayFinished;
@@ -71,7 +72,6 @@ public class GameManager {
         // On met à jour les physiques et animations
         gameWorld.update(elapsedTime);
         updateAnimations();
-        checkGameOver();
         checkActiveProjectile();
 
         // Si le délai n'est pas fini, on met pas à jour le reste
@@ -86,8 +86,11 @@ public class GameManager {
                 onDelayFinished = null;
             }
         }
+        checkGameOver();
+
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
-        if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
+        if (getActiveAlien() == null || !getActiveAlien().isAlive()
+            || !getActiveAlien().canShoot()) {
             skipTurn();
             return;
         }
@@ -126,6 +129,7 @@ public class GameManager {
         setDelay(2000, () -> {
             nextTurn();
             timeLeft = ROUND_TIME;
+            getActiveAlien().resetUseCount();
         });
     }
 
@@ -136,7 +140,7 @@ public class GameManager {
         // Passe à l'équipe suivante
         activeTeamIndex = (activeTeamIndex + 1) % teams.length;
 
-        // [MODIFICATION] Délégation à la physique
+        // Délégation à la physique
         if (windEnabled) {
             applyWindChange();
         }
@@ -152,7 +156,6 @@ public class GameManager {
         }
     }
 
-    private int frameCounter = 0;
 
     public void countTimeLeft() {
         frameCounter++;
@@ -170,7 +173,7 @@ public class GameManager {
     private void checkGameOver() {
         for (Team team : teams) {
             if (team.isEliminated()) {
-                gameOver = true;
+                setDelay(1000, () -> gameOver = true);
             }
         }
     }
@@ -223,14 +226,16 @@ public class GameManager {
     }
 
     private void checkActiveProjectile() {
-        if (activeProjectile == null || activeProjectile instanceof Trap) {
-            activeProjectile = null;
+        if (activeProjectile == null) {
             return;
         }
-        if (activeProjectile.getState().equals(Projectile.State.FLYING)) {
-            delayEndTime += 20;
+        if (activeProjectile.getState().equals(Projectile.State.FLYING)
+            && !(activeProjectile instanceof Trap)) {
+            delayEndTime += 18;
         } else {
             activeProjectile = null;
+            actionDone = true;
+            skipTurn();
         }
     }
 

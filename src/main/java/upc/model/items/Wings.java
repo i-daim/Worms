@@ -4,21 +4,28 @@ import upc.model.entites.Alien;
 import upc.model.entites.projectiles.Projectile;
 import upc.model.jeu.GameWorld;
 
-public class Jetpack extends Tool {
+public class Wings extends Tool {
 
-    public Jetpack() {
-        super("Jetpack");
+    private static final int NB_OF_SHOTS = 10;
+
+    public Wings() {
+        super("Wings");
     }
 
     @Override
     public Projectile useItem(GameWorld gameWorld, Alien alienActif) {
-        // Le jetpack ne tire pas, l'action sera gérée via méthode fly()
         return null;
     }
 
     @Override
+    public int getNbOfShots() {
+        return NB_OF_SHOTS;
+    }
+
+
+    @Override
     public Type getType() {
-        return Type.JETPACK;
+        return Type.WINGS;
     }
 
 }

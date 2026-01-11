@@ -28,6 +28,13 @@ public class PauseActions {
         this.gamePanel = gamePanel;
     }
 
+    /**
+     * Retourne l'action du bouton "Reprendre".
+     * <p>
+     * Désactive la pause, cache le menu pause et rend le focus au jeu.
+     *
+     * @return L'ActionListener pour reprendre la partie.
+     */
     public ActionListener getResumeAction() {
         return e -> {
             GameController.togglePause();
@@ -36,6 +43,13 @@ public class PauseActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Sauvegarder".
+     * <p>
+     * Sauvegarde l'état actuel de la partie dans un fichier.
+     *
+     * @return L'ActionListener pour sauvegarder la partie.
+     */
     public ActionListener getSaveGameAction() {
         return e -> {
             try {

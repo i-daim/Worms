@@ -121,6 +121,7 @@ public class Alien extends Entity {
         }
         if (equippedItem == Item.Type.WINGS && inventory.isAvailable(equippedItem)) {
             alienPhysics.jumpAlien(this);
+            SoundManager.playEffect("Wings");
             setState(State.FLY);
         }
         SoundManager.playEffect(item.getName());

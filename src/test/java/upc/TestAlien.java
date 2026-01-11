@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import upc.model.entites.Alien;
 import upc.model.items.Item;
-import upc.model.items.Jetpack;
 import upc.model.jeu.GameWorld;
 import upc.model.jeu.GameManager;
-import upc.model.jeu.Inventory;
 import upc.model.jeu.Team;
 import org.junit.jupiter.api.Test;
+
+
 /**
  * Ces tests vérifient :
  * - l'état initial d'un alien
@@ -153,10 +153,9 @@ public class TestAlien {
     void testUseEquippedItemJetpack() {
         alien.setSelectedItemIndex(5);
 
-
         alien.useEquippedItem();
 
-        assertEquals(Alien.State.JUMP, alien.getState());
+        assertEquals(Alien.State.FLY, alien.getState());
     }
     /**
      * Vérifie l'utilisation d'une arme :

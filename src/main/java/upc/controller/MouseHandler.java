@@ -10,10 +10,16 @@ import java.util.HashSet;
 import static upc.controller.GameController.CAMERA_SPEED;
 
 public class MouseHandler extends MouseAdapter {
-
+    /** Position actuelle de la souris à l'écran */
     private Point position = new Point(0, 0);
+
+    /** Ensemble des boutons de souris actuellement enfoncés */
     private final HashSet<Integer> pressedButtons = new HashSet<>();
+
+    /** Ensemble des boutons qui viennent d'être pressés cette frame */
     private final HashSet<Integer> justPressedButtons = new HashSet<>();
+
+    /** Ensemble des boutons qui viennent d'être relâchés cette frame */
     private final HashSet<Integer> justReleasedButtons = new HashSet<>();
 
 

@@ -12,6 +12,18 @@ public class KeyboardHandler extends KeyAdapter {
     /** Ensemble des codes de touches qui viennent d'être pressées cette frame */
     private final HashSet<Integer> justPressedKeys = new HashSet<>();
 
+    /**
+     * Appelée automatiquement lorsqu'une touche est enfoncée.
+     * <p>
+     * Cette méthode détecte si c'est la première pression de la touche (pas une répétition)
+     * et l'ajoute aux deux ensembles :
+     * <ul>
+     *     <li>{@code pressedKeys} : pour détecter les touches maintenues</li>
+     *     <li>{@code justPressedKeys} : pour détecter les pressions ponctuelles</li>
+     * </ul>
+     *
+     * @param e L'événement clavier contenant le code de la touche pressée.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         if (!pressedKeys.contains(e.getKeyCode())) {

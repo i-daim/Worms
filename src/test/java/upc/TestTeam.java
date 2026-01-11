@@ -96,7 +96,9 @@ public class TestTeam {
         a.getAliens()[0] = new Alien(world, a, new Position(0, 1));
         assertNotNull(a.getActiveAlien());
     }
-
+    /**
+     * Vérifie que le compteur d'Aliens vivants se met à jour correctement.
+     */
     @Test
     public void testGetAliveAliensNumber() {
         Team a = new Team("TEAM A", 3);

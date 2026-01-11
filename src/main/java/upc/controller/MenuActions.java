@@ -14,7 +14,10 @@ import upc.view.gui.SettingsPanel;
 
 public class MenuActions {
 
+    /** Fenêtre principale de l'application */
     private final MainFrame mainFrame;
+
+    /** Panneau du menu principal */
     private final MenuPanel menuPanel;
 
     public MenuActions(MainFrame mainFrame, MenuPanel menuPanel) {

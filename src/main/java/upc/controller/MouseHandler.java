@@ -23,17 +23,34 @@ public class MouseHandler extends MouseAdapter {
     private final HashSet<Integer> justReleasedButtons = new HashSet<>();
 
 
-////    EVENTS    ////
+    /**
+     * Appelée automatiquement lorsque la souris se déplace (sans clic).
+     *
+     * @param e L'événement souris contenant la nouvelle position.
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         this.position = e.getPoint();
     }
 
+    /**
+     * Appelée automatiquement lorsque la souris se déplace avec un bouton enfoncé (drag).
+     *
+     * @param e L'événement souris contenant la nouvelle position.
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         this.position = e.getPoint();
     }
 
+    /**
+     * Appelée automatiquement lorsqu'un bouton de souris est enfoncé.
+     * <p>
+     * Détecte si c'est la première pression (pas une répétition) et l'ajoute
+     * aux ensembles des boutons pressés et venant d'être pressés.
+     *
+     * @param e L'événement souris contenant le bouton pressé.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (!pressedButtons.contains(e.getButton())) {
@@ -42,6 +59,11 @@ public class MouseHandler extends MouseAdapter {
         pressedButtons.add(e.getButton());
     }
 
+    /**
+     * Appelée automatiquement lorsqu'un bouton de souris est relâché.
+     *
+     * @param e L'événement souris contenant le bouton relâché.
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         pressedButtons.remove(e.getButton());

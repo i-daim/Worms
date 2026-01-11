@@ -97,27 +97,24 @@ public class GameController {
             return;
         }
 
-        // --- GESTION CAMERA INTELLIGENTE ---
-        boolean isAnimating = false;
+        // Gestion de la caméra
         Alien activeAlien = gameManager.getActiveAlien();
 
-        // Cas 1 : Projectile en vol (Priorité max)
+        // Cas 1 : Projectile en vol
         if (gameManager.getActiveProjectile() != null) {
-            isAnimating = gamePanel.centerCamera(gameManager.getActiveProjectile());
-        } else if (activeAlien != null && activeAlien.isAlive()) {
-            // Cas 2 : Tour du joueur ou Pause active
-            if (gameManager.isPaused()) {
-                isAnimating = gamePanel.unzoomCamera();
-            } else {
-                // Suit le joueur et nous dit si ça bouge encore
-                isAnimating = gamePanel.centerCamera(activeAlien);
-            }
-        }
-
-        // Cas 3 : Mouvement manuel à la souris
-        // On INTERDIT le mouvement manuel si une animation est en cours (!isAnimating)
-        if (!isAnimating && mouseHandler.isMouseNearEdge(gamePanel)) {
+            gamePanel.centerCamera(gameManager.getActiveProjectile());
+        } 
+        // Cas 2 : Mouvement manuel à la souris
+        else if (mouseHandler.isMouseNearEdge(gamePanel)) {
             handleCameraScroll();
+        }
+        // Cas 3 : Suivi du joueur ou dézoom
+        else if (activeAlien != null && activeAlien.isAlive()) {
+            if (gameManager.isPaused()) {
+                gamePanel.unzoomCamera();
+            } else {
+                gamePanel.centerCamera(activeAlien);
+            }
         }
 
         handleControls();

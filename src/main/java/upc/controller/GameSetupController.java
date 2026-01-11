@@ -118,7 +118,7 @@ public class GameSetupController {
 
         GameManager gameManager = new GameManager(terrain, teamSize);
 
-        // Active le vent dans le manager si le joueur veut
+        // Active ou désactive le vent selon le choix du joueur
         gameManager.setWindEnabled(view.isWindEnabled());
 
         GamePanel gamePanel = new GamePanel(gameManager);

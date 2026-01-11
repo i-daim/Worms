@@ -34,7 +34,7 @@ import upc.controller.GameSetupController;
 import java.awt.RenderingHints;
 import java.awt.Cursor;
 
-public class GameSetupPanel extends JPanel {
+public class SetupPanel extends JPanel {
     private final Image background = ImageManager.get("menu_background");
 
     private final JComboBox<String> mapSelector;
@@ -47,51 +47,64 @@ public class GameSetupPanel extends JPanel {
     private final JCheckBox chkShotgun;
     private final JCheckBox chkGrenade;
     private final JCheckBox chkMine;
-    private final JCheckBox chkJetpack;
+    private final JCheckBox chkWings;
     private final JCheckBox chkWind;
 
     private static final Color PANEL_BG_COLOR = new Color(30, 30, 40, 220);
     private static final Color ACCENT_COLOR = new Color(100, 255, 201);
     private static final Font MAIN_FONT = new Font("Arial", Font.BOLD, 22);
 
-    public GameSetupPanel(MainFrame frame) {
+    private final double zoom = GamePanel.ZOOM;
+    private final int iconSize = (int) (40 * zoom);
+
+    public SetupPanel(MainFrame frame) {
         this.setDoubleBuffered(true);
         this.setLayout(new BorderLayout());
+
+        int topMargin = (int) (90 * zoom);
+        int weaponHeight = (int) (170 * zoom);
 
         JPanel mainContentPanel = new JPanel();
         mainContentPanel.setLayout(new BoxLayout(mainContentPanel, BoxLayout.Y_AXIS));
         mainContentPanel.setOpaque(false);
-        mainContentPanel.setBorder(new EmptyBorder(200, 50, 20, 50)); // Marges
+        mainContentPanel.setBorder(new EmptyBorder(topMargin, 50, 20, 50)); // Marges
 
         mainContentPanel.add(Box.createVerticalGlue());
 
         JPanel configPanel = createRoundedPanel();
         configPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 20));
-        configPanel.setMaximumSize(new Dimension(1000, 140));
+        configPanel.setMaximumSize(new Dimension(1000, (int) (62 * zoom)));
 
-        JPanel mapBox = createSection("CARTE", 240);
-        String[] maps = {"Aléatoire", "Liberty", "Spaceship", "Ice", "Poison", "Hell"};
+        JPanel mapBox = createSection("Map", 240);
+        String[] maps = {"Random", "Liberty", "Spaceship", "Ice", "Poison", "Hell"};
         mapSelector = new JComboBox<>(maps);
         styleComboBox(mapSelector);
         mapBox.add(mapSelector);
         configPanel.add(mapBox);
 
-        JPanel teamBox = createSection("VERS PAR ÉQUIPE", 320);
-        teamSizeSlider = new JSlider(1, 5, 2);
+        JPanel teamBox = createSection("Team Size", 250);
+        teamSizeSlider = new JSlider(1, 4, 2);
         styleSlider(teamSizeSlider);
         teamBox.add(teamSizeSlider);
         configPanel.add(teamBox);
+
+        JPanel windBox = createSection("Wind", 200);
+        chkWind = createWeaponCheckbox("Activated");
+        chkWind.setSelected(false); // Désactivé par défaut
+        chkWind.setAlignmentX(Component.CENTER_ALIGNMENT);
+        windBox.add(chkWind);
+        configPanel.add(windBox);
 
         mainContentPanel.add(configPanel);
         mainContentPanel.add(Box.createVerticalStrut(30));
 
         JPanel weaponPanel = createRoundedPanel();
         weaponPanel.setLayout(new BorderLayout());
-        weaponPanel.setMaximumSize(new Dimension(900, 380));
-        weaponPanel.setPreferredSize(new Dimension(900, 380));
+        weaponPanel.setMaximumSize(new Dimension(900, weaponHeight));
+        weaponPanel.setPreferredSize(new Dimension(900, weaponHeight));
 
-        JLabel weaponTitle = new JLabel("ARSENAL AUTORISÉ", SwingConstants.CENTER);
-        weaponTitle.setFont(new Font("Arial", Font.BOLD, 28));
+        JLabel weaponTitle = new JLabel("Allowed Items", SwingConstants.CENTER);
+        weaponTitle.setFont(new Font("Arial", Font.BOLD, (int) (12 * zoom)));
         weaponTitle.setForeground(ACCENT_COLOR);
         weaponTitle.setBorder(new EmptyBorder(15, 0, 15, 0));
         weaponPanel.add(weaponTitle, BorderLayout.NORTH);
@@ -105,17 +118,14 @@ public class GameSetupPanel extends JPanel {
         chkShotgun = createWeaponCheckbox("Shotgun");
         chkGrenade = createWeaponCheckbox("Grenade");
         chkMine = createWeaponCheckbox("Mine");
-        chkJetpack = createWeaponCheckbox("Jetpack");
-        chkWind = createWeaponCheckbox("Vent");
-        chkWind.setSelected(false); // Désactivé par défaut
+        chkWings = createWeaponCheckbox("Wings");
 
         itemsGrid.add(chkBazooka);
         itemsGrid.add(chkUzi);
         itemsGrid.add(chkShotgun);
         itemsGrid.add(chkGrenade);
         itemsGrid.add(chkMine);
-        itemsGrid.add(chkJetpack);
-        itemsGrid.add(chkWind);
+        itemsGrid.add(chkWings);
 
         weaponPanel.add(itemsGrid, BorderLayout.CENTER);
 
@@ -125,8 +135,8 @@ public class GameSetupPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
         buttonPanel.setOpaque(false);
 
-        backButton = ButtonManager.createGameButton("Retour");
-        startButton = ButtonManager.createGameButton("Lancer le combat");
+        backButton = ButtonManager.createGameButton("Back");
+        startButton = ButtonManager.createGameButton("Start Game");
 
         buttonPanel.add(backButton);
         buttonPanel.add(startButton);
@@ -168,7 +178,7 @@ public class GameSetupPanel extends JPanel {
         p.setPreferredSize(new Dimension(width, 80));
 
         JLabel l = new JLabel(labelTitle);
-        l.setFont(new Font("Arial", Font.BOLD, 18));
+        l.setFont(new Font("Arial", Font.BOLD, (int) (8 * GamePanel.ZOOM)));
         l.setForeground(ACCENT_COLOR);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -218,7 +228,7 @@ public class GameSetupPanel extends JPanel {
         box.setContentAreaFilled(false);
         box.setBorderPainted(false);
         box.setForeground(Color.WHITE);
-        box.setFont(new Font("Arial", Font.BOLD, 18));
+        box.setFont(new Font("Arial", Font.BOLD, (int) (8 * GamePanel.ZOOM)));
         box.setHorizontalAlignment(SwingConstants.LEFT);
         box.setIconTextGap(20);
 
@@ -228,8 +238,8 @@ public class GameSetupPanel extends JPanel {
             return;
         }
 
-        int iconW = 90;
-        int iconH = 90;
+        int iconW = this.iconSize;
+        int iconH = this.iconSize;
         box.setIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, false)));
         box.setSelectedIcon(new ImageIcon(createIcon(originalImg, iconW, iconH, true)));
         box.setPressedIcon(box.getSelectedIcon());
@@ -297,7 +307,7 @@ public class GameSetupPanel extends JPanel {
         return chkMine.isSelected();
     }
     public boolean isJetpackEnabled() {
-        return chkJetpack.isSelected();
+        return chkWings.isSelected();
     }
     public boolean isWindEnabled() {
         return chkWind.isSelected();

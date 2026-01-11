@@ -14,11 +14,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager {
     public static final int ROUND_TIME = 60;
-    public static final int TEAM_SIZE = 2;
 
     private Terrain terrain;
     private final String mapName;
     private final GameWorld gameWorld;
+    private final int teamSize;
     private Team[] teams;
 
     private int activeTeamIndex;
@@ -30,6 +30,7 @@ public class GameManager {
     private final List<ActiveAnimation> activeAnimations;
     private Projectile activeProjectile;
 
+    private int frameCounter = 0;
     private long delayEndTime = 0;
     private boolean isPaused = false;
     private Runnable onDelayFinished;
@@ -39,10 +40,11 @@ public class GameManager {
     public GameManager(Terrain terrain, int teamSize) {
         this.terrain = terrain;
         this.mapName = terrain.getMapName();
+        this.teamSize = teamSize;
 
         this.teams = new Team[2];
-        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
-        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+        this.teams[0] = new Team("Zlerps", teamSize);
+        this.teams[1] = new Team("Glorbs", teamSize);
 
         this.gameWorld = new GameWorld(this, this.terrain);
         this.activeAnimations = new CopyOnWriteArrayList<>();
@@ -50,13 +52,14 @@ public class GameManager {
         initializeGame();
     }
 
-    public GameManager(String mapName) {
+    public GameManager(String mapName, int teamSize) {
         this.terrain = TerrainGenerator.createTerrain(mapName);
         this.mapName = mapName;
+        this.teamSize = teamSize;
 
         this.teams = new Team[2];
-        this.teams[0] = new Team("Zlerps", TEAM_SIZE);
-        this.teams[1] = new Team("Glorbs", TEAM_SIZE);
+        this.teams[0] = new Team("Zlerps", teamSize);
+        this.teams[1] = new Team("Glorbs", teamSize);
 
         this.gameWorld = new GameWorld(this, this.terrain);
         this.activeAnimations = new CopyOnWriteArrayList<>();
@@ -69,7 +72,6 @@ public class GameManager {
         // On met à jour les physiques et animations
         gameWorld.update(elapsedTime);
         updateAnimations();
-        checkGameOver();
         checkActiveProjectile();
 
         // Si le délai n'est pas fini, on met pas à jour le reste
@@ -84,6 +86,8 @@ public class GameManager {
                 onDelayFinished = null;
             }
         }
+        checkGameOver();
+
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
         if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
             skipTurn();
@@ -150,7 +154,6 @@ public class GameManager {
         }
     }
 
-    private int frameCounter = 0;
 
     public void countTimeLeft() {
         frameCounter++;
@@ -168,7 +171,7 @@ public class GameManager {
     private void checkGameOver() {
         for (Team team : teams) {
             if (team.isEliminated()) {
-                gameOver = true;
+                setDelay(1000, () -> gameOver = true);
             }
         }
     }
@@ -268,6 +271,10 @@ public class GameManager {
 
     public Team[] getTeams() {
         return teams;
+    }
+
+    public int getTeamSize() {
+        return teamSize;
     }
 
     public int getActiveTeamIndex() {

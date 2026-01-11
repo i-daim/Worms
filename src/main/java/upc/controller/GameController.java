@@ -6,7 +6,6 @@ import upc.model.jeu.Team;
 import upc.model.entites.Alien;
 import upc.model.jeu.GameManager;
 import upc.model.save.GameSave;
-import upc.model.items.Jetpack;
 import upc.view.gui.GameOverPanel;
 import upc.view.gui.GamePanel;
 import upc.view.gui.InventoryPanel;
@@ -92,33 +91,41 @@ public class GameController {
     }
 
     private void update() {
-        handlePause();
+        // Si le jeu est pausé on ne met pas à jour le reste
+        handlePause(); // gestion des entrées necéssaires seulement
         if (paused) {
             return;
         }
-
-        handleCameraScroll();
-        handleControls();
-
-        // Ne centre pas la caméra si la souris est sur le bord
-        if (!mouseHandler.isMouseNearEdge(gamePanel)) {
-            Alien activeAlien = gameManager.getActiveAlien();
-            if (gameManager.isPaused()) {
-                gamePanel.unzoomCamera();
-            } else if (activeAlien != null && activeAlien.isAlive()) {
-                gamePanel.centerCamera(activeAlien);
-            }
-        }
-        if (gameManager.getActiveProjectile() != null) {
-            gamePanel.centerCamera(gameManager.getActiveProjectile());
-        }
-
+        // Mise à jour du modèle
         gameManager.update(1.0 / 60.0);
 
+        // Gestion de la fin de jeu
         if (gameManager.isOver()) {
             showGameOver();
             return;
         }
+
+        // Gestion de la caméra
+        Alien activeAlien = gameManager.getActiveAlien();
+
+        if (gameManager.getActiveProjectile() != null) {
+            // Cas 1 : Projectile en vol
+            gamePanel.centerCamera(gameManager.getActiveProjectile());
+
+        } else if (mouseHandler.isMouseNearEdge(gamePanel)) {
+            // Cas 2 : Mouvement manuel à la souris
+            handleCameraScroll();
+
+        } else if (activeAlien != null && activeAlien.isAlive()) {
+            // Cas 3 : Suivi du joueur ou dézoom
+            if (gameManager.isPaused()) {
+                gamePanel.unzoomCamera();
+            } else {
+                gamePanel.centerCamera(activeAlien);
+            }
+        }
+
+        handleControls();
 
         keyHandler.clearJustPressed();
         mouseHandler.clearJustPressed();
@@ -151,12 +158,12 @@ public class GameController {
         }
 
         // Gestion des mouvements
-        if (keyHandler.isJustKeyPressed(KeyEvent.VK_SPACE)) {
+        if (keyHandler.isJustKeyPressed(KeyEvent.VK_Z)) {
             activeAlien.jump();
         }
-        if (keyHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
+        if (keyHandler.isKeyPressed(KeyEvent.VK_Q)) {
             activeAlien.moveLeft();
-        } else if (keyHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
+        } else if (keyHandler.isKeyPressed(KeyEvent.VK_D)) {
             activeAlien.moveRight();
         } else {
             activeAlien.idle();
@@ -168,8 +175,8 @@ public class GameController {
 
         // Utilisation de l'item
         if (equipped != null && canShoot && !isMouseOnInv()) {
-            // Peut être utilisé plusieurs fois si c'est un Uzi ou un jetpack
-            if (equipped instanceof Jetpack || equipped instanceof upc.model.items.Uzi) {
+            // Peut être utilisé plusieurs fois si c'est un Uzi
+            if (equipped instanceof upc.model.items.Uzi) {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
                         activeAlien.setShootPower(100);
@@ -180,7 +187,8 @@ public class GameController {
                     frameCount++;
                 }
             // Le shotgun tire directement sans jauge de puissance
-            } else if (equipped instanceof upc.model.items.Shotgun) {
+            } else if (equipped instanceof upc.model.items.Shotgun
+                || equipped instanceof upc.model.items.Wings) {
                 if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
                     activeAlien.setShootPower(100);
                     activeAlien.useEquippedItem();

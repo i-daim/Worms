@@ -43,7 +43,7 @@ package-job:
   stage: package
   script:
     - echo "Exécution du packaging..."
-    - mvn package
+    - mvn package -P ci-build
 
   artifacts:
     paths:

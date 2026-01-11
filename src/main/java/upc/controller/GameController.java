@@ -136,8 +136,6 @@ public class GameController {
 ////    GESTION DES ENTREES SOURIS/CLAVIER    ////
     private void handleControls() {
         Alien activeAlien = gameManager.getActiveAlien();
-        Item equipped = activeAlien.getEquippedItem();
-        boolean canShoot = !gameManager.isActionDone();
 
         if (!activeAlien.isAlive()) {
             return;
@@ -173,7 +171,11 @@ public class GameController {
         mouseHandler.handleAim(activeAlien,
                 gamePanel.getCameraX(), gamePanel.getCameraY(), GamePanel.ZOOM);
 
+
         // Utilisation de l'item
+        Item equipped = activeAlien.getEquippedItem();
+        boolean canShoot = !gameManager.isActionDone() && activeAlien.canShoot();
+
         if (equipped != null && canShoot && !isMouseOnInv()) {
             // Peut être utilisé plusieurs fois si c'est un Uzi
             if (equipped instanceof upc.model.items.Uzi) {

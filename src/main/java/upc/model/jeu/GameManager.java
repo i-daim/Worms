@@ -30,6 +30,7 @@ public class GameManager {
     private final List<ActiveAnimation> activeAnimations;
     private Projectile activeProjectile;
 
+    private int frameCounter = 0;
     private long delayEndTime = 0;
     private boolean isPaused = false;
     private Runnable onDelayFinished;
@@ -71,7 +72,6 @@ public class GameManager {
         // On met à jour les physiques et animations
         gameWorld.update(elapsedTime);
         updateAnimations();
-        checkGameOver();
         checkActiveProjectile();
 
         // Si le délai n'est pas fini, on met pas à jour le reste
@@ -86,6 +86,8 @@ public class GameManager {
                 onDelayFinished = null;
             }
         }
+        checkGameOver();
+
         //Vérifie que le vers controlé est toujours en vie sinon on passe à l'adversaire
         if (getActiveAlien() == null || !getActiveAlien().isAlive()) {
             skipTurn();
@@ -152,7 +154,6 @@ public class GameManager {
         }
     }
 
-    private int frameCounter = 0;
 
     public void countTimeLeft() {
         frameCounter++;
@@ -170,7 +171,7 @@ public class GameManager {
     private void checkGameOver() {
         for (Team team : teams) {
             if (team.isEliminated()) {
-                gameOver = true;
+                setDelay(1000, () -> gameOver = true);
             }
         }
     }

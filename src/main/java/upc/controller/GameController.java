@@ -91,33 +91,41 @@ public class GameController {
     }
 
     private void update() {
-        handlePause();
+        // Si le jeu est pausé on ne met pas à jour le reste
+        handlePause(); // gestion des entrées necéssaires seulement
         if (paused) {
             return;
         }
-
-        handleCameraScroll();
-        handleControls();
-
-        // Ne centre pas la caméra si la souris est sur le bord
-        if (!mouseHandler.isMouseNearEdge(gamePanel)) {
-            Alien activeAlien = gameManager.getActiveAlien();
-            if (gameManager.isPaused()) {
-                gamePanel.unzoomCamera();
-            } else if (activeAlien != null && activeAlien.isAlive()) {
-                gamePanel.centerCamera(activeAlien);
-            }
-        }
-        if (gameManager.getActiveProjectile() != null) {
-            gamePanel.centerCamera(gameManager.getActiveProjectile());
-        }
-
+        // Mise à jour du modèle
         gameManager.update(1.0 / 60.0);
 
+        // Gestion de la fin de jeu
         if (gameManager.isOver()) {
             showGameOver();
             return;
         }
+
+        // Gestion de la caméra
+        Alien activeAlien = gameManager.getActiveAlien();
+
+        if (gameManager.getActiveProjectile() != null) {
+            // Cas 1 : Projectile en vol
+            gamePanel.centerCamera(gameManager.getActiveProjectile());
+
+        } else if (mouseHandler.isMouseNearEdge(gamePanel)) {
+            // Cas 2 : Mouvement manuel à la souris
+            handleCameraScroll();
+
+        } else if (activeAlien != null && activeAlien.isAlive()) {
+            // Cas 3 : Suivi du joueur ou dézoom
+            if (gameManager.isPaused()) {
+                gamePanel.unzoomCamera();
+            } else {
+                gamePanel.centerCamera(activeAlien);
+            }
+        }
+
+        handleControls();
 
         keyHandler.clearJustPressed();
         mouseHandler.clearJustPressed();

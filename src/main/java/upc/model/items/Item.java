@@ -27,7 +27,7 @@ public interface Item {
 
     /**
      * Renvoie le nombre max d'utilisations par tour pour l'item
-     * @return
+     * @return l'attribut statique NB_OF_SHOTS pour chaque item
      */
     int getNbOfShots();
 

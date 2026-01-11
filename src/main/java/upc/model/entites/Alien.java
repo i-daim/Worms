@@ -89,6 +89,7 @@ public class Alien extends Entity {
     public void jump() {
         alienPhysics.jumpAlien(this);
         if (getEquippedItem().getName().equals("Wings")) {
+            SoundManager.playEffect("Wings");
             setState(State.FLY);
             itemUseCount++;
             inventory.useAmmo(Item.Type.WINGS, 1);
@@ -156,6 +157,7 @@ public class Alien extends Entity {
     public void resetUseCount() {
         itemUseCount = 0;
     }
+
 
     ////    GETTERS & SETTERS    ////
     public int getHealthPoints() {

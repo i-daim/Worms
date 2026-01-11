@@ -9,7 +9,7 @@ import upc.model.entites.projectiles.Projectile;
 public class Uzi extends Weapon {
 
     private static final int DAMAGE = 10;
-    private static final int NB_OF_SHOTS = 30;
+    private static final int NB_OF_SHOTS = 15;
     private static final int BASE_POWER = 20;
 
     public Uzi() {

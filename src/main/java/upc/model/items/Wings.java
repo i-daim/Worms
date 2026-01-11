@@ -6,6 +6,8 @@ import upc.model.jeu.GameWorld;
 
 public class Wings extends Tool {
 
+    private static final int NB_OF_SHOTS = 10;
+
     public Wings() {
         super("Wings");
     }
@@ -14,6 +16,12 @@ public class Wings extends Tool {
     public Projectile useItem(GameWorld gameWorld, Alien alienActif) {
         return null;
     }
+
+    @Override
+    public int getNbOfShots() {
+        return NB_OF_SHOTS;
+    }
+
 
     @Override
     public Type getType() {

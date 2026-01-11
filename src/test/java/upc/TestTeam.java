@@ -120,7 +120,9 @@ public class TestTeam {
         a.getAliens()[1] = new Alien(world, a, new Position(1, 0));
         assertFalse(a.isActiveLastAlien());
     }
-
+    /**
+     * Vérifie que l'index de l'Alien actif peut être réinitialisé .
+     */
     @Test
     public void testResetIndex() {
         Team a = new Team("TEAM A", 2);

@@ -17,6 +17,12 @@ public class PauseActions {
     /** Panneau de jeu pour gérer l'affichage du menu pause */
     private final GamePanel gamePanel;
 
+    /**
+     * Construit un gestionnaire d'actions pour le menu pause.
+     *
+     * @param gameController Le contrôleur du jeu.
+     * @param gamePanel      Le panneau de jeu.
+     */
     public PauseActions(GameController gameController, GamePanel gamePanel) {
         this.gameController = gameController;
         this.gamePanel = gamePanel;

@@ -12,16 +12,39 @@ import upc.view.gui.MainFrame;
 import upc.view.gui.MenuPanel;
 import upc.view.gui.SettingsPanel;
 
+/**
+ * Gestionnaire des actions du menu principal.
+ * <p>
+ * Cette classe crée et retourne les {@link ActionListener} pour chaque bouton
+ * du menu (Nouvelle partie, Charger, Paramètres, Quitter).
+ */
 public class MenuActions {
 
+    /** Fenêtre principale de l'application */
     private final MainFrame mainFrame;
+
+    /** Panneau du menu principal */
     private final MenuPanel menuPanel;
 
+
+    /**
+     * Construit un gestionnaire d'actions pour le menu.
+     *
+     * @param mainFrame La fenêtre principale.
+     * @param menuPanel Le panneau du menu.
+     */
     public MenuActions(MainFrame mainFrame, MenuPanel menuPanel) {
         this.mainFrame = mainFrame;
         this.menuPanel = menuPanel;
     }
 
+    /**
+     * Retourne l'action du bouton "Nouvelle Partie".
+     * <p>
+     * Affiche l'écran de configuration de partie.
+     *
+     * @return L'ActionListener pour démarrer une nouvelle partie.
+     */
     public ActionListener getNewGameAction() {
         return e -> {
             SetupPanel setupPanel = new SetupPanel(mainFrame);
@@ -34,6 +57,14 @@ public class MenuActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Charger Partie".
+     * <p>
+     * Charge une sauvegarde depuis le disque et lance la partie sauvegardée.
+     *
+     * @return L'ActionListener pour charger une partie.
+     * @throws RuntimeException Si le fichier de sauvegarde est introuvable ou corrompu.
+     */
     public ActionListener getLoadGameAction() {
         return e -> {
             try {
@@ -52,6 +83,13 @@ public class MenuActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Paramètres".
+     * <p>
+     * Affiche l'écran de paramètres (volume, contrôles, etc.).
+     *
+     * @return L'ActionListener pour accéder aux paramètres.
+     */
     public ActionListener getSettingsAction() {
         return e -> {
             SettingsPanel settingsPanel = new SettingsPanel();
@@ -63,6 +101,13 @@ public class MenuActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Quitter".
+     * <p>
+     * Ferme l'application immédiatement.
+     *
+     * @return L'ActionListener pour quitter le jeu.
+     */
     public ActionListener getQuitAction() {
         return e -> System.exit(0);
     }

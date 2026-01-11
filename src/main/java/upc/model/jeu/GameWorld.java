@@ -10,11 +10,13 @@ import java.util.List;
 public class GameWorld {
     private final GameManager gameManager;
     private final PhysicsEngine physicsEngine;
+    private final Terrain terrain;
 
     private final ArrayList<Alien> activeAliens;
 
     public GameWorld(GameManager gameManager, Terrain terrain) {
         this.gameManager = gameManager;
+        this.terrain = terrain;
         this.physicsEngine = new PhysicsEngine(this);
 
         this.activeAliens = new ArrayList<>();
@@ -24,7 +26,6 @@ public class GameWorld {
 
     public void update(double elapsedTime) {
         physicsEngine.update();
-
     }
 
     public ArrayList<Alien> aliensInRadius(int x, int y, int radius) {
@@ -36,15 +37,17 @@ public class GameWorld {
         }
         return aliens;
     }
+
     public void explode(int x, int y, int radius) {
         getTerrain().makeHole(x, y, radius);
         getPhysicsEngine().getTerrainPhysics().setModified(true);
-        gameManager.addActiveAnimation("explosion", x, y);
+        if (gameManager != null) {
+            gameManager.addActiveAnimation("explosion", x, y);
+        }
     }
 
-
     public Terrain getTerrain() {
-        return gameManager.getTerrain();
+        return this.terrain;
     }
 
     public ArrayList<Alien> getActiveAliens() {
@@ -60,6 +63,10 @@ public class GameWorld {
     public void initializePhysics() {
         physicsEngine.clearAliens();
         activeAliens.clear();
+
+        if (gameManager == null) {
+            return;
+        }
 
         for (Alien a : gameManager.getTeam(0).getAliens()) {
             if (a != null) {
@@ -77,11 +84,12 @@ public class GameWorld {
 
     public PhysicsEngine getPhysicsEngine() {
         return physicsEngine;
-
     }
+
     public List<Projectile> getActiveProjectiles() {
         return physicsEngine.getActiveProjectiles();
     }
+
     public GameManager getGameManager() {
         return gameManager;
     }

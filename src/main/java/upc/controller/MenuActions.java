@@ -51,6 +51,14 @@ public class MenuActions {
         };
     }
 
+    /**
+     * Retourne l'action du bouton "Charger Partie".
+     * <p>
+     * Charge une sauvegarde depuis le disque et lance la partie sauvegardée.
+     *
+     * @return L'ActionListener pour charger une partie.
+     * @throws RuntimeException Si le fichier de sauvegarde est introuvable ou corrompu.
+     */
     public ActionListener getLoadGameAction() {
         return e -> {
             try {

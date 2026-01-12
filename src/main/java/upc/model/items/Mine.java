@@ -11,7 +11,7 @@ public class Mine extends Weapon {
      * Constantes représentants les dégats, le nombre de tir, la puissance de base,
      * le champ d'action de l'explosion et d'activation
      */
-    public static final int DAMAGE = 45;
+    public static final int DAMAGE = 100;
     public static final int NB_OF_SHOTS = 1;
     public static final int BASE_POWER = 5;
     public static final int EXPLOSION_RADIUS = 30;

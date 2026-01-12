@@ -145,7 +145,7 @@ public class ProjectilePhysics {
         // Vitesse finale = Vitesse de base de l'arme + charge
         double baseVelocity = projectile.getWeapon().getBasePower();
         double velocityMagnitude =
-                Math.max(baseVelocity, powerPercent * baseVelocity / 20);
+                Math.max(baseVelocity, powerPercent * baseVelocity / 15);
 
         // Projection sur les axes X et Y
         double vx = velocityMagnitude * Math.cos(angleRad);
@@ -168,7 +168,7 @@ public class ProjectilePhysics {
             if (proj.isActive()) {
                 Body body = proj.getBody();
                 if (body != null) {
-                    Vector2 windForce = wind.product(1); // 50% de la force du vent
+                    Vector2 windForce = wind.product(0.5); // 50% de la force du vent
                     body.applyForce(windForce);
                 }
             }
@@ -241,53 +241,12 @@ public class ProjectilePhysics {
                 iterator.remove();
                 continue;
             }
-            // --- Gestion de l'Explosion ---
             // Si marqué "EXPLODED", on déclenche l'effet
             if (proj.getState() == Projectile.State.EXPLODED) {
                 explodeProjectile(proj);
                 world.removeBody(body);
                 iterator.remove();
-                continue;
             }
-            // --- Détection de Proximité
-            if (proj instanceof Throwable || proj instanceof Trap) {
-                double triggerDistancePixels = 20.0;
-
-                if (proj instanceof Trap) {
-                    triggerDistancePixels = ((Trap) proj).getActivationRadius();
-                }
-                boolean exploded = false;
-
-                // On check tous les aliens
-                for (Alien alien : physicsEngine.getAlienBodies().keySet()) {
-                    if (!alien.isAlive()) {
-                        continue;
-                    }
-
-                    // Sécurité : On ne s'explose pas dessus
-                    if (alien == proj.getShooter() && proj.getFrameCount() < 60) {
-                        continue;
-                    }
-
-                    // Calcul de distance optimisé
-                    Position alienPos = alien.getPosition();
-                    double dx = alienPos.getX() - x;
-                    double dy = alienPos.getY() - y;
-                    double distSq = dx * dx + dy * dy;
-                    if (distSq < triggerDistancePixels * triggerDistancePixels) {
-                        proj.setState(Projectile.State.EXPLODED);
-                        explodeProjectile(proj);
-                        world.removeBody(body);
-                        iterator.remove();
-                        exploded = true;
-                        break;
-                    }
-                }
-                if (exploded) {
-                    continue;
-                }
-            }
-
         }
     }
 

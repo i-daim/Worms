@@ -23,6 +23,7 @@ public class Alien extends Entity {
 
     private final Inventory inventory;
     private int selectedItemIndex = 0;
+    private int itemUseCount = 0;
 
     // Champs statiques
     private static final int SPEED = 5;
@@ -30,13 +31,16 @@ public class Alien extends Entity {
 
     // Etat de l'alien (pour la partie graphique)
     public enum State {
-        IDLE,
-        WALK,
-        JUMP
+        IDLE, WALK, JUMP, AIR, LAND, FLY
     }
     private State state;
 
-    // Constructeur
+    /**
+     * Constructeur pour {@code Alien}
+     * @param gameWorld :
+     * @param team : Equipe de l'alien
+     * @param position : Position de départ de l'alien
+     */
     public Alien(GameWorld gameWorld, Team team, Position position) {
         super(position, SPEED);
         this.healthPoints = INITIAL_HP;
@@ -52,7 +56,13 @@ public class Alien extends Entity {
         this.aimAngle = 0;
     }
 
-    //Constructeur pour charger un alien
+    /**
+     * Constructeur pour {@code Alien}
+     * Visant à charger un alien sauvegardé
+     * @param alienSave : objet de sauvegarde pour un alien
+     * @param gameWorld :
+     * @param team : Equipe de l'alien
+     */
     public Alien(GameSave.AlienSave alienSave, GameWorld gameWorld, Team team) {
         super(alienSave.getPosition(), SPEED);
         this.world = gameWorld;
@@ -70,31 +80,79 @@ public class Alien extends Entity {
         this.state = State.IDLE;
     }
 
+
 ////    Mouvements de l'alien    ////
+
+    /**
+     * Méthode permettant de déplacer un alien vers la droite:
+     On fait avancer l'alien vers la droite.
+     * On met à jour la physique, l'état et la direction.
+     */
     public void moveRight() {
         alienPhysics.moveAlien(this, 1);
-        setState(State.WALK);
         direction = true;
+        if (!isInAir()) {
+            setState(State.WALK);
+        }
     }
 
+    /**
+     * Méthode permettant de déplacer un alien vers la gauche:
+     * On Fait avancer l'alien vers la gauche.
+     * On met à jour la physique, l'état et la direction.
+     */
     public void moveLeft() {
         alienPhysics.moveAlien(this, -1);
-        setState(State.WALK);
         direction = false;
+        if (!isInAir()) {
+            setState(State.WALK);
+        }
     }
 
+    /**
+     * Méthode permettant à un alien de sauter:
+     * On fait sauter l'alien.
+     * On utilise le moteur physique et met létat à JUMP.
+     */
     public void jump() {
         alienPhysics.jumpAlien(this);
-        setState(State.JUMP);
+        if (getEquippedItem().getName().equals("Wings")) {
+            SoundManager.playEffect("Wings");
+            setState(State.FLY);
+            itemUseCount++;
+            inventory.useAmmo(Item.Type.WINGS, 1);
+        } else {
+            setState(State.JUMP);
+        }
     }
 
+    /**
+     * Méthode permettant de rendre alien immobile.
+     * On met l'alien à l'arrêt.
+     * L'alien ne se déplace plus et passe à l'état IDLE.
+     */
     public void idle() {
         alienPhysics.moveAlien(this, 0);
-        setState(State.IDLE);
+        if (state != State.JUMP && state != State.AIR && state != State.LAND) {
+            setState(State.IDLE);
+        }
+    }
+
+    public boolean isInAir() {
+        return state == State.AIR || state == State.JUMP
+                || state == State.FLY || state == State.LAND;
     }
 
 
 ////    Autres Méthodes    ////
+
+    /**
+     * Méthode en lien avec l'utilisation d'item:
+     * Utilise l'objet actuellement sélectionné dans l'inventaire.
+     * Si l'objet n'est pas disponible, rien ne se passe.
+     * Si l'objet est un jetpack, l'alien vole.
+     * @return : Projectile tiré par l'item (si c'est une arme)
+     */
     public Projectile useEquippedItem() {
         Item item = inventory.getItemByIndex(selectedItemIndex);
         Item.Type equippedItem = Inventory.getItemTypeAt(selectedItemIndex);
@@ -102,88 +160,197 @@ public class Alien extends Entity {
         if (item == null || !inventory.isAvailable(equippedItem)) {
             return null;
         }
-        if (equippedItem == Item.Type.JETPACK && inventory.isAvailable(equippedItem)) {
-            alienPhysics.flyAlien(this);
-            setState(State.JUMP);
+        //Si l'item équipé est le jetpack et le nombre de munition suffisant
+        if (equippedItem == Item.Type.WINGS && inventory.isAvailable(equippedItem)) {
+            alienPhysics.jumpAlien(this);
+            SoundManager.playEffect("Wings");
+            //Met l'alien dans l'état de vol
+            setState(State.FLY);
         }
         SoundManager.playEffect(item.getName());
+
+        //Utilise une munition et la compte pour le tour
+        itemUseCount++;
         inventory.useAmmo(equippedItem, 1);
         return item.useItem(world, this);
     }
 
+    /**
+     * Méthode permettant d'infliger des dégats à un alien
+     * @param damage : Dégats à infliger à l'alien
+     */
     public void receiveDmg(int damage) {
         if (!alive) {
             return;
         }
+        //Décremente les points de vie de l'alien selon les dégats
         healthPoints -= Math.max(0, damage);
+
+        //Lance le son lié quand un alien subit un dégat
         SoundManager.playEffect("Damage");
+
+        //Change l'attribut alive de l'alien si les points de vie de l'alien sont inférieurs à 0
         if (healthPoints <= 0) {
             healthPoints = 0;
             alive = false;
         }
     }
 
+
+    /**
+     * Méthode permettant d'augmenter  la puissance de tir
+     * Revient à zéro s'il atteint le max pour augmenter en boucle
+     */
     public void incrementPower() {
-        shootPower++;
-        if (shootPower > 100) {
-            shootPower = 100;
-        }
+        shootPower = (shootPower + 1) % 75;
     }
 
+    /**
+     * Vérifie si le nombre d'utilisations est inférieur à celui autorisé
+     * @return true si on a utilisé l'item moins que nbOfShots
+     */
+    public boolean canShoot() {
+        Item item = inventory.getItemByIndex(selectedItemIndex);
+
+        return itemUseCount < item.getNbOfShots();
+    }
+
+    /**
+     * Réinitialise le compteur pour le nombre d'utilisations de l'item
+     */
+    public void resetUseCount() {
+        itemUseCount = 0;
+    }
+
+
+
 ////    GETTERS & SETTERS    ////
+
+    /**
+     * Retourne les points de vie
+     * @return L'attribut heathPoints
+     */
     public int getHealthPoints() {
         return healthPoints;
     }
 
+    /**
+     * Retourne un boolean si un alien est vivant
+     * @return L'attribut alive
+     */
     public boolean isAlive() {
         return alive;
     }
 
+    /**
+     * Retourne l'équipe de l'alien
+     * @return L'attribut team
+     */
     public Team getTeam() {
         return team;
     }
 
+    /**
+     * Retourne l'angle de visée de l'alien
+     * @return L'attribut aimAngle
+     */
     public int getAimAngle() {
         return aimAngle;
     }
 
+    /**
+     * Retourne le nombre d'utilisations de l'item
+     * @return L'attribut itemUseCount
+     */
+    public int getItemUseCount() {
+        return itemUseCount;
+    }
+
+    /**
+     * Retourne l'item équipé de l'alien
+     * @return l'item depuis l'inventaire
+     */
     public Item getEquippedItem() {
         return inventory.getItemByIndex(selectedItemIndex);
     }
 
+    /**
+     * Retourne l'indice de l'item selectionné
+     * @return L'attribut selectedItemIndex
+     */
     public int getSelectedItemIndex() {
         return selectedItemIndex;
     }
 
+    /**
+     * Modifie l'indice de l'item selectionné
+     * @param index : Pour sélectionner un autre item
+     */
     public void setSelectedItemIndex(int index) {
         this.selectedItemIndex = index;
     }
 
+    /**
+     * Retourne l'état de déplacement de l'alien
+     * @return L'attribut state
+     */
     public State getState() {
         return state;
     }
 
+    /**
+     * Modifie l'état de déplacement de l'alien
+     * @param state : Pour sélectionner un autre état de déplacement
+     */
     public void setState(State state) {
         this.state = state;
     }
 
+    /**
+     * Retourne le sens de déplacement de l'alien
+     * @return L'attribut direction
+     */
     public boolean getDirection() {
         return direction;
     }
 
+    /**
+     * Modifie le sens de déplacement de l'alien
+     * @param direction : Pour sélectionner un autre sens de déplacement
+     */
     public void setDirection(boolean direction) {
         this.direction = direction;
     }
 
+    /**
+     * Retourne la puissance de tir de l'alien
+     * @return L'attribut shootPower
+     */
     public int getShootPower() {
         return shootPower;
     }
 
+    /**
+     * Modifie la puissance de tir de l'alien
+     * @param power : Pour sélectionner la puissance de tir
+     */
     public void setShootPower(int power) {
         this.shootPower = power;
     }
 
+    /**
+     * Modifie l'angle de tir de l'alien
+     * @param angle : Pour sélectionner l'angle de tir
+     */
     public void setAimAngle(int angle) {
         this.aimAngle = angle;
+    }
+
+    /**
+     * Retourne l'inventaire de l'alien
+     * @return L'attribut inventory
+     */
+    public Inventory getInventory() {
+        return inventory;
     }
 }

@@ -6,12 +6,34 @@ import upc.model.jeu.Terrain;
 import upc.model.jeu.TerrainGenerator;
 import upc.view.console.ConsoleView;
 
+/**
+ * Contrôleur principal pour le mode console du jeu.
+ * <p>
+ * Cette classe gère la boucle de jeu en mode texte, coordonne les interactions
+ * entre le modèle (GameManager) et la vue (ConsoleView), et traite les commandes
+ * saisies par l'utilisateur.
+ */
+
 public class ControllerConsole {
+
+    /** Gestionnaire du jeu contenant la logique métier et l'état de la partie */
     private final GameManager gameManager;
+
+    /** Vue console gérant l'affichage et la saisie utilisateur */
     private final ConsoleView view;
+
+    /** Indicateur de continuation de la boucle de jeu */
     private boolean enCours;
 
-
+    /**
+     * Construit un nouveau contrôleur console et initialise une partie.
+     * <p>
+     * Le constructeur crée automatiquement un terrain "liberty" et initialise
+     * une partie avec 2 équipes.
+     *
+     * @param gameManager Le gestionnaire de jeu (paramètre actuellement non utilisé,
+     *                    remplacé par une nouvelle instance).
+     */
     public ControllerConsole(GameManager gameManager) {
         Terrain terrainConsole = TerrainGenerator.createTerrain("liberty");
         this.gameManager = new GameManager(terrainConsole, 2);
@@ -19,6 +41,14 @@ public class ControllerConsole {
         this.enCours = true;
     }
 
+    /**
+     * Démarre la boucle principale du jeu en mode console.
+     * <p>
+     * Cette méthode affiche le message de bienvenue, puis entre dans une boucle
+     * qui se répète jusqu'à ce que la partie soit terminée ou que l'utilisateur quitte.
+     * À chaque tour, elle affiche l'état du jeu, demande une commande à l'utilisateur,
+     * et l'exécute.
+     */
 
     public void start() {
         view.printWelcome();
@@ -33,7 +63,14 @@ public class ControllerConsole {
         view.printGameOver(gameManager);
         view.close();
     }
-
+    /**
+     * Traite une commande saisie par l'utilisateur.
+     * <p>
+     * Cette méthode analyse la commande et exécute l'action correspondante :
+     * déplacement, saut, attaque, affichage des statistiques, ou fin de tour.
+     *
+     * @param command La commande saisie par l'utilisateur (peut être null).
+     */
     private void requestCommand(String command) {
         if (command == null) {
             return;
@@ -88,13 +125,25 @@ public class ControllerConsole {
                 sleep(1000);
         }
     }
-
+    /**
+     * Termine le tour de l'alien actif et passe au suivant.
+     * <p>
+     * Cette méthode notifie le GameManager que le tour est terminé,
+     * affiche un message de confirmation, et marque une courte pause.
+     */
     private void skipTurn() {
         gameManager.skipTurn();
         view.printTurnSkipped();
         sleep(1000);
     }
-
+    /**
+     * Met en pause le thread actuel pendant une durée donnée.
+     * <p>
+     * Cette méthode est utilisée pour créer des pauses visuelles entre les actions,
+     * améliorant ainsi la lisibilité du jeu en mode console.
+     *
+     * @param ms Durée de la pause en millisecondes.
+     */
     private void sleep(int ms) {
         try {
             Thread.sleep(ms);

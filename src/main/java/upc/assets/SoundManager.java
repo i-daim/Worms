@@ -34,6 +34,7 @@ public class SoundManager {
         EFFECTS.put("Impact", loadEffect("Impact"));
         EFFECTS.put("Grenade", loadEffect("grenade"));
         EFFECTS.put("Splash", loadEffect("water"));
+        EFFECTS.put("Wings", loadEffect("wings"));
     }
 
 

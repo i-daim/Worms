@@ -18,6 +18,7 @@ public class AnimationManager {
 
     static {
         // Animations aliens //
+        // --- ZLERPS (Team 0) ---
         zlerps.put("idle_right",
                 new Animation("characters/zlerp/idle", 1, false));
         zlerps.put("idle_left",
@@ -26,7 +27,25 @@ public class AnimationManager {
                 new Animation("characters/zlerp/walk", 5, false));
         zlerps.put("walk_left",
                 new Animation("characters/zlerp/walk", 5, true));
+        zlerps.put("jump_right",
+                new Animation("characters/zlerp/jump", 2, false));
+        zlerps.put("jump_left",
+                new Animation("characters/zlerp/jump", 2, true));
+        zlerps.put("air_right",
+                new Animation("characters/zlerp/air", 2, false));
+        zlerps.put("air_left",
+                new Animation("characters/zlerp/air", 2, true));
+        zlerps.put("land_right",
+                new Animation("characters/zlerp/land", 2, false));
+        zlerps.put("land_left",
+                new Animation("characters/zlerp/land", 2, true));
+        zlerps.put("fly_right",
+                new Animation("characters/zlerp/fly", 3, false));
+        zlerps.put("fly_left",
+                new Animation("characters/zlerp/fly", 3, true));
 
+
+        // --- GLORBS (Team 1) ---
         glorbs.put("idle_right",
                 new Animation("characters/glorb/idle", 1, false));
         glorbs.put("idle_left",
@@ -35,6 +54,22 @@ public class AnimationManager {
                 new Animation("characters/glorb/walk", 5, false));
         glorbs.put("walk_left",
                 new Animation("characters/glorb/walk", 5, true));
+        glorbs.put("jump_right",
+                new Animation("characters/glorb/jump", 2, false));
+        glorbs.put("jump_left",
+                new Animation("characters/glorb/jump", 2, true));
+        glorbs.put("air_right",
+                new Animation("characters/glorb/air", 2, false));
+        glorbs.put("air_left",
+                new Animation("characters/glorb/air", 2, true));
+        glorbs.put("land_right",
+                new Animation("characters/glorb/land", 2, false));
+        glorbs.put("land_left",
+                new Animation("characters/glorb/land", 2, true));
+        glorbs.put("fly_right",
+                new Animation("characters/glorb/fly", 3, false));
+        glorbs.put("fly_left",
+                new Animation("characters/glorb/fly", 3, true));
 
 
         // Animations monde //
@@ -62,6 +97,7 @@ public class AnimationManager {
 
 
         // Autres //
+
         animations.put("victory_glorbs",
                 new Animation("animations/victory/glorb/victory_glorb", 45, false));
         animations.put("victory_zlerps",
@@ -69,7 +105,7 @@ public class AnimationManager {
     }
 
 
-////    GETTERS    ////
+    ////    GETTERS    ////
     public static Animation getAnimation(String name) {
         if (!animations.containsKey(name)) {
             throw new RuntimeException("Erreur lors du chargement de l'animation : " + name);

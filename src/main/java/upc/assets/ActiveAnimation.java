@@ -24,6 +24,8 @@ public class ActiveAnimation {
      * @param animation L'animation à afficher
      * @param frameTime La durée d'affichage de chaque frame (en ms)
      * @param loop Détermine si l'animation sera affichée en boucle
+     * @param posX Position sur l'axe X pour l'affichage
+     * @param posY Position sur l'axe Y pour l'affichage
      */
     public ActiveAnimation(Animation animation, int frameTime, boolean loop,
                            int posX, int posY) {

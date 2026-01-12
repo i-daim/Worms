@@ -3,8 +3,56 @@
 Ce projet suit les directives du cours de Conduite de Projet (L2 Informatique).
 Les versions suivent le format [SemVer](https://semver.org/).
 
-## [Unreleased]
-*Travaux en cours pour le Sprint 3 : utilisation des armes, animations, inventaire, sauvegarde du jeu*
+## [1.0.0] - 2026-01-12
+*Version Finale – Sprint 5 : Finalisation du Jeu*
+
+### Added
+- Bouton dédié pour la sauvegarde accessible directement en jeu.
+- Remplacement du Jetpack par les "Wings" (permet le double saut et le vol).
+- Animations avancées pour l'Alien (états AIR, LAND, FLY).
+- Tests de performance et classes de tests unitaires.
+- Documentation technique complète (DESIGN, View, Items, JavaDoc).
+
+### Changed
+- Changement des touches par défaut (Z pour sauter, Q/D pour se déplacer).
+- Ajustement dynamique des dimensions de l'interface selon l'écran.
+- Traduction et uniformisation des textes du jeu.
+- Optimisation du lancement de la partie et de la gestion des équipes.
+
+### Fixed
+- Correction du bug lors du zoom de la caméra.
+- Modification et équilibrage du système de combat.
+
+---
+
+## [0.4] - 2026-01-05
+*Jeu avec arsenal complet – Sprint 4 : Complétion de l'arsenal, sauvegarde et maps*
+
+### Added
+- Système de sauvegarde complet et chargement de partie.
+- 3 nouvelles maps avec environnements animés (Glace, Enfer, Poison).
+- Sélection aléatoire de la map au lancement.
+- Système de visée à la souris (clic gauche pour charger et tirer).
+- Jauge de puissance de tir dynamique.
+- Caméra intelligente qui suit les projectiles avec zoom fluide.
+- Gestion avancée du son (polyphonie, bruits d'impacts, ambiance).
+- Musique et animation de victoire en fin de partie.
+- Menu paramètres complet (volume, choix musique).
+- Animation de marche pour les Glorbs et Zlerps.
+
+### Changed
+- Retour à un affichage console natif (suppression de Lanterna) pour plus de stabilité.
+- Refactoring majeur du contrôleur de jeu et gestion des entrées clavier.
+- Optimisation du pipeline CI/CD (allègement de l'artefact).
+
+### Fixed
+- Correction des bugs physiques (vent, explosions, impacts de balles).
+- Correction du focus de l'inventaire.
+
+---
+
+## [0.3] - 2025-12-15
+*Sprint 3 : utilisation des armes, animations, inventaire, sauvegarde du jeu*
 
 ### Added
 - Possibilité d’utiliser les armes en jeu.

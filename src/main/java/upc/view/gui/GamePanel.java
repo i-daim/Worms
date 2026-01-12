@@ -23,6 +23,18 @@ import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
+/**
+ * Panneau principal de rendu graphique du jeu.
+ * <p>
+ * Cette classe hérite de {@link JPanel} et est responsable de l'affichage de tous les éléments
+ * dynamiques et statiques de la partie. Elle gère :
+ * <ul>
+ * <li>Le rendu du terrain (arrière-plan, sol, eau).</li>
+ * <li>L'affichage des entités (aliens, arojectiles) et de leurs animations.</li>
+ * <li>La gestion de la caméra (zoom, suivi des entités, travelling).</li>
+ * <li>L'intégration des sous-panneaux d'interface (HUD, menu pause).</li>
+ * </ul>
+ */
 public class GamePanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = 1280;
@@ -39,9 +51,19 @@ public class GamePanel extends JPanel {
 
     private double cameraX = 0;
     private double cameraY = 0;
+    private double targetCamX = 0;
+    private double targetCamY = 0;
 
     private final List<ActiveAnimation> activeAnimations;
 
+    /**
+     * Constructeur du GamePanel.
+     * <p>
+     * Initialise les composants graphiques, configure le double buffering pour la fluidité,
+     * et lance la musique de fond.
+     * </p>
+     * @param gameManager Le contrôleur principal du jeu contenant la logique et les données.
+     */
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
         this.terrain = gameManager.getTerrain();
@@ -58,6 +80,19 @@ public class GamePanel extends JPanel {
         SoundManager.playMusic("Game Theme");
     }
 
+    /**
+     * Méthode principale de dessin du composant.
+     * <p>
+     * Exécute le pipeline de rendu dans l'ordre suivant :
+     * <ol>
+     * <li>Transformation de la caméra.</li>
+     * <li>Dessin du décor.</li>
+     * <li>Dessin des entités.</li>
+     * <li>Dessin de l'interface utilisateur et des animations temporaires.</li>
+     * </ol>
+     *
+     * @param g L'objet Graphics contextuel.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -123,7 +158,12 @@ public class GamePanel extends JPanel {
     }
 
 
-////    METHODES D'AFFICHAGE    ////
+    ////    METHODES D'AFFICHAGE    ////
+    /**
+     * Parcourt et dessine toutes les animations temporaires actives.
+     *
+     * @param g2 Le contexte graphique 2D.
+     */
     public void drawActiveAnimations(Graphics2D g2) {
         for (ActiveAnimation active : activeAnimations) {
             drawAnimation(g2, active.getAnimation(), active.getDrawX(), active.getDrawY(),
@@ -131,6 +171,17 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Dessine une frame spécifique d'une animation en fonction du temps écoulé.
+     *
+     * @param g2 Le contexte graphique.
+     * @param anim L'objet Animation contenant les frames.
+     * @param x Position X.
+     * @param y Position Y.
+     * @param startTime Temps de début de l'animation.
+     * @param speedMs Durée d'affichage d'une frame. (tout en ms)
+     * @param loop Indique si l'animation doit boucler ou s'arrêter à la dernière frame.
+     */
     private void drawAnimation(Graphics2D g2, Animation anim, int x, int y,
                                long startTime, int speedMs, boolean loop) {
         if (anim == null || anim.getFrames().isEmpty()) {
@@ -149,6 +200,13 @@ public class GamePanel extends JPanel {
         g2.drawImage(anim.getFrames().get(frameIndex), x, y, this);
     }
 
+    /**
+     * Dessine tous les aliens vivants présents dans le monde.
+     * <p>
+     * Trie les aliens par équipe pour appliquer le bon skin ( 0 ou 1).
+     * </p>
+     * @param g2 Le contexte graphique.
+     */
     public void drawAliens(Graphics2D g2) {
         for (Alien alien : gameManager.getWorld().getActiveAliens()) {
             if (alien != null && alien.isAlive()) {
@@ -161,6 +219,21 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Dessine un alien individuel selon son état et sa direction.
+     * <p>
+     * Gère les états :
+     * <ul>
+     * <li>WALK : Marche</li>
+     * <li>JUMP / JUMP_START : Saut</li>
+     * <li>IDLE : Repos</li>
+     * </ul>
+     * Appelle également l'affichage de l'arme si l'alien en porte une.
+     *
+     * @param g2 Le contexte graphique.
+     * @param alien L'entité Alien à dessiner.
+     * @param type L'identifiant visuel de l'équipe (0 ou 1).
+     */
     public void drawAlien(Graphics2D g2, Alien alien, int type) {
         Animation animation;
         boolean direction = alien.getDirection();
@@ -171,6 +244,15 @@ public class GamePanel extends JPanel {
             case JUMP:
                 animation = AnimationManager.getSprite(type, "jump", direction);
                 break;
+            case AIR:
+                animation = AnimationManager.getSprite(type, "air", direction);
+                break;
+            case LAND:
+                animation = AnimationManager.getSprite(type, "land", direction);
+                break;
+            case FLY:
+                animation = AnimationManager.getSprite(type, "fly", direction);
+                break;
             default:
                 animation = AnimationManager.getSprite(type, "idle", direction);
                 break;
@@ -179,13 +261,37 @@ public class GamePanel extends JPanel {
         int posX = alien.getPosition().getX();
         int posY = alien.getPosition().getY();
 
-        int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
-        int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
+        // Dessine les ailes avant l'alien si elles sont sélectionnées
+        if (alien.getEquippedItem().getName().equals("Wings") && !alien.isInAir()) {
+            // Affiche seulement une image quand l'alien ne vole pas
+            BufferedImage weaponImage = ImageManager.get("wings");
+            if (weaponImage != null) {
+                int drawX = posX - weaponImage.getWidth() / 2 - 2;
+                int drawY = posY - weaponImage.getHeight() / 2;
+                g2.drawImage(weaponImage, drawX, drawY, null);
+            }
+        }
 
-        drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+        if (animation != null && !animation.getFrames().isEmpty()) {
+            int drawX = posX - animation.getFrames().get(0).getWidth() / 2;
+            int drawY = posY - animation.getFrames().get(0).getHeight() / 2;
+            drawAnimation(g2, animation, drawX, drawY, 0, 100, true);
+        }
         drawAlienWeapon(g2, alien, direction, posX, posY);
     }
 
+    /**
+     * Dessine l'arme tenue par l'alien avec la rotation correcte.
+     * <p>
+     * Applique une transformation affine basée sur l'angle de visée de l'alien.
+     * Gère également l'effet miroir si l'alien regarde vers la gauche.
+     * </p>
+     * @param g2 Le contexte graphique.
+     * @param alien L'alien tenant l'arme.
+     * @param direction La direction du regard (true=droite false=gauche).
+     * @param posX Position X de l'alien.
+     * @param posY Position Y de l'alien.
+     */
     public void drawAlienWeapon(Graphics2D g2, Alien alien, boolean direction,
                                 int posX, int posY) {
         Item currentItem = alien.getEquippedItem();
@@ -203,11 +309,8 @@ public class GamePanel extends JPanel {
             if (!direction) {
                 angleRad = Math.PI - angleRad;
             }
-            int pivotX = posX;
-            int pivotY = posY - 5;
-            g2.translate(pivotX, pivotY);
+            g2.translate(posX, posY - 5);
             g2.rotate(-angleRad);
-            int weaponW = weaponImage.getWidth();
             int weaponH = weaponImage.getHeight();
             if (direction) {
                 g2.drawImage(weaponImage, 0, -weaponH / 2, null);
@@ -221,6 +324,14 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Dessine tous les projectiles actifs.
+     * <p>
+     * Oriente l'image du projectile selon son vecteur vitesse
+     * ou selon l'angle de tir initial.
+     * </p>
+     * @param g2 Le contexte graphique.
+     */
     private void drawProjectiles(Graphics2D g2) {
         var projectileList = gameManager.getWorld().getActiveProjectiles();
         var projectiles = new ArrayList<>(projectileList);
@@ -254,7 +365,12 @@ public class GamePanel extends JPanel {
         }
     }
 
-////    AUTRES METHODES    ////
+    ////    AUTRES METHODES    ////
+    /**
+     * Bascule l'affichage entre le HUD et le menu de Pause.
+     *
+     * @param paused Vrai si le jeu est en pause, Faux sinon.
+     */
     public void togglePauseMenu(boolean paused) {
         pausePanel.setVisible(paused);
         hudPanel.setVisible(!paused);
@@ -268,65 +384,112 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Centre la caméra sur une entité spécifique avec un effet de lissage (Lerp).
+     * <p>
+     * Ajuste progressivement les coordonnées de la caméra pour
+     * suivre la cible, tout en restant dans les limites du terrain.
+     * Augmente légèrement le zoom pour se focaliser sur l'action.
+     * </p>
+     * @param entity L'entité à suivre  (alien actif ou projectile).
+     */
     public void centerCamera(Entity entity) {
         if (entity == null) {
             return;
         }
+
+        // 1. Zoom progressif
         currentZoom += (ZOOM - currentZoom) * 0.05;
 
+        // 2. Calculs de la vue
         int posX = entity.getPosition().getX();
         int posY = entity.getPosition().getY();
-        double viewX = posX - (getWidth() / (2 * currentZoom));
-        double viewY = posY - (getHeight() / (2 * currentZoom));
 
-        double maxX = terrain.getWidth() - getWidth() / currentZoom;
-        double maxY = terrain.getHeight() - getHeight() / currentZoom;
+        double visibleWidth = getWidth() / currentZoom;
+        double visibleHeight = getHeight() / currentZoom;
 
-        double targetCamX = Math.max(0, Math.min(viewX, maxX));
-        double targetCamY = Math.max(0, Math.min(viewY, maxY));
+        double viewX = posX - (visibleWidth / 2);
+        double viewY = posY - (visibleHeight / 2);
 
+        // Limites du terrain
+        double maxX = Math.max(0, terrain.getWidth() - visibleWidth);
+        double maxY = Math.max(0, terrain.getHeight() - visibleHeight);
+
+        targetCamX = Math.max(0, Math.min(viewX, maxX));
+        targetCamY = Math.max(0, Math.min(viewY, maxY));
+
+        // 3. Application du mouvement fluide
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (Math.abs(targetCamX - cameraX) < 0.1) {
-            cameraX = targetCamX;
+        // Pour rester dans les limites du panel
+        if (cameraX < 0) {
+            cameraX = 0;
         }
-        if (Math.abs(targetCamY - cameraY) < 0.1) {
-            cameraY = targetCamY;
+        if (cameraX > maxX) {
+            cameraX = maxX;
+        }
+
+        if (cameraY < 0) {
+            cameraY = 0;
+        }
+        if (cameraY > maxY) {
+            cameraY = maxY;
         }
     }
 
+    /**
+     * Dézoome la caméra pour afficher une vue d'ensemble du terrain.
+     * <p>
+     * Utile lors des temps morts ou des changements de tour. La vitesse du trajet
+     * dépend du délai configuré dans le GameManager.
+     * </p>
+     */
     public void unzoomCamera() {
         double targetZoom = Math.max(
                 (double) getWidth() / terrain.getWidth(),
                 (double) getHeight() / terrain.getHeight()
         );
+
         currentZoom += (targetZoom - currentZoom) * 0.05;
 
         double visibleWidth = getWidth() / currentZoom;
-        double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
+        double visibleHeight = getHeight() / currentZoom;
 
+        double maxCamX = Math.max(0, terrain.getWidth() - visibleWidth);
+        double maxY = Math.max(0, terrain.getHeight() - visibleHeight);
+
+        // Calcul du délai
         double delayFactor = Math.min(1.0, Math.max(0.0, (gameManager.getDelay() - 50) / 200.0));
 
-        double targetCamX = delayFactor * maxCamX;
-        double targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
+        targetCamX = delayFactor * maxCamX;
+        targetCamY = (terrain.getHeight() - getHeight() / currentZoom) / 2;
 
         cameraX += (targetCamX - cameraX) * 0.1;
         cameraY += (targetCamY - cameraY) * 0.1;
 
-        if (Math.abs(targetCamX - cameraX) < 0.1) {
-            cameraX = targetCamX;
+        // Pour rester dans les limites du panel
+        if (cameraX < 0) {
+            cameraX = 0;
         }
-        if (Math.abs(targetCamY - cameraY) < 0.1) {
-            cameraY = targetCamY;
+        if (cameraX > maxCamX) {
+            cameraX = maxCamX;
+        }
+        if (cameraY < 0) {
+            cameraY = 0;
+        }
+        if (cameraY > maxY) {
+            cameraY = maxY;
         }
     }
 
 
-////    SETTERS & GETTERS    ////
+    ////    SETTERS & GETTERS    ////
     public void setCamera(double x, double y) {
         cameraX = x;
         cameraY = y;
+        targetCamX = x;
+        targetCamY = y;
         repaint();
     }
 
@@ -353,4 +516,14 @@ public class GamePanel extends JPanel {
     public HUDPanel getHudPanel() {
         return hudPanel;
     }
+
+    public double getCurrentZoom() {
+        return currentZoom;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+
 }

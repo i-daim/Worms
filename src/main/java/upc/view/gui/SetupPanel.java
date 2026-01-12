@@ -51,6 +51,7 @@ public class SetupPanel extends JPanel {
 
     private final JComboBox<String> mapSelector;
     private final JSlider teamSizeSlider;
+    private final JSlider roundTimeSlider;
     private final JButton startButton;
     private final JButton backButton;
 
@@ -96,24 +97,45 @@ public class SetupPanel extends JPanel {
 
         mainContentPanel.add(Box.createVerticalGlue());
 
+        // Panneau des configurations du jeu
         JPanel configPanel = createRoundedPanel();
         configPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 20));
         configPanel.setMaximumSize(new Dimension(1000, (int) (62 * zoom)));
 
-        JPanel mapBox = createSection("Map", 240);
+        // Sélection de la carte
+        JPanel mapBox = createSection("Map", 175);
         String[] maps = {"Random", "Liberty", "Spaceship", "Ice", "Poison", "Hell"};
         mapSelector = new JComboBox<>(maps);
         styleComboBox(mapSelector);
         mapBox.add(mapSelector);
         configPanel.add(mapBox);
 
-        JPanel teamBox = createSection("Team Size", 250);
+        // Choix de la taille de l'équipe
+        JPanel teamBox = createSection("Team Size", 150);
         teamSizeSlider = new JSlider(1, 4, 2);
         styleSlider(teamSizeSlider);
         teamBox.add(teamSizeSlider);
         configPanel.add(teamBox);
 
-        JPanel windBox = createSection("Wind", 200);
+        // Choix de la durée du round
+        JPanel timerBox = createSection("Round Time", 225);
+        JLabel timeLabel = new JLabel("30s");
+        timeLabel.setFont(new Font("Arial", Font.BOLD, (int) (8 * zoom)));
+        timeLabel.setForeground(Color.WHITE);
+        timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        timerBox.add(timeLabel);
+
+        roundTimeSlider = new JSlider(5, 60, 30);
+        styleSlider(roundTimeSlider);
+        roundTimeSlider.setPaintLabels(false);
+        // ajout d'un listener pour changer l'affichage en temps réel
+        roundTimeSlider.addChangeListener(e ->
+                timeLabel.setText(roundTimeSlider.getValue() + "s"));
+        timerBox.add(roundTimeSlider);
+        configPanel.add(timerBox);
+
+        // Sélection du vent
+        JPanel windBox = createSection("Wind", 150);
         chkWind = createWeaponCheckbox("Activated");
         chkWind.setSelected(false); // Désactivé par défaut
         chkWind.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -383,6 +405,13 @@ public class SetupPanel extends JPanel {
      */
     public int getTeamSize() {
         return teamSizeSlider.getValue();
+    }
+
+    /**
+     * @return La durée du round choisie
+     */
+    public int getRoundTime() {
+        return roundTimeSlider.getValue();
     }
     /**
      * @return Vrai si le Bazooka est activé, Faux sinon.

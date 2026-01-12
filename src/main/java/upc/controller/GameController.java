@@ -256,7 +256,7 @@ public class GameController {
             if (equipped instanceof upc.model.items.Uzi) {
                 if (mouseHandler.isPressed(MouseEvent.BUTTON1)) {
                     if (frameCount % 5 == 0) {
-                        activeAlien.setShootPower(100);
+                        activeAlien.setShootPower(75);
                         activeAlien.useEquippedItem();
                         activeAlien.setShootPower(0);
                         frameCount = 0;
@@ -267,7 +267,7 @@ public class GameController {
             } else if (equipped instanceof upc.model.items.Shotgun
                 || equipped instanceof upc.model.items.Wings) {
                 if (mouseHandler.isJustPressed(MouseEvent.BUTTON1)) {
-                    activeAlien.setShootPower(100);
+                    activeAlien.setShootPower(75);
                     activeAlien.useEquippedItem();
                     activeAlien.setShootPower(0);
                 }

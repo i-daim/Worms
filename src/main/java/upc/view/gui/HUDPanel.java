@@ -375,9 +375,9 @@ public class HUDPanel extends JPanel {
         int coneLength = power / 2;
         int coneWidth = 4 + (power / 8);
 
-            if (power < 30) {
+            if (power < 25) {
                 g2.setColor(Color.GREEN);
-            } else if (power < 70) {
+            } else if (power < 55) {
                 g2.setColor(Color.ORANGE);
             } else {
                 g2.setColor(Color.RED);

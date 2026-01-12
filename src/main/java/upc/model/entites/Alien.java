@@ -202,7 +202,7 @@ public class Alien extends Entity {
      * Revient à zéro s'il atteint le max pour augmenter en boucle
      */
     public void incrementPower() {
-        shootPower = (shootPower + 1) % 100;
+        shootPower = (shootPower + 1) % 75;
     }
 
     /**

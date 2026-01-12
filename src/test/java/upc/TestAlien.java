@@ -206,7 +206,7 @@ public class TestAlien {
 
     @Test
     public void testIncrementPowerAboveLimit() {
-        alien.setShootPower(99);
+        alien.setShootPower(74);
         alien.incrementPower();
         assertEquals(0, alien.getShootPower());
     }

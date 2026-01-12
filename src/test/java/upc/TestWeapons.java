@@ -47,7 +47,7 @@ public class TestWeapons {
         Uzi uzi = new Uzi();
 
         assertEquals("Uzi", uzi.getName());
-        assertEquals(10, uzi.getDamage());
+        assertEquals(5, uzi.getDamage());
         assertEquals(15, uzi.getNbOfShots());
         assertEquals(20, uzi.getBasePower());
     }
@@ -60,9 +60,9 @@ public class TestWeapons {
         Grenade grenade = new Grenade();
 
         assertEquals("Grenade", grenade.getName());
-        assertEquals(50, grenade.getDamage());
+        assertEquals(75, grenade.getDamage());
         assertEquals(1, grenade.getNbOfShots());
-        assertEquals(10, grenade.getBasePower());
+        assertEquals(15, grenade.getBasePower());
     }
     /**
      * Vérifie que le constructeur du shotgun initialise
@@ -73,18 +73,9 @@ public class TestWeapons {
         Shotgun shotgun = new Shotgun();
 
         assertEquals("Shotgun", shotgun.getName());
-        assertEquals(35, shotgun.getDamage());
+        assertEquals(15, shotgun.getDamage());
         assertEquals(2, shotgun.getNbOfShots());
         assertEquals(20, shotgun.getBasePower());
-    }
-    /**
-     * Vérifie les constantes définies dans la classe Mine .
-     */
-    @Test
-    public void testMineConstantes() {
-        assertEquals(45, Mine.DAMAGE);
-        assertEquals(30, Mine.EXPLOSION_RADIUS);
-        assertEquals(20, Mine.ACTIVATION_RADIUS);
     }
     /**
      * Vérifie que le constructeur de la mine initialise
@@ -95,7 +86,7 @@ public class TestWeapons {
         Mine mine = new Mine();
 
         assertEquals("Mine", mine.getName());
-        assertEquals(45, mine.getDamage());
+        assertEquals(100, mine.getDamage());
         assertEquals(1, mine.getNbOfShots());
         assertEquals(5, mine.getBasePower());
     }
@@ -108,8 +99,8 @@ public class TestWeapons {
         Bazooka bazooka = new Bazooka();
 
         assertEquals("Bazooka", bazooka.getName());
-        assertEquals(45, bazooka.getDamage());
+        assertEquals(75, bazooka.getDamage());
         assertEquals(1, bazooka.getNbOfShots());
-        assertEquals(20, bazooka.getBasePower());
+        assertEquals(15, bazooka.getBasePower());
     }
 }

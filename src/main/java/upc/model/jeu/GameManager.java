@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager {
     /** Constantes */
-    public static final int ROUND_TIME = 60;
+    private int roundTime;
 
     private Terrain terrain;
     private final String mapName;
@@ -48,6 +48,7 @@ public class GameManager {
         this.terrain = terrain;
         this.mapName = terrain.getMapName();
         this.teamSize = teamSize;
+        this.roundTime = 30;
 
         this.teams = new Team[2];
         this.teams[0] = new Team("Zlerps", teamSize);
@@ -68,6 +69,7 @@ public class GameManager {
         this.terrain = TerrainGenerator.createTerrain(mapName);
         this.mapName = mapName;
         this.teamSize = teamSize;
+        this.roundTime = 30;
 
         this.teams = new Team[2];
         this.teams[0] = new Team("Zlerps", teamSize);
@@ -132,7 +134,7 @@ public class GameManager {
         //Lance les attributs en lien avec la partie
         this.activeTeamIndex = 0;
         this.currentRound = 1;
-        this.timeLeft = ROUND_TIME;
+        this.timeLeft = roundTime;
         this.gameOver = false;
         this.actionDone = false;
 
@@ -159,7 +161,7 @@ public class GameManager {
 
         setDelay(2000, () -> {
             nextTurn();
-            timeLeft = ROUND_TIME;
+            timeLeft = roundTime;
             getActiveAlien().resetUseCount();
         });
     }
@@ -521,6 +523,13 @@ public class GameManager {
         return null;
     }
 
+    /**
+     * Définit la durée de chaque tour
+     * @param time : Durée définie
+     */
+    public void setRoundTime(int time) {
+        this.roundTime = time;
+    }
 
     /**
      * Permet de changer le projective active

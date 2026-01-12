@@ -10,9 +10,9 @@ public class Grenade extends Weapon {
      * Constantes représentants les dégats, le nombre de tir, la puissance de base
      * et le champ d'action
      */
-    private static final int DAMAGE = 50;
+    private static final int DAMAGE = 75;
     private static final int NB_OF_SHOTS = 1;
-    private static final int BASE_POWER = 10;
+    private static final int BASE_POWER = 15;
     private static final int RADIUS = 30;
 
     /**

@@ -9,9 +9,9 @@ public class Bazooka extends Weapon {
 
 
     /**Constantes représentants les dégats, le nombre de tir et la puissance de base*/
-    private static final int DAMAGE = 45;
+    private static final int DAMAGE = 75;
     private static final int NB_OF_SHOTS = 1;
-    private static final int BASE_POWER = 20;
+    private static final int BASE_POWER = 15;
 
     /**
      * Constructeur pour {@code Bazooka}

@@ -10,6 +10,8 @@ import upc.view.gui.MenuPanel;
 
 import java.util.HashSet;
 import java.util.Set;
+
+
 /**
  * Contrôleur de l'écran de configuration de partie.
  * <p>
@@ -118,6 +120,8 @@ public class GameSetupController {
 
         GameManager gameManager = new GameManager(terrain, teamSize);
 
+        // Définit la durée des tours
+        gameManager.setRoundTime(view.getRoundTime());
         // Active ou désactive le vent selon le choix du joueur
         gameManager.setWindEnabled(view.isWindEnabled());
 

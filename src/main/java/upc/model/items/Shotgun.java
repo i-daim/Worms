@@ -9,7 +9,7 @@ import upc.model.jeu.GameWorld;
 public class Shotgun extends Weapon {
 
     /**Constantes représentants les dégats, le nombre de tir et la puissance de base*/
-    private static final int DAMAGE = 35;
+    private static final int DAMAGE = 15;
     private static final int NB_OF_SHOTS = 2;
     private static final int BASE_POWER = 20;
 

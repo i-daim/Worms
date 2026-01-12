@@ -47,19 +47,10 @@ public class Projectile extends Entity {
         this.angle = shooter.getAimAngle();
     }
 
-    public int computeDamageFromDistance(double distance) {
-        if (!isExplosive()) {
-            return damage;
-        }
-        double ratio = 1.0 - (distance / explosionRadius);
-        return Math.max((int) (damage * ratio), 0);
-    }
-
     public void applyExplosionDamage(GameWorld world) {
         if (!isExplosive() || explosionDamageApplied) {
             return;
         }
-
         explosionDamageApplied = true;
 
         Position pos = getPosition();
@@ -70,6 +61,14 @@ public class Projectile extends Entity {
             int dmg = computeDamageFromDistance(distance);
             alien.receiveDmg(dmg);
         }
+    }
+
+    public int computeDamageFromDistance(double distance) {
+        if (!isExplosive()) {
+            return damage;
+        }
+        double ratio = 1.0 - (distance / (explosionRadius * 1.5));
+        return Math.max((int) (damage * ratio), 0);
     }
 
     ////    GETTERS    ////
